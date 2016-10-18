@@ -14,11 +14,15 @@ namespace Biocs
 
 		public DnaBases Code { get; }
 
+		public string Name => Code.ToString();
+
+		public char Symbol => Name[0];
+
 		public bool IsAtomic
 		{
 			get
 			{
-				switch (Code)
+				switch (Code & DnaBases.Any)
 				{
 					case DnaBases.Adenine:
 					case DnaBases.Guanine:
@@ -30,9 +34,20 @@ namespace Biocs
 			}
 		}
 
+		public static bool operator ==(DnaBase one, DnaBase other) => one.Equals(other);
+
+		public static bool operator !=(DnaBase one, DnaBase other) => !one.Equals(other);
+
 		public DnaBase ToUpper() => new DnaBase(Code & DnaBases.Any);
 
 		public DnaBase ToLower() => new DnaBase(Code | DnaBases.Lowercase);
+
+		public DnaBase Complement()
+		{
+			int code = (int)Code;
+			int complement = (code & (int)DnaBases.Lowercase) + ((code & (int)DnaBases.Purine) << 2) + ((code & (int)DnaBases.Pyrimidine) >> 2);
+			return new DnaBase((DnaBases)complement);
+		}
 
 		public bool Equals(DnaBase other) => Code == other.Code;
 
@@ -40,9 +55,7 @@ namespace Biocs
 
 		public override int GetHashCode() => (int)Code;
 
-		public static bool operator ==(DnaBase one, DnaBase other) => one.Equals(other);
-
-		public static bool operator !=(DnaBase one, DnaBase other) => !one.Equals(other);
+		public override string ToString() => Symbol.ToString();
 	}
 
 	[Flags]
