@@ -1,33 +1,17 @@
-#---------------------------------#
-#      general configuration      #
-#---------------------------------#
+version: 1.0.{build}
+build:
+  verbosity: minimal
 
-# version format
-version: 1.0.0-{build}
-
-# Maximum number of concurrent jobs for the project
-max_jobs: 1
-
-#---------------------------------#
-#    environment configuration    #
-#---------------------------------#
-
-# Build worker image (VM template)
 os: Visual Studio 2015
 
-#---------------------------------#
-#       build configuration       #
-#---------------------------------#
-
-# to run your custom scripts instead of automatic MSBuild
 build_script:
+  # dotnet info
   - ps: dotnet --info
-  - ps: dotnet restore
-  - ps: dotnet build core -c Release
 
-#---------------------------------#
-#       tests configuration       #
-#---------------------------------#
-test:
-  assemblies:
-    - Biocs.Core.Tests.dll
+  # Run dotnet new 
+  - ps: mkdir "test\test-dotnet-new" -Force | Push-Location
+  - ps: dotnet new --lang fsharp
+  - ps: dotnet restore
+  - ps: dotnet --verbose build
+  - ps: dotnet --verbose run a b
+  - ps: Pop-Location
