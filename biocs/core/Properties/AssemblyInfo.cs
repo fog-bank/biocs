@@ -9,7 +9,7 @@ using System.Resources;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("co3366353")]
-[assembly: AssemblyProduct("biocs")]
+[assembly: AssemblyProduct("BioCSharp")]
 [assembly: AssemblyCopyright("Copyright © 2016 fog-bank. Some rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: NeutralResourcesLanguage("en")]
