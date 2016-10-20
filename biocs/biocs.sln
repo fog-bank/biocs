@@ -9,7 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "core.tests", "core.tests\co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C7764712-8CDF-49B0-A64C-2BC97F23E34A}"
 	ProjectSection(SolutionItems) = preProject
+		..\appveyor.yml = ..\appveyor.yml
 		CustomDictionary.xml = CustomDictionary.xml
+		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Global

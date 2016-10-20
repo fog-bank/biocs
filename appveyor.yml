@@ -23,7 +23,8 @@ os: Visual Studio 2015
 build_script:
   - ps: dotnet --info
   - ps: dotnet restore
-  - ps: dotnet build core -c Release
+  - ps: msbuild biocs/core --configuration Debug
+  - ps: msbuild core.tests
 
 #---------------------------------#
 #       tests configuration       #
