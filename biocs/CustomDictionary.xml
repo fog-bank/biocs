@@ -3,7 +3,7 @@
   <Words>
     <Recognized>
       <Word>biocs</Word>
-      <Word>dna</Word>
+      <Word>dna</Word> <!-- deoxyribonucleic acid -->
       <Word>fasta</Word>
       <Word>fastq</Word>
       <Word>keto</Word>

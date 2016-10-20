@@ -8,12 +8,12 @@ using System.Resources;
 [assembly: AssemblyTitle("Biocs.Core.dll")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("")]
+[assembly: AssemblyCompany("co3366353")]
+[assembly: AssemblyProduct("biocs")]
 [assembly: AssemblyCopyright("Copyright © 2016 fog-bank. Some rights reserved.")]
 [assembly: AssemblyTrademark("")]
-[assembly: CLSCompliant(true)]
 [assembly: NeutralResourcesLanguage("en")]
+[assembly: CLSCompliant(true)]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -26,5 +26,5 @@ using System.Resources;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.11012.0")]
+[assembly: AssemblyFileVersion("1.0.11021.0")]
 
