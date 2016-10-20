@@ -1,4 +1,20 @@
-version: 1.0.{build}
-os: Visual Studio 2015
+version: 1.0.0-{build}
 build:
   verbosity: minimal
+
+os: Visual Studio 2015
+
+build_script:
+  # dotnet info
+  - ps: dotnet --info
+
+  # Run dotnet new 
+  - ps: dotnet restore
+  - ps: dotnet build core -c Release
+
+test:
+  assemblies:
+    - Biocs.Core.Tests.dll
+
+test_script:
+  - vstest.console /logger:Appveyor <assembly> [options]
