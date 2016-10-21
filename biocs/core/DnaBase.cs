@@ -9,7 +9,7 @@ namespace Biocs
 	/// </summary>
 	/// <remarks>
 	/// Each method other than <see cref="Name"/> property and <see cref="EqualsCaseInsensitive"/> 
-	/// method performs a case-sensitive operation. By default, each instance is uppercase.
+	/// method performs a case-sensitive operation. By default, each instance is uppercase except gaps.
 	/// </remarks>
 	public struct DnaBase : IEquatable<DnaBase>
 	{
@@ -50,12 +50,17 @@ namespace Biocs
 		/// <summary>
 		/// Gets a value indicating whether this instance represents a gap.
 		/// </summary>
-		public bool IsGap => ToUpper(Code) == DnaBases.Gap;
+		public bool IsGap => Code == DnaBases.Gap;
 
 		/// <summary>
-		/// Gets a value indicating whether this nucleotide represents a uppercase symbol.
+		/// Gets a value indicating whether this nucleotide has an uppercase alphabetic symbol.
 		/// </summary>
-		public bool IsUpper => (Code & DnaBases.Lowercase) == DnaBases.Gap;
+		public bool IsUpper => !IsGap && (Code & DnaBases.Lowercase) == DnaBases.Gap;
+
+		/// <summary>
+		/// Gets a value indicating whether this nucleotide has a lowercase alphabetic symbol.
+		/// </summary>
+		public bool IsLower => (Code & DnaBases.Lowercase) == DnaBases.Lowercase;
 
 		/// <summary>
 		/// Gets the <see cref="DnaBase"/> instance for adenine.
@@ -78,7 +83,12 @@ namespace Biocs
 		public static DnaBase Cytosine { get; } = new DnaBase(DnaBases.Cytosine);
 
 		/// <summary>
-		/// Gets the <see cref="DnaBase"/> instance for unknown base.
+		/// Gets the <see cref="DnaBase"/> instance for a gap.
+		/// </summary>
+		public static DnaBase Gap { get; } = new DnaBase(DnaBases.Gap);
+
+		/// <summary>
+		/// Gets the <see cref="DnaBase"/> instance for an unknown base.
 		/// </summary>
 		public static DnaBase Any { get; } = new DnaBase(DnaBases.Any);
 
@@ -96,7 +106,7 @@ namespace Biocs
 		/// Converts the value of a nucleotide to its lowercase equivalent.
 		/// </summary>
 		/// <returns>The lowercase equivalent of this instance.</returns>
-		public DnaBase ToLower() => new DnaBase(Code | DnaBases.Lowercase);
+		public DnaBase ToLower() => IsGap ? this : new DnaBase(Code | DnaBases.Lowercase);
 
 		/// <summary>
 		/// Returns a complentary nucleotide of this nucleotide.
