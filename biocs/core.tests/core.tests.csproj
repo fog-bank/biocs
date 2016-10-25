@@ -50,6 +50,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DnaBaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResTest.cs" />
     <Compile Include="TestTools\BiocsAssert.cs" />
