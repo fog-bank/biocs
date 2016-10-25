@@ -1,0 +1,32 @@
+#---------------------------------#
+#      general configuration      #
+#---------------------------------#
+
+# version format
+version: 1.0.0-{build}
+
+# Maximum number of concurrent jobs for the project
+max_jobs: 1
+
+#---------------------------------#
+#    environment configuration    #
+#---------------------------------#
+
+# Build worker image (VM template)
+os: Visual Studio 2015
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+
+# scripts to run before build
+before_build:
+  - ps: dotnet --info
+  - ps: dotnet restore
+
+#---------------------------------#
+#       tests configuration       #
+#---------------------------------#
+test:
+  assemblies:
+    - Biocs.Core.Tests.dll
