@@ -8,7 +8,7 @@ namespace Biocs
 	/// Represents nucleotides for DNA.
 	/// </summary>
 	/// <remarks>
-	/// Each method other than <see cref="Name"/> property and <see cref="EqualsCaseInsensitive"/> 
+	/// Each member other than <see cref="Name"/> property and <see cref="EqualsCaseInsensitive"/> 
 	/// method performs a case-sensitive operation. By default, each instance is uppercase except gaps.
 	/// </remarks>
 	public struct DnaBase : IEquatable<DnaBase>
@@ -55,7 +55,7 @@ namespace Biocs
 		/// <summary>
 		/// Gets a value indicating whether this nucleotide has an uppercase alphabetic symbol.
 		/// </summary>
-		public bool IsUpper => !IsGap && (Code & DnaBases.Lowercase) == DnaBases.Gap;
+		public bool IsUpper => (Code ^ DnaBases.Any) < DnaBases.Any;
 
 		/// <summary>
 		/// Gets a value indicating whether this nucleotide has a lowercase alphabetic symbol.
