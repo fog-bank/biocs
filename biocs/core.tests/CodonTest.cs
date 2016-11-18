@@ -1,6 +1,4 @@
-﻿using System;
-using Biocs.TestTools;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Biocs
 {
@@ -38,6 +36,10 @@ namespace Biocs
 						Assert.AreEqual(symbol, codon2.Symbols);
 						Assert.AreEqual(symbol, codon2.ToString());
 
+						// Case conversion
+						Assert.AreEqual(symbol.ToUpperInvariant(), codon1.ToUpper().Symbols);
+						Assert.AreEqual(symbol.ToLowerInvariant(), codon1.ToLower().Symbols);
+
 						// Equality
 						Assert.AreEqual(codon1, codon2);
 						Assert.IsTrue(codon1.Equals(codon2));
@@ -49,6 +51,7 @@ namespace Biocs
 				}
 			}
 			Assert.AreEqual(Codon.Gap, new Codon());
+			Assert.AreEqual("NNN", Codon.Any.Symbols);
 		}
 	}
 }

@@ -51,6 +51,23 @@ namespace Biocs
 		public static Codon Gap { get; } = new Codon(DnaBase.Gap, DnaBase.Gap, DnaBase.Gap);
 
 		/// <summary>
+		/// Gets a codon that is filled with unknown bases.
+		/// </summary>
+		public static Codon Any { get; } = new Codon(DnaBase.Any, DnaBase.Any, DnaBase.Any);
+
+		/// <summary>
+		/// Converts this codon to its uppercase equivalent.
+		/// </summary>
+		/// <returns>The uppercase equivalent of this instance.</returns>
+		public Codon ToUpper() => new Codon(First.ToUpper(), Second.ToUpper(), Third.ToUpper());
+
+		/// <summary>
+		/// Converts this codon to its lowercase equivalent.
+		/// </summary>
+		/// <returns>The lowercase equivalent of this instance.</returns>
+		public Codon ToLower() => new Codon(First.ToLower(), Second.ToLower(), Third.ToLower());
+
+		/// <summary>
 		/// Determines whether the current <see cref="Codon"/> instance is equal to a specified <see cref="Codon"/> instance.
 		/// </summary>
 		/// <param name="other">The codon to compare to this instance.</param>
