@@ -38,7 +38,7 @@ namespace Biocs
 		/// <summary>
 		/// Gets the string representation of this codon.
 		/// </summary>
-		public string Symbols => new string(new[] { First.Symbol, Second.Symbol, Third.Symbol });
+		public string Symbols => string.Concat(First.Symbol, Second.Symbol, Third.Symbol);
 
 		/// <summary>
 		/// Gets a value indicating whether this codon is completely specified.
@@ -82,6 +82,22 @@ namespace Biocs
 
 		/// <inheritdoc cref="object.ToString"/>
 		public override string ToString() => Symbols;
+
+		/// <summary>
+		/// Converts the character representation of a codon to an equivalent <see cref="Codon"/> instance.
+		/// </summary>
+		/// <param name="value">A string to convert.</param>
+		/// <returns>A <see cref="Codon"/> instance whose symbol is represented by <paramref name="value"/>.</returns>
+		/// <exception cref="ArgumentException"><paramref name="value"/> contains an unknown character in a certain position.</exception>
+		[StringResourceUsage("ArgEx.InvalidCodonSymbol", 1)]
+		public static Codon Parse(string value)
+		{
+			Codon result;
+			if (!TryParse(value, out result))
+				throw new ArgumentException(Res.GetString("ArgEx.InvalidCodonSymbol"), nameof(value));
+
+			return result;
+		}
 
 		/// <summary>
 		/// Converts the string representation of a codon to an equivalent <see cref="Codon"/> instance.
