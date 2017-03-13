@@ -94,7 +94,7 @@ namespace Biocs
 		{
 			Codon result;
 			if (!TryParse(value, out result))
-				throw new ArgumentException(Res.GetString("ArgEx.InvalidCodonSymbol"), nameof(value));
+				throw new ArgumentException(Res.GetString("ArgEx.InvalidCodonSymbol", value), nameof(value));
 
 			return result;
 		}
