@@ -123,4 +123,7 @@
   <data name="ArgEx.InvalidDnaBaseSymbol" xml:space="preserve">
     <value>The specified value ({0}) is not one of the symbols defined for Biocs.DnaBase struct.</value>
   </data>
+  <data name="InvalOp.EmptyCollection" xml:space="preserve">
+    <value>The collection is empty.</value>
+  </data>
 </root>

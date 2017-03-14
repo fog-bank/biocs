@@ -43,6 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Codon.cs" />
+    <Compile Include="Collections\CollectionDebugView.cs" />
+    <Compile Include="Collections\Deque.cs" />
     <Compile Include="DnaBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Res.cs" />

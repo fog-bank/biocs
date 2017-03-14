@@ -3,6 +3,7 @@
   <Words>
     <Recognized>
       <Word>biocs</Word>
+      <Word>deque</Word> <!-- double-ended queue -->
       <Word>dna</Word> <!-- deoxyribonucleic acid -->
       <Word>fasta</Word>
       <Word>fastq</Word>
