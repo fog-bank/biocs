@@ -4,17 +4,18 @@
       "src": [
         {
           "files": [
-            "biocs/core/**.cs"
+            "biocs/core/project.json"
           ],
           "exclude": [
-            "**/obj/**",
             "**/bin/**",
-            "_site/**"
+            "**/obj/**",
+            "docs/**"
           ],
           "src": "../"
         }
       ],
-      "dest": "api"
+      "dest": "api",
+      "filter": "filterConfig.yml"
     }
   ],
   "build": {
@@ -34,7 +35,7 @@
         ],
         "exclude": [
           "obj/**",
-          "_site/**"
+          "docs/**"
         ]
       }
     ],
@@ -45,7 +46,7 @@
         ],
         "exclude": [
           "obj/**",
-          "_site/**"
+          "docs/**"
         ]
       }
     ],
@@ -56,7 +57,7 @@
         ],
         "exclude": [
           "obj/**",
-          "_site/**"
+          "docs/**"
         ]
       }
     ],
@@ -67,6 +68,9 @@
       "default"
     ],
     "postProcessors": [],
-    "noLangKeyword": false
+    "noLangKeyword": false,
+    "xref": [ 
+      "msdn.4.5.2.zip"
+    ]
   }
 }

@@ -1,0 +1,4 @@
+attributeRules:
+- exclude:
+    uidRegex: ^Biocs\.StringResourceUsageAttribute$
+    type: Type

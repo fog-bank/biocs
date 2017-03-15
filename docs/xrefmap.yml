@@ -226,6 +226,357 @@ references:
   commentId: Overload:Biocs.Codon.TryParse
   fullName: Biocs.Codon.TryParse
   nameWithType: Codon.TryParse
+- uid: Biocs.Collections
+  name: Biocs.Collections
+  href: api/Biocs.Collections.html
+  commentId: N:Biocs.Collections
+  fullName: Biocs.Collections
+  nameWithType: Biocs.Collections
+- uid: Biocs.Collections.Deque`1
+  name: Deque<T>
+  href: api/Biocs.Collections.Deque-1.html
+  commentId: T:Biocs.Collections.Deque`1
+  name.vb: Deque(Of T)
+  fullName: Biocs.Collections.Deque<T>
+  fullName.vb: Biocs.Collections.Deque(Of T)
+  nameWithType: Deque<T>
+  nameWithType.vb: Deque(Of T)
+- uid: Biocs.Collections.Deque`1.#ctor
+  name: Deque()
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1__ctor
+  commentId: M:Biocs.Collections.Deque`1.#ctor
+  fullName: Biocs.Collections.Deque<T>.Deque()
+  fullName.vb: Biocs.Collections.Deque(Of T).Deque()
+  nameWithType: Deque<T>.Deque()
+  nameWithType.vb: Deque(Of T).Deque()
+- uid: Biocs.Collections.Deque`1.#ctor(System.Int32)
+  name: Deque(Int32)
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1__ctor_System_Int32_
+  commentId: M:Biocs.Collections.Deque`1.#ctor(System.Int32)
+  fullName: Biocs.Collections.Deque<T>.Deque(System.Int32)
+  fullName.vb: Biocs.Collections.Deque(Of T).Deque(System.Int32)
+  nameWithType: Deque<T>.Deque(Int32)
+  nameWithType.vb: Deque(Of T).Deque(Int32)
+- uid: Biocs.Collections.Deque`1.#ctor*
+  name: Deque
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1__ctor_
+  commentId: Overload:Biocs.Collections.Deque`1.#ctor
+  fullName: Biocs.Collections.Deque<T>.Deque
+  fullName.vb: Biocs.Collections.Deque(Of T).Deque
+  nameWithType: Deque<T>.Deque
+  nameWithType.vb: Deque(Of T).Deque
+- uid: Biocs.Collections.Deque`1.AddFirst(`0)
+  name: AddFirst(T)
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_AddFirst__0_
+  commentId: M:Biocs.Collections.Deque`1.AddFirst(`0)
+  fullName: Biocs.Collections.Deque<T>.AddFirst(T)
+  fullName.vb: Biocs.Collections.Deque(Of T).AddFirst(T)
+  nameWithType: Deque<T>.AddFirst(T)
+  nameWithType.vb: Deque(Of T).AddFirst(T)
+- uid: Biocs.Collections.Deque`1.AddFirst*
+  name: AddFirst
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_AddFirst_
+  commentId: Overload:Biocs.Collections.Deque`1.AddFirst
+  fullName: Biocs.Collections.Deque<T>.AddFirst
+  fullName.vb: Biocs.Collections.Deque(Of T).AddFirst
+  nameWithType: Deque<T>.AddFirst
+  nameWithType.vb: Deque(Of T).AddFirst
+- uid: Biocs.Collections.Deque`1.AddLast(`0)
+  name: AddLast(T)
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_AddLast__0_
+  commentId: M:Biocs.Collections.Deque`1.AddLast(`0)
+  fullName: Biocs.Collections.Deque<T>.AddLast(T)
+  fullName.vb: Biocs.Collections.Deque(Of T).AddLast(T)
+  nameWithType: Deque<T>.AddLast(T)
+  nameWithType.vb: Deque(Of T).AddLast(T)
+- uid: Biocs.Collections.Deque`1.AddLast*
+  name: AddLast
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_AddLast_
+  commentId: Overload:Biocs.Collections.Deque`1.AddLast
+  fullName: Biocs.Collections.Deque<T>.AddLast
+  fullName.vb: Biocs.Collections.Deque(Of T).AddLast
+  nameWithType: Deque<T>.AddLast
+  nameWithType.vb: Deque(Of T).AddLast
+- uid: Biocs.Collections.Deque`1.Clear
+  name: Clear()
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Clear
+  commentId: M:Biocs.Collections.Deque`1.Clear
+  fullName: Biocs.Collections.Deque<T>.Clear()
+  fullName.vb: Biocs.Collections.Deque(Of T).Clear()
+  nameWithType: Deque<T>.Clear()
+  nameWithType.vb: Deque(Of T).Clear()
+- uid: Biocs.Collections.Deque`1.Clear*
+  name: Clear
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Clear_
+  commentId: Overload:Biocs.Collections.Deque`1.Clear
+  fullName: Biocs.Collections.Deque<T>.Clear
+  fullName.vb: Biocs.Collections.Deque(Of T).Clear
+  nameWithType: Deque<T>.Clear
+  nameWithType.vb: Deque(Of T).Clear
+- uid: Biocs.Collections.Deque`1.Contains(`0)
+  name: Contains(T)
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Contains__0_
+  commentId: M:Biocs.Collections.Deque`1.Contains(`0)
+  fullName: Biocs.Collections.Deque<T>.Contains(T)
+  fullName.vb: Biocs.Collections.Deque(Of T).Contains(T)
+  nameWithType: Deque<T>.Contains(T)
+  nameWithType.vb: Deque(Of T).Contains(T)
+- uid: Biocs.Collections.Deque`1.Contains*
+  name: Contains
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Contains_
+  commentId: Overload:Biocs.Collections.Deque`1.Contains
+  fullName: Biocs.Collections.Deque<T>.Contains
+  fullName.vb: Biocs.Collections.Deque(Of T).Contains
+  nameWithType: Deque<T>.Contains
+  nameWithType.vb: Deque(Of T).Contains
+- uid: Biocs.Collections.Deque`1.CopyTo(`0[],System.Int32)
+  name: CopyTo(T[], Int32)
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_CopyTo__0___System_Int32_
+  commentId: M:Biocs.Collections.Deque`1.CopyTo(`0[],System.Int32)
+  name.vb: CopyTo(T(), Int32)
+  fullName: Biocs.Collections.Deque<T>.CopyTo(T[], System.Int32)
+  fullName.vb: Biocs.Collections.Deque(Of T).CopyTo(T(), System.Int32)
+  nameWithType: Deque<T>.CopyTo(T[], Int32)
+  nameWithType.vb: Deque(Of T).CopyTo(T(), Int32)
+- uid: Biocs.Collections.Deque`1.CopyTo*
+  name: CopyTo
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_CopyTo_
+  commentId: Overload:Biocs.Collections.Deque`1.CopyTo
+  fullName: Biocs.Collections.Deque<T>.CopyTo
+  fullName.vb: Biocs.Collections.Deque(Of T).CopyTo
+  nameWithType: Deque<T>.CopyTo
+  nameWithType.vb: Deque(Of T).CopyTo
+- uid: Biocs.Collections.Deque`1.Count
+  name: Count
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Count
+  commentId: P:Biocs.Collections.Deque`1.Count
+  fullName: Biocs.Collections.Deque<T>.Count
+  fullName.vb: Biocs.Collections.Deque(Of T).Count
+  nameWithType: Deque<T>.Count
+  nameWithType.vb: Deque(Of T).Count
+- uid: Biocs.Collections.Deque`1.Count*
+  name: Count
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Count_
+  commentId: Overload:Biocs.Collections.Deque`1.Count
+  fullName: Biocs.Collections.Deque<T>.Count
+  fullName.vb: Biocs.Collections.Deque(Of T).Count
+  nameWithType: Deque<T>.Count
+  nameWithType.vb: Deque(Of T).Count
+- uid: Biocs.Collections.Deque`1.First
+  name: First
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_First
+  commentId: P:Biocs.Collections.Deque`1.First
+  fullName: Biocs.Collections.Deque<T>.First
+  fullName.vb: Biocs.Collections.Deque(Of T).First
+  nameWithType: Deque<T>.First
+  nameWithType.vb: Deque(Of T).First
+- uid: Biocs.Collections.Deque`1.First*
+  name: First
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_First_
+  commentId: Overload:Biocs.Collections.Deque`1.First
+  fullName: Biocs.Collections.Deque<T>.First
+  fullName.vb: Biocs.Collections.Deque(Of T).First
+  nameWithType: Deque<T>.First
+  nameWithType.vb: Deque(Of T).First
+- uid: Biocs.Collections.Deque`1.GetEnumerator
+  name: GetEnumerator()
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_GetEnumerator
+  commentId: M:Biocs.Collections.Deque`1.GetEnumerator
+  fullName: Biocs.Collections.Deque<T>.GetEnumerator()
+  fullName.vb: Biocs.Collections.Deque(Of T).GetEnumerator()
+  nameWithType: Deque<T>.GetEnumerator()
+  nameWithType.vb: Deque(Of T).GetEnumerator()
+- uid: Biocs.Collections.Deque`1.GetEnumerator*
+  name: GetEnumerator
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_GetEnumerator_
+  commentId: Overload:Biocs.Collections.Deque`1.GetEnumerator
+  fullName: Biocs.Collections.Deque<T>.GetEnumerator
+  fullName.vb: Biocs.Collections.Deque(Of T).GetEnumerator
+  nameWithType: Deque<T>.GetEnumerator
+  nameWithType.vb: Deque(Of T).GetEnumerator
+- uid: Biocs.Collections.Deque`1.IndexOf(`0)
+  name: IndexOf(T)
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_IndexOf__0_
+  commentId: M:Biocs.Collections.Deque`1.IndexOf(`0)
+  fullName: Biocs.Collections.Deque<T>.IndexOf(T)
+  fullName.vb: Biocs.Collections.Deque(Of T).IndexOf(T)
+  nameWithType: Deque<T>.IndexOf(T)
+  nameWithType.vb: Deque(Of T).IndexOf(T)
+- uid: Biocs.Collections.Deque`1.IndexOf*
+  name: IndexOf
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_IndexOf_
+  commentId: Overload:Biocs.Collections.Deque`1.IndexOf
+  fullName: Biocs.Collections.Deque<T>.IndexOf
+  fullName.vb: Biocs.Collections.Deque(Of T).IndexOf
+  nameWithType: Deque<T>.IndexOf
+  nameWithType.vb: Deque(Of T).IndexOf
+- uid: Biocs.Collections.Deque`1.Insert(System.Int32,`0)
+  name: Insert(Int32, T)
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Insert_System_Int32__0_
+  commentId: M:Biocs.Collections.Deque`1.Insert(System.Int32,`0)
+  fullName: Biocs.Collections.Deque<T>.Insert(System.Int32, T)
+  fullName.vb: Biocs.Collections.Deque(Of T).Insert(System.Int32, T)
+  nameWithType: Deque<T>.Insert(Int32, T)
+  nameWithType.vb: Deque(Of T).Insert(Int32, T)
+- uid: Biocs.Collections.Deque`1.Insert*
+  name: Insert
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Insert_
+  commentId: Overload:Biocs.Collections.Deque`1.Insert
+  fullName: Biocs.Collections.Deque<T>.Insert
+  fullName.vb: Biocs.Collections.Deque(Of T).Insert
+  nameWithType: Deque<T>.Insert
+  nameWithType.vb: Deque(Of T).Insert
+- uid: Biocs.Collections.Deque`1.Item(System.Int32)
+  name: Item[Int32]
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Item_System_Int32_
+  commentId: P:Biocs.Collections.Deque`1.Item(System.Int32)
+  name.vb: Item(Int32)
+  fullName: Biocs.Collections.Deque<T>.Item[System.Int32]
+  fullName.vb: Biocs.Collections.Deque(Of T).Item(System.Int32)
+  nameWithType: Deque<T>.Item[Int32]
+  nameWithType.vb: Deque(Of T).Item(Int32)
+- uid: Biocs.Collections.Deque`1.Item*
+  name: Item
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Item_
+  commentId: Overload:Biocs.Collections.Deque`1.Item
+  fullName: Biocs.Collections.Deque<T>.Item
+  fullName.vb: Biocs.Collections.Deque(Of T).Item
+  nameWithType: Deque<T>.Item
+  nameWithType.vb: Deque(Of T).Item
+- uid: Biocs.Collections.Deque`1.Last
+  name: Last
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Last
+  commentId: P:Biocs.Collections.Deque`1.Last
+  fullName: Biocs.Collections.Deque<T>.Last
+  fullName.vb: Biocs.Collections.Deque(Of T).Last
+  nameWithType: Deque<T>.Last
+  nameWithType.vb: Deque(Of T).Last
+- uid: Biocs.Collections.Deque`1.Last*
+  name: Last
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Last_
+  commentId: Overload:Biocs.Collections.Deque`1.Last
+  fullName: Biocs.Collections.Deque<T>.Last
+  fullName.vb: Biocs.Collections.Deque(Of T).Last
+  nameWithType: Deque<T>.Last
+  nameWithType.vb: Deque(Of T).Last
+- uid: Biocs.Collections.Deque`1.Remove(`0)
+  name: Remove(T)
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Remove__0_
+  commentId: M:Biocs.Collections.Deque`1.Remove(`0)
+  fullName: Biocs.Collections.Deque<T>.Remove(T)
+  fullName.vb: Biocs.Collections.Deque(Of T).Remove(T)
+  nameWithType: Deque<T>.Remove(T)
+  nameWithType.vb: Deque(Of T).Remove(T)
+- uid: Biocs.Collections.Deque`1.Remove*
+  name: Remove
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Remove_
+  commentId: Overload:Biocs.Collections.Deque`1.Remove
+  fullName: Biocs.Collections.Deque<T>.Remove
+  fullName.vb: Biocs.Collections.Deque(Of T).Remove
+  nameWithType: Deque<T>.Remove
+  nameWithType.vb: Deque(Of T).Remove
+- uid: Biocs.Collections.Deque`1.RemoveAt(System.Int32)
+  name: RemoveAt(Int32)
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_RemoveAt_System_Int32_
+  commentId: M:Biocs.Collections.Deque`1.RemoveAt(System.Int32)
+  fullName: Biocs.Collections.Deque<T>.RemoveAt(System.Int32)
+  fullName.vb: Biocs.Collections.Deque(Of T).RemoveAt(System.Int32)
+  nameWithType: Deque<T>.RemoveAt(Int32)
+  nameWithType.vb: Deque(Of T).RemoveAt(Int32)
+- uid: Biocs.Collections.Deque`1.RemoveAt*
+  name: RemoveAt
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_RemoveAt_
+  commentId: Overload:Biocs.Collections.Deque`1.RemoveAt
+  fullName: Biocs.Collections.Deque<T>.RemoveAt
+  fullName.vb: Biocs.Collections.Deque(Of T).RemoveAt
+  nameWithType: Deque<T>.RemoveAt
+  nameWithType.vb: Deque(Of T).RemoveAt
+- uid: Biocs.Collections.Deque`1.RemoveFirst
+  name: RemoveFirst()
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_RemoveFirst
+  commentId: M:Biocs.Collections.Deque`1.RemoveFirst
+  fullName: Biocs.Collections.Deque<T>.RemoveFirst()
+  fullName.vb: Biocs.Collections.Deque(Of T).RemoveFirst()
+  nameWithType: Deque<T>.RemoveFirst()
+  nameWithType.vb: Deque(Of T).RemoveFirst()
+- uid: Biocs.Collections.Deque`1.RemoveFirst*
+  name: RemoveFirst
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_RemoveFirst_
+  commentId: Overload:Biocs.Collections.Deque`1.RemoveFirst
+  fullName: Biocs.Collections.Deque<T>.RemoveFirst
+  fullName.vb: Biocs.Collections.Deque(Of T).RemoveFirst
+  nameWithType: Deque<T>.RemoveFirst
+  nameWithType.vb: Deque(Of T).RemoveFirst
+- uid: Biocs.Collections.Deque`1.RemoveLast
+  name: RemoveLast()
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_RemoveLast
+  commentId: M:Biocs.Collections.Deque`1.RemoveLast
+  fullName: Biocs.Collections.Deque<T>.RemoveLast()
+  fullName.vb: Biocs.Collections.Deque(Of T).RemoveLast()
+  nameWithType: Deque<T>.RemoveLast()
+  nameWithType.vb: Deque(Of T).RemoveLast()
+- uid: Biocs.Collections.Deque`1.RemoveLast*
+  name: RemoveLast
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_RemoveLast_
+  commentId: Overload:Biocs.Collections.Deque`1.RemoveLast
+  fullName: Biocs.Collections.Deque<T>.RemoveLast
+  fullName.vb: Biocs.Collections.Deque(Of T).RemoveLast
+  nameWithType: Deque<T>.RemoveLast
+  nameWithType.vb: Deque(Of T).RemoveLast
+- uid: Biocs.Collections.Deque`1.System#Collections#Generic#ICollection{T}#Add(`0)
+  name: ICollection<T>.Add(T)
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_System_Collections_Generic_ICollection_T__Add__0_
+  commentId: M:Biocs.Collections.Deque`1.System#Collections#Generic#ICollection{T}#Add(`0)
+  name.vb: System.Collections.Generic.ICollection<T>.Add(T)
+  fullName: Biocs.Collections.Deque<T>.System.Collections.Generic.ICollection<T>.Add(T)
+  fullName.vb: Biocs.Collections.Deque(Of T).System.Collections.Generic.ICollection<T>.Add(T)
+  nameWithType: Deque<T>.ICollection<T>.Add(T)
+  nameWithType.vb: Deque(Of T).System.Collections.Generic.ICollection<T>.Add(T)
+- uid: Biocs.Collections.Deque`1.System#Collections#Generic#ICollection{T}#Add*
+  name: ICollection<T>.Add
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_System_Collections_Generic_ICollection_T__Add_
+  commentId: Overload:Biocs.Collections.Deque`1.System#Collections#Generic#ICollection{T}#Add
+  name.vb: System.Collections.Generic.ICollection<T>.Add
+  fullName: Biocs.Collections.Deque<T>.System.Collections.Generic.ICollection<T>.Add
+  fullName.vb: Biocs.Collections.Deque(Of T).System.Collections.Generic.ICollection<T>.Add
+  nameWithType: Deque<T>.ICollection<T>.Add
+  nameWithType.vb: Deque(Of T).System.Collections.Generic.ICollection<T>.Add
+- uid: Biocs.Collections.Deque`1.System#Collections#Generic#ICollection{T}#IsReadOnly
+  name: ICollection<T>.IsReadOnly
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_System_Collections_Generic_ICollection_T__IsReadOnly
+  commentId: P:Biocs.Collections.Deque`1.System#Collections#Generic#ICollection{T}#IsReadOnly
+  name.vb: System.Collections.Generic.ICollection<T>.IsReadOnly
+  fullName: Biocs.Collections.Deque<T>.System.Collections.Generic.ICollection<T>.IsReadOnly
+  fullName.vb: Biocs.Collections.Deque(Of T).System.Collections.Generic.ICollection<T>.IsReadOnly
+  nameWithType: Deque<T>.ICollection<T>.IsReadOnly
+  nameWithType.vb: Deque(Of T).System.Collections.Generic.ICollection<T>.IsReadOnly
+- uid: Biocs.Collections.Deque`1.System#Collections#Generic#ICollection{T}#IsReadOnly*
+  name: ICollection<T>.IsReadOnly
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_System_Collections_Generic_ICollection_T__IsReadOnly_
+  commentId: Overload:Biocs.Collections.Deque`1.System#Collections#Generic#ICollection{T}#IsReadOnly
+  name.vb: System.Collections.Generic.ICollection<T>.IsReadOnly
+  fullName: Biocs.Collections.Deque<T>.System.Collections.Generic.ICollection<T>.IsReadOnly
+  fullName.vb: Biocs.Collections.Deque(Of T).System.Collections.Generic.ICollection<T>.IsReadOnly
+  nameWithType: Deque<T>.ICollection<T>.IsReadOnly
+  nameWithType.vb: Deque(Of T).System.Collections.Generic.ICollection<T>.IsReadOnly
+- uid: Biocs.Collections.Deque`1.System#Collections#IEnumerable#GetEnumerator
+  name: IEnumerable.GetEnumerator()
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_System_Collections_IEnumerable_GetEnumerator
+  commentId: M:Biocs.Collections.Deque`1.System#Collections#IEnumerable#GetEnumerator
+  name.vb: System.Collections.IEnumerable.GetEnumerator()
+  fullName: Biocs.Collections.Deque<T>.System.Collections.IEnumerable.GetEnumerator()
+  fullName.vb: Biocs.Collections.Deque(Of T).System.Collections.IEnumerable.GetEnumerator()
+  nameWithType: Deque<T>.IEnumerable.GetEnumerator()
+  nameWithType.vb: Deque(Of T).System.Collections.IEnumerable.GetEnumerator()
+- uid: Biocs.Collections.Deque`1.System#Collections#IEnumerable#GetEnumerator*
+  name: IEnumerable.GetEnumerator
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_System_Collections_IEnumerable_GetEnumerator_
+  commentId: Overload:Biocs.Collections.Deque`1.System#Collections#IEnumerable#GetEnumerator
+  name.vb: System.Collections.IEnumerable.GetEnumerator
+  fullName: Biocs.Collections.Deque<T>.System.Collections.IEnumerable.GetEnumerator
+  fullName.vb: Biocs.Collections.Deque(Of T).System.Collections.IEnumerable.GetEnumerator
+  nameWithType: Deque<T>.IEnumerable.GetEnumerator
+  nameWithType.vb: Deque(Of T).System.Collections.IEnumerable.GetEnumerator
 - uid: Biocs.DnaBase
   name: DnaBase
   href: api/Biocs.DnaBase.html
