@@ -22,7 +22,7 @@ os: Visual Studio 2017
 # scripts to run before build
 before_build:
   - ps: dotnet --info
-  - ps: dotnet restore biocs/biocs.sln
+  - ps: dotnet restore biocs/core/project.json
 
 #---------------------------------#
 #       tests configuration       #
