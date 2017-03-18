@@ -307,7 +307,7 @@ namespace Biocs.Collections
 				tail = 0;
 			}
 			else
-				head = Decrement(head);
+				Decrement(ref head);
 			
 			array[head] = item;
 			size++;
@@ -329,7 +329,7 @@ namespace Biocs.Collections
 			if (size == array.Length)
 				EnsureCapacity();
 
-			tail = Increment(tail);
+			Increment(ref tail);
 
 			array[tail] = item;
 			size++;
@@ -347,6 +347,9 @@ namespace Biocs.Collections
 		/// </exception>
 		public void Insert(int index, T item)
 		{
+			if (index < 0 || index > size)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
 			if (index == 0)
 			{
 				AddFirst(item);
@@ -373,14 +376,14 @@ namespace Biocs.Collections
 				insert = GetArrayIndex(index - 1);
 
 				MoveBlockStartward(head, insert);
-				head = Decrement(head);
+				Decrement(ref head);
 			}
 			else
 			{
 				insert = GetArrayIndex(index);
 
 				MoveBlockEndward(insert, tail);
-				tail = Increment(tail);
+				Increment(ref tail);
 			}
 			array[insert] = item;
 
@@ -405,7 +408,7 @@ namespace Biocs.Collections
 
 			array[head] = default(T);
 			size--;
-			head = Increment(head);
+			Increment(ref head);
 			version++;
 		}
 
@@ -421,7 +424,7 @@ namespace Biocs.Collections
 
 			array[tail] = default(T);
 			size--;
-			tail = Decrement(tail);
+			Decrement(ref tail);
 			version++;
 		}
 
@@ -472,14 +475,14 @@ namespace Biocs.Collections
 				MoveBlockEndward(head, GetArrayIndex(index - 1));
 
 				array[head] = default(T);
-				head = Increment(head);
+				Increment(ref head);
 			}
 			else
 			{
 				MoveBlockStartward(GetArrayIndex(index + 1), tail);
 
 				array[tail] = default(T);
-				tail = Decrement(tail);
+				Decrement(ref tail);
 			}
 			size--;
 			version++;
@@ -520,18 +523,21 @@ namespace Biocs.Collections
 			return (dequeIndex + head) % array.Length;
 		}
 
-		private int Increment(int arrayIndex)
+		private void Increment(ref int arrayIndex)
 		{
 			Debug.Assert(arrayIndex >= 0 && arrayIndex < array.Length);
 
-			return (arrayIndex + 1) % array.Length;
+			arrayIndex = (arrayIndex + 1) % array.Length;
 		}
 
-		private int Decrement(int arrayIndex)
+		private void Decrement(ref int arrayIndex)
 		{
 			Debug.Assert(arrayIndex >= 0 && arrayIndex < array.Length);
 
-			return arrayIndex == 0 ? array.Length - 1 : arrayIndex - 1;
+			if (arrayIndex > 0)
+				arrayIndex--;
+			else
+				arrayIndex = array.Length - 1;
 		}
 
 		private void EnsureCapacity()
@@ -571,12 +577,11 @@ namespace Biocs.Collections
 			version++;
 		}
 
-		// Moves [from, to] to [from - 1, to - 1] (arguments are actual indices in array)
+		// Move [from, to] to [from - 1, to - 1] (arguments are actual indices in array)
 		private void MoveBlockStartward(int start, int end)
 		{
 			Debug.Assert(start >= 0 && start < array.Length);
 			Debug.Assert(end >= 0 && end < array.Length);
-			Debug.Assert(size > 0 && size < array.Length);
 
 			if (start > 0 && start <= end)
 			{
@@ -598,12 +603,11 @@ namespace Biocs.Collections
 			version++;
 		}
 
-		// Moves [from, to] to [from + 1, to + 1] (arguments are actual indices in array)
+		// Move [from, to] to [from + 1, to + 1] (arguments are actual indices in array)
 		private void MoveBlockEndward(int start, int end)
 		{
 			Debug.Assert(start >= 0 && start < array.Length);
 			Debug.Assert(end >= 0 && end < array.Length);
-			Debug.Assert(size > 0 && size < array.Length);
 			
 			if (end < array.Length - 1 && start <= end)
 			{
