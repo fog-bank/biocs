@@ -16,7 +16,7 @@ namespace Biocs.Collections
 	[SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
 	public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
 	{
-		private T[] array;
+		private T[] items;
 		private int size;
 		private int head;
 		private int tail;
@@ -39,7 +39,7 @@ namespace Biocs.Collections
 			if (capacity < 0)
 				throw new ArgumentOutOfRangeException(nameof(capacity));
 
-			array = new T[capacity];
+			items = new T[capacity];
 		}
 
 		/// <summary>
@@ -60,18 +60,18 @@ namespace Biocs.Collections
 			var coll = collection as ICollection<T>;
 			if (coll != null)
 			{
-				array = new T[coll.Count];
+				items = new T[coll.Count];
 
-				if (array.Length > 0)
+				if (items.Length > 0)
 				{
-					coll.CopyTo(array, 0);
-					size = array.Length;
+					coll.CopyTo(items, 0);
+					size = items.Length;
 					tail = size - 1;
 				}
 			}
 			else
 			{
-				array = new T[0];
+				items = new T[0];
 
 				foreach (var item in collection)
 					AddLast(item);
@@ -94,14 +94,14 @@ namespace Biocs.Collections
 				if (index < 0 || index >= size)
 					throw new ArgumentOutOfRangeException(nameof(index));
 
-				return array[GetArrayIndex(index)];
+				return items[GetArrayIndex(index)];
 			}
 			set
 			{
 				if (index < 0 || index >= size)
 					throw new ArgumentOutOfRangeException(nameof(index));
 
-				array[GetArrayIndex(index)] = value;
+				items[GetArrayIndex(index)] = value;
 				version++;
 			}
 		}
@@ -117,13 +117,13 @@ namespace Biocs.Collections
 		/// <exception cref="ArgumentOutOfRangeException">The value in a set operation is less than <see cref="Count"/>.</exception>
 		public int Capacity
 		{
-			get { return array.Length; }
+			get { return items.Length; }
 			set
 			{
 				if (value < size)
 					throw new ArgumentOutOfRangeException(nameof(value));
 
-				if (value != array.Length)
+				if (value != items.Length)
 					EnsureCapacity(value);
 			}
 		}
@@ -140,7 +140,7 @@ namespace Biocs.Collections
 				if (size == 0)
 					throw new InvalidOperationException(Res.GetString("InvalOp.EmptyCollection"));
 
-				return array[head];
+				return items[head];
 			}
 			[StringResourceUsage("InvalOp.EmptyCollection")]
 			set
@@ -148,7 +148,7 @@ namespace Biocs.Collections
 				if (size == 0)
 					throw new InvalidOperationException(Res.GetString("InvalOp.EmptyCollection"));
 
-				array[head] = value;
+				items[head] = value;
 				version++;
 			}
 		}
@@ -165,7 +165,7 @@ namespace Biocs.Collections
 				if (size == 0)
 					throw new InvalidOperationException(Res.GetString("InvalOp.EmptyCollection"));
 
-				return array[tail];
+				return items[tail];
 			}
 			[StringResourceUsage("InvalOp.EmptyCollection")]
 			set
@@ -173,7 +173,7 @@ namespace Biocs.Collections
 				if (size == 0)
 					throw new InvalidOperationException(Res.GetString("InvalOp.EmptyCollection"));
 
-				array[tail] = value;
+				items[tail] = value;
 				version++;
 			}
 		}
@@ -195,7 +195,7 @@ namespace Biocs.Collections
 
 			for (int i = 0; i < size; i++)
 			{
-				yield return array[GetArrayIndex(i)];
+				yield return items[GetArrayIndex(i)];
 
 				// After the first time MoveNext() method returns true, changes were made to the collection.
 				if (version != this.version)
@@ -214,10 +214,7 @@ namespace Biocs.Collections
 		/// The number of elements in the <see cref="Deque{T}"/> is greater than the available space 
 		/// from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.
 		/// </exception>
-		public void CopyTo(T[] array, int arrayIndex)
-		{
-			CopyTo(0, array, arrayIndex, size);
-		}
+		public void CopyTo(T[] array, int arrayIndex) => CopyTo(0, array, arrayIndex, size);
 
 		/// <summary>
 		/// Copies a range of elements from the <see cref="Deque{T}"/> to an existing one-dimensional <see cref="Array"/>.
@@ -252,16 +249,16 @@ namespace Biocs.Collections
 
 			// The position in array from which copy begins
 			int start = GetArrayIndex(index);
-			int count2 = this.array.Length - start;
+			int count2 = items.Length - start;
 
 			if (count <= count2)
 			{
-				Array.Copy(this.array, start, array, arrayIndex, count);
+				Array.Copy(items, start, array, arrayIndex, count);
 			}
 			else
 			{
-				Array.Copy(this.array, start, array, arrayIndex, count2);
-				Array.Copy(this.array, 0, array, arrayIndex + count2, count - count2);
+				Array.Copy(items, start, array, arrayIndex, count2);
+				Array.Copy(items, 0, array, arrayIndex + count2, count - count2);
 			}
 		}
 
@@ -286,7 +283,7 @@ namespace Biocs.Collections
 
 			for (int i = 0; i < size; i++)
 			{
-				if (comparer.Equals(array[GetArrayIndex(i)], item))
+				if (comparer.Equals(items[GetArrayIndex(i)], item))
 					return i;
 			}
 			return -1;
@@ -298,7 +295,7 @@ namespace Biocs.Collections
 		/// <param name="item">The value to add at the start of the <see cref="Deque{T}"/>.</param>
 		public void AddFirst(T item)
 		{
-			if (size == array.Length)
+			if (size == items.Length)
 				EnsureCapacity();
 
 			if (size == 0)
@@ -309,7 +306,7 @@ namespace Biocs.Collections
 			else
 				Decrement(ref head);
 			
-			array[head] = item;
+			items[head] = item;
 			size++;
 			version++;
 		}
@@ -326,12 +323,12 @@ namespace Biocs.Collections
 				return;
 			}
 
-			if (size == array.Length)
+			if (size == items.Length)
 				EnsureCapacity();
 
 			Increment(ref tail);
 
-			array[tail] = item;
+			items[tail] = item;
 			size++;
 			version++;
 		}
@@ -362,7 +359,7 @@ namespace Biocs.Collections
 				return;
 			}
 
-			if (size == array.Length)
+			if (size == items.Length)
 			{
 				EnsureCapacityAndInsert(index, item);
 				return;
@@ -375,25 +372,107 @@ namespace Biocs.Collections
 			{
 				insert = GetArrayIndex(index - 1);
 
-				MoveBlockStartward(head, insert);
+				CopyBlockStartward(head, insert, 1);
 				Decrement(ref head);
 			}
 			else
 			{
 				insert = GetArrayIndex(index);
 
-				MoveBlockEndward(insert, tail);
+				CopyBlockEndward(insert, tail, 1);
 				Increment(ref tail);
 			}
-			array[insert] = item;
+			items[insert] = item;
 
 			size++;
 			version++;
 		}
 
+		/// <summary>
+		/// Inserts the elements of a collection into the <see cref="Deque{T}"/> at the specified index.
+		/// </summary>
+		/// <param name="index">The zero-based index at which the new elements should be inserted.</param>
+		/// <param name="collection">The collection whose elements should be inserted into the <see cref="Deque{T}"/>.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="collection"/> is null.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// <paramref name="index"/> is less than 0. -or-
+		/// <paramref name="index"/> is greater than <see cref="Count"/>.
+		/// </exception>
 		public void InsertRange(int index, IEnumerable<T> collection)
 		{
-			throw new NotImplementedException();
+			if (index < 0 || index > size)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			if (collection == null)
+				throw new ArgumentNullException(nameof(collection));
+
+			var coll = collection as ICollection<T>;
+			if (coll != null)
+			{
+				if (coll.Count == 0)
+					return;
+
+				if (size + coll.Count > items.Length)
+				{
+					EnsureCapacityAndInsertRange(index, coll);
+					return;
+				}
+
+				// Self assignment
+				if (this == collection)
+				{
+					int splitIndex = GetArrayIndex(index);
+
+					if (index < size)
+						CopyBlockEndward(splitIndex, tail, size - index);
+
+					if (index > 0)
+					{
+						Decrement(ref splitIndex);
+						CopyBlockStartward(0, splitIndex, index);
+					}
+					version++;
+					return;
+				}
+
+				int insert;
+
+				if (index == 0)
+				{
+					Decrement(ref head, coll.Count);
+					insert = head;
+				}
+				else if (index == size)
+				{
+					insert = tail;
+					Increment(ref insert);
+					Increment(ref tail, coll.Count);
+				}
+				else if (index <= size / 2)
+				{
+					insert = GetArrayIndex(index);
+					Decrement(ref insert, coll.Count);
+
+					CopyBlockStartward(head, GetArrayIndex(index - 1), coll.Count);
+					Decrement(ref head, coll.Count);
+				}
+				else
+				{
+					insert = GetArrayIndex(index);
+
+					CopyBlockEndward(insert, tail, coll.Count);
+					Increment(ref tail, coll.Count);
+				}
+				coll.CopyTo(items, insert);
+
+				size += coll.Count;
+				version++;
+			}
+			else
+			{
+				foreach (var item in collection)
+					Insert(index++, item);
+			}
 		}
 
 		/// <summary>
@@ -406,7 +485,7 @@ namespace Biocs.Collections
 			if (size == 0)
 				throw new InvalidOperationException(Res.GetString("InvalOp.EmptyCollection"));
 
-			array[head] = default(T);
+			items[head] = default(T);
 			size--;
 			Increment(ref head);
 			version++;
@@ -422,7 +501,7 @@ namespace Biocs.Collections
 			if (size == 0)
 				throw new InvalidOperationException(Res.GetString("InvalOp.EmptyCollection"));
 
-			array[tail] = default(T);
+			items[tail] = default(T);
 			size--;
 			Decrement(ref tail);
 			version++;
@@ -472,25 +551,83 @@ namespace Biocs.Collections
 
 			if (index <= size / 2)
 			{
-				MoveBlockEndward(head, GetArrayIndex(index - 1));
+				CopyBlockEndward(head, GetArrayIndex(index - 1), 1);
 
-				array[head] = default(T);
+				items[head] = default(T);
 				Increment(ref head);
 			}
 			else
 			{
-				MoveBlockStartward(GetArrayIndex(index + 1), tail);
+				CopyBlockStartward(GetArrayIndex(index + 1), tail, 1);
 
-				array[tail] = default(T);
+				items[tail] = default(T);
 				Decrement(ref tail);
 			}
 			size--;
 			version++;
 		}
 
+		/// <summary>
+		/// Removes a range of elements from the <see cref="Deque{T}"/>.
+		/// </summary>
+		/// <param name="index">The zero-based starting index of the range of elements to remove.</param>
+		/// <param name="count">The number of elements to remove.</param>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// <paramref name="index"/> is less than 0. -or-
+		/// <paramref name="count"/> is less than 0.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		/// <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the <see cref="Deque{T}"/>.
+		/// </exception>
+		[StringResourceUsage("ArgEx.InvalidRemoveRange", 3)]
 		public void RemoveRange(int index, int count)
 		{
-			throw new NotImplementedException();
+			if (index < 0)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			if (count < 0)
+				throw new ArgumentOutOfRangeException(nameof(count));
+
+			if (index + count > size)
+				throw new ArgumentException(Res.GetString("ArgEx.InvalidRemoveRange", index, count, size));
+
+			// Range to clear
+			int start, end;
+
+			if (index <= size - index - count)
+			{
+				if (index > 0)
+					CopyBlockEndward(head, GetArrayIndex(index - 1), count);
+
+				start = head;
+				end = start;
+				Increment(ref end, count - 1);
+
+				Increment(ref head, count);
+			}
+			else
+			{
+				if (index + count < size)
+					CopyBlockStartward(GetArrayIndex(index + count), tail, count);
+
+				end = tail;
+				start = end;
+				Decrement(ref start, count - 1);
+
+				Decrement(ref tail, count);
+			}
+
+			if (start >= end)
+			{
+				Array.Clear(items, start, end - start + 1);
+			}
+			else
+			{
+				Array.Clear(items, start, items.Length - start);
+				Array.Clear(items, 0, end + 1);
+			}
+			size -= count;
+			version++;
 		}
 
 		/// <summary>
@@ -502,12 +639,12 @@ namespace Biocs.Collections
 			{
 				if (head <= tail)
 				{
-					Array.Clear(array, head, size);
+					Array.Clear(items, head, size);
 				}
 				else
 				{
-					Array.Clear(array, head, array.Length - head);
-					Array.Clear(array, 0, tail + 1);
+					Array.Clear(items, head, items.Length - head);
+					Array.Clear(items, 0, tail + 1);
 				}
 				size = 0;
 			}
@@ -520,29 +657,33 @@ namespace Biocs.Collections
 		{
 			Debug.Assert(dequeIndex >= 0 && dequeIndex < size);
 
-			return (dequeIndex + head) % array.Length;
+			return (dequeIndex + head) % items.Length;
 		}
 
-		private void Increment(ref int arrayIndex)
-		{
-			Debug.Assert(arrayIndex >= 0 && arrayIndex < array.Length);
+		private void Increment(ref int arrayIndex) => Increment(ref arrayIndex, 1);
 
-			arrayIndex = (arrayIndex + 1) % array.Length;
+		private void Increment(ref int arrayIndex, int value)
+		{
+			Debug.Assert(arrayIndex >= 0 && arrayIndex < items.Length);
+
+			arrayIndex = (arrayIndex + value) % items.Length;
 		}
 
-		private void Decrement(ref int arrayIndex)
-		{
-			Debug.Assert(arrayIndex >= 0 && arrayIndex < array.Length);
+		private void Decrement(ref int arrayIndex) => Decrement(ref arrayIndex, 1);
 
-			if (arrayIndex > 0)
-				arrayIndex--;
+		private void Decrement(ref int arrayIndex, int value)
+		{
+			Debug.Assert(arrayIndex >= 0 && arrayIndex < items.Length);
+
+			if (arrayIndex >= value)
+				arrayIndex -= value;
 			else
-				arrayIndex = array.Length - 1;
+				arrayIndex += items.Length - value;
 		}
 
 		private void EnsureCapacity()
 		{
-			EnsureCapacity(array.Length < 3 ? 4 : array.Length * 2);
+			EnsureCapacity(items.Length < 3 ? 4 : items.Length * 2);
 		}
 
 		private void EnsureCapacity(int capacity)
@@ -554,7 +695,7 @@ namespace Biocs.Collections
 			if (size > 0)
 				CopyTo(dest, 0);
 
-			array = dest;
+			items = dest;
 			head = 0;
 			tail = size == 0 ? 0 : size - 1;
 			version++;
@@ -564,68 +705,108 @@ namespace Biocs.Collections
 		{
 			Debug.Assert(index > 0 && index < size);
 
-			var dest = new T[array.Length * 2];
+			var dest = new T[items.Length * 2];
 
 			CopyTo(0, dest, 0, index);
 			dest[index] = item;
 			CopyTo(index, dest, index + 1, size - index);
 
-			array = dest;
+			items = dest;
 			size++;
 			head = 0;
 			tail = size - 1;
 			version++;
 		}
 
-		// Move [from, to] to [from - 1, to - 1] (arguments are actual indices in array)
-		private void MoveBlockStartward(int start, int end)
+		private void EnsureCapacityAndInsertRange(int index, ICollection<T> collection)
 		{
-			Debug.Assert(start >= 0 && start < array.Length);
-			Debug.Assert(end >= 0 && end < array.Length);
+			var dest = new T[size + collection.Count];
 
-			if (start > 0 && start <= end)
-			{
-				// The block is continuous and the head of array is empty.
-				Array.Copy(array, start, array, start - 1, end - start + 1);
-			}
-			else
-			{
-				// Move [start, array.Length)
-				if (start > end)
-					Array.Copy(array, start, array, start - 1, array.Length - start);
+			CopyTo(0, dest, 0, index);
+			collection.CopyTo(dest, index);
+			CopyTo(index, dest, index + collection.Count, size - index);
 
-				array[array.Length - 1] = array[0];
-
-				// Move [1, end]
-				if (end > 0)
-					Array.Copy(array, 1, array, 0, end);
-			}
+			items = dest;
+			size = dest.Length;
+			head = 0;
+			tail = size == 0 ? 0 : size - 1;
 			version++;
 		}
 
-		// Move [from, to] to [from + 1, to + 1] (arguments are actual indices in array)
-		private void MoveBlockEndward(int start, int end)
+		// Copy [from, to] to [from - distance, to - distance] (arguments are actual indices in array)
+		private void CopyBlockStartward(int start, int end, int distance)
 		{
-			Debug.Assert(start >= 0 && start < array.Length);
-			Debug.Assert(end >= 0 && end < array.Length);
-			
-			if (end < array.Length - 1 && start <= end)
+			Debug.Assert(start >= 0 && start < items.Length);
+			Debug.Assert(end >= 0 && end < items.Length);
+			Debug.Assert(distance > 0 && distance < items.Length);
+
+			if (start <= end)
 			{
-				Array.Copy(array, start, array, start + 1, end - start + 1);
+				if (start >= distance)
+				{
+					// Copy [start, end] toward the head of array
+					Array.Copy(items, start, items, start - distance, end - start + 1);
+				}
+				else if (end < distance)
+				{
+					// Copy [start, end] toward the tail of array
+					Array.Copy(items, start, items, start - distance + items.Length, end - start + 1);
+				}
+				else
+				{
+					// Copy [start, distance) to [*, array.Length)
+					Array.Copy(items, start, items, start - distance + items.Length, distance - start);
+
+					// Copy [distance, end] to [0, *]
+					Array.Copy(items, distance, items, 0, end - distance + 1);
+				}
 			}
 			else
 			{
-				// Move [0, end]
-				if (start > end)
-					Array.Copy(array, 0, array, 1, end + 1);
+				// Copy [start, array.Length)
+				Array.Copy(items, start, items, start - distance, items.Length - start);
 
-				array[0] = array[array.Length - 1];
-
-				// Move [start, array.Length - 2]
-				if (start < array.Length - 1)
-					Array.Copy(array, start, array, start + 1, array.Length - start - 1);
+				// Copy [0, end]
+				CopyBlockStartward(0, end, distance);
 			}
-			version++;
+		}
+
+		// Copy [from, to] to [from + distance, to + distance] (arguments are actual indices in array)
+		private void CopyBlockEndward(int start, int end, int distance)
+		{
+			Debug.Assert(start >= 0 && start < items.Length);
+			Debug.Assert(end >= 0 && end < items.Length);
+			Debug.Assert(distance > 0 && distance < items.Length);
+
+			if (start <= end)
+			{
+				if (end + distance < items.Length)
+				{
+					// Copy [start, end] toward the tail of array
+					Array.Copy(items, start, items, start + distance, end - start + 1);
+				}
+				else if (start + distance >= items.Length)
+				{
+					// Copy [start, end] toward the head of array
+					Array.Copy(items, start, items, start + distance - items.Length, end - start + 1);
+				}
+				else
+				{
+					// Copy [array.Length - distance, end] to [0, *]
+					Array.Copy(items, items.Length - distance, items, 0, end + distance - items.Length + 1);
+
+					// Copy [start, array.Length - distance) to [*, array.Lentgh)
+					Array.Copy(items, start, items, start + distance, items.Length - start - distance);
+				}
+			}
+			else
+			{
+				// Copy [0, end]
+				Array.Copy(items, 0, items, distance, end + 1);
+
+				// Copy [start, array.Length)
+				CopyBlockEndward(start, items.Length - 1, distance);
+			}
 		}
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

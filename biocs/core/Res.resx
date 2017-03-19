@@ -126,6 +126,9 @@
   <data name="ArgEx.InvalidDnaBaseSymbol" xml:space="preserve">
     <value>The specified value ({0}) is not one of the symbols defined for Biocs.DnaBase struct.</value>
   </data>
+  <data name="ArgEx.InvalidRemoveRange" xml:space="preserve">
+    <value>The parameter index ({0}) and count ({1}) do not denote a valid range of elements in the collection (Count = {2}).</value>
+  </data>
   <data name="InvalOp.EmptyCollection" xml:space="preserve">
     <value>The collection is empty.</value>
   </data>

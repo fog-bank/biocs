@@ -115,6 +115,14 @@ namespace Biocs.Collections
 				var target = new Deque<int>(query);
 
 				foreach (int item in target)
+					target.InsertRange(0, new[] { item });
+			});
+
+			BiocsAssert.Throws<InvalidOperationException>(() =>
+			{
+				var target = new Deque<int>(query);
+
+				foreach (int item in target)
 					target.RemoveFirst();
 			});
 
@@ -131,6 +139,14 @@ namespace Biocs.Collections
 				var target = new Deque<int>(query);
 
 				foreach (int item in target)
+					target.Remove(item);
+			});
+
+			BiocsAssert.Throws<InvalidOperationException>(() =>
+			{
+				var target = new Deque<int>(query);
+
+				foreach (int item in target)
 					target.RemoveAt(0);
 			});
 
@@ -139,7 +155,7 @@ namespace Biocs.Collections
 				var target = new Deque<int>(query);
 
 				foreach (int item in target)
-					target.Remove(item);
+					target.RemoveRange(1, 2);
 			});
 
 			BiocsAssert.Throws<InvalidOperationException>(() =>
@@ -207,6 +223,12 @@ namespace Biocs.Collections
 			for (int i = count - 1; i >= 0; i--)
 				target.AddFirst(start + i);
 
+			{
+				var array = new[] { -1, -1 };
+				target.CopyTo(0, array, 0, 0);
+
+				Assert.IsTrue(array.All(x => x == -1));
+			}
 			{
 				var array = new int[count + 2];     // [0, 6, 7, 8, 9, 10, 0]
 				target.CopyTo(array, 1);
