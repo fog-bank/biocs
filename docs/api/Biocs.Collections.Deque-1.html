@@ -108,7 +108,7 @@
               <h6><strong>Assembly</strong>:core.dll</h6>
               <h5 id="Biocs_Collections_Deque_1_syntax">Syntax</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public sealed class Deque&lt;T&gt; : IList&lt;T&gt;, ICollection&lt;T&gt;, IReadOnlyCollection&lt;T&gt;, IEnumerable&lt;T&gt;, IEnumerable</code></pre>
+                <pre><code class="lang-csharp hljs">public sealed class Deque&lt;T&gt; : IList&lt;T&gt;, ICollection&lt;T&gt;, IReadOnlyList&lt;T&gt;, IReadOnlyCollection&lt;T&gt;, IEnumerable&lt;T&gt;, IEnumerable</code></pre>
               </div>
               <h5 class="typeParameters">Type Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -139,6 +139,56 @@
               <div class="codewrapper">
                 <pre><code class="lang-csharp hljs">public Deque()</code></pre>
               </div>
+              
+              
+              <a id="Biocs_Collections_Deque_1__ctor_" data-uid="Biocs.Collections.Deque`1.#ctor*"></a>
+              <h4 id="Biocs_Collections_Deque_1__ctor_System_Collections_Generic_IEnumerable__0__" data-uid="Biocs.Collections.Deque`1.#ctor(System.Collections.Generic.IEnumerable{`0})">Deque(IEnumerable&lt;T&gt;)</h4>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a> class that contains elements copied from the specified <a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable&lt;T&gt;</a>.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Deque(IEnumerable&lt;T&gt; collection)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;T&gt;</td>
+                    <td><span class="parametername">collection</span></td>
+                    <td><p>The <a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable&lt;T&gt;</a> whose elements are copied to the new <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="Biocs_Collections_Deque_1__ctor_System_Collections_Generic_IEnumerable__0___remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>The elements are copied onto the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a> in the same order they are read
+by the enumerator of <span class="paramref">collection</span>. If the type of <span class="paramref">collection</span>
+implements <a class="xref" href="https://msdn.microsoft.com/en-us/library/92t2ye13(v=vs.110).aspx">ICollection&lt;T&gt;</a>, <a class="xref" href="https://msdn.microsoft.com/en-us/library/0efx51xw(v=vs.110).aspx">CopyTo(T[], Int32)</a> is used to copy elements.</p>
+</div>
+              <h5 class="exceptions">Exceptions</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Condition</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
+                    <td><p><span class="paramref">collection</span> is a null reference.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
               
               
               <a id="Biocs_Collections_Deque_1__ctor_" data-uid="Biocs.Collections.Deque`1.#ctor*"></a>
@@ -179,13 +229,55 @@
                 <tbody>
                   <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
-                    <td><p><span class="paramref">capacity</span> is less than zero.</p>
+                    <td><p><span class="paramref">capacity</span> is less than 0.</p>
 </td>
                   </tr>
                 </tbody>
               </table>
               <h3 id="properties">Properties
               </h3>
+              
+              
+              <a id="Biocs_Collections_Deque_1_Capacity_" data-uid="Biocs.Collections.Deque`1.Capacity*"></a>
+              <h4 id="Biocs_Collections_Deque_1_Capacity" data-uid="Biocs.Collections.Deque`1.Capacity">Capacity</h4>
+              <div class="markdown level1 summary"><p>Gets or sets the total number of elements the internal data structure can hold without resizing.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int Capacity { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="exceptions">Exceptions</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Condition</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
+                    <td><p>The value in a set operation is less than <a class="xref" href="Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Count">Count</a>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
               
               
               <a id="Biocs_Collections_Deque_1_Count_" data-uid="Biocs.Collections.Deque`1.Count*"></a>
@@ -304,6 +396,7 @@
               </table>
               <h5 class="implements">Implements</h5>
                   <div><a class="xref" href="https://msdn.microsoft.com/en-us/library/ewthkb10(v=vs.110).aspx">IList&lt;T&gt;.Item[Int32]</a></div>
+                  <div><a class="xref" href="https://msdn.microsoft.com/en-us/library/hh192387(v=vs.110).aspx">IReadOnlyList&lt;T&gt;.Item[Int32]</a></div>
               <h5 class="exceptions">Exceptions</h5>
               <table class="table table-bordered table-striped table-condensed">
                 <thead>
@@ -315,7 +408,8 @@
                 <tbody>
                   <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
-                    <td><p><span class="paramref">index</span> is less than 0. -or- <span class="paramref">index</span> is equal to or greater than <a class="xref" href="Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Count">Count</a>.</p>
+                    <td><p><span class="paramref">index</span> is less than 0. -or- 
+<span class="paramref">index</span> is equal to or greater than <a class="xref" href="Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Count">Count</a>.</p>
 </td>
                   </tr>
                 </tbody>
@@ -368,7 +462,8 @@
               
               <a id="Biocs_Collections_Deque_1_AddFirst_" data-uid="Biocs.Collections.Deque`1.AddFirst*"></a>
               <h4 id="Biocs_Collections_Deque_1_AddFirst__0_" data-uid="Biocs.Collections.Deque`1.AddFirst(`0)">AddFirst(T)</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Adds a new element at the start of the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a>.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
@@ -387,7 +482,8 @@
                   <tr>
                     <td><span class="xref">T</span></td>
                     <td><span class="parametername">item</span></td>
-                    <td></td>
+                    <td><p>The value to add at the start of the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a>.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -395,7 +491,8 @@
               
               <a id="Biocs_Collections_Deque_1_AddLast_" data-uid="Biocs.Collections.Deque`1.AddLast*"></a>
               <h4 id="Biocs_Collections_Deque_1_AddLast__0_" data-uid="Biocs.Collections.Deque`1.AddLast(`0)">AddLast(T)</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Adds a new element at the end of the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a>.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
@@ -414,7 +511,8 @@
                   <tr>
                     <td><span class="xref">T</span></td>
                     <td><span class="parametername">item</span></td>
-                    <td></td>
+                    <td><p>The value to add at the end of the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a>.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -482,7 +580,8 @@
               
               <a id="Biocs_Collections_Deque_1_CopyTo_" data-uid="Biocs.Collections.Deque`1.CopyTo*"></a>
               <h4 id="Biocs_Collections_Deque_1_CopyTo__0___System_Int32_" data-uid="Biocs.Collections.Deque`1.CopyTo(`0[],System.Int32)">CopyTo(T[], Int32)</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Copies the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a> elements to an existing one-dimensional <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.array(v=vs.110).aspx">Array</a>.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
@@ -501,22 +600,126 @@
                   <tr>
                     <td>T[]</td>
                     <td><span class="parametername">array</span></td>
-                    <td></td>
+                    <td><p>The one-dimensional <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.array(v=vs.110).aspx">Array</a> that is the destination of the elements copied from <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a>.</p>
+</td>
                   </tr>
                   <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
                     <td><span class="parametername">arrayIndex</span></td>
-                    <td></td>
+                    <td><p>The zero-based index in <span class="paramref">array</span> at which copying begins.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
                   <div><a class="xref" href="https://msdn.microsoft.com/en-us/library/0efx51xw(v=vs.110).aspx">ICollection&lt;T&gt;.CopyTo(T[], Int32)</a></div>
+              <h5 class="exceptions">Exceptions</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Condition</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
+                    <td><p><span class="paramref">array</span> is a null reference.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
+                    <td><p><span class="paramref">arrayIndex</span> is less than 0.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentexception(v=vs.110).aspx">ArgumentException</a></td>
+                    <td><p>The number of elements in the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a> is greater than the available space 
+from <span class="paramref">arrayIndex</span> to the end of the destination <span class="paramref">array</span>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="Biocs_Collections_Deque_1_CopyTo_" data-uid="Biocs.Collections.Deque`1.CopyTo*"></a>
+              <h4 id="Biocs_Collections_Deque_1_CopyTo_System_Int32__0___System_Int32_System_Int32_" data-uid="Biocs.Collections.Deque`1.CopyTo(System.Int32,`0[],System.Int32,System.Int32)">CopyTo(Int32, T[], Int32, Int32)</h4>
+              <div class="markdown level1 summary"><p>Copies a range of elements from the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a> to an existing one-dimensional <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.array(v=vs.110).aspx">Array</a>.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void CopyTo(int index, T[] array, int arrayIndex, int count)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td><span class="parametername">index</span></td>
+                    <td><p>The zero-based index in the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a> at which copying begins.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td>T[]</td>
+                    <td><span class="parametername">array</span></td>
+                    <td><p>The one-dimensional <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.array(v=vs.110).aspx">Array</a> that is the destination of the elements copied from <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a>.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td><span class="parametername">arrayIndex</span></td>
+                    <td><p>The zero-based index in <span class="paramref">array</span> at which copying begins.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td><span class="parametername">count</span></td>
+                    <td><p>The number of elements to copy.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="exceptions">Exceptions</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Condition</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
+                    <td><p><span class="paramref">array</span> is a null reference.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
+                    <td><p><span class="paramref">index</span>, <span class="paramref">arrayIndex</span> or <span class="paramref">count</span> is less than 0.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentexception(v=vs.110).aspx">ArgumentException</a></td>
+                    <td><p><span class="paramref">count</span> is greater than the number of elements from <span class="paramref">index</span> to the end of the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a>. -or-
+<span class="paramref">count</span> is greater than the available space from <span class="paramref">arrayIndex</span> to the end of the destination <span class="paramref">array</span>. </p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
               
               
               <a id="Biocs_Collections_Deque_1_GetEnumerator_" data-uid="Biocs.Collections.Deque`1.GetEnumerator*"></a>
               <h4 id="Biocs_Collections_Deque_1_GetEnumerator" data-uid="Biocs.Collections.Deque`1.GetEnumerator">GetEnumerator()</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Returns an enumerator that iterates through the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a>.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
@@ -533,12 +736,17 @@
                 <tbody>
                   <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/78dfe2yb(v=vs.110).aspx">IEnumerator</a>&lt;T&gt;</td>
-                    <td></td>
+                    <td><p>An <a class="xref" href="https://msdn.microsoft.com/en-us/library/78dfe2yb(v=vs.110).aspx">IEnumerator&lt;T&gt;</a> for the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a>.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
                   <div><a class="xref" href="https://msdn.microsoft.com/en-us/library/s793z9y2(v=vs.110).aspx">IEnumerable&lt;T&gt;.GetEnumerator()</a></div>
+              <h5 id="Biocs_Collections_Deque_1_GetEnumerator_remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>If changes are made to the collection, the next call to <a class="xref" href="https://msdn.microsoft.com/en-us/library/ycwa4b0c(v=vs.110).aspx">MoveNext()</a>
+throws an <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.invalidoperationexception(v=vs.110).aspx">InvalidOperationException</a>.</p>
+</div>
               
               
               <a id="Biocs_Collections_Deque_1_IndexOf_" data-uid="Biocs.Collections.Deque`1.IndexOf*"></a>
@@ -593,7 +801,8 @@
               
               <a id="Biocs_Collections_Deque_1_Insert_" data-uid="Biocs.Collections.Deque`1.Insert*"></a>
               <h4 id="Biocs_Collections_Deque_1_Insert_System_Int32__0_" data-uid="Biocs.Collections.Deque`1.Insert(System.Int32,`0)">Insert(Int32, T)</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Inserts an element into the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a> at the specified index.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
@@ -612,22 +821,99 @@
                   <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
                     <td><span class="parametername">index</span></td>
-                    <td></td>
+                    <td><p>The zero-based index at which <span class="paramref">item</span> should be inserted.</p>
+</td>
                   </tr>
                   <tr>
                     <td><span class="xref">T</span></td>
                     <td><span class="parametername">item</span></td>
-                    <td></td>
+                    <td><p>The value to insert.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
                   <div><a class="xref" href="https://msdn.microsoft.com/en-us/library/8zsfbxz8(v=vs.110).aspx">IList&lt;T&gt;.Insert(Int32, T)</a></div>
+              <h5 class="exceptions">Exceptions</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Condition</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
+                    <td><p><span class="paramref">index</span> is less than 0. -or-
+<span class="paramref">index</span> is greater than <a class="xref" href="Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Count">Count</a>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="Biocs_Collections_Deque_1_InsertRange_" data-uid="Biocs.Collections.Deque`1.InsertRange*"></a>
+              <h4 id="Biocs_Collections_Deque_1_InsertRange_System_Int32_System_Collections_Generic_IEnumerable__0__" data-uid="Biocs.Collections.Deque`1.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{`0})">InsertRange(Int32, IEnumerable&lt;T&gt;)</h4>
+              <div class="markdown level1 summary"><p>Inserts the elements of a collection into the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a> at the specified index.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void InsertRange(int index, IEnumerable&lt;T&gt; collection)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td><span class="parametername">index</span></td>
+                    <td><p>The zero-based index at which the new elements should be inserted.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;T&gt;</td>
+                    <td><span class="parametername">collection</span></td>
+                    <td><p>The collection whose elements should be inserted into the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="exceptions">Exceptions</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Condition</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
+                    <td><p><span class="paramref">collection</span> is null.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
+                    <td><p><span class="paramref">index</span> is less than 0. -or-
+<span class="paramref">index</span> is greater than <a class="xref" href="Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Count">Count</a>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
               
               
               <a id="Biocs_Collections_Deque_1_Remove_" data-uid="Biocs.Collections.Deque`1.Remove*"></a>
               <h4 id="Biocs_Collections_Deque_1_Remove__0_" data-uid="Biocs.Collections.Deque`1.Remove(`0)">Remove(T)</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Removes the first occurrence of a specific element from the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a>.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
@@ -646,7 +932,8 @@
                   <tr>
                     <td><span class="xref">T</span></td>
                     <td><span class="parametername">item</span></td>
-                    <td></td>
+                    <td><p>The element to remove from the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a>.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -661,7 +948,8 @@
                 <tbody>
                   <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
-                    <td></td>
+                    <td><p>true if <span class="paramref">item</span> is successfully removed; otherwise, false.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -671,7 +959,8 @@
               
               <a id="Biocs_Collections_Deque_1_RemoveAt_" data-uid="Biocs.Collections.Deque`1.RemoveAt*"></a>
               <h4 id="Biocs_Collections_Deque_1_RemoveAt_System_Int32_" data-uid="Biocs.Collections.Deque`1.RemoveAt(System.Int32)">RemoveAt(Int32)</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Removes the element at the specified index of the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a>.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
@@ -690,12 +979,30 @@
                   <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
                     <td><span class="parametername">index</span></td>
-                    <td></td>
+                    <td><p>The zero-based index of the element to remove.</p>
+</td>
                   </tr>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
                   <div><a class="xref" href="https://msdn.microsoft.com/en-us/library/c93ab5c9(v=vs.110).aspx">IList&lt;T&gt;.RemoveAt(Int32)</a></div>
+              <h5 class="exceptions">Exceptions</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Condition</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
+                    <td><p><span class="paramref">index</span> is less than 0. -or-
+<span class="paramref">index</span> is equal to or greater than <a class="xref" href="Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Count">Count</a>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
               
               
               <a id="Biocs_Collections_Deque_1_RemoveFirst_" data-uid="Biocs.Collections.Deque`1.RemoveFirst*"></a>
@@ -746,6 +1053,63 @@
                   <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.invalidoperationexception(v=vs.110).aspx">InvalidOperationException</a></td>
                     <td><p>The <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a> is empty.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="Biocs_Collections_Deque_1_RemoveRange_" data-uid="Biocs.Collections.Deque`1.RemoveRange*"></a>
+              <h4 id="Biocs_Collections_Deque_1_RemoveRange_System_Int32_System_Int32_" data-uid="Biocs.Collections.Deque`1.RemoveRange(System.Int32,System.Int32)">RemoveRange(Int32, Int32)</h4>
+              <div class="markdown level1 summary"><p>Removes a range of elements from the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a>.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void RemoveRange(int index, int count)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td><span class="parametername">index</span></td>
+                    <td><p>The zero-based starting index of the range of elements to remove.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td><span class="parametername">count</span></td>
+                    <td><p>The number of elements to remove.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="exceptions">Exceptions</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Condition</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
+                    <td><p><span class="paramref">index</span> is less than 0. -or-
+<span class="paramref">count</span> is less than 0.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentexception(v=vs.110).aspx">ArgumentException</a></td>
+                    <td><p><span class="paramref">index</span> and <span class="paramref">count</span> do not denote a valid range of elements in the <a class="xref" href="Biocs.Collections.Deque-1.html">Deque&lt;T&gt;</a>.</p>
 </td>
                   </tr>
                 </tbody>

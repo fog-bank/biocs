@@ -58,6 +58,52 @@ namespace Biocs.Collections
 		}
 
 		[TestMethod]
+		public void Capacity_Test()
+		{
+			var target = new Deque<int>();
+			var compare = new List<int>();
+
+			target.Capacity = 4;
+			Assert.AreEqual(4, target.Capacity);
+			Assert.AreEqual(0, target.Count);
+
+			InsertRange(target, compare, 0, new[] { 1, 2 });
+			Assert.AreEqual(4, target.Capacity);
+
+			InsertRange(target, compare, 1, new[] { 3, 4 });
+			Assert.AreEqual(4, target.Capacity);
+
+			// No change
+			target.Capacity = 4;
+			Assert.AreEqual(4, target.Capacity);
+			Assert.AreEqual(compare.Count, target.Count);
+			Assert.IsTrue(target.SequenceEqual(compare));
+			Assert.AreEqual(compare.First(), target.First);
+			Assert.AreEqual(compare.Last(), target.Last);
+
+			// Double capacity
+			target.Capacity *= 2;
+			Assert.AreEqual(8, target.Capacity);
+			Assert.AreEqual(compare.Count, target.Count);
+			Assert.IsTrue(target.SequenceEqual(compare));
+			Assert.AreEqual(compare.First(), target.First);
+			Assert.AreEqual(compare.Last(), target.Last);
+
+			InsertRange(target, compare, 1, new[] { 5, 6 });
+			Assert.AreEqual(8, target.Capacity);
+
+			// TrimExcess
+			target.Capacity = 6;
+			Assert.AreEqual(6, target.Capacity);
+			Assert.AreEqual(compare.Count, target.Count);
+			Assert.IsTrue(target.SequenceEqual(compare));
+			Assert.AreEqual(compare.First(), target.First);
+			Assert.AreEqual(compare.Last(), target.Last);
+
+			BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target.Capacity = 5);
+		}
+
+		[TestMethod]
 		public void First_Test()
 		{
 			const int value = 4;
@@ -85,6 +131,14 @@ namespace Biocs.Collections
 			var query = Enumerable.Range(0, 4);
 
 			Assert.IsTrue(query.SequenceEqual(new Deque<int>(query)));
+
+			BiocsAssert.Throws<InvalidOperationException>(() =>
+			{
+				var target = new Deque<int>(query);
+
+				foreach (int item in target)
+					target.Capacity *= 2;
+			});
 
 			BiocsAssert.Throws<InvalidOperationException>(() =>
 			{
@@ -322,81 +376,46 @@ namespace Biocs.Collections
 		{
 			int count = 6;
 			int capacity = 12;
+			var target = new Deque<int>(capacity);
 			var compare = new List<int>(capacity);
 			compare.AddRange(Enumerable.Range(1, count));
 
 			// [1, 2, 3, 4, 5, 6, 0, 0, 0, 0, 0, 0]
-			var target = new Deque<int>(capacity);
-
 			foreach (int value in compare)
 				target.AddLast(value);
 
 			// Call MoveBlockStartward (index <= Count / 2)
 			// [+, 2, 3, 4, 5, 6, 0, 0, 0, 0, 0, 1]
-			count++;
-			target.Insert(1, count);
-			compare.Insert(1, count);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(count, target.Count);
+			Insert(target, compare, 1, ++count);
 
 			// [7, 2, 3, 4, 5, 6, 0, 0, 0, 0, 0, 0]
 			count--;
-			target.RemoveFirst();
-			compare.RemoveAt(0);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(count, target.Count);
+			RemoveAt(target, compare, 0);
 
 			// [2, +, 3, 4, 5, 6, 0, 0, 0, 0, 0, 7]
 			count++;
-			target.Insert(2, 1);
-			compare.Insert(2, 1);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(count, target.Count);
+			Insert(target, compare, 2, 1);
 
 			// [1, +, 3, 4, 5, 6, 0, 0, 0, 0, 7, 2]
-			count++;
-			target.Insert(3, count);
-			compare.Insert(3, count);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(count, target.Count);
+			Insert(target, compare, 3, ++count);
 
 			// [+, 8, 3, 4, 5, 6, 0, 0, 0, 7, 2, 1]
-			count++;
-			target.Insert(3, count);
-			compare.Insert(3, count);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(count, target.Count);
+			Insert(target, compare, 3, ++count);
 
 			// [9, 8, 3, 4, 5, 6, 0, 0, 7, 2, +, 1]
-			count++;
-			target.Insert(2, count);
-			compare.Insert(2, count);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(count, target.Count);
+			Insert(target, compare, 2, ++count);
 
 			// Call AddFirst
 			// [9, 8, 3, 4, 5, 6, 0, +, 7, 2, 10, 1]
-			count++;
-			target.Insert(0, count);
-			compare.Insert(0, count);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(count, target.Count);
+			Insert(target, compare, 0, ++count);
 
 			// Call AddLast
 			// [9, 8, 3, 4, 5, 6, +, 11, 7, 2, 10, 1]
-			count++;
-			target.Insert(target.Count, count);
-			compare.Insert(compare.Count, count);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(count, target.Count);
-			Assert.AreEqual(count, target.Capacity);
+			Insert(target, compare, target.Count, ++count);
+			Assert.AreEqual(target.Count, target.Capacity);
 
 			// Call EnsureSpaceAndInsert
-			count++;
-			target.Insert(4, count);
-			compare.Insert(4, count);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(count, target.Count);
+			Insert(target, compare, 4, ++count);
 
 			BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target.Insert(-1, 0));
 		}
@@ -406,87 +425,116 @@ namespace Biocs.Collections
 		{
 			int count = 8;
 			int capacity = 12;
+			var target = new Deque<int>(capacity);
 			var compare = new List<int>(capacity);
 			compare.AddRange(Enumerable.Range(1, count));
 
 			// [8, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7]
-			var target = new Deque<int>(capacity);
-
 			foreach (int value in Enumerable.Reverse(compare))
 				target.AddFirst(value);
 
 			// [0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7]
 			count--;
-			target.RemoveLast();
-			compare.RemoveAt(compare.Count - 1);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(count, target.Count);
+			RemoveAt(target, compare, target.Count - 1);
 
 			// Call MoveBlockEndward (index > Count / 2)
 			// [7, 0, 0, 0, 0, 1, 2, 3, 4, 5, +, 6]
-			count++;
-			target.Insert(5, count);
-			compare.Insert(5, count);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(count, target.Count);
+			Insert(target, compare, 5, ++count);
 
 			// [0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 8, 6]
 			count--;
-			target.RemoveLast();
-			compare.RemoveAt(compare.Count - 1);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(count, target.Count);
+			RemoveAt(target, compare, target.Count - 1);
 
 			// [6, 0, 0, 0, 0, 1, 2, 3, 4, 5, 8, +]
 			count++;
-			target.Insert(6, 7);
-			compare.Insert(6, 7);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(count, target.Count);
+			Insert(target, compare, 6, 7);
 
 			// [7, 6, 0, 0, 0, 1, 2, 3, 4, 5, +, 8]
-			count++;
-			target.Insert(5, count);
-			compare.Insert(5, count);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(count, target.Count);
+			Insert(target, compare, 5, ++count);
 
 			// [8, 7, 6, 0, 0, 1, 2, 3, 4, 5, 9, +]
-			count++;
-			target.Insert(6, count);
-			compare.Insert(6, count);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(count, target.Count);
+			Insert(target, compare, 6, ++count);
 
 			// [8, +, 7, 6, 0, 1, 2, 3, 4, 5, 9, 10]
-			count++;
-			target.Insert(8, count);
-			compare.Insert(8, count);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(count, target.Count);
+			Insert(target, compare, 8, ++count);
 
 			BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target.Insert(count + 1, 0));
 		}
 
 		[TestMethod]
+		public void InsertRange_Test()
+		{
+			int capacity = 14;
+
+			// [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+			var target = new Deque<int>(capacity);
+			var compare = new List<int>(capacity);
+
+			// [+, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+			InsertRange(target, compare, 0, new[] { 1 });
+
+			// [1, +, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+			InsertRange(target, compare, 1, new[] { 2 });
+
+			// [1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, +]
+			InsertRange(target, compare, 0, new[] { 3 });
+
+			// [1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, +]
+			InsertRange(target, compare, 1, new[] { 4 });
+
+			// [1, +, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4]
+			InsertRange(target, compare, 3, new[] { 5 });
+
+			// [1, 5, 2, 0, 0, 0, 0, 0, 0, 0, +, +, 3, 4]
+			InsertRange(target, compare, 0, Enumerable.Range(6, 2));
+
+			// [+, +, +, 4, 1, 5, 2, 6, 7, 3, +, +, +, +]
+			target.InsertRange(3, target);
+			compare.InsertRange(3, compare);
+			Assert.AreEqual(compare.Count, target.Count);
+			Assert.IsTrue(target.SequenceEqual(compare));
+			Assert.AreEqual(target.Count, target.Capacity);
+			Assert.AreEqual(compare.First(), target.First);
+			Assert.AreEqual(compare.Last(), target.Last);
+
+			// Call EnsureCapacityAndInsertRange
+			InsertRange(target, compare, 2, new[] { 7, 8 });
+			InsertRange(target, compare, 0, new[] { 9, 10 });
+			InsertRange(target, compare, target.Count, new[] { 11, 12, 13 });
+
+			target.InsertRange(12, target);
+			compare.InsertRange(12, compare);
+			Assert.AreEqual(compare.Count, target.Count);
+			Assert.IsTrue(target.SequenceEqual(compare));
+			Assert.AreEqual(compare.First(), target.First);
+			Assert.AreEqual(compare.Last(), target.Last);
+
+			InsertRange(target, compare, 0, new int[0]);
+
+			BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target.InsertRange(-1, new int[0]));
+			BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target.InsertRange(target.Count + 1, new int[0]));
+			BiocsAssert.Throws<ArgumentNullException>(() => target.InsertRange(0, null));
+		}
+
+		[TestMethod]
 		public void RemoveFirst_Test()
 		{
-			var list = Enumerable.Range(0, 7).ToList();
-			var target = new Deque<int>(list);
+			var compare = Enumerable.Range(0, 7).ToList();
+			var target = new Deque<int>(compare);
 
 			target.AddFirst(-1);
-			list.Insert(0, -1);
+			compare.Insert(0, -1);
 			target.AddFirst(-2);
-			list.Insert(0, -2);
+			compare.Insert(0, -2);
 
 			for (int i = target.Count; i > 0; i--)
 			{
-				Assert.AreEqual(list[0], target.First);
-				Assert.AreEqual(list[list.Count - 1], target.Last);
-				Assert.AreEqual(list.Count, target.Count);
+				Assert.AreEqual(compare.First(), target.First);
+				Assert.AreEqual(compare.Last(), target.Last);
+				Assert.AreEqual(compare.Count, target.Count);
 
 				target.RemoveFirst();
-				list.RemoveAt(0);
+				compare.RemoveAt(0);
 			}
 			Assert.AreEqual(0, target.Count);
 
@@ -497,22 +545,22 @@ namespace Biocs.Collections
 		[TestMethod]
 		public void RemoveLast_Test()
 		{
-			var list = Enumerable.Range(0, 7).ToList();
-			var target = new Deque<int>(list);
+			var compare = Enumerable.Range(0, 7).ToList();
+			var target = new Deque<int>(compare);
 
 			target.AddFirst(-1);
-			list.Insert(0, -1);
+			compare.Insert(0, -1);
 			target.AddFirst(-2);
-			list.Insert(0, -2);
+			compare.Insert(0, -2);
 
 			for (int i = target.Count; i > 0; i--)
 			{
-				Assert.AreEqual(list[0], target.First);
-				Assert.AreEqual(list[list.Count - 1], target.Last);
-				Assert.AreEqual(list.Count, target.Count);
+				Assert.AreEqual(compare.First(), target.First);
+				Assert.AreEqual(compare.Last(), target.Last);
+				Assert.AreEqual(compare.Count, target.Count);
 
 				target.RemoveLast();
-				list.RemoveAt(list.Count - 1);
+				compare.RemoveAt(compare.Count - 1);
 			}
 			Assert.AreEqual(0, target.Count);
 
@@ -529,41 +577,16 @@ namespace Biocs.Collections
 			foreach (int value in Enumerable.Reverse(compare))
 				target.AddFirst(value);
 
-			// index = 1
-			target.RemoveAt(1);
-			compare.RemoveAt(1);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(9, target.Count);
+			RemoveAt(target, compare, 1);
+			RemoveAt(target, compare, target.Count - 2);
+			RemoveAt(target, compare, (target.Count - 1) / 2 + 1);
+			RemoveAt(target, compare, (target.Count - 1) / 2);
 
-			// index = Count - 2
-			target.RemoveAt(target.Count - 2);
-			compare.RemoveAt(compare.Count - 2);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(8, target.Count);
+			// Call RemoveFirst
+			RemoveAt(target, compare, 0);
 
-			// index = (Count - 1) / 2 + 1
-			target.RemoveAt((target.Count - 1) / 2 + 1);
-			compare.RemoveAt((compare.Count - 1) / 2 + 1);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(7, target.Count);
-
-			// index = (Count - 1) / 2
-			target.RemoveAt((target.Count - 1) / 2);
-			compare.RemoveAt((compare.Count - 1) / 2);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(6, target.Count);
-
-			// Call RemoveFirst (index = 0)
-			target.RemoveAt(0);
-			compare.RemoveAt(0);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(5, target.Count);
-
-			// Call RemoveLast (index = Count - 1)
-			target.RemoveAt(target.Count - 1);
-			compare.RemoveAt(compare.Count - 1);
-			Assert.IsTrue(target.SequenceEqual(compare));
-			Assert.AreEqual(4, target.Count);
+			// Call RemoveLast
+			RemoveAt(target, compare, target.Count - 1);
 		}
 
 		[TestMethod]
@@ -596,6 +619,33 @@ namespace Biocs.Collections
 		}
 
 		[TestMethod]
+		public void RemoveRange_Test()
+		{
+			int count = 20;
+			var compare = new List<int>(count);
+			compare.AddRange(Enumerable.Range(1, count));
+
+			var target = new Deque<int>(compare);
+
+			RemoveRange(target, compare, 0, 0);
+			RemoveRange(target, compare, 1, 4);
+			RemoveRange(target, compare, 13, 2);
+			RemoveRange(target, compare, 0, 3);
+			RemoveRange(target, compare, 9, 2);
+			RemoveRange(target, compare, 0, 9);
+			Assert.AreEqual(0, target.Count);
+
+			InsertRange(target, compare, 0, Enumerable.Range(1, 5));
+			InsertRange(target, compare, 0, Enumerable.Range(6, 5));
+
+			RemoveRange(target, compare, 2, 7);
+
+			BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target.RemoveRange(-1, 0));
+			BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target.RemoveRange(0, -1));
+			BiocsAssert.Throws<ArgumentException>(() => new Deque<int>(Enumerable.Range(0, 10)).RemoveRange(8, 10));
+		}
+
+		[TestMethod]
 		public void Clear_Test()
 		{
 			var target = new Deque<short>(Enumerable.Repeat<short>(89, 55).ToArray());
@@ -620,6 +670,57 @@ namespace Biocs.Collections
 			target.Clear();
 			Assert.AreEqual(0, target.Count);
 			BiocsAssert.Throws<InvalidOperationException>(() => target.First);
+		}
+
+		private static void Insert(Deque<int> target, List<int> compare, int index, int value)
+		{
+			target.Insert(index, value);
+			compare.Insert(index, value);
+			Assert.AreEqual(compare.Count, target.Count);
+			Assert.IsTrue(target.SequenceEqual(compare));
+
+			Assert.AreEqual(value, target[index]);
+			Assert.AreEqual(compare.First(), target.First);
+			Assert.AreEqual(compare.Last(), target.Last);
+		}
+
+		private static void InsertRange(Deque<int> target, List<int> compare, int index, IEnumerable<int> coll)
+		{
+			target.InsertRange(index, coll);
+			compare.InsertRange(index, coll);
+			Assert.AreEqual(compare.Count, target.Count);
+			Assert.IsTrue(target.SequenceEqual(compare));
+
+			Assert.AreEqual(compare.First(), target.First);
+			Assert.AreEqual(compare.Last(), target.Last);
+		}
+
+		private static void RemoveAt(Deque<int> target, List<int> compare, int index)
+		{
+			target.RemoveAt(index);
+			compare.RemoveAt(index);
+			Assert.AreEqual(compare.Count, target.Count);
+			Assert.IsTrue(target.SequenceEqual(compare));
+
+			if (target.Count > 0)
+			{
+				Assert.AreEqual(compare.First(), target.First);
+				Assert.AreEqual(compare.Last(), target.Last);
+			}
+		}
+
+		private static void RemoveRange(Deque<int> target, List<int> compare, int index, int count)
+		{
+			target.RemoveRange(index, count);
+			compare.RemoveRange(index, count);
+			Assert.AreEqual(compare.Count, target.Count);
+			Assert.IsTrue(target.SequenceEqual(compare));
+
+			if (target.Count > 0)
+			{
+				Assert.AreEqual(compare.First(), target.First);
+				Assert.AreEqual(compare.Last(), target.Last);
+			}
 		}
 	}
 }

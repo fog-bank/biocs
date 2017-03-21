@@ -247,18 +247,21 @@ namespace Biocs.Collections
 			if (index + count > size || arrayIndex + count > array.Length)
 				throw new ArgumentException(Res.GetString("ArgEx.InvalidCopyRange", count, size - index, array.Length - arrayIndex));
 
-			// The position in array from which copy begins
-			int start = GetArrayIndex(index);
-			int count2 = items.Length - start;
+			if (count > 0)
+			{
+				// The position in array from which copy begins
+				int start = GetArrayIndex(index);
+				int count2 = items.Length - start;
 
-			if (count <= count2)
-			{
-				Array.Copy(items, start, array, arrayIndex, count);
-			}
-			else
-			{
-				Array.Copy(items, start, array, arrayIndex, count2);
-				Array.Copy(items, 0, array, arrayIndex + count2, count - count2);
+				if (count <= count2)
+				{
+					Array.Copy(items, start, array, arrayIndex, count);
+				}
+				else
+				{
+					Array.Copy(items, start, array, arrayIndex, count2);
+					Array.Copy(items, 0, array, arrayIndex + count2, count - count2);
+				}
 			}
 		}
 
@@ -409,10 +412,12 @@ namespace Biocs.Collections
 			var coll = collection as ICollection<T>;
 			if (coll != null)
 			{
-				if (coll.Count == 0)
+				int collCount = coll.Count;
+
+				if (collCount == 0)
 					return;
 
-				if (size + coll.Count > items.Length)
+				if (size + collCount > items.Length)
 				{
 					EnsureCapacityAndInsertRange(index, coll);
 					return;
@@ -424,48 +429,73 @@ namespace Biocs.Collections
 					int splitIndex = GetArrayIndex(index);
 
 					if (index < size)
+					{
+						// Copy [index, Count)
 						CopyBlockEndward(splitIndex, tail, size - index);
+						Increment(ref tail, size - index);
+					}
 
 					if (index > 0)
 					{
+						// Copy [0, index)
 						Decrement(ref splitIndex);
-						CopyBlockStartward(0, splitIndex, index);
+						CopyBlockStartward(head, splitIndex, index);
+						Decrement(ref head, index);
 					}
+					size *= 2;
 					version++;
 					return;
 				}
 
+				foreach (var item in collection)
+					Insert(index++, item);
+
+				return;
+
 				int insert;
 
-				if (index == 0)
+				if (size == 0)
 				{
-					Decrement(ref head, coll.Count);
+					insert = 0;
+					head = 0;
+					tail = collCount - 1;
+				}
+				else if (index == 0)
+				{
+					Decrement(ref head, collCount);
 					insert = head;
 				}
 				else if (index == size)
 				{
 					insert = tail;
 					Increment(ref insert);
-					Increment(ref tail, coll.Count);
+					Increment(ref tail, collCount);
 				}
 				else if (index <= size / 2)
 				{
 					insert = GetArrayIndex(index);
-					Decrement(ref insert, coll.Count);
+					Decrement(ref insert, collCount);
 
-					CopyBlockStartward(head, GetArrayIndex(index - 1), coll.Count);
-					Decrement(ref head, coll.Count);
+					CopyBlockStartward(head, GetArrayIndex(index - 1), collCount);
+					Decrement(ref head, collCount);
 				}
 				else
 				{
 					insert = GetArrayIndex(index);
 
-					CopyBlockEndward(insert, tail, coll.Count);
-					Increment(ref tail, coll.Count);
+					CopyBlockEndward(insert, tail, collCount);
+					Increment(ref tail, collCount);
 				}
-				coll.CopyTo(items, insert);
 
-				size += coll.Count;
+				if (insert + collCount <= items.Length)
+				{
+					coll.CopyTo(items, insert);
+				}
+				else
+				{
+					// TODO:
+				}
+				size += collCount;
 				version++;
 			}
 			else
@@ -591,6 +621,9 @@ namespace Biocs.Collections
 			if (index + count > size)
 				throw new ArgumentException(Res.GetString("ArgEx.InvalidRemoveRange", index, count, size));
 
+			if (count == 0)
+				return;
+
 			// Range to clear
 			int start, end;
 
@@ -600,8 +633,7 @@ namespace Biocs.Collections
 					CopyBlockEndward(head, GetArrayIndex(index - 1), count);
 
 				start = head;
-				end = start;
-				Increment(ref end, count - 1);
+				end = GetArrayIndex(count - 1);
 
 				Increment(ref head, count);
 			}
@@ -610,14 +642,13 @@ namespace Biocs.Collections
 				if (index + count < size)
 					CopyBlockStartward(GetArrayIndex(index + count), tail, count);
 
+				start = GetArrayIndex(size - count);
 				end = tail;
-				start = end;
-				Decrement(ref start, count - 1);
 
 				Decrement(ref tail, count);
 			}
 
-			if (start >= end)
+			if (start <= end)
 			{
 				Array.Clear(items, start, end - start + 1);
 			}
@@ -720,6 +751,9 @@ namespace Biocs.Collections
 
 		private void EnsureCapacityAndInsertRange(int index, ICollection<T> collection)
 		{
+			Debug.Assert(index >= 0 && index <= size);
+			Debug.Assert(collection != null);
+
 			var dest = new T[size + collection.Count];
 
 			CopyTo(0, dest, 0, index);

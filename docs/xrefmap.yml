@@ -249,6 +249,15 @@ references:
   fullName.vb: Biocs.Collections.Deque(Of T).Deque()
   nameWithType: Deque<T>.Deque()
   nameWithType.vb: Deque(Of T).Deque()
+- uid: Biocs.Collections.Deque`1.#ctor(System.Collections.Generic.IEnumerable{`0})
+  name: Deque(IEnumerable<T>)
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1__ctor_System_Collections_Generic_IEnumerable__0__
+  commentId: M:Biocs.Collections.Deque`1.#ctor(System.Collections.Generic.IEnumerable{`0})
+  name.vb: Deque(IEnumerable(Of T))
+  fullName: Biocs.Collections.Deque<T>.Deque(System.Collections.Generic.IEnumerable<T>)
+  fullName.vb: Biocs.Collections.Deque(Of T).Deque(System.Collections.Generic.IEnumerable(Of T))
+  nameWithType: Deque<T>.Deque(IEnumerable<T>)
+  nameWithType.vb: Deque(Of T).Deque(IEnumerable(Of T))
 - uid: Biocs.Collections.Deque`1.#ctor(System.Int32)
   name: Deque(Int32)
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1__ctor_System_Int32_
@@ -297,6 +306,22 @@ references:
   fullName.vb: Biocs.Collections.Deque(Of T).AddLast
   nameWithType: Deque<T>.AddLast
   nameWithType.vb: Deque(Of T).AddLast
+- uid: Biocs.Collections.Deque`1.Capacity
+  name: Capacity
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Capacity
+  commentId: P:Biocs.Collections.Deque`1.Capacity
+  fullName: Biocs.Collections.Deque<T>.Capacity
+  fullName.vb: Biocs.Collections.Deque(Of T).Capacity
+  nameWithType: Deque<T>.Capacity
+  nameWithType.vb: Deque(Of T).Capacity
+- uid: Biocs.Collections.Deque`1.Capacity*
+  name: Capacity
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Capacity_
+  commentId: Overload:Biocs.Collections.Deque`1.Capacity
+  fullName: Biocs.Collections.Deque<T>.Capacity
+  fullName.vb: Biocs.Collections.Deque(Of T).Capacity
+  nameWithType: Deque<T>.Capacity
+  nameWithType.vb: Deque(Of T).Capacity
 - uid: Biocs.Collections.Deque`1.Clear
   name: Clear()
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Clear
@@ -338,6 +363,15 @@ references:
   fullName.vb: Biocs.Collections.Deque(Of T).CopyTo(T(), System.Int32)
   nameWithType: Deque<T>.CopyTo(T[], Int32)
   nameWithType.vb: Deque(Of T).CopyTo(T(), Int32)
+- uid: Biocs.Collections.Deque`1.CopyTo(System.Int32,`0[],System.Int32,System.Int32)
+  name: CopyTo(Int32, T[], Int32, Int32)
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_CopyTo_System_Int32__0___System_Int32_System_Int32_
+  commentId: M:Biocs.Collections.Deque`1.CopyTo(System.Int32,`0[],System.Int32,System.Int32)
+  name.vb: CopyTo(Int32, T(), Int32, Int32)
+  fullName: Biocs.Collections.Deque<T>.CopyTo(System.Int32, T[], System.Int32, System.Int32)
+  fullName.vb: Biocs.Collections.Deque(Of T).CopyTo(System.Int32, T(), System.Int32, System.Int32)
+  nameWithType: Deque<T>.CopyTo(Int32, T[], Int32, Int32)
+  nameWithType.vb: Deque(Of T).CopyTo(Int32, T(), Int32, Int32)
 - uid: Biocs.Collections.Deque`1.CopyTo*
   name: CopyTo
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_CopyTo_
@@ -426,6 +460,23 @@ references:
   fullName.vb: Biocs.Collections.Deque(Of T).Insert
   nameWithType: Deque<T>.Insert
   nameWithType.vb: Deque(Of T).Insert
+- uid: Biocs.Collections.Deque`1.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{`0})
+  name: InsertRange(Int32, IEnumerable<T>)
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_InsertRange_System_Int32_System_Collections_Generic_IEnumerable__0__
+  commentId: M:Biocs.Collections.Deque`1.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{`0})
+  name.vb: InsertRange(Int32, IEnumerable(Of T))
+  fullName: Biocs.Collections.Deque<T>.InsertRange(System.Int32, System.Collections.Generic.IEnumerable<T>)
+  fullName.vb: Biocs.Collections.Deque(Of T).InsertRange(System.Int32, System.Collections.Generic.IEnumerable(Of T))
+  nameWithType: Deque<T>.InsertRange(Int32, IEnumerable<T>)
+  nameWithType.vb: Deque(Of T).InsertRange(Int32, IEnumerable(Of T))
+- uid: Biocs.Collections.Deque`1.InsertRange*
+  name: InsertRange
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_InsertRange_
+  commentId: Overload:Biocs.Collections.Deque`1.InsertRange
+  fullName: Biocs.Collections.Deque<T>.InsertRange
+  fullName.vb: Biocs.Collections.Deque(Of T).InsertRange
+  nameWithType: Deque<T>.InsertRange
+  nameWithType.vb: Deque(Of T).InsertRange
 - uid: Biocs.Collections.Deque`1.Item(System.Int32)
   name: Item[Int32]
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Item_System_Int32_
@@ -523,6 +574,22 @@ references:
   fullName.vb: Biocs.Collections.Deque(Of T).RemoveLast
   nameWithType: Deque<T>.RemoveLast
   nameWithType.vb: Deque(Of T).RemoveLast
+- uid: Biocs.Collections.Deque`1.RemoveRange(System.Int32,System.Int32)
+  name: RemoveRange(Int32, Int32)
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_RemoveRange_System_Int32_System_Int32_
+  commentId: M:Biocs.Collections.Deque`1.RemoveRange(System.Int32,System.Int32)
+  fullName: Biocs.Collections.Deque<T>.RemoveRange(System.Int32, System.Int32)
+  fullName.vb: Biocs.Collections.Deque(Of T).RemoveRange(System.Int32, System.Int32)
+  nameWithType: Deque<T>.RemoveRange(Int32, Int32)
+  nameWithType.vb: Deque(Of T).RemoveRange(Int32, Int32)
+- uid: Biocs.Collections.Deque`1.RemoveRange*
+  name: RemoveRange
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_RemoveRange_
+  commentId: Overload:Biocs.Collections.Deque`1.RemoveRange
+  fullName: Biocs.Collections.Deque<T>.RemoveRange
+  fullName.vb: Biocs.Collections.Deque(Of T).RemoveRange
+  nameWithType: Deque<T>.RemoveRange
+  nameWithType.vb: Deque(Of T).RemoveRange
 - uid: Biocs.Collections.Deque`1.System#Collections#Generic#ICollection{T}#Add(`0)
   name: ICollection<T>.Add(T)
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_System_Collections_Generic_ICollection_T__Add__0_
