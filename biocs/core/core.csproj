@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Codon.cs" />
     <Compile Include="Collections\CollectionDebugView.cs" />
+    <Compile Include="Collections\Counter.cs" />
     <Compile Include="Collections\Deque.cs" />
     <Compile Include="DnaBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
