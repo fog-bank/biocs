@@ -29,13 +29,11 @@ namespace Biocs
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="formatItemCount"/> is less than 0.</exception>
 		public StringResourceUsageAttribute(string name, int formatItemCount)
 		{
-			if (name == null)
-				throw new ArgumentNullException(nameof(name));
+			Name = name ?? throw new ArgumentNullException(nameof(name));
 
 			if (formatItemCount < 0)
 				throw new ArgumentOutOfRangeException(nameof(formatItemCount));
 
-			Name = name;
 			FormatItemCount = formatItemCount;
 		}
 

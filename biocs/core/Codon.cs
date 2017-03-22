@@ -92,8 +92,7 @@ namespace Biocs
 		[StringResourceUsage("ArgEx.InvalidCodonSymbol", 1)]
 		public static Codon Parse(string value)
 		{
-			Codon result;
-			if (!TryParse(value, out result))
+			if (!TryParse(value, out var result))
 				throw new ArgumentException(Res.GetString("ArgEx.InvalidCodonSymbol", value), nameof(value));
 
 			return result;
@@ -116,16 +115,13 @@ namespace Biocs
 			if (value == null || value.Length != 3)
 				return false;
 
-			DnaBase first;
-			if (!DnaBase.TryParse(value[0], out first))
+			if (!DnaBase.TryParse(value[0], out var first))
 				return false;
 
-			DnaBase second;
-			if (!DnaBase.TryParse(value[1], out second))
+			if (!DnaBase.TryParse(value[1], out var second))
 				return false;
 
-			DnaBase third;
-			if (!DnaBase.TryParse(value[2], out third))
+			if (!DnaBase.TryParse(value[2], out var third))
 				return false;
 
 			result = new Codon(first, second, third);

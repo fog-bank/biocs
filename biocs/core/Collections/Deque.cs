@@ -57,8 +57,7 @@ namespace Biocs.Collections
 			if (collection == null)
 				throw new ArgumentNullException(nameof(collection));
 
-			var coll = collection as ICollection<T>;
-			if (coll != null)
+			if (collection is ICollection<T> coll)
 			{
 				items = new T[coll.Count];
 
@@ -409,8 +408,7 @@ namespace Biocs.Collections
 			if (collection == null)
 				throw new ArgumentNullException(nameof(collection));
 
-			var coll = collection as ICollection<T>;
-			if (coll != null)
+			if (collection is ICollection<T> coll)
 			{
 				int collCount = coll.Count;
 

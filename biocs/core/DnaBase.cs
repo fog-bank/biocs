@@ -151,8 +151,7 @@ namespace Biocs
 		[StringResourceUsage("ArgEx.InvalidDnaBaseSymbol", 1)]
 		public static DnaBase Parse(char value)
 		{
-			DnaBase result;
-			if (!Parser.Value.SymbolToCode(value, out result))
+			if (!Parser.Value.SymbolToCode(value, out var result))
 				throw new ArgumentException(Res.GetString("ArgEx.InvalidDnaBaseSymbol", value), nameof(value));
 
 			return result;
