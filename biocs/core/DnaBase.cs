@@ -8,8 +8,8 @@ namespace Biocs
     /// Represents nucleotides for DNA.
     /// </summary>
     /// <remarks>
-    /// <para>Each member other than <see cref="Name"/> property and <see cref="EqualsCaseInsensitive"/> method performs a case-sensitive
-    /// operation. By default, each instance is uppercase except gaps.</para>
+    /// <para>Each member other than <see cref="Name"/> property and <see cref="EqualsCaseInsensitive"/> method performs 
+    /// a case-sensitive operation. By default, each instance is uppercase except gaps.</para>
     /// <para>The default constructor creates an object whose value is <see cref="Gap"/>.</para>
     /// </remarks>
     public struct DnaBase : IEquatable<DnaBase>
@@ -167,8 +167,8 @@ namespace Biocs
         /// </summary>
         /// <param name="value">A character to convert.</param>
         /// <param name="result">
-        /// When this method returns, <paramref name="result"/> contains a <see cref="DnaBase"/> instance whose symbol is represented by
-        /// <paramref name="value"/> if the parse operation succeeds.
+        /// When this method returns, <paramref name="result"/> contains a <see cref="DnaBase"/> instance whose symbol is 
+        /// represented by <paramref name="value"/> if the parse operation succeeds.
         /// </param>
         /// <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
         public static bool TryParse(char value, out DnaBase result) => Parser.Value.SymbolToCode(value, out result);

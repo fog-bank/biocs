@@ -46,7 +46,9 @@ namespace Biocs.Collections
         /// Initializes a new instance of the <see cref="Deque{T}"/> class that contains elements copied from the specified
         /// <see cref="IEnumerable{T}"/>.
         /// </summary>
-        /// <param name="collection">The <see cref="IEnumerable{T}"/> whose elements are copied to the new <see cref="Deque{T}"/>.</param>
+        /// <param name="collection">
+        /// The <see cref="IEnumerable{T}"/> whose elements are copied to the new <see cref="Deque{T}"/>.
+        /// </param>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is a null reference.</exception>
         /// <remarks>
         /// The elements are copied onto the <see cref="Deque{T}"/> in the same order they are read by the enumerator of
@@ -114,7 +116,9 @@ namespace Biocs.Collections
         /// <summary>
         /// Gets or sets the total number of elements the internal data structure can hold without resizing.
         /// </summary>
-        /// <exception cref="ArgumentOutOfRangeException">The value in a set operation is less than <see cref="Count"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The value in a set operation is less than <see cref="Count"/>.
+        /// </exception>
         public int Capacity
         {
             get { return items.Length; }
@@ -213,8 +217,8 @@ namespace Biocs.Collections
         /// <exception cref="ArgumentNullException"><paramref name="array"/> is a null reference.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is less than 0.</exception>
         /// <exception cref="ArgumentException">
-        /// The number of elements in the <see cref="Deque{T}"/> is greater than the available space from <paramref name="arrayIndex"/> to
-        /// the end of the destination <paramref name="array"/>.
+        /// The number of elements in the <see cref="Deque{T}"/> is greater than the available space from
+        /// <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.
         /// </exception>
         public void CopyTo(T[] array, int arrayIndex) => CopyTo(0, array, arrayIndex, size);
 
@@ -252,7 +256,10 @@ namespace Biocs.Collections
                 throw new ArgumentOutOfRangeException(nameof(count));
 
             if (index + count > size || arrayIndex + count > array.Length)
-                throw new ArgumentException(Res.GetString("ArgEx.InvalidCopyRange", count, size - index, array.Length - arrayIndex));
+            {
+                throw new ArgumentException(
+                    Res.GetString("ArgEx.InvalidCopyRange", count, size - index, array.Length - arrayIndex));
+            }
 
             if (count > 0)
             {
@@ -280,7 +287,8 @@ namespace Biocs.Collections
         public bool Contains(T item) => IndexOf(item) >= 0;
 
         /// <summary>
-        /// Searches for the specified value and returns the zero-based index of the first occurrence within the <see cref="Deque{T}"/>.
+        /// Searches for the specified value and returns the zero-based index of the first occurrence within 
+        /// the <see cref="Deque{T}"/>.
         /// </summary>
         /// <param name="item">The value to locate in the <see cref="Deque{T}"/>.</param>
         /// <returns>
@@ -613,7 +621,8 @@ namespace Biocs.Collections
         /// <para><paramref name="index"/> is less than 0.</para> -or- <para><paramref name="count"/> is less than 0.</para>
         /// </exception>
         /// <exception cref="ArgumentException">
-        /// <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in the <see cref="Deque{T}"/>.
+        /// <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in 
+        /// the <see cref="Deque{T}"/>.
         /// </exception>
         [StringResourceUsage("ArgEx.InvalidRemoveRange", 3)]
         public void RemoveRange(int index, int count)

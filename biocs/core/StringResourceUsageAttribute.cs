@@ -51,8 +51,9 @@ namespace Biocs
         /// Gets or sets a value indicating whether the body of the applied method should be checked.
         /// </summary>
         /// <remarks>
-        /// If any element is generated from the applied method by a compiler, or the local resource class is not used for the formatting 
-        /// operation, the value of this property is set to true. In that case, a tester will not check the body of the applied method.
+        /// If any element is generated from the applied method by a compiler, or the local resource class is not used for 
+        /// the formatting operation, the value of this property is set to true. In that case, a tester will not check the body
+        /// of the applied method.
         /// </remarks>
         public bool ResourceCheckOnly { get; set; }
     }

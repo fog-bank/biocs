@@ -91,7 +91,9 @@ namespace Biocs
         /// </summary>
         /// <param name="value">A string to convert.</param>
         /// <returns>A <see cref="Codon"/> instance whose symbol is represented by <paramref name="value"/>.</returns>
-        /// <exception cref="ArgumentException"><paramref name="value"/> contains an unknown character in a certain position.</exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="value"/> contains an unknown character in a certain position.
+        /// </exception>
         [StringResourceUsage("ArgEx.InvalidCodonSymbol", 1)]
         public static Codon Parse(string value)
         {

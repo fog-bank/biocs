@@ -12,7 +12,9 @@ namespace Biocs.TestTools
         /// <summary>
         /// Verifies that the expected exception is thrown.
         /// </summary>
-        /// <typeparam name="TException">An expected type of exception to be thrown by a method. The derived types are allowed.</typeparam>
+        /// <typeparam name="TException">
+        /// An expected type of exception to be thrown by a method. The derived types are allowed.
+        /// </typeparam>
         /// <param name="action">The test method.</param>
         /// <exception cref="AssertFailedException">The test method did not throw the expected exception.</exception>
         public static void Throws<TException>(Action action) where TException : Exception
@@ -31,7 +33,9 @@ namespace Biocs.TestTools
         /// <summary>
         /// Verifies that the expected exception is thrown.
         /// </summary>
-        /// <typeparam name="TException">An expected type of exception to be thrown by a method. The derived types are allowed.</typeparam>
+        /// <typeparam name="TException">
+        /// An expected type of exception to be thrown by a method. The derived types are allowed.
+        /// </typeparam>
         /// <param name="func">The test method.</param>
         /// <exception cref="AssertFailedException">The test method did not throw the expected exception.</exception>
         public static void Throws<TException>(Func<object> func) where TException : Exception

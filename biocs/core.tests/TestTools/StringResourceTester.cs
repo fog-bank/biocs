@@ -33,7 +33,7 @@ namespace Biocs.TestTools
                     if (type == resourceClass || IsCompilerGenerated(type))
                         continue;
 
-                    foreach (var member in type.GetMembers(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | 
+                    foreach (var member in type.GetMembers(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public |
                         BindingFlags.NonPublic | BindingFlags.DeclaredOnly))
                     {
                         var method = member as MethodBase;
@@ -81,15 +81,15 @@ namespace Biocs.TestTools
                 }
                 else if (inst.IsCallMethod && getStringMethods.ContainsKey(inst.Operand))
                 {
-                    Assert.AreNotEqual(0, loadedName.Count, 
-                        "The name of the string resource is not found in " + method.DeclaringType.FullName + "." + method.Name + ".");
+                    Assert.AreNotEqual(0, loadedName.Count, "The name of the string resource is not found in " + 
+                        method.DeclaringType.FullName + "." + method.Name + ".");
 
                     foreach (string name in loadedName)
                     {
                         if (declaredUsages[name].ResourceCheckOnly)
                         {
-                            Console.WriteLine("The usage of '" + name + "' in " + method.DeclaringType.FullName + "." + method.Name + 
-                                " is not checked.");
+                            Console.WriteLine("The usage of '" + name + "' in " + method.DeclaringType.FullName + "." + 
+                                method.Name + " is not checked.");
                             continue;
                         }
                         Assert.AreEqual(declaredUsages[name].FormatItemCount, getStringMethods[inst.Operand],
@@ -109,8 +109,8 @@ namespace Biocs.TestTools
                     if (usage.Value.ResourceCheckOnly)
                     {
                         escaped++;
-                        Console.WriteLine("The usage of '" + usage.Key + "' in " + method.DeclaringType.FullName + "." + method.Name + 
-                            " is not checked.");
+                        Console.WriteLine("The usage of '" + usage.Key + "' in " + method.DeclaringType.FullName + "." + 
+                            method.Name + " is not checked.");
                     }
                 }
                 Assert.AreEqual(declaredUsages.Count, actualUsages.Count + escaped,
@@ -139,7 +139,8 @@ namespace Biocs.TestTools
                 catch (FormatException)
                 {
                     // #{format item} > #{arg}
-                    Assert.Fail("The number of format items in resource '" + usage.Name + "' is more than " + usage.FormatItemCount + ".");
+                    Assert.Fail("The number of format items in resource '" + 
+                        usage.Name + "' is more than " + usage.FormatItemCount + ".");
                 }
 
                 for (int i = 0; i < usage.FormatItemCount; i++)
@@ -147,7 +148,8 @@ namespace Biocs.TestTools
                     if (!str.Contains("{" + i))
                     {
                         // #{format item} < #{arg}
-                        Console.WriteLine("The resource '" + usage.Name + "' doesn't contains the format item whose index is " + i + ".");
+                        Console.WriteLine("The resource '" + usage.Name + 
+                            "' doesn't contains the format item whose index is " + i + ".");
                     }
                 }
             }
@@ -177,7 +179,8 @@ namespace Biocs.TestTools
         {
             var names = new HashSet<string>(StringComparer.Ordinal);
 
-            using (var stream = resourceClass.Assembly.GetManifestResourceStream(resourceClass, resourceClass.Name + ".resources"))
+            using (var stream = 
+                resourceClass.Assembly.GetManifestResourceStream(resourceClass, resourceClass.Name + ".resources"))
             using (var reader = new ResourceReader(stream))
             {
                 var enumerator = reader.GetEnumerator();
