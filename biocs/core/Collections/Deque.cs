@@ -447,11 +447,6 @@ namespace Biocs.Collections
 					return;
 				}
 
-				foreach (var item in collection)
-					Insert(index++, item);
-
-				return;
-
 				int insert;
 
 				if (size == 0)
@@ -493,7 +488,11 @@ namespace Biocs.Collections
 				}
 				else
 				{
-					// TODO:
+					foreach (var item in collection)
+					{
+						items[insert] = item;
+						Increment(ref insert);
+					}
 				}
 				size += collCount;
 				version++;
