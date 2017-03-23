@@ -125,14 +125,14 @@ namespace Biocs
         /// Determines whether the current <see cref="DnaBase"/> instance is equal to a specified <see cref="DnaBase"/> instance.
         /// </summary>
         /// <param name="other">The nucleotide to compare to this instance.</param>
-        /// <returns>true if the two instances are equal; otherwise, false.</returns>
+        /// <returns><see langword="true"/> if the two instances are equal; otherwise, <see langword="false"/>.</returns>
         public bool Equals(DnaBase other) => Code == other.Code;
 
         /// <summary>
         /// Compares two <see cref="DnaBase"/> structures ignoring case for equality.
         /// </summary>
         /// <param name="other">The nucleotide to compare to this instance.</param>
-        /// <returns>true if the two instances are equal; otherwise, false.</returns>
+        /// <returns><see langword="true"/> if the two instances are equal; otherwise, <see langword="false"/>.</returns>
         public bool EqualsCaseInsensitive(DnaBase other) => ToUpper(Code) == ToUpper(other.Code);
 
         /// <inheritdoc cref="object.Equals(object)"/>
@@ -170,7 +170,9 @@ namespace Biocs
         /// When this method returns, <paramref name="result"/> contains a <see cref="DnaBase"/> instance whose symbol is 
         /// represented by <paramref name="value"/> if the parse operation succeeds.
         /// </param>
-        /// <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
+        /// <returns>
+        /// <see langword="true"/> if <paramref name="value"/> was converted successfully; otherwise, <see langword="false"/>.
+        /// </returns>
         public static bool TryParse(char value, out DnaBase result) => Parser.Value.SymbolToCode(value, out result);
 
         /// <summary>
@@ -178,7 +180,7 @@ namespace Biocs
         /// </summary>
         /// <param name="one">The first instance of <see cref="DnaBase"/> to compare.</param>
         /// <param name="other">The second instance of <see cref="DnaBase"/> to compare.</param>
-        /// <returns>true if the two instances are equal; otherwise, false.</returns>
+        /// <returns><see langword="true"/> if the two instances are equal; otherwise, <see langword="false"/>.</returns>
         public static bool operator ==(DnaBase one, DnaBase other) => one.Equals(other);
 
         /// <summary>
@@ -186,7 +188,7 @@ namespace Biocs
         /// </summary>
         /// <param name="one">The first instance of <see cref="DnaBase"/> to compare.</param>
         /// <param name="other">The second instance of <see cref="DnaBase"/> to compare.</param>
-        /// <returns>false if the two instances are equal; otherwise, true.</returns>
+        /// <returns><see langword="false"/> if the two instances are equal; otherwise, <see langword="true"/>.</returns>
         public static bool operator !=(DnaBase one, DnaBase other) => !one.Equals(other);
 
         private static DnaBases ToUpper(DnaBases code) => code & DnaBases.Any;

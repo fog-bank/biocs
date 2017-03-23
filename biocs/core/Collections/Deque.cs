@@ -49,7 +49,7 @@ namespace Biocs.Collections
         /// <param name="collection">
         /// The <see cref="IEnumerable{T}"/> whose elements are copied to the new <see cref="Deque{T}"/>.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is a null reference.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
         /// <remarks>
         /// The elements are copied onto the <see cref="Deque{T}"/> in the same order they are read by the enumerator of
         /// <paramref name="collection"/>. If the type of <paramref name="collection"/> implements <see cref="ICollection{T}"/>,
@@ -214,7 +214,7 @@ namespace Biocs.Collections
         /// The one-dimensional <see cref="Array"/> that is the destination of the elements copied from <see cref="Deque{T}"/>.
         /// </param>
         /// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="array"/> is a null reference.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="array"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is less than 0.</exception>
         /// <exception cref="ArgumentException">
         /// The number of elements in the <see cref="Deque{T}"/> is greater than the available space from
@@ -231,7 +231,7 @@ namespace Biocs.Collections
         /// </param>
         /// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
         /// <param name="count">The number of elements to copy.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="array"/> is a null reference.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="array"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="index"/>, <paramref name="arrayIndex"/> or <paramref name="count"/> is less than 0.
         /// </exception>
@@ -283,7 +283,10 @@ namespace Biocs.Collections
         /// Determines whether an element is in the <see cref="Deque{T}"/>.
         /// </summary>
         /// <param name="item">The value to locate in the <see cref="Deque{T}"/>.</param>
-        /// <returns>true if item is found in the <see cref="Deque{T}"/>; otherwise, false.</returns>
+        /// <returns>
+        /// <see langword="true"/> if <paramref name="item"/> is found in the <see cref="Deque{T}"/>;
+        /// otherwise, <see langword="false"/>.
+        /// </returns>
         public bool Contains(T item) => IndexOf(item) >= 0;
 
         /// <summary>
@@ -292,7 +295,8 @@ namespace Biocs.Collections
         /// </summary>
         /// <param name="item">The value to locate in the <see cref="Deque{T}"/>.</param>
         /// <returns>
-        /// The zero-based index of the first occurrence of element within the <see cref="Deque{T}"/>, if found; otherwise, -1.
+        /// The zero-based index of the first occurrence of <paramref name="item"/> within the <see cref="Deque{T}"/>, if found;
+        /// otherwise, -1.
         /// </returns>
         /// <remarks>
         /// This method determines equality using the default equality comparer <see cref="EqualityComparer{T}.Default"/>.
@@ -413,7 +417,7 @@ namespace Biocs.Collections
         /// </summary>
         /// <param name="index">The zero-based index at which the new elements should be inserted.</param>
         /// <param name="collection">The collection whose elements should be inserted into the <see cref="Deque{T}"/>.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <para><paramref name="index"/> is less than 0.</para> -or- 
         /// <para><paramref name="index"/> is greater than <see cref="Count"/>.</para>
@@ -556,7 +560,9 @@ namespace Biocs.Collections
         /// Removes the first occurrence of a specific element from the <see cref="Deque{T}"/>.
         /// </summary>
         /// <param name="item">The element to remove from the <see cref="Deque{T}"/>.</param>
-        /// <returns>true if <paramref name="item"/> is successfully removed; otherwise, false.</returns>
+        /// <returns>
+        /// <see langword="true"/> if <paramref name="item"/> is successfully removed; otherwise, <see langword="false"/>.
+        /// </returns>
         public bool Remove(T item)
         {
             int index = IndexOf(item);

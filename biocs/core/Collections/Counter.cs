@@ -38,8 +38,8 @@ namespace Biocs.Collections
         /// </summary>
         /// <param name="capacity">The initial number of elements that the <see cref="Counter{T}"/> can contain.</param>
         /// <param name="comparer">
-        /// The <see cref="IEqualityComparer{T}"/> implementation to use when comparing elements, or null to use the default
-        /// <see cref="IEqualityComparer{T}"/> for the type of the element.
+        /// The <see cref="IEqualityComparer{T}"/> implementation to use when comparing elements, or <see langword="null"/> to
+        /// use the default <see cref="IEqualityComparer{T}"/> for the type of the element.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> is less than 0.</exception>
         public Counter(int capacity, IEqualityComparer<T> comparer)
@@ -61,34 +61,37 @@ namespace Biocs.Collections
         public int NumberOfItems => nullCount.HasValue ? map.Count + 1 : map.Count;
 
         /// <summary>
-		/// Gets an enumerable collection of distinct elements that the <see cref="Counter{T}"/> has counted before now.
-		/// </summary>
-		/// <remarks>
-		/// Enumerators retured by this enumerable collection cannot be used to modify the <see cref="Counter{T}"/>.
-		/// For example, the following code will raise an <see cref="InvalidOperationException"/>.
-		/// <code>
-		/// var counter = new Counter&lt;int&gt;();
-		/// counter.Add(new[] { 1, 2, 3 });
-		/// foreach (var item in counter.Items)
-		/// {
-		///   counter.Add(item);
-		/// }
-		/// </code>
-		/// </remarks>
-		public IEnumerable<T> Items => nullCount.HasValue ? map.Keys.Concat(new[] { default(T) }) : map.Keys;
+        /// Gets an enumerable collection of distinct elements that the <see cref="Counter{T}"/> has counted before now.
+        /// </summary>
+        /// <remarks>
+        /// Enumerators retured by this enumerable collection cannot be used to modify the <see cref="Counter{T}"/>.
+        /// For example, the following enumeration raises an <see cref="InvalidOperationException"/>.
+        /// <code>
+        /// var counter = new Counter&lt;int&gt;();
+        /// counter.Add(new[] { 1, 2, 3 });
+        /// foreach (int item in counter.Items)
+        /// {
+        ///   counter.Reset(item);
+        /// }
+        /// </code>
+        /// </remarks>
+        public IEnumerable<T> Items => nullCount.HasValue ? map.Keys.Concat(new[] { default(T) }) : map.Keys;
 
         /// <summary>
-		/// Gets the <see cref="IEqualityComparer{T}"/> that is used to determine equality of elements for the <see cref="Counter{T}"/>. 
-		/// </summary>
-		public IEqualityComparer<T> Comparer => map.Comparer;
+        /// Gets the <see cref="IEqualityComparer{T}"/> that is used to determine equality of elements for 
+        /// the <see cref="Counter{T}"/>. 
+        /// </summary>
+        public IEqualityComparer<T> Comparer => map.Comparer;
 
         /// <summary>
-		/// Gets the number of times that the element occurs in the <see cref="Counter{T}"/>.
-		/// </summary>
-		/// <param name="item">The object to get the count.</param>
-		/// <returns>The number of times that <paramref name="item"/> occurs in the <see cref="Counter{T}"/>.</returns>
-		/// <remarks>If <paramref name="item"/> is not contained in the <see cref="Counter{T}"/>, this method will return 0.</remarks>
-		public int GetCount(T item)
+        /// Gets the number of times that the element occurs in the <see cref="Counter{T}"/>.
+        /// </summary>
+        /// <param name="item">The object to get the count.</param>
+        /// <returns>The number of times that <paramref name="item"/> occurs in the <see cref="Counter{T}"/>.</returns>
+        /// <remarks>
+        /// If <paramref name="item"/> is not contained in the <see cref="Counter{T}"/>, this method returns 0.
+        /// </remarks>
+        public int GetCount(T item)
         {
             if (item == null)
                 return nullCount.GetValueOrDefault();
@@ -98,25 +101,28 @@ namespace Biocs.Collections
         }
 
         /// <summary>
-		/// Determines whether the <see cref="Counter{T}"/> contains the specified object.
-		/// </summary>
-		/// <param name="item">The object to locate in the <see cref="Counter{T}"/>.</param>
-		/// <returns>true if <paramref name="item"/> is found in the <see cref="Counter{T}"/>; otherwise, false.</returns>
+        /// Determines whether the <see cref="Counter{T}"/> contains the specified object.
+        /// </summary>
+        /// <param name="item">The object to locate in the <see cref="Counter{T}"/>.</param>
+        /// <returns>
+        /// <see langword="true"/> if <paramref name="item"/> is found in the <see cref="Counter{T}"/>;
+        /// otherwise, <see langword="false"/>.
+        /// </returns>
         public bool Contains(T item) => item == null ? nullCount.HasValue : map.ContainsKey(item);
 
         /// <summary>
-		/// Counts an object once.
-		/// </summary>
-		/// <param name="item">The object to be counted to the <see cref="Counter{T}"/>.</param>
-		public void Add(T item) => Add(item, 1);
+        /// Counts an object once.
+        /// </summary>
+        /// <param name="item">The object to be counted to the <see cref="Counter{T}"/>.</param>
+        public void Add(T item) => Add(item, 1);
 
         /// <summary>
-		/// Counts an object a specified number of times.
-		/// </summary>
-		/// <param name="item">The object to be counted to the <see cref="Counter{T}"/>.</param>
-		/// <param name="times">The number of times to count <paramref name="item"/>.</param>
-		/// <exception cref="ArgumentOutOfRangeException"><paramref name="times"/> is less than zero.</exception>
-		public void Add(T item, int times)
+        /// Counts an object a specified number of times.
+        /// </summary>
+        /// <param name="item">The object to be counted to the <see cref="Counter{T}"/>.</param>
+        /// <param name="times">The number of times to count <paramref name="item"/>.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="times"/> is less than 0.</exception>
+        public void Add(T item, int times)
         {
             if (times < 0)
                 throw new ArgumentOutOfRangeException("times");
@@ -130,11 +136,13 @@ namespace Biocs.Collections
         }
 
         /// <summary>
-		/// Counts the elements of the specified collection.
-		/// </summary>
-		/// <param name="items">The collection whose elements should be counted.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="items"/> is null.</exception>
-		/// <remarks>If this method throws an exception while counting, the state of <see cref="Counter{T}"/> is undefined.</remarks>
+        /// Counts the elements of the specified collection.
+        /// </summary>
+        /// <param name="items">The collection whose elements should be counted.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="items"/> is <see langword="null"/> .</exception>
+        /// <remarks>
+        /// If this method throws an exception while counting, the state of <see cref="Counter{T}"/> is undefined.
+        /// </remarks>
         public void Add(IEnumerable<T> items)
         {
             if (items == null)
@@ -145,7 +153,8 @@ namespace Biocs.Collections
         }
 
         /// <summary>
-        /// Sets the number of times that each element occurs in the <see cref="Counter{T}"/> to zero. The collection of elements is preserved.
+        /// Sets the number of times that each element occurs in the <see cref="Counter{T}"/> to zero.
+        /// The collection of elements is preserved.
         /// </summary>
         public void Reset()
         {
@@ -160,10 +169,10 @@ namespace Biocs.Collections
         }
 
         /// <summary>
-		/// Sets the number of times that the specified element occurs in the <see cref="Counter{T}"/> to zero.
-		/// </summary>
-		/// <param name="item">The element to reset the count.</param>
-		public void Reset(T item)
+        /// Sets the number of times that the specified element occurs in the <see cref="Counter{T}"/> to zero.
+        /// </summary>
+        /// <param name="item">The element to reset the count.</param>
+        public void Reset(T item)
         {
             totalCount -= GetCount(item);
 
@@ -174,9 +183,9 @@ namespace Biocs.Collections
         }
 
         /// <summary>
-		/// Removes all elements from the <see cref="Counter{T}"/>.
-		/// </summary>
-		public void Clear()
+        /// Removes all elements from the <see cref="Counter{T}"/>.
+        /// </summary>
+        public void Clear()
         {
             map.Clear();
             nullCount = null;

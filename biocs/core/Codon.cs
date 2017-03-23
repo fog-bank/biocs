@@ -74,7 +74,7 @@ namespace Biocs
         /// Determines whether the current <see cref="Codon"/> instance is equal to a specified <see cref="Codon"/> instance.
         /// </summary>
         /// <param name="other">The codon to compare to this instance.</param>
-        /// <returns>true if the two instances are equal; otherwise, false.</returns>
+        /// <returns><see langword="true"/> if the two instances are equal; otherwise, <see langword="false"/>.</returns>
         public bool Equals(Codon other) => First == other.First && Second == other.Second && Third == other.Third;
 
         /// <inheritdoc cref="object.Equals(object)"/>
@@ -112,7 +112,9 @@ namespace Biocs
         /// When this method returns, <paramref name="result"/> contains a <see cref="Codon"/> instance that is represented by
         /// <paramref name="value"/> if the parse operation succeeds.
         /// </param>
-        /// <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
+        /// <returns>
+        /// <see langword="true"/> if <paramref name="value"/> was converted successfully; otherwise, <see langword="false"/>.
+        /// </returns>
         public static bool TryParse(string value, out Codon result)
         {
             result = Gap;
@@ -138,7 +140,7 @@ namespace Biocs
         /// </summary>
         /// <param name="one">The first instance of <see cref="Codon"/> to compare.</param>
         /// <param name="other">The second instance of <see cref="Codon"/> to compare.</param>
-        /// <returns>true if the two instances are equal; otherwise, false.</returns>
+        /// <returns><see langword="true"/> if the two instances are equal; otherwise, <see langword="false"/>.</returns>
         public static bool operator ==(Codon one, Codon other) => one.Equals(other);
 
         /// <summary>
@@ -146,7 +148,7 @@ namespace Biocs
         /// </summary>
         /// <param name="one">The first instance of <see cref="Codon"/> to compare.</param>
         /// <param name="other">The second instance of <see cref="Codon"/> to compare.</param>
-        /// <returns>false if the two instances are equal; otherwise, true.</returns>
+        /// <returns><see langword="false"/> if the two instances are equal; otherwise, <see langword="true"/>.</returns>
         public static bool operator !=(Codon one, Codon other) => !one.Equals(other);
     }
 }

@@ -15,7 +15,7 @@ namespace Biocs
         /// Initializes a new instance of the <see cref="StringResourceUsageAttribute"/> class.
         /// </summary>
         /// <param name="name">The name of the string resource to be used.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="name"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null"/>.</exception>
         public StringResourceUsageAttribute(string name)
             : this(name, 0)
         { }
@@ -25,7 +25,7 @@ namespace Biocs
         /// </summary>
         /// <param name="name">The name of the string resource to be used.</param>
         /// <param name="formatItemCount">The number of format items contained in the value of the string resource.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="name"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="formatItemCount"/> is less than 0.</exception>
         public StringResourceUsageAttribute(string name, int formatItemCount)
         {
@@ -52,8 +52,8 @@ namespace Biocs
         /// </summary>
         /// <remarks>
         /// If any element is generated from the applied method by a compiler, or the local resource class is not used for 
-        /// the formatting operation, the value of this property is set to true. In that case, a tester will not check the body
-        /// of the applied method.
+        /// the formatting operation, the value of this property is set to <see langword="true"/>. In that case, a tester will
+        /// not check the body of the applied method.
         /// </remarks>
         public bool ResourceCheckOnly { get; set; }
     }

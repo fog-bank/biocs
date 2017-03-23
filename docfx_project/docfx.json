@@ -15,6 +15,7 @@
         }
       ],
       "dest": "api",
+      "force": true,
       "filter": "filterConfig.yml"
     }
   ],
@@ -62,14 +63,17 @@
       }
     ],
     "dest": "../docs",
-    "globalMetadataFiles": [],
+    "globalMetadataFiles": [
+      "global.json"
+    ],
     "fileMetadataFiles": [],
     "template": [
       "default"
     ],
     "postProcessors": [],
+    "maxParallelism": 4,
     "noLangKeyword": false,
-    "xref": [ 
+    "xref": [
       "msdn.4.5.2.zip"
     ]
   }
