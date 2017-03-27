@@ -3,5 +3,5 @@ The following is a list of namespaces.
 
 | Namespace | Description |
 |:--|:--|
-| [Biocs](xref:Biocs) |  |
-| [Biocs.Collections](xref:Biocs.Collections) |  |
+| <xref:Biocs> |  |
+| <xref:Biocs.Collections> |  |
