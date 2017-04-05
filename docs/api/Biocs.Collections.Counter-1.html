@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Counter&lt;T&gt;
    | BioC# Documents ">
-    <meta name="generator" content="docfx 2.14.1.0">
+    <meta name="generator" content="docfx 2.15.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -72,7 +72,7 @@
               
               <h1 id="Biocs_Collections_Counter_1" data-uid="Biocs.Collections.Counter`1">Class Counter&lt;T&gt;
               </h1>
-              <div class="markdown level0 summary"><p>Represents a tally counter to count the frequency of elements.</p>
+              <div class="markdown level0 summary"><p>Represents a tally counter to count the frequency of items.</p>
 </div>
               <div class="markdown level0 conceptual"></div>
               <div class="inheritance">
@@ -121,7 +121,7 @@
                 <tbody>
                   <tr>
                     <td><span class="parametername">T</span></td>
-                    <td><p>The type of elements to count.</p>
+                    <td><p>The type of items to count.</p>
 </td>
                   </tr>
                 </tbody>
@@ -132,7 +132,8 @@
               
               <a id="Biocs_Collections_Counter_1__ctor_" data-uid="Biocs.Collections.Counter`1.#ctor*"></a>
               <h4 id="Biocs_Collections_Counter_1__ctor" data-uid="Biocs.Collections.Counter`1.#ctor">Counter()</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> class that is empty and uses the default equality comparer.</p>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> class that is empty, has zero capacity, and uses 
+the default equality comparer.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -142,8 +143,85 @@
               
               
               <a id="Biocs_Collections_Counter_1__ctor_" data-uid="Biocs.Collections.Counter`1.#ctor*"></a>
+              <h4 id="Biocs_Collections_Counter_1__ctor_Biocs_Collections_Counter__0__" data-uid="Biocs.Collections.Counter`1.#ctor(Biocs.Collections.Counter{`0})">Counter(Counter&lt;T&gt;)</h4>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> class that contains unique items and counts copied from
+the specified <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> and uses the same equality comparer.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Counter(Counter&lt;T&gt; other)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="Biocs.Collections.Counter-1.html">Counter</a>&lt;T&gt;</td>
+                    <td><span class="parametername">other</span></td>
+                    <td><p>The <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> whose unique items and counts are copied to the new <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="exceptions">Exceptions</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Condition</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
+                    <td><p><span class="paramref">other</span> is <span class="xref">null</span>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="Biocs_Collections_Counter_1__ctor_" data-uid="Biocs.Collections.Counter`1.#ctor*"></a>
+              <h4 id="Biocs_Collections_Counter_1__ctor_System_Collections_Generic_IEqualityComparer__0__" data-uid="Biocs.Collections.Counter`1.#ctor(System.Collections.Generic.IEqualityComparer{`0})">Counter(IEqualityComparer&lt;T&gt;)</h4>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> class that is empty, has zero capacity, and uses 
+the specified equality comparer.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Counter(IEqualityComparer&lt;T&gt; comparer)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer</a>&lt;T&gt;</td>
+                    <td><span class="parametername">comparer</span></td>
+                    <td><p>The <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> implementation to use when comparing items, or <span class="xref">null</span> to
+use the default <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> for the type of the item.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="Biocs_Collections_Counter_1__ctor_" data-uid="Biocs.Collections.Counter`1.#ctor*"></a>
               <h4 id="Biocs_Collections_Counter_1__ctor_System_Int32_" data-uid="Biocs.Collections.Counter`1.#ctor(System.Int32)">Counter(Int32)</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> class that is empty, has the specified initial capacity
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> class that is empty, has the specified initial capacity,
 and uses the default equality comparer.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
@@ -164,7 +242,23 @@ and uses the default equality comparer.</p>
                   <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
                     <td><span class="parametername">capacity</span></td>
-                    <td><p>The initial number of elements that the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> can contain.</p>
+                    <td><p>The initial number of items that the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> can contain.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="exceptions">Exceptions</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Condition</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
+                    <td><p><span class="paramref">capacity</span> is less than 0.</p>
 </td>
                   </tr>
                 </tbody>
@@ -194,14 +288,14 @@ and uses the specified equality comparer.</p>
                   <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
                     <td><span class="parametername">capacity</span></td>
-                    <td><p>The initial number of elements that the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> can contain.</p>
+                    <td><p>The initial number of items that the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> can contain.</p>
 </td>
                   </tr>
                   <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer</a>&lt;T&gt;</td>
                     <td><span class="parametername">comparer</span></td>
-                    <td><p>The <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> implementation to use when comparing elements, or <span class="xref">null</span> to
-use the default <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> for the type of the element.</p>
+                    <td><p>The <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> implementation to use when comparing items, or <span class="xref">null</span> to
+use the default <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> for the type of the item.</p>
 </td>
                   </tr>
                 </tbody>
@@ -228,7 +322,7 @@ use the default <a class="xref" href="https://msdn.microsoft.com/en-us/library/m
               
               <a id="Biocs_Collections_Counter_1_Comparer_" data-uid="Biocs.Collections.Counter`1.Comparer*"></a>
               <h4 id="Biocs_Collections_Counter_1_Comparer" data-uid="Biocs.Collections.Counter`1.Comparer">Comparer</h4>
-              <div class="markdown level1 summary"><p>Gets the <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> that is used to determine equality of elements for 
+              <div class="markdown level1 summary"><p>Gets the <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> that is used to determine equality of items for 
 the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>. </p>
 </div>
               <div class="markdown level1 conceptual"></div>
@@ -253,9 +347,51 @@ the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>
               </table>
               
               
+              <a id="Biocs_Collections_Counter_1_Item_" data-uid="Biocs.Collections.Counter`1.Item*"></a>
+              <h4 id="Biocs_Collections_Counter_1_Item__0_" data-uid="Biocs.Collections.Counter`1.Item(`0)">Item[T]</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int this[T item] { get; }</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">T</span></td>
+                    <td><span class="parametername">item</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
               <a id="Biocs_Collections_Counter_1_Items_" data-uid="Biocs.Collections.Counter`1.Items*"></a>
               <h4 id="Biocs_Collections_Counter_1_Items" data-uid="Biocs.Collections.Counter`1.Items">Items</h4>
-              <div class="markdown level1 summary"><p>Gets an enumerable collection of distinct elements that the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> has counted before now.</p>
+              <div class="markdown level1 summary"><p>Gets an enumerable collection of unique items that the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> has counted before now.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -278,14 +414,15 @@ the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>
                 </tbody>
               </table>
               <h5 id="Biocs_Collections_Counter_1_Items_remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>Enumerators retured by this enumerable collection cannot be used to modify the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.
+              <div class="markdown level1 remarks"><p><p>This enumerable collection contains items whose the count is 0.</p>
+<p>Enumerators retured by this enumerable collection cannot be used to modify the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.
 For example, the following enumeration raises an <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.invalidoperationexception(v=vs.110).aspx">InvalidOperationException</a>.</p>
 <pre><code>var counter = new Counter&lt;int&gt;();
 counter.Add(new[] { 1, 2, 3 });
 foreach (int item in counter.Items)
 {
   counter.Reset(item);
-}</code></pre>
+}</code></pre></p>
 </div>
               
               
@@ -315,9 +452,34 @@ foreach (int item in counter.Items)
               </table>
               
               
+              <a id="Biocs_Collections_Counter_1_RepeatedItems_" data-uid="Biocs.Collections.Counter`1.RepeatedItems*"></a>
+              <h4 id="Biocs_Collections_Counter_1_RepeatedItems" data-uid="Biocs.Collections.Counter`1.RepeatedItems">RepeatedItems</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IEnumerable&lt;T&gt; RepeatedItems { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;T&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
               <a id="Biocs_Collections_Counter_1_TotalCount_" data-uid="Biocs.Collections.Counter`1.TotalCount*"></a>
               <h4 id="Biocs_Collections_Counter_1_TotalCount" data-uid="Biocs.Collections.Counter`1.TotalCount">TotalCount</h4>
-              <div class="markdown level1 summary"><p>Gets the total of all counts.</p>
+              <div class="markdown level1 summary"><p>Gets the total count of items.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -425,7 +587,7 @@ foreach (int item in counter.Items)
               
               <a id="Biocs_Collections_Counter_1_Add_" data-uid="Biocs.Collections.Counter`1.Add*"></a>
               <h4 id="Biocs_Collections_Counter_1_Add_System_Collections_Generic_IEnumerable__0__" data-uid="Biocs.Collections.Counter`1.Add(System.Collections.Generic.IEnumerable{`0})">Add(IEnumerable&lt;T&gt;)</h4>
-              <div class="markdown level1 summary"><p>Counts the elements of the specified collection.</p>
+              <div class="markdown level1 summary"><p>Counts the items of the specified collection.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -445,14 +607,11 @@ foreach (int item in counter.Items)
                   <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;T&gt;</td>
                     <td><span class="parametername">items</span></td>
-                    <td><p>The collection whose elements should be counted.</p>
+                    <td><p>The collection whose items should be counted.</p>
 </td>
                   </tr>
                 </tbody>
               </table>
-              <h5 id="Biocs_Collections_Counter_1_Add_System_Collections_Generic_IEnumerable__0___remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>If this method throws an exception while counting, the state of <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> is undefined.</p>
-</div>
               <h5 class="exceptions">Exceptions</h5>
               <table class="table table-bordered table-striped table-condensed">
                 <thead>
@@ -473,7 +632,7 @@ foreach (int item in counter.Items)
               
               <a id="Biocs_Collections_Counter_1_Clear_" data-uid="Biocs.Collections.Counter`1.Clear*"></a>
               <h4 id="Biocs_Collections_Counter_1_Clear" data-uid="Biocs.Collections.Counter`1.Clear">Clear()</h4>
-              <div class="markdown level1 summary"><p>Removes all elements from the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.</p>
+              <div class="markdown level1 summary"><p>Removes all items from the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -528,9 +687,73 @@ otherwise, <span class="xref">false</span>.</p>
               </table>
               
               
+              <a id="Biocs_Collections_Counter_1_CopyTo_" data-uid="Biocs.Collections.Counter`1.CopyTo*"></a>
+              <h4 id="Biocs_Collections_Counter_1_CopyTo__0___System_Int32_" data-uid="Biocs.Collections.Counter`1.CopyTo(`0[],System.Int32)">CopyTo(T[], Int32)</h4>
+              <div class="markdown level1 summary"><p>Copies the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> unique items to an existing one-dimensional <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.array(v=vs.110).aspx">Array</a>,
+starting at the specified array index.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void CopyTo(T[] array, int arrayIndex)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>T[]</td>
+                    <td><span class="parametername">array</span></td>
+                    <td><p>The one-dimensional <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.array(v=vs.110).aspx">Array</a> that is the destination of the unique items copied
+from <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td><span class="parametername">arrayIndex</span></td>
+                    <td><p>The zero-based index in <span class="paramref">array</span> at which copying begins.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="exceptions">Exceptions</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Condition</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
+                    <td><p><span class="paramref">array</span> is <span class="xref">null</span>.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
+                    <td><p><span class="paramref">arrayIndex</span> is less than 0.</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentexception(v=vs.110).aspx">ArgumentException</a></td>
+                    <td><p>The number of items in the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> is greater than the available space from
+<span class="paramref">arrayIndex</span> to the end of the destination <span class="paramref">array</span>.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
               <a id="Biocs_Collections_Counter_1_GetCount_" data-uid="Biocs.Collections.Counter`1.GetCount*"></a>
               <h4 id="Biocs_Collections_Counter_1_GetCount__0_" data-uid="Biocs.Collections.Counter`1.GetCount(`0)">GetCount(T)</h4>
-              <div class="markdown level1 summary"><p>Gets the number of times that the element occurs in the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.</p>
+              <div class="markdown level1 summary"><p>Gets the number of times that the item occurs in the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -576,10 +799,99 @@ otherwise, <span class="xref">false</span>.</p>
 </div>
               
               
+              <a id="Biocs_Collections_Counter_1_Remove_" data-uid="Biocs.Collections.Counter`1.Remove*"></a>
+              <h4 id="Biocs_Collections_Counter_1_Remove__0_" data-uid="Biocs.Collections.Counter`1.Remove(`0)">Remove(T)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Remove(T item)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">T</span></td>
+                    <td><span class="parametername">item</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="Biocs_Collections_Counter_1_Remove_" data-uid="Biocs.Collections.Counter`1.Remove*"></a>
+              <h4 id="Biocs_Collections_Counter_1_Remove__0_System_Int32_" data-uid="Biocs.Collections.Counter`1.Remove(`0,System.Int32)">Remove(T, Int32)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool Remove(T item, int times)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">T</span></td>
+                    <td><span class="parametername">item</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td><span class="parametername">times</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
               <a id="Biocs_Collections_Counter_1_Reset_" data-uid="Biocs.Collections.Counter`1.Reset*"></a>
               <h4 id="Biocs_Collections_Counter_1_Reset" data-uid="Biocs.Collections.Counter`1.Reset">Reset()</h4>
-              <div class="markdown level1 summary"><p>Sets the number of times that each element occurs in the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> to zero.
-The collection of elements is preserved.</p>
+              <div class="markdown level1 summary"><p>Sets the number of times that each item occurs in the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> to zero.
+The collection of items is preserved.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -590,7 +902,7 @@ The collection of elements is preserved.</p>
               
               <a id="Biocs_Collections_Counter_1_Reset_" data-uid="Biocs.Collections.Counter`1.Reset*"></a>
               <h4 id="Biocs_Collections_Counter_1_Reset__0_" data-uid="Biocs.Collections.Counter`1.Reset(`0)">Reset(T)</h4>
-              <div class="markdown level1 summary"><p>Sets the number of times that the specified element occurs in the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> to zero.</p>
+              <div class="markdown level1 summary"><p>Sets the number of times that the specified item occurs in the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> to zero.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -610,7 +922,7 @@ The collection of elements is preserved.</p>
                   <tr>
                     <td><span class="xref">T</span></td>
                     <td><span class="parametername">item</span></td>
-                    <td><p>The element to reset the count.</p>
+                    <td><p>The item to reset the count.</p>
 </td>
                   </tr>
                 </tbody>

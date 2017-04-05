@@ -54,12 +54,12 @@ namespace Biocs
         public bool IsGap => Code == DnaBases.Gap;
 
         /// <summary>
-        /// Gets a value indicating whether this nucleotide has an uppercase alphabetic symbol.
+        /// Gets a value indicating whether this nucleotide has an uppercase alphabetic symbol and is not a gap.
         /// </summary>
         public bool IsUpper => (Code ^ DnaBases.Any) < DnaBases.Any;
 
         /// <summary>
-        /// Gets a value indicating whether this nucleotide has a lowercase alphabetic symbol.
+        /// Gets a value indicating whether this nucleotide has a lowercase alphabetic symbol and is not a gap.
         /// </summary>
         public bool IsLower => (Code & DnaBases.Lowercase) == DnaBases.Lowercase;
 

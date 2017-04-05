@@ -240,7 +240,8 @@ namespace Biocs.Collections
         /// the <see cref="Deque{T}"/>.</para> -or- <para><paramref name="count"/> is greater than the available space from 
         /// <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.</para>
         /// </exception>
-        [StringResourceUsage("ArgEx.InvalidCopyRange", 3)]
+        [StringResourceUsage("ArgEx.InvalidCopySrcRange", 2)]
+        [StringResourceUsage("ArgEx.InvalidCopyDestRange", 2)]
         public void CopyTo(int index, T[] array, int arrayIndex, int count)
         {
             if (index < 0)
@@ -255,11 +256,11 @@ namespace Biocs.Collections
             if (count < 0)
                 throw new ArgumentOutOfRangeException(nameof(count));
 
-            if (index + count > size || arrayIndex + count > array.Length)
-            {
-                throw new ArgumentException(
-                    Res.GetString("ArgEx.InvalidCopyRange", count, size - index, array.Length - arrayIndex));
-            }
+            if (index + count > size)
+                throw new ArgumentException(Res.GetString("ArgEx.InvalidCopySrcRange", count, size - index));
+
+            if (arrayIndex + count > array.Length)
+                throw new ArgumentException(Res.GetString("ArgEx.InvalidCopyDestRange", count, array.Length - arrayIndex));
 
             if (count > 0)
             {
