@@ -162,13 +162,13 @@ namespace Biocs
         }
 
         /// <summary>
-        /// Converts the character representation of a nucleotide to an equivalent <see cref="DnaBase"/> instance.
-        /// The return value indicates whether the conversion succeeded. 
+        /// Tries to convert the character representation of a nucleotide to an equivalent <see cref="DnaBase"/> instance,
+        /// and returns a value that indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="value">A character to convert.</param>
         /// <param name="result">
-        /// When this method returns, <paramref name="result"/> contains a <see cref="DnaBase"/> instance whose symbol is 
-        /// represented by <paramref name="value"/> if the parse operation succeeds.
+        /// When this method returns, <paramref name="result"/> contains a <see cref="DnaBase"/> instance whose symbol is
+        /// represented by <paramref name="value"/> if the conversion succeeded, or <see cref="Gap"/> if the conversion failed.
         /// </param>
         /// <returns>
         /// <see langword="true"/> if <paramref name="value"/> was converted successfully; otherwise, <see langword="false"/>.

@@ -734,10 +734,7 @@ namespace Biocs.Collections
                 arrayIndex += items.Length - value;
         }
 
-        private void EnsureCapacity()
-        {
-            EnsureCapacity(items.Length < 3 ? 4 : items.Length * 2);
-        }
+        private void EnsureCapacity() => EnsureCapacity(items.Length < 3 ? 4 : items.Length * 2);
 
         private void EnsureCapacity(int capacity)
         {

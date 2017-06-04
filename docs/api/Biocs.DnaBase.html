@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Struct DnaBase
    | BioC# Documents ">
-    <meta name="generator" content="docfx 2.15.1.0">
+    <meta name="generator" content="docfx 2.16.0.499">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -750,8 +750,8 @@ a case-sensitive operation. By default, each instance is uppercase except gaps.<
               
               <a id="Biocs_DnaBase_TryParse_" data-uid="Biocs.DnaBase.TryParse*"></a>
               <h4 id="Biocs_DnaBase_TryParse_System_Char_Biocs_DnaBase__" data-uid="Biocs.DnaBase.TryParse(System.Char,Biocs.DnaBase@)">TryParse(Char, out DnaBase)</h4>
-              <div class="markdown level1 summary"><p>Converts the character representation of a nucleotide to an equivalent <a class="xref" href="Biocs.DnaBase.html">DnaBase</a> instance.
-The return value indicates whether the conversion succeeded. </p>
+              <div class="markdown level1 summary"><p>Tries to convert the character representation of a nucleotide to an equivalent <a class="xref" href="Biocs.DnaBase.html">DnaBase</a> instance,
+and returns a value that indicates whether the conversion succeeded.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -777,8 +777,8 @@ The return value indicates whether the conversion succeeded. </p>
                   <tr>
                     <td><a class="xref" href="Biocs.DnaBase.html">DnaBase</a></td>
                     <td><span class="parametername">result</span></td>
-                    <td><p>When this method returns, <span class="paramref">result</span> contains a <a class="xref" href="Biocs.DnaBase.html">DnaBase</a> instance whose symbol is 
-represented by <span class="paramref">value</span> if the parse operation succeeds.</p>
+                    <td><p>When this method returns, <span class="paramref">result</span> contains a <a class="xref" href="Biocs.DnaBase.html">DnaBase</a> instance whose symbol is
+represented by <span class="paramref">value</span> if the conversion succeeded, or <a class="xref" href="Biocs.DnaBase.html#Biocs_DnaBase_Gap">Gap</a> if the conversion failed.</p>
 </td>
                   </tr>
                 </tbody>

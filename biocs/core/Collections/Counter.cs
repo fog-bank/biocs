@@ -113,7 +113,7 @@ namespace Biocs.Collections
         /// }
         /// </code>
         /// </remarks>
-        public IEnumerable<T> Items => nullCount.HasValue ? map.Keys.Concat(new[] { default(T) }) : map.Keys;
+        public IEnumerable<T> UniqueItems => nullCount.HasValue ? map.Keys.Concat(new[] { default(T) }) : map.Keys;
 
         public IEnumerable<T> RepeatedItems
         {
@@ -228,7 +228,7 @@ namespace Biocs.Collections
         /// </summary>
         /// <param name="items">The collection whose items should be counted.</param>
         /// <exception cref="ArgumentNullException"><paramref name="items"/> is <see langword="null"/> .</exception>
-        public void Add(IEnumerable<T> items)
+        public void AddRange(IEnumerable<T> items)
         {
             if (items == null)
                 throw new ArgumentNullException(nameof(items));
@@ -319,7 +319,7 @@ namespace Biocs.Collections
                     var pairs = new KeyValuePair<T, int>[counter.NumberOfItems];
                     int i = 0;
 
-                    foreach (var item in counter.Items)
+                    foreach (var item in counter.UniqueItems)
                         pairs[i++] = new KeyValuePair<T, int>(item, counter.GetCount(item));
 
                     return pairs;

@@ -232,6 +232,36 @@ references:
   commentId: N:Biocs.Collections
   fullName: Biocs.Collections
   nameWithType: Biocs.Collections
+- uid: Biocs.Collections.CollectionTools
+  name: CollectionTools
+  href: api/Biocs.Collections.CollectionTools.html
+  commentId: T:Biocs.Collections.CollectionTools
+  fullName: Biocs.Collections.CollectionTools
+  nameWithType: CollectionTools
+- uid: Biocs.Collections.CollectionTools.AllItemsAreEqual*
+  name: AllItemsAreEqual
+  href: api/Biocs.Collections.CollectionTools.html#Biocs_Collections_CollectionTools_AllItemsAreEqual_
+  commentId: Overload:Biocs.Collections.CollectionTools.AllItemsAreEqual
+  fullName: Biocs.Collections.CollectionTools.AllItemsAreEqual
+  nameWithType: CollectionTools.AllItemsAreEqual
+- uid: Biocs.Collections.CollectionTools.AllItemsAreEqual``1(System.Collections.Generic.IEnumerable{``0})
+  name: AllItemsAreEqual<T>(IEnumerable<T>)
+  href: api/Biocs.Collections.CollectionTools.html#Biocs_Collections_CollectionTools_AllItemsAreEqual__1_System_Collections_Generic_IEnumerable___0__
+  commentId: M:Biocs.Collections.CollectionTools.AllItemsAreEqual``1(System.Collections.Generic.IEnumerable{``0})
+  name.vb: AllItemsAreEqual(Of T)(IEnumerable(Of T))
+  fullName: Biocs.Collections.CollectionTools.AllItemsAreEqual<T>(System.Collections.Generic.IEnumerable<T>)
+  fullName.vb: Biocs.Collections.CollectionTools.AllItemsAreEqual(Of T)(System.Collections.Generic.IEnumerable(Of T))
+  nameWithType: CollectionTools.AllItemsAreEqual<T>(IEnumerable<T>)
+  nameWithType.vb: CollectionTools.AllItemsAreEqual(Of T)(IEnumerable(Of T))
+- uid: Biocs.Collections.CollectionTools.AllItemsAreEqual``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0},``0@)
+  name: AllItemsAreEqual<T>(IEnumerable<T>, IEqualityComparer<T>, out T)
+  href: api/Biocs.Collections.CollectionTools.html#Biocs_Collections_CollectionTools_AllItemsAreEqual__1_System_Collections_Generic_IEnumerable___0__System_Collections_Generic_IEqualityComparer___0____0__
+  commentId: M:Biocs.Collections.CollectionTools.AllItemsAreEqual``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0},``0@)
+  name.vb: AllItemsAreEqual(Of T)(IEnumerable(Of T), IEqualityComparer(Of T), ByRef T)
+  fullName: Biocs.Collections.CollectionTools.AllItemsAreEqual<T>(System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.IEqualityComparer<T>, out T)
+  fullName.vb: Biocs.Collections.CollectionTools.AllItemsAreEqual(Of T)(System.Collections.Generic.IEnumerable(Of T), System.Collections.Generic.IEqualityComparer(Of T), ByRef T)
+  nameWithType: CollectionTools.AllItemsAreEqual<T>(IEnumerable<T>, IEqualityComparer<T>, out T)
+  nameWithType.vb: CollectionTools.AllItemsAreEqual(Of T)(IEnumerable(Of T), IEqualityComparer(Of T), ByRef T)
 - uid: Biocs.Collections.Counter`1
   name: Counter<T>
   href: api/Biocs.Collections.Counter-1.html
@@ -423,22 +453,6 @@ references:
   fullName.vb: Biocs.Collections.Counter(Of T).Item
   nameWithType: Counter<T>.Item
   nameWithType.vb: Counter(Of T).Item
-- uid: Biocs.Collections.Counter`1.Items
-  name: Items
-  href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_Items
-  commentId: P:Biocs.Collections.Counter`1.Items
-  fullName: Biocs.Collections.Counter<T>.Items
-  fullName.vb: Biocs.Collections.Counter(Of T).Items
-  nameWithType: Counter<T>.Items
-  nameWithType.vb: Counter(Of T).Items
-- uid: Biocs.Collections.Counter`1.Items*
-  name: Items
-  href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_Items_
-  commentId: Overload:Biocs.Collections.Counter`1.Items
-  fullName: Biocs.Collections.Counter<T>.Items
-  fullName.vb: Biocs.Collections.Counter(Of T).Items
-  nameWithType: Counter<T>.Items
-  nameWithType.vb: Counter(Of T).Items
 - uid: Biocs.Collections.Counter`1.NumberOfItems
   name: NumberOfItems
   href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_NumberOfItems
@@ -535,6 +549,22 @@ references:
   fullName.vb: Biocs.Collections.Counter(Of T).TotalCount
   nameWithType: Counter<T>.TotalCount
   nameWithType.vb: Counter(Of T).TotalCount
+- uid: Biocs.Collections.Counter`1.UniqueItems
+  name: UniqueItems
+  href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_UniqueItems
+  commentId: P:Biocs.Collections.Counter`1.UniqueItems
+  fullName: Biocs.Collections.Counter<T>.UniqueItems
+  fullName.vb: Biocs.Collections.Counter(Of T).UniqueItems
+  nameWithType: Counter<T>.UniqueItems
+  nameWithType.vb: Counter(Of T).UniqueItems
+- uid: Biocs.Collections.Counter`1.UniqueItems*
+  name: UniqueItems
+  href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_UniqueItems_
+  commentId: Overload:Biocs.Collections.Counter`1.UniqueItems
+  fullName: Biocs.Collections.Counter<T>.UniqueItems
+  fullName.vb: Biocs.Collections.Counter(Of T).UniqueItems
+  nameWithType: Counter<T>.UniqueItems
+  nameWithType.vb: Counter(Of T).UniqueItems
 - uid: Biocs.Collections.Deque`1
   name: Deque<T>
   href: api/Biocs.Collections.Deque-1.html

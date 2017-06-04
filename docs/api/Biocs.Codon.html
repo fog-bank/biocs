@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Struct Codon
    | BioC# Documents ">
-    <meta name="generator" content="docfx 2.15.1.0">
+    <meta name="generator" content="docfx 2.16.0.499">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -447,7 +447,7 @@
               
               <a id="Biocs_Codon_Parse_" data-uid="Biocs.Codon.Parse*"></a>
               <h4 id="Biocs_Codon_Parse_System_String_" data-uid="Biocs.Codon.Parse(System.String)">Parse(String)</h4>
-              <div class="markdown level1 summary"><p>Converts the character representation of a codon to an equivalent <a class="xref" href="Biocs.Codon.html">Codon</a> instance.</p>
+              <div class="markdown level1 summary"><p>Converts the string representation of a codon to an equivalent <a class="xref" href="Biocs.Codon.html">Codon</a> instance.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -589,8 +589,8 @@
               
               <a id="Biocs_Codon_TryParse_" data-uid="Biocs.Codon.TryParse*"></a>
               <h4 id="Biocs_Codon_TryParse_System_String_Biocs_Codon__" data-uid="Biocs.Codon.TryParse(System.String,Biocs.Codon@)">TryParse(String, out Codon)</h4>
-              <div class="markdown level1 summary"><p>Converts the string representation of a codon to an equivalent <a class="xref" href="Biocs.Codon.html">Codon</a> instance.
-The return value indicates whether the conversion succeeded. </p>
+              <div class="markdown level1 summary"><p>Tries to convert the string representation of a codon to an equivalent <a class="xref" href="Biocs.Codon.html">Codon</a> instance,
+and returns a value that indicates whether the conversion succeeded.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -617,7 +617,7 @@ The return value indicates whether the conversion succeeded. </p>
                     <td><a class="xref" href="Biocs.Codon.html">Codon</a></td>
                     <td><span class="parametername">result</span></td>
                     <td><p>When this method returns, <span class="paramref">result</span> contains a <a class="xref" href="Biocs.Codon.html">Codon</a> instance that is represented by
-<span class="paramref">value</span> if the parse operation succeeds.</p>
+<span class="paramref">value</span> if the conversion succeeded, or <a class="xref" href="Biocs.Codon.html#Biocs_Codon_Gap">Gap</a> if the conversion failed.</p>
 </td>
                   </tr>
                 </tbody>

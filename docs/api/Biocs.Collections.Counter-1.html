@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Counter&lt;T&gt;
    | BioC# Documents ">
-    <meta name="generator" content="docfx 2.15.1.0">
+    <meta name="generator" content="docfx 2.16.0.499">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -389,43 +389,6 @@ the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>
               </table>
               
               
-              <a id="Biocs_Collections_Counter_1_Items_" data-uid="Biocs.Collections.Counter`1.Items*"></a>
-              <h4 id="Biocs_Collections_Counter_1_Items" data-uid="Biocs.Collections.Counter`1.Items">Items</h4>
-              <div class="markdown level1 summary"><p>Gets an enumerable collection of unique items that the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> has counted before now.</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public IEnumerable&lt;T&gt; Items { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;T&gt;</td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 id="Biocs_Collections_Counter_1_Items_remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p><p>This enumerable collection contains items whose the count is 0.</p>
-<p>Enumerators retured by this enumerable collection cannot be used to modify the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.
-For example, the following enumeration raises an <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.invalidoperationexception(v=vs.110).aspx">InvalidOperationException</a>.</p>
-<pre><code>var counter = new Counter&lt;int&gt;();
-counter.Add(new[] { 1, 2, 3 });
-foreach (int item in counter.Items)
-{
-  counter.Reset(item);
-}</code></pre></p>
-</div>
-              
-              
               <a id="Biocs_Collections_Counter_1_NumberOfItems_" data-uid="Biocs.Collections.Counter`1.NumberOfItems*"></a>
               <h4 id="Biocs_Collections_Counter_1_NumberOfItems" data-uid="Biocs.Collections.Counter`1.NumberOfItems">NumberOfItems</h4>
               <div class="markdown level1 summary"><p>Gets the number of the kinds of items that the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> contains.</p>
@@ -501,6 +464,43 @@ foreach (int item in counter.Items)
                   </tr>
                 </tbody>
               </table>
+              
+              
+              <a id="Biocs_Collections_Counter_1_UniqueItems_" data-uid="Biocs.Collections.Counter`1.UniqueItems*"></a>
+              <h4 id="Biocs_Collections_Counter_1_UniqueItems" data-uid="Biocs.Collections.Counter`1.UniqueItems">UniqueItems</h4>
+              <div class="markdown level1 summary"><p>Gets an enumerable collection of unique items that the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> has counted before now.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IEnumerable&lt;T&gt; UniqueItems { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;T&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="Biocs_Collections_Counter_1_UniqueItems_remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p><p>This enumerable collection contains items whose the count is 0.</p>
+<p>Enumerators retured by this enumerable collection cannot be used to modify the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.
+For example, the following enumeration raises an <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.invalidoperationexception(v=vs.110).aspx">InvalidOperationException</a>.</p>
+<pre><code>var counter = new Counter&lt;int&gt;();
+counter.Add(new[] { 1, 2, 3 });
+foreach (int item in counter.Items)
+{
+  counter.Reset(item);
+}</code></pre></p>
+</div>
               <h3 id="methods">Methods
               </h3>
               
@@ -847,7 +847,7 @@ from <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public bool Remove(T item, int times)</code></pre>
+                <pre><code class="lang-csharp hljs">public int Remove(T item, int times)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -881,7 +881,7 @@ from <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
                     <td></td>
                   </tr>
                 </tbody>

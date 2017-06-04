@@ -87,7 +87,7 @@ namespace Biocs
         public override string ToString() => Symbols;
 
         /// <summary>
-        /// Converts the character representation of a codon to an equivalent <see cref="Codon"/> instance.
+        /// Converts the string representation of a codon to an equivalent <see cref="Codon"/> instance.
         /// </summary>
         /// <param name="value">A string to convert.</param>
         /// <returns>A <see cref="Codon"/> instance whose symbol is represented by <paramref name="value"/>.</returns>
@@ -104,13 +104,13 @@ namespace Biocs
         }
 
         /// <summary>
-        /// Converts the string representation of a codon to an equivalent <see cref="Codon"/> instance.
-        /// The return value indicates whether the conversion succeeded. 
+        /// Tries to convert the string representation of a codon to an equivalent <see cref="Codon"/> instance,
+        /// and returns a value that indicates whether the conversion succeeded.
         /// </summary>
         /// <param name="value">A string to convert.</param>
         /// <param name="result">
         /// When this method returns, <paramref name="result"/> contains a <see cref="Codon"/> instance that is represented by
-        /// <paramref name="value"/> if the parse operation succeeds.
+        /// <paramref name="value"/> if the conversion succeeded, or <see cref="Gap"/> if the conversion failed.
         /// </param>
         /// <returns>
         /// <see langword="true"/> if <paramref name="value"/> was converted successfully; otherwise, <see langword="false"/>.

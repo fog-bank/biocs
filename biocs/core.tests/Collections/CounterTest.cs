@@ -17,23 +17,23 @@ namespace Biocs.Collections
 			var c1 = new Counter<object>();
 			Assert.AreEqual(0, c1.TotalCount);
 			Assert.AreEqual(0, c1.NumberOfItems);
-			Assert.IsFalse(c1.Items.Any());
+			Assert.IsFalse(c1.UniqueItems.Any());
 
 			var c2 = new Counter<int>(10);
 			Assert.AreEqual(0, c2.TotalCount);
 			Assert.AreEqual(0, c2.NumberOfItems);
-			Assert.IsFalse(c2.Items.Any());
+			Assert.IsFalse(c2.UniqueItems.Any());
 
 			var c3 = new Counter<string>(StringComparer.InvariantCulture);
 			Assert.AreEqual(0, c3.TotalCount);
 			Assert.AreEqual(0, c3.NumberOfItems);
-			Assert.IsFalse(c3.Items.Any());
+			Assert.IsFalse(c3.UniqueItems.Any());
 			Assert.AreEqual(StringComparer.InvariantCulture, c3.Comparer);
 
 			var c4 = new Counter<string>(10, StringComparer.InvariantCultureIgnoreCase);
 			Assert.AreEqual(0, c4.TotalCount);
 			Assert.AreEqual(0, c4.NumberOfItems);
-			Assert.IsFalse(c4.Items.Any());
+			Assert.IsFalse(c4.UniqueItems.Any());
 			Assert.AreEqual(StringComparer.InvariantCultureIgnoreCase, c4.Comparer);
 
 			BiocsAssert.Throws<ArgumentOutOfRangeException>(() => new Counter<object>(-1));
@@ -74,7 +74,7 @@ namespace Biocs.Collections
 			counter.Add(1);
 			Assert.AreEqual(1, counter.TotalCount);
 			Assert.AreEqual(1, counter.NumberOfItems);
-			Assert.IsTrue(new HashSet<int> { 1 }.SetEquals(counter.Items));
+			Assert.IsTrue(new HashSet<int> { 1 }.SetEquals(counter.UniqueItems));
 			Assert.AreEqual(1, counter.GetCount(1));
 			Assert.AreEqual(0, counter.GetCount(2));
 			Assert.AreEqual(0, counter.GetCount(3));
@@ -85,7 +85,7 @@ namespace Biocs.Collections
 			counter.Add(1, 3);
 			Assert.AreEqual(4, counter.TotalCount);
 			Assert.AreEqual(1, counter.NumberOfItems);
-			Assert.IsTrue(new HashSet<int> { 1 }.SetEquals(counter.Items));
+			Assert.IsTrue(new HashSet<int> { 1 }.SetEquals(counter.UniqueItems));
 			Assert.AreEqual(4, counter.GetCount(1));
 			Assert.AreEqual(0, counter.GetCount(2));
 			Assert.AreEqual(0, counter.GetCount(3));
@@ -96,7 +96,7 @@ namespace Biocs.Collections
 			counter.Add(2, 2);
 			Assert.AreEqual(6, counter.TotalCount);
 			Assert.AreEqual(2, counter.NumberOfItems);
-			Assert.IsTrue(new HashSet<int> { 1, 2 }.SetEquals(counter.Items));
+			Assert.IsTrue(new HashSet<int> { 1, 2 }.SetEquals(counter.UniqueItems));
 			Assert.AreEqual(4, counter.GetCount(1));
 			Assert.AreEqual(2, counter.GetCount(2));
 			Assert.AreEqual(0, counter.GetCount(3));
@@ -107,7 +107,7 @@ namespace Biocs.Collections
 			counter.Add(3, 0);
 			Assert.AreEqual(6, counter.TotalCount);
 			Assert.AreEqual(3, counter.NumberOfItems);
-			Assert.IsTrue(new HashSet<int> { 1, 2, 3 }.SetEquals(counter.Items));
+			Assert.IsTrue(new HashSet<int> { 1, 2, 3 }.SetEquals(counter.UniqueItems));
 			Assert.AreEqual(4, counter.GetCount(1));
 			Assert.AreEqual(2, counter.GetCount(2));
 			Assert.AreEqual(0, counter.GetCount(3));
@@ -134,11 +134,11 @@ namespace Biocs.Collections
 			}
 
 			var counter = new Counter<string>(StringComparer.OrdinalIgnoreCase);
-			counter.Add(input);
+			counter.AddRange(input);
 
 			Assert.AreEqual(input.Count, counter.TotalCount);
 			Assert.AreEqual(items.Length, counter.NumberOfItems);
-			Assert.IsTrue(new HashSet<string>(items, StringComparer.OrdinalIgnoreCase).SetEquals(counter.Items));
+			Assert.IsTrue(new HashSet<string>(items, StringComparer.OrdinalIgnoreCase).SetEquals(counter.UniqueItems));
 
 			for (int i = 0; i < items.Length; i++)
 			{
@@ -146,8 +146,8 @@ namespace Biocs.Collections
 				Assert.IsTrue(counter.Contains(items[i]));
 			}
 
-			BiocsAssert.Throws<ArgumentNullException>(() => new Counter<object>().Add((object[])null));
-			BiocsAssert.Throws<ArgumentException>(() => new Counter<object>().Add(new object[] { null }));
+			BiocsAssert.Throws<ArgumentNullException>(() => new Counter<object>().AddRange((object[])null));
+			BiocsAssert.Throws<ArgumentException>(() => new Counter<object>().AddRange(new object[] { null }));
 		}
 
 		[TestMethod]
@@ -171,7 +171,7 @@ namespace Biocs.Collections
 			for (int i = 0; i < startIndex; i++)
 				Assert.AreEqual(0, array[i]);
 
-			Assert.IsTrue(counter.Items.SequenceEqual(array.Skip(startIndex).Take(count)));
+			Assert.IsTrue(counter.UniqueItems.SequenceEqual(array.Skip(startIndex).Take(count)));
 
 			for (int i = startIndex + count; i < array.Length; i++)
 				Assert.AreEqual(0, array[i]);
@@ -219,7 +219,7 @@ namespace Biocs.Collections
 		public void Clear_Test()
 		{
 			var counter = new Counter<int>();
-			counter.Add(Enumerable.Range(0, 10));
+			counter.AddRange(Enumerable.Range(0, 10));
 
 			counter.Clear();
 
