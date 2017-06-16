@@ -1,2 +1,7 @@
-# PLACEHOLDER
-TODO: Add .NET projects to the *src* folder and run `docfx` to generate **REAL** *API Documentation*!
+# BioC&#35; API Documentation
+The following is a list of namespaces.
+
+| Namespace | Description |
+|:--|:--|
+| <xref:Biocs> |  |
+| <xref:Biocs.Collections> |  |

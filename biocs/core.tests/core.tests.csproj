@@ -51,6 +51,9 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CodonTest.cs" />
+    <Compile Include="Collections\CollectionToolsTest.cs" />
+    <Compile Include="Collections\CounterTest.cs" />
+    <Compile Include="Collections\DequeTest.cs" />
     <Compile Include="DnaBaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResTest.cs" />

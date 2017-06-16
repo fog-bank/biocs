@@ -3,17 +3,21 @@
 #---------------------------------#
 
 # version format
-version: 1.0.0-{build}
+version: 0.1.0-{build}
 
-# Maximum number of concurrent jobs for the project
-max_jobs: 1
+# branches to build
+branches:
+  # whitelist
+  only:
+    - master
+    - develop
 
 #---------------------------------#
 #    environment configuration    #
 #---------------------------------#
 
 # Build worker image (VM template)
-os: Visual Studio 2015
+image: Visual Studio 2017
 
 #---------------------------------#
 #       build configuration       #
@@ -22,7 +26,7 @@ os: Visual Studio 2015
 # scripts to run before build
 before_build:
   - ps: dotnet --info
-  - ps: dotnet restore
+  - ps: nuget restore biocs\biocs.sln
 
 #---------------------------------#
 #       tests configuration       #
