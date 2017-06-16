@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -12,208 +11,378 @@ namespace Biocs.Collections
     public class CounterTest
     {
 		[TestMethod]
-		public void Constructor_Test1()
+		public void Constructor_Test()
 		{
 			var c1 = new Counter<object>();
-			Assert.AreEqual(0, c1.TotalCount);
-			Assert.AreEqual(0, c1.NumberOfItems);
-			Assert.IsFalse(c1.UniqueItems.Any());
+            TestProperties(c1, 0, 0, new HashSet<object>(), new object[0], EqualityComparer<object>.Default);
 
-			var c2 = new Counter<int>(10);
-			Assert.AreEqual(0, c2.TotalCount);
-			Assert.AreEqual(0, c2.NumberOfItems);
-			Assert.IsFalse(c2.UniqueItems.Any());
+            var c2 = new Counter<int>(10);
+            TestProperties(c2, 0, 0, new HashSet<int>(), new int[0], EqualityComparer<int>.Default);
 
-			var c3 = new Counter<string>(StringComparer.InvariantCulture);
-			Assert.AreEqual(0, c3.TotalCount);
-			Assert.AreEqual(0, c3.NumberOfItems);
-			Assert.IsFalse(c3.UniqueItems.Any());
-			Assert.AreEqual(StringComparer.InvariantCulture, c3.Comparer);
+            var comparer3 = StringComparer.InvariantCulture;
+            var c3 = new Counter<string>(comparer3);
+            TestProperties(c3, 0, 0, new HashSet<string>(comparer3), new string[0], comparer3);
 
-			var c4 = new Counter<string>(10, StringComparer.InvariantCultureIgnoreCase);
-			Assert.AreEqual(0, c4.TotalCount);
-			Assert.AreEqual(0, c4.NumberOfItems);
-			Assert.IsFalse(c4.UniqueItems.Any());
-			Assert.AreEqual(StringComparer.InvariantCultureIgnoreCase, c4.Comparer);
+            var comparer4 = StringComparer.InvariantCultureIgnoreCase;
+			var c4 = new Counter<string>(10, comparer4);
+            TestProperties(c4, 0, 0, new HashSet<string>(comparer4), new string[0], comparer4);
 
 			BiocsAssert.Throws<ArgumentOutOfRangeException>(() => new Counter<object>(-1));
 			BiocsAssert.Throws<ArgumentOutOfRangeException>(() => new Counter<object>(-1, null));
+        }
 
-			BiocsAssert.Throws<ArgumentNullException>(() => new Counter<object>().GetCount(null));
-		}
+        [TestMethod]
+        public void CopyConstructor_ValTest()
+        {
+            var set = new HashSet<int> { 1 };
+            var counter = new Counter<int>();
+            counter.Add(1, 2);
 
-		[TestMethod]
-		public void Constructor_Test2()
+            var clone = new Counter<int>(counter);
+            TestProperties(clone, 1, 2, set, new[] { 1, 1 }, EqualityComparer<int>.Default);
+            TestItem(clone, 1, 2);
+
+            counter.Add(0, 1);
+            set.Add(0);
+
+            clone = new Counter<int>(counter);
+            TestProperties(clone, 2, 3, set, new[] { 0, 1, 1 }, EqualityComparer<int>.Default);
+            TestItem(clone, 1, 2);
+            TestItem(clone, 0, 1);
+
+            BiocsAssert.Throws<ArgumentNullException>(() => new Counter<object>((Counter<object>)null));
+        }
+
+        [TestMethod]
+		public void CopyConstructor_RefTest()
 		{
-			var counter = new Counter<string>();
-
-			counter.Add("A", 1);
+            var comparer = StringComparer.OrdinalIgnoreCase;
+            var set = new HashSet<string>(comparer) { "A", "B", "C" };
+            var counter = new Counter<string>(comparer);
+            counter.Add("A", 1);
 			counter.Add("B", 2);
 			counter.Add("C", 3);
 
 			var clone = new Counter<string>(counter);
+            TestProperties(clone, 3, 6, set, new[] { "A", "B", "B", "C", "C", "C" }, comparer);
+            TestItem(clone, "A", 1);
+            TestItem(clone, "B", 2);
+            TestItem(clone, "C", 3);
 
-			Assert.AreEqual(counter.TotalCount, clone.TotalCount);
-			Assert.AreEqual(counter.NumberOfItems, clone.NumberOfItems);
-			Assert.AreEqual(counter.Comparer, clone.Comparer);
+            counter.Add(null, 1);
+            set.Add(null);
 
-			counter.Reset("C");
+            clone = new Counter<string>(counter);
+            TestProperties(clone, 4, 7, set, new[] { null, "A", "B", "B", "C", "C", "C" }, comparer);
+            TestItem(clone, "A", 1);
+            TestItem(clone, "B", 2);
+            TestItem(clone, "C", 3);
+            TestItem(clone, null, 1);
+        }
 
-			Assert.AreEqual(1, clone.GetCount("A"));
-			Assert.AreEqual(2, clone.GetCount("B"));
-			Assert.AreEqual(3, clone.GetCount("C"));
+        [TestMethod]
+        public void CopyTo_ValTest()
+        {
+            const int count = 5;
+            const int startIndex = 2;
+            const int defaultValue = -1;
 
-			BiocsAssert.Throws<ArgumentNullException>(() => new Counter<object>((Counter<object>)null));
-		}
+            var query = Enumerable.Range(0, count);
+            var counter = new Counter<int>();
 
-		[TestMethod]
-		public void Add_Test1()
-		{
-			var counter = new Counter<int>();
+            foreach (int num in query)
+                counter.Add(num);
+
+            TestProperties(counter, count, count, new HashSet<int>(query), query.ToArray(), EqualityComparer<int>.Default);
+
+            var array = new int[10];
+
+            for (int i = 0; i < array.Length; i++)
+                array[i] = defaultValue;
+
+            counter.CopyTo(array, startIndex);
+
+            for (int i = 0; i < startIndex; i++)
+                Assert.AreEqual(defaultValue, array[i]);
+
+            Assert.IsTrue(counter.UniqueItems.SequenceEqual(array.Skip(startIndex).Take(count)));
+
+            for (int i = startIndex + count; i < array.Length; i++)
+                Assert.AreEqual(defaultValue, array[i]);
+
+            TestProperties(counter, count, count, new HashSet<int>(query), query.ToArray(), EqualityComparer<int>.Default);
+
+            BiocsAssert.Throws<ArgumentNullException>(() => counter.CopyTo(null, 0));
+            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => counter.CopyTo(new int[count], -1));
+            BiocsAssert.Throws<ArgumentException>(() => counter.CopyTo(new int[count], 3));
+        }
+
+        [TestMethod]
+		public void Add_ValTest()
+        {
+            var comparer = EqualityComparer<int>.Default;
+            var set = new HashSet<int>(comparer);
+            var counter = new Counter<int>();
 
 			counter.Add(1);
-			Assert.AreEqual(1, counter.TotalCount);
-			Assert.AreEqual(1, counter.NumberOfItems);
-			Assert.IsTrue(new HashSet<int> { 1 }.SetEquals(counter.UniqueItems));
-			Assert.AreEqual(1, counter.GetCount(1));
-			Assert.AreEqual(0, counter.GetCount(2));
-			Assert.AreEqual(0, counter.GetCount(3));
-			Assert.IsTrue(counter.Contains(1));
-			Assert.IsFalse(counter.Contains(2));
-			Assert.IsFalse(counter.Contains(3));
+            set.Add(1);
+            TestProperties(counter, 1, 1, set, new[] { 1 }, comparer);
+            TestItem(counter, 0, null);
+            TestItem(counter, 1, 1);
+            TestItem(counter, 2, null);
+            TestItem(counter, 3, null);
 
 			counter.Add(1, 3);
-			Assert.AreEqual(4, counter.TotalCount);
-			Assert.AreEqual(1, counter.NumberOfItems);
-			Assert.IsTrue(new HashSet<int> { 1 }.SetEquals(counter.UniqueItems));
-			Assert.AreEqual(4, counter.GetCount(1));
-			Assert.AreEqual(0, counter.GetCount(2));
-			Assert.AreEqual(0, counter.GetCount(3));
-			Assert.IsTrue(counter.Contains(1));
-			Assert.IsFalse(counter.Contains(2));
-			Assert.IsFalse(counter.Contains(3));
+            TestProperties(counter, 1, 4, set, new[] { 1, 1, 1, 1 }, comparer);
+            TestItem(counter, 0, null);
+            TestItem(counter, 1, 4);
+            TestItem(counter, 2, null);
+            TestItem(counter, 3, null);
 
-			counter.Add(2, 2);
-			Assert.AreEqual(6, counter.TotalCount);
-			Assert.AreEqual(2, counter.NumberOfItems);
-			Assert.IsTrue(new HashSet<int> { 1, 2 }.SetEquals(counter.UniqueItems));
-			Assert.AreEqual(4, counter.GetCount(1));
-			Assert.AreEqual(2, counter.GetCount(2));
-			Assert.AreEqual(0, counter.GetCount(3));
-			Assert.IsTrue(counter.Contains(1));
-			Assert.IsTrue(counter.Contains(2));
-			Assert.IsFalse(counter.Contains(3));
+            counter.Add(2, 2);
+            set.Add(2);
+            TestProperties(counter, 2, 6, set, new[] { 1, 1, 1, 1, 2, 2 }, comparer);
+            TestItem(counter, 0, null);
+            TestItem(counter, 1, 4);
+            TestItem(counter, 2, 2);
+            TestItem(counter, 3, null);
 
-			counter.Add(3, 0);
-			Assert.AreEqual(6, counter.TotalCount);
-			Assert.AreEqual(3, counter.NumberOfItems);
-			Assert.IsTrue(new HashSet<int> { 1, 2, 3 }.SetEquals(counter.UniqueItems));
-			Assert.AreEqual(4, counter.GetCount(1));
-			Assert.AreEqual(2, counter.GetCount(2));
-			Assert.AreEqual(0, counter.GetCount(3));
-			Assert.IsTrue(counter.Contains(1));
-			Assert.IsTrue(counter.Contains(2));
-			Assert.IsTrue(counter.Contains(3));
+            counter.Add(3, 0);
+            set.Add(3);
+            TestProperties(counter, 3, 6, set, new[] { 1, 1, 1, 1, 2, 2 }, comparer);
+            TestItem(counter, 0, null);
+            TestItem(counter, 1, 4);
+            TestItem(counter, 2, 2);
+            TestItem(counter, 3, 0);
 
-			BiocsAssert.Throws<ArgumentNullException>(() => new Counter<object>().Add((object)null));
-			BiocsAssert.Throws<ArgumentNullException>(() => new Counter<object>().Add(null, 0));
-			BiocsAssert.Throws<ArgumentOutOfRangeException>(() => new Counter<int>().Add(0, -1));
+            counter.Add(0);
+            set.Add(0);
+            TestProperties(counter, 4, 7, set, new[] { 0, 1, 1, 1, 1, 2, 2 }, comparer);
+            TestItem(counter, 0, 1);
+            TestItem(counter, 1, 4);
+            TestItem(counter, 2, 2);
+            TestItem(counter, 3, 0);
+
+            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => new Counter<int>().Add(0, -1));
 		}
 
-		[TestMethod]
-		public void Add_Test2()
-		{
-			string[] items = { "a", "b", "c", "d" };
+        [TestMethod]
+        public void Add_RefTest()
+        {
+            var comparer = StringComparer.OrdinalIgnoreCase;
+            var set = new HashSet<string>(comparer);
+            var counter = new Counter<string>(comparer);
 
+            counter.Add("A");
+            set.Add("A");
+            TestProperties(counter, 1, 1, set, new[] { "A" }, comparer);
+            TestItem(counter, null, null);
+            TestItem(counter, "A", 1);
+            TestItem(counter, "B", null);
+            TestItem(counter, "C", null);
+
+            counter.Add("a", 3);
+            TestProperties(counter, 1, 4, set, new[] { "A", "A", "A", "A" }, comparer);
+            TestItem(counter, null, null);
+            TestItem(counter, "A", 4);
+            TestItem(counter, "B", null);
+            TestItem(counter, "C", null);
+
+            counter.Add("B", 2);
+            set.Add("B");
+            TestProperties(counter, 2, 6, set, new[] { "A", "A", "A", "A", "B", "B" }, comparer);
+            TestItem(counter, null, null);
+            TestItem(counter, "A", 4);
+            TestItem(counter, "B", 2);
+            TestItem(counter, "C", null);
+
+            counter.Add("C", 0);
+            set.Add("C");
+            TestProperties(counter, 3, 6, set, new[] { "A", "A", "A", "A", "B", "B" }, comparer);
+            TestItem(counter, null, null);
+            TestItem(counter, "A", 4);
+            TestItem(counter, "B", 2);
+            TestItem(counter, "C", 0);
+
+            counter.Add(null);
+            set.Add(null);
+            TestProperties(counter, 4, 7, set, new[] { null, "A", "A", "A", "A", "B", "B" }, comparer);
+            TestItem(counter, null, 1);
+            TestItem(counter, "A", 4);
+            TestItem(counter, "B", 2);
+            TestItem(counter, "C", 0);
+
+            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => new Counter<string>().Add(string.Empty, -1));
+        }
+
+		[TestMethod]
+		public void AddRange_RefTest()
+		{
+			var items = new[] { "a", "b", "c", "d", null };
 			var input = new List<string>();
 
 			for (int i = 0; i < items.Length; i++)
 			{
 				for (int n = 0; n <= i; n++)
-					input.Add(n == 0 ? items[i] : items[i].ToUpper(CultureInfo.InvariantCulture));
+					input.Add(n == 0 ? items[i] : items[i]?.ToUpper(CultureInfo.InvariantCulture));
 			}
 
-			var counter = new Counter<string>(StringComparer.OrdinalIgnoreCase);
-			counter.AddRange(input);
+            var comparer = StringComparer.OrdinalIgnoreCase;
+			var counter = new Counter<string>(comparer);
 
-			Assert.AreEqual(input.Count, counter.TotalCount);
-			Assert.AreEqual(items.Length, counter.NumberOfItems);
-			Assert.IsTrue(new HashSet<string>(items, StringComparer.OrdinalIgnoreCase).SetEquals(counter.UniqueItems));
+            counter.AddRange(input);
+            TestProperties(counter, items.Length, input.Count, 
+                new HashSet<string>(items, comparer), input.Select(x => x?.ToLowerInvariant()).ToArray(), comparer);
 
 			for (int i = 0; i < items.Length; i++)
-			{
-				Assert.AreEqual(i + 1, counter.GetCount(items[i]));
-				Assert.IsTrue(counter.Contains(items[i]));
-			}
+                TestItem(counter, items[i], i + 1);
 
-			BiocsAssert.Throws<ArgumentNullException>(() => new Counter<object>().AddRange((object[])null));
-			BiocsAssert.Throws<ArgumentException>(() => new Counter<object>().AddRange(new object[] { null }));
+            BiocsAssert.Throws<ArgumentNullException>(() => new Counter<object>().AddRange(null));
 		}
 
+        [TestMethod]
+        public void Remove_ValTest()
+        {
+            var comparer = EqualityComparer<int>.Default;
+            var items = new List<int>();
+            var set = new HashSet<int>();
+            var counter = new Counter<int>();
+
+            foreach (var tup in new[] { 0, 1, 2, 3 }.Zip(new[] { 1, 0, 3, 4 }, Tuple.Create))
+            {
+                counter.Add(tup.Item1, tup.Item2);
+                set.Add(tup.Item1);
+                items.AddRange(Enumerable.Repeat(tup.Item1, tup.Item2));
+            }
+            TestProperties(counter, 4, 8, set, items.ToArray(), comparer);
+
+            Assert.IsFalse(counter.Remove(1));
+            TestProperties(counter, 4, 8, set, items.ToArray(), comparer);
+            TestItem(counter, 1, 0);
+
+            Assert.IsTrue(counter.Remove(2));
+            items.Remove(2);
+            TestProperties(counter, 4, 7, set, items.ToArray(), comparer);
+            TestItem(counter, 2, 2);
+
+            Assert.AreEqual(0, counter.Remove(2, 0));
+            TestProperties(counter, 4, 7, set, items.ToArray(), comparer);
+            TestItem(counter, 2, 2);
+
+            Assert.AreEqual(3, counter.Remove(3, 3));
+            items.Remove(3);
+            items.Remove(3);
+            items.Remove(3);
+            TestProperties(counter, 4, 4, set, items.ToArray(), comparer);
+            TestItem(counter, 3, 1);
+
+            Assert.AreEqual(1, counter.Remove(0, 2));
+            items.Remove(0);
+            TestProperties(counter, 4, 3, set, items.ToArray(), comparer);
+            TestItem(counter, 0, 0);
+
+            Assert.IsFalse(counter.Remove(4));
+            TestProperties(counter, 4, 3, set, items.ToArray(), comparer);
+            TestItem(counter, 4, null);
+
+            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => counter.Remove(0, -1));
+        }
+
+        [TestMethod]
+        public void Remove_RefTest()
+        {
+            var comparer = StringComparer.OrdinalIgnoreCase;
+            var items = new List<string>();
+            var set = new HashSet<string>(comparer);
+            var counter = new Counter<string>(comparer);
+
+            foreach (var tup in new[] { "A", "a", "B", null }.Zip(new[] { 3, 2, 0, 2 }, Tuple.Create))
+            {
+                counter.Add(tup.Item1, tup.Item2);
+                set.Add(tup.Item1);
+                items.AddRange(Enumerable.Repeat(tup.Item1?.ToUpper(), tup.Item2));
+            }
+            TestProperties(counter, 3, 7, set, items.ToArray(), comparer);
+
+            Assert.IsFalse(counter.Remove("B"));
+            TestProperties(counter, 3, 7, set, items.ToArray(), comparer);
+            TestItem(counter, "B", 0);
+
+            Assert.IsTrue(counter.Remove("a"));
+            items.Remove("A");
+            TestProperties(counter, 3, 6, set, items.ToArray(), comparer);
+            TestItem(counter, "A", 4);
+
+            Assert.AreEqual(4, counter.Remove("A", 5));
+            items.RemoveAll(x => x == "A");
+            TestProperties(counter, 3, 2, set, items.ToArray(), comparer);
+            TestItem(counter, "A", 0);
+
+            Assert.AreEqual(1, counter.Remove(null, 1));
+            items.Remove(null);
+            TestProperties(counter, 3, 1, set, items.ToArray(), comparer);
+            TestItem(counter, null, 1);
+        }
+
 		[TestMethod]
-		public void CopyTo_Test()
-		{
-			const int count = 5;
-			const int startIndex = 2;
-
-			var query = Enumerable.Range(1, count);
-			var counter = new Counter<int>();
-
-			foreach (int num in query)
-				counter.Add(num);
-
-			Assert.AreEqual(count, counter.TotalCount);
-			Assert.AreEqual(count, counter.NumberOfItems);
-
-			var array = new int[10];
-			counter.CopyTo(array, startIndex);
-
-			for (int i = 0; i < startIndex; i++)
-				Assert.AreEqual(0, array[i]);
-
-			Assert.IsTrue(counter.UniqueItems.SequenceEqual(array.Skip(startIndex).Take(count)));
-
-			for (int i = startIndex + count; i < array.Length; i++)
-				Assert.AreEqual(0, array[i]);
-
-			BiocsAssert.Throws<ArgumentNullException>(() => counter.CopyTo(null, 0));
-			BiocsAssert.Throws<ArgumentOutOfRangeException>(() => counter.CopyTo(new int[count], -1));
-		}
-
-		[TestMethod]
-		public void Reset_Test()
+		public void Reset_ValTest()
 		{
 			var query = Enumerable.Range(1, 10);
-			var counter = new Counter<int>();
+            var items = new List<int>();
+            var comparer = EqualityComparer<int>.Default;
+            var set = new HashSet<int>(query);
+            var counter = new Counter<int>();
 
-			foreach (int num in query)
-				counter.Add(num, num);
-
-			Assert.AreEqual(55, counter.TotalCount);
-			Assert.AreEqual(10, counter.NumberOfItems);
+            foreach (int num in query)
+            {
+                items.AddRange(Enumerable.Repeat(num, num));
+                counter.Add(num, num);
+            }
+            TestProperties(counter, 10, 55, set, items.ToArray(), comparer);
 
 			counter.Reset(1);
-
-			Assert.AreEqual(54, counter.TotalCount);
-			Assert.AreEqual(10, counter.NumberOfItems);
-			Assert.IsTrue(counter.Contains(1));
+            items.Remove(1);
+            TestProperties(counter, 10, 54, set, items.ToArray(), comparer);
+            TestItem(counter, 1, 0);
 
 			counter.Reset(10);
+            items.RemoveAll(x => x == 10);
+            TestProperties(counter, 10, 44, set, items.ToArray(), comparer);
+            TestItem(counter, 10, 0);
 
-			Assert.AreEqual(44, counter.TotalCount);
-			Assert.AreEqual(10, counter.NumberOfItems);
-			Assert.IsTrue(counter.Contains(10));
-
-			counter.Reset();
-
-			Assert.AreEqual(0, counter.TotalCount);
-			Assert.AreEqual(10, counter.NumberOfItems);
+            counter.Reset();
+            TestProperties(counter, 10, 0, set, new int[0], comparer);
 
 			foreach (int num in query)
-				Assert.IsTrue(counter.Contains(num));
+                TestItem(counter, num, 0);
+        }
 
-			BiocsAssert.Throws<ArgumentNullException>(() => new Counter<object>().Reset(null));
-		}
+        [TestMethod]
+        public void Reset_RefTest()
+        {
+            var query = new[] { null, "A", "A", "B" };
+            var items = new List<string>(query);
+            var comparer = EqualityComparer<string>.Default;
+            var set = new HashSet<string>(query);
+            var counter = new Counter<string>();
+
+            counter.AddRange(query);
+            TestProperties(counter, 3, 4, set, query, comparer);
+
+            counter.Reset("A");
+            items.RemoveAll(x => x == "A");
+            TestProperties(counter, 3, 2, set, items.ToArray(), comparer);
+            TestItem(counter, "A", 0);
+
+            counter.Reset(null);
+            items.Remove(null);
+            TestProperties(counter, 3, 1, set, items.ToArray(), comparer);
+            TestItem(counter, null, 0);
+
+            counter.Reset();
+            TestProperties(counter, 3, 0, set, new string[0], comparer);
+            TestItem(counter, "B", 0);
+        }
 
 		[TestMethod]
 		public void Clear_Test()
@@ -222,9 +391,44 @@ namespace Biocs.Collections
 			counter.AddRange(Enumerable.Range(0, 10));
 
 			counter.Clear();
+            TestProperties(counter, 0, 0, new HashSet<int>(), new int[0], EqualityComparer<int>.Default);
+            TestItem(counter, 0, null);
 
-			Assert.AreEqual(0, counter.TotalCount);
-			Assert.AreEqual(0, counter.NumberOfItems);
+            var counter2 = new Counter<string>();
+            counter2.Add(null);
+            counter2.Add("A");
+
+            counter2.Clear();
+            TestProperties(counter2, 0, 0, new HashSet<string>(), new string[0], EqualityComparer<string>.Default);
+            TestItem(counter2, null, null);
 		}
+
+        private void TestProperties<T>(Counter<T> target, int numberOfItemsExpected, int totalCountExpected,
+            HashSet<T> uniqueItemsExpected, T[] repeatedItemsExpected, IEqualityComparer<T> comparerExpected)
+        {
+            Assert.AreEqual(totalCountExpected, target.TotalCount);
+            Assert.AreEqual(numberOfItemsExpected, target.NumberOfItems);
+            Assert.IsTrue(uniqueItemsExpected.SetEquals(target.UniqueItems));
+            CollectionAssert.AreEquivalent(repeatedItemsExpected, target.RepeatedItems.ToArray());
+            Assert.AreEqual(comparerExpected, target.Comparer);
+
+            var array = new T[target.NumberOfItems];
+            target.CopyTo(array, 0);
+            Assert.IsTrue(uniqueItemsExpected.SetEquals(array));
+        }
+
+        private void TestItem<T>(Counter<T> target, T item, int? countExpected)
+        {
+            if (countExpected.HasValue)
+            {
+                Assert.IsTrue(target.Contains(item));
+                Assert.AreEqual(countExpected.Value, target.GetCount(item));
+            }
+            else
+            {
+                Assert.IsFalse(target.Contains(item));
+                Assert.AreEqual(0, target.GetCount(item));
+            }
+        }
     }
 }

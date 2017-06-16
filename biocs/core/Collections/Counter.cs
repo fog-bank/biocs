@@ -9,6 +9,7 @@ namespace Biocs.Collections
     /// Represents a tally counter to count the frequency of items.
     /// </summary>
     /// <typeparam name="T">The type of items to count.</typeparam>
+    /// <remarks><see cref="Counter{T}"/> accepts null as a valid value for reference types.</remarks>
     [DebuggerDisplay("NumberOfItems = {NumberOfItems}, TotalCount = {TotalCount}"), DebuggerTypeProxy(typeof(CounterDebugView<>))]
     public class Counter<T>
     {
@@ -82,11 +83,6 @@ namespace Biocs.Collections
             totalCount = other.totalCount;
         }
 
-        public int this[T item]
-        {
-            get { return GetCount(item); }
-        }
-
         /// <summary>
         /// Gets the total count of items.
         /// </summary>
@@ -101,20 +97,23 @@ namespace Biocs.Collections
         /// Gets an enumerable collection of unique items that the <see cref="Counter{T}"/> has counted before now.
         /// </summary>
         /// <remarks>
-        /// <para>This enumerable collection contains items whose the count is 0.</para>
+        /// <para>This enumerable collection also contains items whose the count is 0.</para>
         /// <para>Enumerators retured by this enumerable collection cannot be used to modify the <see cref="Counter{T}"/>.
         /// For example, the following enumeration raises an <see cref="InvalidOperationException"/>.</para>
         /// <code>
         /// var counter = new Counter&lt;int&gt;();
-        /// counter.Add(new[] { 1, 2, 3 });
-        /// foreach (int item in counter.Items)
+        /// counter.AddRange(new[] { 1, 2, 3 });
+        /// foreach (int item in counter.UniqueItems)
         /// {
         ///   counter.Reset(item);
         /// }
         /// </code>
         /// </remarks>
-        public IEnumerable<T> UniqueItems => nullCount.HasValue ? map.Keys.Concat(new[] { default(T) }) : map.Keys;
+        public IEnumerable<T> UniqueItems => nullCount.HasValue ? KeysWithNull : map.Keys;
 
+        /// <summary>
+        /// Gets an enumerable collection that contains items repeated by each count.
+        /// </summary>
         public IEnumerable<T> RepeatedItems
         {
             get
@@ -139,14 +138,23 @@ namespace Biocs.Collections
         /// </summary>
         public IEqualityComparer<T> Comparer => map.Comparer;
 
+        private IEnumerable<T> KeysWithNull
+        {
+            get
+            {
+                foreach (var item in map.Keys)
+                    yield return item;
+
+                yield return default(T);
+            }
+        }
+
         /// <summary>
         /// Gets the number of times that the item occurs in the <see cref="Counter{T}"/>.
         /// </summary>
         /// <param name="item">The object to get the count.</param>
         /// <returns>The number of times that <paramref name="item"/> occurs in the <see cref="Counter{T}"/>.</returns>
-        /// <remarks>
-        /// If <paramref name="item"/> is not contained in the <see cref="Counter{T}"/>, this method returns 0.
-        /// </remarks>
+        /// <remarks>If <paramref name="item"/> is not contained in the <see cref="Counter{T}"/>, this method returns 0.</remarks>
         public int GetCount(T item)
         {
             if (item == null)
@@ -186,6 +194,9 @@ namespace Biocs.Collections
                     Res.GetString("ArgEx.InvalidCopyDestRange", NumberOfItems, array.Length - arrayIndex));
             }
             map.Keys.CopyTo(array, arrayIndex);
+
+            if (nullCount.HasValue)
+                array[arrayIndex + map.Count] = default(T);
         }
 
         /// <summary>
@@ -227,7 +238,7 @@ namespace Biocs.Collections
         /// Counts the items of the specified collection.
         /// </summary>
         /// <param name="items">The collection whose items should be counted.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="items"/> is <see langword="null"/> .</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="items"/> is <see langword="null"/>.</exception>
         public void AddRange(IEnumerable<T> items)
         {
             if (items == null)
@@ -237,8 +248,22 @@ namespace Biocs.Collections
                 Add(item);
         }
 
+        /// <summary>
+        /// Decreases the count of the specified item by one.
+        /// </summary>
+        /// <param name="item">The item to decrement the count value.</param>
+        /// <returns>
+        /// <see langword="true"/> if the count of <paramref name="item" /> was successfully decremented;
+        /// otherwise, <see langword="false"/>.
+        /// </returns>
         public bool Remove(T item) => Remove(item, 1) == 1;
 
+        /// <summary>
+        /// Decreases the count of the specified item by the specified amount.
+        /// </summary>
+        /// <param name="item">The item to decrement the count value.</param>
+        /// <param name="times">The amount by which to decrement the counter value.</param>
+        /// <returns>The amount of the count to be decreased acutually.</returns>
         public int Remove(T item, int times)
         {
             if (times < 0)
@@ -248,7 +273,7 @@ namespace Biocs.Collections
             if (count == 0)
                 return 0;
 
-            int count2 = Math.Min(count - times, 0);
+            int count2 = Math.Max(count - times, 0);
 
             if (item != null)
                 map[item] = count2;
@@ -271,7 +296,9 @@ namespace Biocs.Collections
             foreach (var item in items)
                 map[item] = 0;
 
-            nullCount = 0;
+            if (nullCount.HasValue)
+                nullCount = 0;
+
             totalCount = 0;
         }
 

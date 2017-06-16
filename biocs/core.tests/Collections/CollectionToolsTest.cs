@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using Biocs.TestTools;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Biocs.Collections
@@ -15,23 +11,30 @@ namespace Biocs.Collections
         public void AllItemsAreEqualTest()
         {
             var src = Enumerable.Empty<int>();
-            int value = 1;
+            int value = -1;
 
             Assert.IsFalse(src.AllItemsAreEqual());
             Assert.IsFalse(src.AllItemsAreEqual(null, out value));
             Assert.AreEqual(0, value);
 
-            src = Enumerable.Repeat(1, 1);
+            src = new[] { 1 };
             Assert.IsTrue(src.AllItemsAreEqual());
             Assert.IsTrue(src.AllItemsAreEqual(null, out value));
             Assert.AreEqual(1, value);
 
+            value = -1;
             src = Enumerable.Repeat(1, 10);
             Assert.IsTrue(src.AllItemsAreEqual());
             Assert.IsTrue(src.AllItemsAreEqual(null, out value));
             Assert.AreEqual(1, value);
 
             src = Enumerable.Range(1, 10);
+            Assert.IsFalse(src.AllItemsAreEqual());
+            Assert.IsFalse(src.AllItemsAreEqual(null, out value));
+            Assert.AreEqual(0, value);
+
+            value = -1;
+            src = Enumerable.Repeat(1, 10).Concat(new[] { 2 });
             Assert.IsFalse(src.AllItemsAreEqual());
             Assert.IsFalse(src.AllItemsAreEqual(null, out value));
             Assert.AreEqual(0, value);
