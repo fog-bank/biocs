@@ -8,6 +8,7 @@
       <Word>fasta</Word>
       <Word>fastq</Word>
       <Word>keto</Word>
+      <Word>Mersenne</Word>
     </Recognized>
     <Unrecognized>
       <!--<Word></Word>-->

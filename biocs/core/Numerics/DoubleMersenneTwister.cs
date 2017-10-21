@@ -59,8 +59,12 @@ namespace Biocs.Numerics
         /// Initializes a new instance of the <see cref="DoubleMersenneTwister"/> class, using the specified seed array.
         /// </summary>
         /// <param name="seeds">An array of 32-bit integers used as the seed.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="seeds"/> is <see langword="null"/>.</exception>
         public DoubleMersenneTwister(int[] seeds)
         {
+            if (seeds == null)
+                throw new ArgumentNullException(nameof(seeds));
+
             const int size = (N + 1) * 4;
             //int lag = 0;
 
