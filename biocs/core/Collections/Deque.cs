@@ -535,7 +535,7 @@ namespace Biocs.Collections
             if (size == 0)
                 throw new InvalidOperationException(Res.GetString("InvalOp.EmptyCollection"));
 
-            items[head] = default(T);
+            items[head] = default;
             size--;
             Increment(ref head);
             version++;
@@ -551,7 +551,7 @@ namespace Biocs.Collections
             if (size == 0)
                 throw new InvalidOperationException(Res.GetString("InvalOp.EmptyCollection"));
 
-            items[tail] = default(T);
+            items[tail] = default;
             size--;
             Decrement(ref tail);
             version++;
@@ -605,14 +605,14 @@ namespace Biocs.Collections
             {
                 CopyBlockEndward(head, GetArrayIndex(index - 1), 1);
 
-                items[head] = default(T);
+                items[head] = default;
                 Increment(ref head);
             }
             else
             {
                 CopyBlockStartward(GetArrayIndex(index + 1), tail, 1);
 
-                items[tail] = default(T);
+                items[tail] = default;
                 Decrement(ref tail);
             }
             size--;

@@ -31,8 +31,7 @@ namespace Biocs
 
                         // String representation
                         string symbol = string.Concat(first, second, third);
-                        Codon codon2;
-                        Assert.IsTrue(Codon.TryParse(symbol, out codon2));
+                        Assert.IsTrue(Codon.TryParse(symbol, out var codon2));
                         Assert.AreEqual(symbol, codon2.Symbols);
                         Assert.AreEqual(symbol, codon2.ToString());
 

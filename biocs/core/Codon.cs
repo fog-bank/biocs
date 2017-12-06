@@ -8,7 +8,7 @@ namespace Biocs
     /// <remarks>
     /// <para>The default constructor creates an object whose value is <see cref="Gap"/>.</para>
     /// </remarks>
-    public struct Codon : IEquatable<Codon>
+    public readonly struct Codon : IEquatable<Codon>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Codon" /> structure to the specified nucleotide triplet.
@@ -41,7 +41,7 @@ namespace Biocs
         /// <summary>
         /// Gets the string representation of this codon.
         /// </summary>
-        public string Symbols => string.Concat(First.Symbol, Second.Symbol, Third.Symbol);
+        public string Symbols => new string(new[] { First.Symbol, Second.Symbol, Third.Symbol });
 
         /// <summary>
         /// Gets a value indicating whether this codon is completely specified.

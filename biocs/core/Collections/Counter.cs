@@ -126,7 +126,7 @@ namespace Biocs.Collections
                 if (nullCount.HasValue)
                 {
                     for (int n = nullCount.Value; n > 0; n--)
-                        yield return default(T);
+                        yield return default;
                 }
             }
         }
@@ -144,7 +144,7 @@ namespace Biocs.Collections
                 foreach (var item in map.Keys)
                     yield return item;
 
-                yield return default(T);
+                yield return default;
             }
         }
 
@@ -195,7 +195,7 @@ namespace Biocs.Collections
             map.Keys.CopyTo(array, arrayIndex);
 
             if (nullCount.HasValue)
-                array[arrayIndex + map.Count] = default(T);
+                array[arrayIndex + map.Count] = default;
         }
 
         /// <summary>

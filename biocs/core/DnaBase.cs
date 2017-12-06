@@ -12,7 +12,7 @@ namespace Biocs
     /// a case-sensitive operation. By default, each instance is uppercase except gaps.</para>
     /// <para>The default constructor creates an object whose value is <see cref="Gap"/>.</para>
     /// </remarks>
-    public struct DnaBase : IEquatable<DnaBase>
+    public readonly struct DnaBase : IEquatable<DnaBase>
     {
         internal DnaBase(DnaBases code)
         {

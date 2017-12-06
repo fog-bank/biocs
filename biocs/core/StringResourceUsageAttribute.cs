@@ -48,7 +48,7 @@ namespace Biocs
         public int FormatItemCount { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the body of the applied method should be checked.
+        /// Gets or sets a value indicating whether the name and the value in the resource should only be checked.
         /// </summary>
         /// <remarks>
         /// If any element is generated from the applied method by a compiler, or the local resource class is not used for 
