@@ -7,10 +7,7 @@ namespace Biocs.Collections
     {
         private readonly ICollection<T> coll;
 
-        public CollectionDebugView(ICollection<T> collection)
-        {
-            coll = collection;
-        }
+        public CollectionDebugView(ICollection<T> collection) => coll = collection;
 
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public T[] Items

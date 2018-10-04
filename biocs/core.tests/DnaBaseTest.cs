@@ -31,7 +31,7 @@ namespace Biocs
 
             var result = DnaBase.Any;
             Assert.IsFalse(DnaBase.TryParse('%', out result));
-            Assert.AreEqual(default(DnaBase), result);
+            Assert.AreEqual(default, result);
         }
 
         [TestMethod]
@@ -100,8 +100,7 @@ namespace Biocs
             Assert.IsFalse(dna != dna2);
 
             // TryParse
-            DnaBase result;
-            Assert.IsTrue(DnaBase.TryParse(symbol, out result));
+            Assert.IsTrue(DnaBase.TryParse(symbol, out var result));
             Assert.AreEqual(dna, result);
         }
     }

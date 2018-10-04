@@ -12,12 +12,9 @@ namespace Biocs
     /// a case-sensitive operation. By default, each instance is uppercase except gaps.</para>
     /// <para>The default constructor creates an object whose value is <see cref="Gap"/>.</para>
     /// </remarks>
-    public struct DnaBase : IEquatable<DnaBase>
+    public readonly struct DnaBase : IEquatable<DnaBase>
     {
-        internal DnaBase(DnaBases code)
-        {
-            Code = code;
-        }
+        internal DnaBase(DnaBases code) => Code = code;
 
         /// <summary>
         /// Gets the description of this nucleotide. 
@@ -66,32 +63,32 @@ namespace Biocs
         /// <summary>
         /// Gets the <see cref="DnaBase"/> instance for adenine.
         /// </summary>
-        public static DnaBase Adenine { get; } = new DnaBase(DnaBases.Adenine);
+        public static DnaBase Adenine => new DnaBase(DnaBases.Adenine);
 
         /// <summary>
         /// Gets the <see cref="DnaBase"/> instance for guanine.
         /// </summary>
-        public static DnaBase Guanine { get; } = new DnaBase(DnaBases.Guanine);
+        public static DnaBase Guanine => new DnaBase(DnaBases.Guanine);
 
         /// <summary>
         /// Gets the <see cref="DnaBase"/> instance for thymine.
         /// </summary>
-        public static DnaBase Thymine { get; } = new DnaBase(DnaBases.Thymine);
+        public static DnaBase Thymine => new DnaBase(DnaBases.Thymine);
 
         /// <summary>
         /// Gets the <see cref="DnaBase"/> instance for cytosine.
         /// </summary>
-        public static DnaBase Cytosine { get; } = new DnaBase(DnaBases.Cytosine);
+        public static DnaBase Cytosine => new DnaBase(DnaBases.Cytosine);
 
         /// <summary>
         /// Gets the <see cref="DnaBase"/> instance for a gap.
         /// </summary>
-        public static DnaBase Gap { get; } = new DnaBase(DnaBases.Gap);
+        public static DnaBase Gap => default;
 
         /// <summary>
         /// Gets the <see cref="DnaBase"/> instance for an unknown base.
         /// </summary>
-        public static DnaBase Any { get; } = new DnaBase(DnaBases.Any);
+        public static DnaBase Any => new DnaBase(DnaBases.Any);
 
         private DnaBases Code { get; }
 

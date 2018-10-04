@@ -333,7 +333,7 @@ namespace Biocs.Collections
         [TestMethod]
         public void IndexOf_Test()
         {
-            var value = new object();
+            object value = new object();
             var target = new Deque<object>(new[] { new object(), value, new object(), null });
 
             Assert.AreEqual(1, target.IndexOf(value));

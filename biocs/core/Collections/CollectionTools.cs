@@ -18,7 +18,7 @@ namespace Biocs.Collections
         /// otherwise, <see langword="false"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-        public static bool AllItemsAreEqual<T>(this IEnumerable<T> collection) => AllItemsAreEqual(collection, null, out T _);
+        public static bool AllItemsAreEqual<T>(this IEnumerable<T> collection) => AllItemsAreEqual(collection, null, out var _);
 
         /// <summary>
         /// Determines whether all items in the specified collection are equal, and tries to get the unique item.
@@ -47,7 +47,7 @@ namespace Biocs.Collections
             if (comparer == null)
                 comparer = EqualityComparer<T>.Default;
 
-            value = default(T);
+            value = default;
 
             using (var enumetator = collection.GetEnumerator())
             {
