@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("co3366353")]
 [assembly: AssemblyProduct("BioCSharp")]
-[assembly: AssemblyCopyright("Copyright © 2017 fog-bank. Some rights reserved.")]
+[assembly: AssemblyCopyright("Copyright © 2018 fog-bank. Some rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: NeutralResourcesLanguage("en")]
 [assembly: CLSCompliant(true)]

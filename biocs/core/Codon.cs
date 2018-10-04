@@ -51,12 +51,12 @@ namespace Biocs
         /// <summary>
         /// Gets a codon that is filled with gaps.
         /// </summary>
-        public static Codon Gap { get; } = new Codon(DnaBase.Gap, DnaBase.Gap, DnaBase.Gap);
+        public static Codon Gap => default;
 
         /// <summary>
         /// Gets a codon that is filled with unknown bases.
         /// </summary>
-        public static Codon Any { get; } = new Codon(DnaBase.Any, DnaBase.Any, DnaBase.Any);
+        public static Codon Any => new Codon(DnaBase.Any, DnaBase.Any, DnaBase.Any);
 
         /// <summary>
         /// Converts this codon to its uppercase equivalent.

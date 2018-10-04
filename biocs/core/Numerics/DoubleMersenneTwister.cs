@@ -248,23 +248,23 @@ namespace Biocs.Numerics
 
         private static uint InitValue2(uint x) => unchecked((x ^ (x >> 27)) * 1566083941u);
 
-        private ref uint RefToUInt32(int index)
+        private ref uint RefToUInt32(int indexOfUInt32)
         {
-            switch (index % 4)
+            switch (indexOfUInt32 % 4)
             {
                 case 0:
-                    return ref status[index / 4].u0;
+                    return ref status[indexOfUInt32 / 4].u0;
 
                 case 1:
-                    return ref status[index / 4].u1;
+                    return ref status[indexOfUInt32 / 4].u1;
 
                 case 2:
-                    return ref status[index / 4].u2;
+                    return ref status[indexOfUInt32 / 4].u2;
 
                 case 3:
-                    return ref status[index / 4].u3;
+                    return ref status[indexOfUInt32 / 4].u3;
             }
-            throw new ArgumentOutOfRangeException(nameof(index));
+            throw new ArgumentOutOfRangeException(nameof(indexOfUInt32));
         }
 
         // Represents the recursion formula.

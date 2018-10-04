@@ -121,7 +121,7 @@ namespace Biocs.Collections
         /// </exception>
         public int Capacity
         {
-            get { return items.Length; }
+            get => items.Length;
             set
             {
                 if (value < size)
