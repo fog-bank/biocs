@@ -78,7 +78,7 @@ namespace Biocs
         public bool Equals(Codon other) => First == other.First && Second == other.Second && Third == other.Third;
 
         /// <inheritdoc cref="object.Equals(object)"/>
-        public override bool Equals(object obj) => obj is Codon && Equals((Codon)obj);
+        public override bool Equals(object obj) => obj is Codon other && Equals(other);
 
         /// <inheritdoc cref="object.GetHashCode"/>
         public override int GetHashCode() => (First.GetHashCode() << 16) + (Second.GetHashCode() << 8) + Third.GetHashCode();
@@ -107,7 +107,7 @@ namespace Biocs
         /// Tries to convert the string representation of a codon to an equivalent <see cref="Codon"/> instance,
         /// and returns a value that indicates whether the conversion succeeded.
         /// </summary>
-        /// <param name="value">A string to convert.</param>
+        /// <param name="value">A string with a length of 3 characters to convert.</param>
         /// <param name="result">
         /// When this method returns, <paramref name="result"/> contains a <see cref="Codon"/> instance that is represented by
         /// <paramref name="value"/> if the conversion succeeded, or <see cref="Gap"/> if the conversion failed.

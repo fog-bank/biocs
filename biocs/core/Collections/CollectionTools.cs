@@ -18,7 +18,7 @@ namespace Biocs.Collections
         /// otherwise, <see langword="false"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-        public static bool AllItemsAreEqual<T>(this IEnumerable<T> collection) => AllItemsAreEqual(collection, null, out var _);
+        public static bool AllItemsAreEqual<T>(this IEnumerable<T> collection) => AllItemsAreEqual(collection, null, out _);
 
         /// <summary>
         /// Determines whether all items in the specified collection are equal, and tries to get the unique item.
@@ -26,7 +26,7 @@ namespace Biocs.Collections
         /// <typeparam name="T">The type of items of <paramref name="collection"/>.</typeparam>
         /// <param name="collection">The <see cref="IEnumerable{T}"/> to check equality between items.</param>
         /// <param name="comparer">
-        /// An <see cref="IEqualityComparer{T}"/> to use to compare items, or 
+        /// An <see cref="IEqualityComparer{T}"/> to use to compare items, or
         /// <see langword="null"/> to use the default <see cref="IEqualityComparer{T}"/>.
         /// </param>
         /// <param name="value">

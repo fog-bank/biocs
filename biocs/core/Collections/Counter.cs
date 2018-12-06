@@ -14,7 +14,6 @@ namespace Biocs.Collections
     {
         private readonly Dictionary<T, int> map;
         private int? nullCount;
-        private int totalCount;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Counter{T}"/> class that is empty, has zero capacity, and uses 
@@ -79,13 +78,13 @@ namespace Biocs.Collections
 
             map = new Dictionary<T, int>(other.map, other.map.Comparer);
             nullCount = other.nullCount;
-            totalCount = other.totalCount;
+            TotalCount = other.TotalCount;
         }
 
         /// <summary>
         /// Gets the total count of items.
         /// </summary>
-        public int TotalCount => totalCount;
+        public int TotalCount { get; private set; }
 
         /// <summary>
         /// Gets the number of the kinds of items that the <see cref="Counter{T}"/> contains.
@@ -230,7 +229,7 @@ namespace Biocs.Collections
             else
                 nullCount = GetCount(item) + times;
 
-            totalCount += times;
+            TotalCount += times;
         }
 
         /// <summary>
@@ -279,7 +278,7 @@ namespace Biocs.Collections
             else
                 nullCount = count2;
 
-            totalCount -= count - count2;
+            TotalCount -= count - count2;
             return count - count2;
         }
 
@@ -298,7 +297,7 @@ namespace Biocs.Collections
             if (nullCount.HasValue)
                 nullCount = 0;
 
-            totalCount = 0;
+            TotalCount = 0;
         }
 
         /// <summary>
@@ -307,7 +306,7 @@ namespace Biocs.Collections
         /// <param name="item">The item to reset the count.</param>
         public void Reset(T item)
         {
-            totalCount -= GetCount(item);
+            TotalCount -= GetCount(item);
 
             if (item == null)
                 nullCount = 0;
@@ -322,7 +321,7 @@ namespace Biocs.Collections
         {
             map.Clear();
             nullCount = null;
-            totalCount = 0;
+            TotalCount = 0;
         }
     }
 
@@ -330,10 +329,7 @@ namespace Biocs.Collections
     {
         private readonly Counter<T> counter;
 
-        public CounterDebugView(Counter<T> counter)
-        {
-            this.counter = counter;
-        }
+        public CounterDebugView(Counter<T> counter) => this.counter = counter;
 
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public KeyValuePair<T, int>[] ItemsAndCounts

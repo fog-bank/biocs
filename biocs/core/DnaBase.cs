@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Biocs
@@ -8,23 +9,28 @@ namespace Biocs
     /// Represents nucleotides for DNA.
     /// </summary>
     /// <remarks>
-    /// <para>Each member other than <see cref="Name"/> property and <see cref="EqualsCaseInsensitive"/> method performs 
+    /// <para>Each member other than <see cref="Name"/> property and <see cref="EqualsCaseInsensitive"/> method performs
     /// a case-sensitive operation. By default, each instance is uppercase except gaps.</para>
     /// <para>The default constructor creates an object whose value is <see cref="Gap"/>.</para>
     /// </remarks>
     public readonly struct DnaBase : IEquatable<DnaBase>
     {
-        internal DnaBase(DnaBases code) => Code = code;
+        internal DnaBase(DnaBases code)
+        {
+            Debug.Assert(DnaBaseParser.IsDefined(code));
+            Code = code;
+        }
 
         /// <summary>
-        /// Gets the description of this nucleotide. 
+        /// Gets the description of this nucleotide.
         /// </summary>
+        /// <remarks>This property doesn't distinguish between uppercase and lowercase.</remarks>
         public string Name => ToUpper(Code).ToString();
 
         /// <summary>
         /// Gets the character representation of this nucleotide.
         /// </summary>
-        public char Symbol => Parser.Value.CodeToSymbol(Code);
+        public char Symbol => DnaBaseParser.Instance.CodeToSymbol(Code);
 
         /// <summary>
         /// Gets a value indicating whether this nucleotide is completely specified.
@@ -92,8 +98,6 @@ namespace Biocs
 
         private DnaBases Code { get; }
 
-        private static Lazy<DnaBaseParser> Parser { get; } = new Lazy<DnaBaseParser>();
-
         /// <summary>
         /// Converts the value of a nucleotide to its uppercase equivalent.
         /// </summary>
@@ -133,7 +137,7 @@ namespace Biocs
         public bool EqualsCaseInsensitive(DnaBase other) => ToUpper(Code) == ToUpper(other.Code);
 
         /// <inheritdoc cref="object.Equals(object)"/>
-        public override bool Equals(object obj) => obj is DnaBase && Equals((DnaBase)obj);
+        public override bool Equals(object obj) => obj is DnaBase other && Equals(other);
 
         /// <inheritdoc cref="object.GetHashCode"/>
         public override int GetHashCode() => (int)Code;
@@ -152,7 +156,7 @@ namespace Biocs
         [StringResourceUsage("ArgEx.InvalidDnaBaseSymbol", 1)]
         public static DnaBase Parse(char value)
         {
-            if (!Parser.Value.SymbolToCode(value, out var result))
+            if (!DnaBaseParser.Instance.SymbolToCode(value, out var result))
                 throw new ArgumentException(Res.GetString("ArgEx.InvalidDnaBaseSymbol", value), nameof(value));
 
             return result;
@@ -170,7 +174,7 @@ namespace Biocs
         /// <returns>
         /// <see langword="true"/> if <paramref name="value"/> was converted successfully; otherwise, <see langword="false"/>.
         /// </returns>
-        public static bool TryParse(char value, out DnaBase result) => Parser.Value.SymbolToCode(value, out result);
+        public static bool TryParse(char value, out DnaBase result) => DnaBaseParser.Instance.SymbolToCode(value, out result);
 
         /// <summary>
         /// Compares two <see cref="DnaBase"/> structures for equality.
@@ -216,6 +220,7 @@ namespace Biocs
     [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Lazy initialization")]
     internal class DnaBaseParser
     {
+        private static readonly Lazy<DnaBaseParser> instance = new Lazy<DnaBaseParser>();
         private readonly char[] codeToSymbol = new char[32];
         private readonly Dictionary<char, DnaBase> symbolToCode = new Dictionary<char, DnaBase>(31);
 
@@ -239,9 +244,13 @@ namespace Biocs
             AddDnaBase(DnaBases.Any, 'N');
         }
 
+        public static DnaBaseParser Instance => instance.Value;
+
         public char CodeToSymbol(DnaBases code) => codeToSymbol[(int)code];
 
         public bool SymbolToCode(char symbol, out DnaBase result) => symbolToCode.TryGetValue(symbol, out result);
+
+        public static bool IsDefined(DnaBases value) => value >= DnaBases.Gap && value <= (DnaBases.Any | DnaBases.Lowercase);
 
         private void AddDnaBase(DnaBases code, char upperSymbol)
         {

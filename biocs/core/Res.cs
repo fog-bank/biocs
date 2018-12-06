@@ -14,9 +14,13 @@ namespace Biocs
         public static string GetString(string name, object arg0, object arg1) => GetStringInternal(name, arg0, arg1);
 
         public static string GetString(string name, object arg0, object arg1, object arg2)
-            => GetStringInternal(name, arg0, arg1, arg2);
+        {
+            return GetStringInternal(name, arg0, arg1, arg2);
+        }
 
         private static string GetStringInternal(string name, params object[] args)
-            => string.Format(CultureInfo.CurrentCulture, GetString(name), args);
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString(name), args);
+        }
     }
 }
