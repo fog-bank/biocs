@@ -153,11 +153,11 @@ namespace Biocs
         /// <exception cref="ArgumentException">
         /// <paramref name="value"/> is not one of the symbols defined for <see cref="DnaBase"/>.
         /// </exception>
-        [StringResourceUsage("ArgEx.InvalidDnaBaseSymbol", 1)]
+        [StringResourceUsage("Arg.InvalidDnaBaseSymbol", 1)]
         public static DnaBase Parse(char value)
         {
             if (!DnaBaseParser.Instance.SymbolToCode(value, out var result))
-                throw new ArgumentException(Res.GetString("ArgEx.InvalidDnaBaseSymbol", value), nameof(value));
+                throw new ArgumentException(Res.GetString("Arg.InvalidDnaBaseSymbol", value), nameof(value));
 
             return result;
         }

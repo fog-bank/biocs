@@ -2,6 +2,7 @@
 <Dictionary>
   <Words>
     <Recognized>
+      <Word>bgzf</Word> <!-- Blocked GNU Zip -->
       <Word>biocs</Word>
       <Word>deque</Word> <!-- double-ended queue -->
       <Word>dna</Word> <!-- deoxyribonucleic acid -->

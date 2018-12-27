@@ -177,7 +177,7 @@ namespace Biocs.Collections
         /// The number of items in the <see cref="Counter{T}"/> is greater than the available space from
         /// <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.
         /// </exception>
-        [StringResourceUsage("ArgEx.InvalidCopyDestRange", 2)]
+        [StringResourceUsage("Arg.InvalidCopyDestRange", 2)]
         public void CopyTo(T[] array, int arrayIndex)
         {
             if (array == null)
@@ -189,7 +189,7 @@ namespace Biocs.Collections
             if (arrayIndex + NumberOfItems > array.Length)
             {
                 throw new ArgumentException(
-                    Res.GetString("ArgEx.InvalidCopyDestRange", NumberOfItems, array.Length - arrayIndex));
+                    Res.GetString("Arg.InvalidCopyDestRange", NumberOfItems, array.Length - arrayIndex));
             }
             map.Keys.CopyTo(array, arrayIndex);
 
