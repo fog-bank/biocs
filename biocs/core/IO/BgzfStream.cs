@@ -10,6 +10,10 @@ namespace Biocs.IO
     /// </summary>
     public class BgzfStream : Stream
     {
+        private Stream stream;
+        private readonly CompressionMode mode;
+        private readonly bool leaveOpen;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BgzfStream"/> class using the specified stream and
         /// <see cref="CompressionMode"/> value, and a value that specifies whether to leave the stream open.
@@ -18,30 +22,48 @@ namespace Biocs.IO
         /// <param name="mode">One of the <see cref="CompressionMode"/> values that indicates the action to take.</param>
         /// <param name="leaveOpen"><see langword="true"/> to leave the stream open; otherwise, <see langword="false"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="stream"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"></exception>
+        [StringResourceUsage("Arg.InvalidEnumValue", 1)]
         public BgzfStream(Stream stream, CompressionMode mode, bool leaveOpen)
         {
-            Stream = stream ?? throw new ArgumentNullException(nameof(stream));
-            Mode = mode;
-            LeaveOpen = leaveOpen;
+            this.stream = stream ?? throw new ArgumentNullException(nameof(stream));
+
+            if (mode != CompressionMode.Decompress && mode != CompressionMode.Compress)
+                throw new ArgumentException(Res.GetString("Arg.InvalidEnumValue", nameof(CompressionMode)), nameof(mode));
+
+            this.mode = mode;
+            this.leaveOpen = leaveOpen;
         }
 
-        /// <inheritdoc cref="Stream.CanRead"/>
-        public override bool CanRead => throw new NotImplementedException();
+        /// <summary>
+        /// Gets a value indicating whether the current stream supports reading.
+        /// </summary>
+        public override bool CanRead => mode == CompressionMode.Decompress && stream != null && stream.CanRead;
 
-        /// <inheritdoc cref="Stream.CanSeek"/>
-        public override bool CanSeek => throw new NotImplementedException();
+        /// <summary>
+        /// Gets a value indicating whether the current stream supports seeking.
+        /// </summary>
+        public override bool CanSeek => false;
 
-        /// <inheritdoc cref="Stream.CanWrite"/>
-        public override bool CanWrite => throw new NotImplementedException();
+        /// <summary>
+        /// Gets a value indicating whether the current stream supports writing.
+        /// </summary>
+        public override bool CanWrite => mode == CompressionMode.Compress && stream != null && stream.CanWrite;
 
-        /// <inheritdoc cref="Stream.Length"/>
+        /// <summary>
+        /// This property is not supported and always throws a <see cref="NotSupportedException"/>.
+        /// </summary>
+        /// <exception cref="NotSupportedException">This property is not supported on this stream.</exception>
         public override long Length
         {
             [StringResourceUsage("NotSup.Stream")]
             get => throw new NotSupportedException(Res.GetString("NotSup.Stream"));
         }
 
-        /// <inheritdoc cref="Stream.Position"/>
+        /// <summary>
+        /// This property is not supported and always throws a <see cref="NotSupportedException"/>.
+        /// </summary>
+        /// <exception cref="NotSupportedException">This property is not supported on this stream.</exception>
         public override long Position
         {
             [StringResourceUsage("NotSup.Stream")]
@@ -50,12 +72,6 @@ namespace Biocs.IO
             [StringResourceUsage("NotSup.Stream")]
             set => throw new NotSupportedException(Res.GetString("NotSup.Stream"));
         }
-
-        private Stream Stream { get; }
-
-        private CompressionMode Mode { get; }
-
-        private bool LeaveOpen { get; }
 
         /// <inheritdoc cref="Stream.Read"/>
         public override int Read(byte[] buffer, int offset, int count) => throw new NotImplementedException();
@@ -66,16 +82,37 @@ namespace Biocs.IO
         /// <inheritdoc cref="Stream.Flush"/>
         public override void Flush() => throw new NotImplementedException();
 
-        /// <inheritdoc cref="Stream.Seek"/>
+        /// <summary>
+        /// This method is not supported and always throws a <see cref="NotSupportedException"/>.
+        /// </summary>
+        /// <exception cref="NotSupportedException">This method is not supported on this stream.</exception>
         [StringResourceUsage("NotSup.Stream")]
         public override long Seek(long offset, SeekOrigin origin)
         {
             throw new NotSupportedException(Res.GetString("NotSup.Stream"));
         }
 
-        /// <inheritdoc cref="Stream.SetLength"/>
+        /// <summary>
+        /// This method is not supported and always throws a <see cref="NotSupportedException"/>.
+        /// </summary>
+        /// <exception cref="NotSupportedException">This method is not supported on this stream.</exception>
         [StringResourceUsage("NotSup.Stream")]
         public override void SetLength(long value) => throw new NotSupportedException(Res.GetString("NotSup.Stream"));
+
+        /// <inheritdoc cref="Stream.Dispose(bool)"/>
+        protected override void Dispose(bool disposing)
+        {
+            try
+            {
+                if (disposing && !leaveOpen)
+                    stream?.Dispose();
+            }
+            finally
+            {
+                stream = null;
+            }
+            base.Dispose(disposing);
+        }
 
         /// <summary>
         /// Determines whether the specified file is in the BGZF format.
@@ -84,7 +121,7 @@ namespace Biocs.IO
         /// <returns>
         /// <see langword="true"/> if the specified file has the regular BGZF header; otherwise, <see langword="false"/>.
         /// </returns>
-        public static bool IsBgzf(string path)
+        public static bool IsBgzfFile(string path)
         {
             const int HeaderSize = 16;
 
