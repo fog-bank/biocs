@@ -13,6 +13,8 @@ namespace Biocs.IO
         private Stream stream;
         private readonly CompressionMode mode;
         private readonly bool leaveOpen;
+        private DeflateStream deflateStream;
+        private int inputLength;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BgzfStream"/> class using the specified stream and
@@ -73,8 +75,129 @@ namespace Biocs.IO
             set => throw new NotSupportedException(Res.GetString("NotSup.Stream"));
         }
 
-        /// <inheritdoc cref="Stream.Read"/>
-        public override int Read(byte[] buffer, int offset, int count) => throw new NotImplementedException();
+        /// <summary>
+        /// Reads a sequence of decompressed bytes from the current stream.
+        /// </summary>
+        /// <param name="buffer">An array of bytes used to store decompressed bytes.</param>
+        /// <param name="offset">
+        /// The zero-based byte offset in <paramref name="buffer"/> at which to begin storing decompressed bytes.
+        /// </param>
+        /// <param name="count">The maximum number of decompressed bytes to be read.</param>
+        /// <returns>
+        /// The total number of decompressed bytes read into the buffer. This can be zero or less than <paramref name="count"/>
+        /// if the end of the stream has been reached.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="buffer"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="offset"/> or <paramref name="count"/> is negative.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The sum of <paramref name="offset"/> and <paramref name="count"/> is larger than the buffer length.
+        /// </exception>
+        /// <exception cref="IOException">An I/O error occurs.</exception>
+        /// <exception cref="NotSupportedException">The stream does not support reading.</exception>
+        /// <exception cref="ObjectDisposedException">Methods were called after the stream was closed.</exception>
+        public override int Read(byte[] buffer, int offset, int count)
+        {
+            if (buffer == null)
+                throw new ArgumentNullException(nameof(buffer));
+
+            if (offset < 0)
+                throw new ArgumentOutOfRangeException(nameof(offset));
+
+            if (count < 0)
+                throw new ArgumentOutOfRangeException(nameof(count));
+
+            if (offset + count > buffer.Length)
+                throw new ArgumentException();
+
+            if (stream == null)
+                throw new ObjectDisposedException(null);
+
+            if (!CanRead)
+                throw new NotSupportedException();
+
+            int totalRead = 0;
+            int bytes = 0;
+
+            while (count > 0)
+            {
+                if (deflateStream == null)
+                {
+                    var array = new byte[18];
+                    bytes = stream.Read(array, 0, 18);
+
+                    if (bytes != 18 || !IsBgzfHeader(array))
+                        return totalRead;
+
+                    int flag = array[3];
+                    int blockSize = BitConverter.ToInt16(array, 16) - 25;
+
+                    // FNAME
+                    if ((flag & 0b1000) != 0)
+                    {
+                        do
+                        {
+                            int value = stream.ReadByte();
+
+                            if (value == 0)
+                                break;
+
+                            if (value == -1)
+                                return totalRead;
+                        }
+                        while (true);
+                    }
+
+                    // FCOMMENT
+                    if ((flag & 0b1_0000) != 0)
+                    {
+                        do
+                        {
+                            int value = stream.ReadByte();
+
+                            if (value == 0)
+                                break;
+
+                            if (value == -1)
+                                return totalRead;
+                        }
+                        while (true);
+                    }
+
+                    // FHCRC
+                    if ((flag & 0b10) != 0)
+                        stream.Read(array, 18, 2);
+
+                    var blockArray = new byte[blockSize];
+                    bytes = stream.Read(blockArray, 0, blockSize);
+
+                    if (bytes != blockSize)
+                        return totalRead;
+
+                    bytes = stream.Read(array, 0, 8);
+
+                    if (bytes != 8)
+                        return totalRead;
+
+                    deflateStream = new DeflateStream(new MemoryStream(blockArray, 0, blockSize), CompressionMode.Decompress);
+                    inputLength = BitConverter.ToInt32(blockArray, 4);
+                }
+
+                bytes = deflateStream.Read(buffer, offset, count);
+                totalRead += bytes;
+                inputLength -= bytes;
+                offset += bytes;
+                count -= bytes;
+
+                if (inputLength == 0)
+                {
+                    deflateStream.Dispose();
+                    deflateStream = null;
+                }
+            }
+            return totalRead;
+        }
 
         /// <inheritdoc cref="Stream.Write"/>
         public override void Write(byte[] buffer, int offset, int count) => throw new NotImplementedException();
@@ -138,31 +261,8 @@ namespace Biocs.IO
                     if (length != header.Length)
                         return false;
 
-                    // Identification in gzip format
-                    if (header[0] != 0x1f || header[1] != 0x8b)
-                        return false;
-
-                    // Compression method is deflate.
-                    if (header[2] != 8)
-                        return false;
-
-                    // FEXTRA (bit 2) is set and any reserved bit is not set to flags.
-                    if ((header[3] & 4) == 0 || (header[3] & 0b1110_0000) != 0)
-                        return false;
-
-                    // The length of the optional extra field is 6.
-                    if (header[10] != 6 || header[11] != 0)
-                        return false;
-
-                    // Identification in BGZF format
-                    if (header[12] != 'B' || header[13] != 'C')
-                        return false;
-
-                    // The length of the BGZF extra field is 2.
-                    if (header[14] != 2 || header[15] != 0)
-                        return false;
+                    return IsBgzfHeader(header);
                 }
-                return true;
             }
             catch (ArgumentException) { }
             catch (IOException) { }
@@ -171,6 +271,38 @@ namespace Biocs.IO
             catch (UnauthorizedAccessException) { }
 
             return false;
+        }
+
+        private static bool IsBgzfHeader(byte[] header)
+        {
+            if (header.Length < 16)
+                return false;
+
+            // Identification in gzip format
+            if (header[0] != 0x1f || header[1] != 0x8b)
+                return false;
+
+            // Compression method is deflate.
+            if (header[2] != 8)
+                return false;
+
+            // FEXTRA (bit 2) is set and any reserved bit is not set to flags.
+            if ((header[3] & 4) == 0 || (header[3] & 0b1110_0000) != 0)
+                return false;
+
+            // The length of the optional extra field is 6.
+            if (header[10] != 6 || header[11] != 0)
+                return false;
+
+            // Identification in BGZF format
+            if (header[12] != 'B' || header[13] != 'C')
+                return false;
+
+            // The length of the BGZF extra field is 2.
+            if (header[14] != 2 || header[15] != 0)
+                return false;
+
+            return true;
         }
     }
 }
