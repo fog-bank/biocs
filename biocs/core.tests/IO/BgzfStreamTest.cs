@@ -20,24 +20,24 @@ namespace Biocs.IO
             Assert.IsFalse(BgzfStream.IsBgzfFile(@"Deployments\\nonexist.txt.gz"));
         }
 
-        //[TestMethod]
-        //public void ReadTestThroughStreamReader()
-        //{
-        //    var contents = File.ReadAllLines(PathRawFile);
+        [TestMethod]
+        public void ReadTestThroughStreamReader()
+        {
+            var contents = File.ReadAllLines(PathRawFile);
 
-        //    using (var fs = File.OpenRead(PathGzFile))
-        //    {
-        //        using (var gz = new BgzfStream(fs, CompressionMode.Decompress, true))
-        //        using (var sr = new StreamReader(gz))
-        //        {
-        //            for (int i = 0; i <= contents.Length; i++)
-        //            {
-        //                string line = sr.ReadLine();
-        //                Assert.AreEqual(contents.ElementAtOrDefault(i), line);
-        //            }
-        //        }
-        //        Assert.AreEqual(fs.Length, fs.Position);
-        //    }
-        //}
+            using (var fs = File.OpenRead(PathGzFile))
+            {
+                using (var gz = new BgzfStream(fs, CompressionMode.Decompress, true))
+                using (var sr = new StreamReader(gz))
+                {
+                    for (int i = 0; i <= contents.Length; i++)
+                    {
+                        string line = sr.ReadLine();
+                        Assert.AreEqual(contents.ElementAtOrDefault(i), line);
+                    }
+                }
+                Assert.AreEqual(fs.Length, fs.Position);
+            }
+        }
     }
 }

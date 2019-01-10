@@ -84,7 +84,7 @@ namespace Biocs.IO
         /// </param>
         /// <param name="count">The maximum number of decompressed bytes to be read.</param>
         /// <returns>
-        /// The total number of decompressed bytes read into the buffer. This can be zero or less than <paramref name="count"/>
+        /// The total number of decompressed bytes read into the buffer. This can be less than <paramref name="count"/> or zero
         /// if the end of the stream has been reached.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="buffer"/> is <see langword="null"/>.</exception>
@@ -131,7 +131,7 @@ namespace Biocs.IO
                         return totalRead;
 
                     int flag = array[3];
-                    int blockSize = BitConverter.ToInt16(array, 16) - 25;
+                    int blockSize = BitConverter.ToUInt16(array, 16) - 25;
 
                     // FNAME
                     if ((flag & 0b1000) != 0)
@@ -181,7 +181,7 @@ namespace Biocs.IO
                         return totalRead;
 
                     deflateStream = new DeflateStream(new MemoryStream(blockArray, 0, blockSize), CompressionMode.Decompress);
-                    inputLength = BitConverter.ToInt32(blockArray, 4);
+                    inputLength = BitConverter.ToInt32(array, 4);
                 }
 
                 bytes = deflateStream.Read(buffer, offset, count);
