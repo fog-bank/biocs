@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Biocs.Collections
@@ -21,7 +22,11 @@ namespace Biocs.Collections
                     return items;
                 }
                 else
+#if NETSTANDARD1_1 || NET45
                     return new T[0];
+#else
+                    return Array.Empty<T>();
+#endif
             }
         }
     }
