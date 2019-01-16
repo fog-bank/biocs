@@ -5,6 +5,12 @@
 # cd biocs
 # chmod 777 test_ubuntu.sh
 
+BRANCH=$1
+
+if [ ${BRANCH} = "" ]; then
+  BRANCH=develop
+fi
+
 git fetch
 git checkout -f develop
 git merge origin/develop
