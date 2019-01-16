@@ -51,6 +51,7 @@ namespace Biocs.TestTools
             Assert.Fail("The test method did not throw the expected exception: " + typeof(TException) + ".");
         }
 
+#if NET45
         /// <summary>
         /// Creates directories for unit tests of specified type.
         /// </summary>
@@ -67,5 +68,6 @@ namespace Biocs.TestTools
             Directory.CreateDirectory(path);
             return path;
         }
+#endif
     }
 }

@@ -19,11 +19,11 @@ namespace Biocs.Collections
             var c2 = new Counter<int>(10);
             TestProperties(c2, 0, 0, new HashSet<int>(), new int[0], EqualityComparer<int>.Default);
 
-            var comparer3 = StringComparer.InvariantCulture;
+            var comparer3 = StringComparer.Ordinal;
             var c3 = new Counter<string>(comparer3);
             TestProperties(c3, 0, 0, new HashSet<string>(comparer3), new string[0], comparer3);
 
-            var comparer4 = StringComparer.InvariantCultureIgnoreCase;
+            var comparer4 = StringComparer.OrdinalIgnoreCase;
 			var c4 = new Counter<string>(10, comparer4);
             TestProperties(c4, 0, 0, new HashSet<string>(comparer4), new string[0], comparer4);
 
@@ -224,7 +224,7 @@ namespace Biocs.Collections
 			for (int i = 0; i < items.Length; i++)
 			{
 				for (int n = 0; n <= i; n++)
-					input.Add(n == 0 ? items[i] : items[i]?.ToUpper(CultureInfo.InvariantCulture));
+					input.Add(n == 0 ? items[i] : items[i]?.ToUpperInvariant());
 			}
 
             var comparer = StringComparer.OrdinalIgnoreCase;
