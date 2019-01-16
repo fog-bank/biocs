@@ -65,5 +65,15 @@ namespace Biocs.Collections
                 return true;
             }
         }
+
+        internal static T[] Empty<T>()
+        {
+#if MIN_NETSTANDARD1_3
+            return Array.Empty<T>();
+#else
+            return new T[0];
+
+#endif
+        }
     }
 }

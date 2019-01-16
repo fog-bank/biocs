@@ -1,7 +1,4 @@
-﻿#if MIN_NETSTANDARD1_3
-using System;
-#endif
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Biocs.Collections
@@ -24,14 +21,7 @@ namespace Biocs.Collections
                     return items;
                 }
                 else
-                {
-#if MIN_NETSTANDARD1_3
-                    return Array.Empty<T>();
-#else
-                    return new T[0];
-
-#endif
-                }
+                    return CollectionTools.Empty<T>();
             }
         }
     }

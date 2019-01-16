@@ -3,11 +3,11 @@
   <PropertyGroup>
     <AssemblyName>Biocs.Core.Tests</AssemblyName>
     <RootNamespace>Biocs</RootNamespace>
-    <TargetFrameworks>netcoreapp2.0;net45</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.0;netcoreapp1.0;net45</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
@@ -16,6 +16,16 @@
 
   <ItemGroup>
     <ProjectReference Include="..\core\core.csproj" />
+  </ItemGroup>
+
+  <!--<ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+    <ProjectReference Include="..\core\core.csproj" SetTargetFramework="TargetFramework=netstandard1.3" />
+  </ItemGroup>-->
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
+    <Compile Remove="TestTools\Instruction.cs" />
+    <Compile Remove="TestTools\StringResourceTester.cs" />
+    <Compile Remove="ResTest.cs" />
   </ItemGroup>
 
   <ItemGroup>
