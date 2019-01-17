@@ -24,7 +24,9 @@ namespace Biocs.IO
         /// <param name="mode">One of the <see cref="CompressionMode"/> values that indicates the action to take.</param>
         /// <param name="leaveOpen"><see langword="true"/> to leave the stream open; otherwise, <see langword="false"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="stream"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="mode"/> is not a valid <see cref="CompressionMode"/> enumeration value.
+        /// </exception>
         [StringResourceUsage("Arg.InvalidEnumValue", 1)]
         public BgzfStream(Stream stream, CompressionMode mode, bool leaveOpen)
         {
@@ -94,9 +96,12 @@ namespace Biocs.IO
         /// <exception cref="ArgumentException">
         /// The sum of <paramref name="offset"/> and <paramref name="count"/> is larger than the buffer length.
         /// </exception>
+        /// <exception cref="InvalidDataException">The data is in an invalid format.</exception>
         /// <exception cref="IOException">An I/O error occurs.</exception>
         /// <exception cref="NotSupportedException">The stream does not support reading.</exception>
         /// <exception cref="ObjectDisposedException">Methods were called after the stream was closed.</exception>
+        [StringResourceUsage("Arg.InvalidBufferRange", 3)]
+        [StringResourceUsage("NotSup.Stream")]
         public override int Read(byte[] buffer, int offset, int count)
         {
             if (buffer == null)
@@ -109,13 +114,13 @@ namespace Biocs.IO
                 throw new ArgumentOutOfRangeException(nameof(count));
 
             if (offset + count > buffer.Length)
-                throw new ArgumentException();
+                throw new ArgumentException(Res.GetString("Arg.InvalidBufferRange", offset, count, buffer.Length));
 
             if (stream == null)
-                throw new ObjectDisposedException(null);
+                throw new ObjectDisposedException(GetType().Name);
 
             if (!CanRead)
-                throw new NotSupportedException();
+                throw new NotSupportedException(Res.GetString("NotSup.Stream"));
 
             int totalRead = 0;
             int bytes = 0;
@@ -127,8 +132,11 @@ namespace Biocs.IO
                     var array = new byte[18];
                     bytes = stream.Read(array, 0, 18);
 
-                    if (bytes != 18 || !IsBgzfHeader(array))
+                    if (bytes == 0)
                         return totalRead;
+
+                    if (bytes != 18 || !IsBgzfHeader(array))
+                        throw new InvalidDataException();
 
                     int flag = array[3];
                     int blockSize = BitConverter.ToUInt16(array, 16) - 25;
@@ -144,7 +152,7 @@ namespace Biocs.IO
                                 break;
 
                             if (value == -1)
-                                return totalRead;
+                                throw new InvalidDataException();
                         }
                         while (true);
                     }
@@ -160,7 +168,7 @@ namespace Biocs.IO
                                 break;
 
                             if (value == -1)
-                                return totalRead;
+                                throw new InvalidDataException();
                         }
                         while (true);
                     }

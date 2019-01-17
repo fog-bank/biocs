@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,15 +8,15 @@ namespace Biocs.IO
     [TestClass]
     public class BgzfStreamTest
     {
-        private const string PathRawFile = @"Deployments\\ce.sam";
-        private const string PathGzFile = @"Deployments\\ce.sam.gz";
+        private readonly string PathRawFile = Path.Combine("Deployments", "ce.sam");
+        private readonly string PathGzFile = Path.Combine("Deployments", "ce.sam.gz");
 
         [TestMethod]
         public void IsBgzfFileTest()
         {
             Assert.IsTrue(BgzfStream.IsBgzfFile(PathGzFile));
             Assert.IsFalse(BgzfStream.IsBgzfFile(PathRawFile));
-            Assert.IsFalse(BgzfStream.IsBgzfFile(@"Deployments\\nonexist.txt.gz"));
+            Assert.IsFalse(BgzfStream.IsBgzfFile(Path.Combine("Deployments", "nonexist.txt.gz")));
         }
 
         [TestMethod]
