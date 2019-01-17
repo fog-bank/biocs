@@ -9,14 +9,14 @@ namespace Biocs.Numerics
     [TestClass]
     public class DoubleMersenneTwisterTest
     {
-        private const string PathTestData = @"Deployments\\dSFMT.19937.out.txt";
+        private readonly string PathTestData = Path.Combine("Deployments", "dSFMT.19937.out.txt");
 
         [TestMethod]
         public void Test()
         {
             var data = new List<string>(1000);
             var sep = new[] { ' ' };
-
+            
             foreach (string line in File.ReadLines(PathTestData).Skip(2).Take(250))
                 data.AddRange(line.Split(sep, StringSplitOptions.RemoveEmptyEntries));
 

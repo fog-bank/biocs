@@ -347,7 +347,7 @@ namespace Biocs.Collections
                     return pairs;
                 }
                 else
-                    return new KeyValuePair<T, int>[0];
+                    return CollectionTools.Empty<KeyValuePair<T, int>>();
             }
         }
     }

@@ -1,75 +1,55 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DA6634B1-C212-47B7-9484-296B585A3423}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Biocs</RootNamespace>
     <AssemblyName>Biocs.Core</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>ExtendedDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Debug\Biocs.Core.xml</DocumentationFile>
+    <RootNamespace>Biocs</RootNamespace>
+    <TargetFrameworks>netstandard2.0;netstandard1.3;net45</TargetFrameworks>
     <LangVersion>latest</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageId>Biocs.Core</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>fog-bank</Authors>
+    <Company>co3366353</Company>
+    <Product>BioCSharp</Product>
+    <Description></Description>
+    <NeutralLanguage>en</NeutralLanguage>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <FileVersion>0.1.40116.0</FileVersion>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://fog-bank.github.io/biocs/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/fog-bank/biocs.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>https://github.com/fog-bank/biocs/releases/tag/v$(Version)</PackageReleaseNotes>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Biocs.Core.xml</DocumentationFile>
-    <LangVersion>latest</LangVersion>
+  
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-  <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-    <None Include="project.json" />
+  
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <DefineConstants>$(DefineConstants);MIN_NETSTANDARD1_3</DefineConstants>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+    <DefineConstants>$(DefineConstants);MIN_NETSTANDARD1_3</DefineConstants>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' AND '$(TargetFramework)' == 'net45' ">
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  
+  <ItemGroup Condition=" '$(Configuration)' == 'Debug' AND '$(TargetFramework)' == 'netstandard2.0' ">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.3" PrivateAssets="all" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Codon.cs" />
-    <Compile Include="Collections\CollectionDebugView.cs" />
-    <Compile Include="Collections\CollectionTools.cs" />
-    <Compile Include="Collections\Counter.cs" />
-    <Compile Include="Collections\Deque.cs" />
-    <Compile Include="DnaBase.cs" />
-    <Compile Include="IO\BgzfStream.cs" />
-    <Compile Include="Numerics\DoubleMersenneTwister.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Res.cs" />
-    <Compile Include="StringResourceUsageAttribute.cs" />
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
   </ItemGroup>
+
   <ItemGroup>
-    <EmbeddedResource Include="Res.resx" />
+    <CodeAnalysisDictionary Include="..\CustomDictionary.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
-      <Link>CustomDictionary.xml</Link>
-      <SubType>Designer</SubType>
-    </CodeAnalysisDictionary>
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  
 </Project>

@@ -21,7 +21,7 @@ namespace Biocs.Collections
                     return items;
                 }
                 else
-                    return new T[0];
+                    return CollectionTools.Empty<T>();
             }
         }
     }
