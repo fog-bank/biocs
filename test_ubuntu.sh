@@ -4,16 +4,19 @@
 # git clone https://github.com/fog-bank/biocs/biocs.git
 # cd biocs
 # chmod 777 test_ubuntu.sh
+# ./test_ubuntu.sh develop
 
 BRANCH=$1
 
-if [ ${BRANCH} = "" ]; then
+if [ "${BRANCH}" = "" ]; then
   BRANCH=develop
 fi
 
 git fetch
 git checkout -f ${BRANCH}
 git merge origin/${BRANCH}
+chmod 777 test_ubuntu.sh
+
 dotnet --info
 dotnet test biocs/core.tests -f netcoreapp2.0 -v n | tee test2.0.log
 dotnet test biocs/core.tests -f netcoreapp1.0 -v n | tee test1.0.log
