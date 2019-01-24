@@ -123,85 +123,36 @@ namespace Biocs.IO
                 throw new NotSupportedException(Res.GetString("NotSup.Stream"));
 
             int totalRead = 0;
-            int bytes = 0;
 
             while (count > 0)
             {
                 if (deflateStream == null)
                 {
-                    var array = new byte[18];
-                    bytes = stream.Read(array, 0, 18);
-
-                    if (bytes == 0)
-                        return totalRead;
-
-                    if (bytes != 18 || !IsBgzfHeader(array))
-                        throw new InvalidDataException();
-
-                    int flag = array[3];
-                    int blockSize = BitConverter.ToUInt16(array, 16) - 25;
-
-                    // FNAME
-                    if ((flag & 0b1000) != 0)
-                    {
-                        do
-                        {
-                            int value = stream.ReadByte();
-
-                            if (value == 0)
-                                break;
-
-                            if (value == -1)
-                                throw new InvalidDataException();
-                        }
-                        while (true);
-                    }
-
-                    // FCOMMENT
-                    if ((flag & 0b1_0000) != 0)
-                    {
-                        do
-                        {
-                            int value = stream.ReadByte();
-
-                            if (value == 0)
-                                break;
-
-                            if (value == -1)
-                                throw new InvalidDataException();
-                        }
-                        while (true);
-                    }
-
-                    // FHCRC
-                    if ((flag & 0b10) != 0)
-                        stream.Read(array, 18, 2);
-
-                    var blockArray = new byte[blockSize];
-                    bytes = stream.Read(blockArray, 0, blockSize);
-
-                    if (bytes != blockSize)
-                        return totalRead;
-
-                    bytes = stream.Read(array, 0, 8);
-
-                    if (bytes != 8)
-                        return totalRead;
-
-                    deflateStream = new DeflateStream(new MemoryStream(blockArray, 0, blockSize), CompressionMode.Decompress);
-                    inputLength = BitConverter.ToInt32(array, 4);
+                    if (!ReadBgzfBlock())
+                        break;
                 }
 
-                bytes = deflateStream.Read(buffer, offset, count);
+                int bytes = deflateStream.Read(buffer, offset, count);
                 totalRead += bytes;
                 inputLength -= bytes;
                 offset += bytes;
                 count -= bytes;
 
-                if (inputLength == 0)
+                if (inputLength <= 0)
                 {
+                    if (inputLength < 0 || deflateStream.ReadByte() != -1)
+                    {
+                        // Actual size is larger than expected size.
+                        throw new InvalidDataException();
+                    }
+
                     deflateStream.Dispose();
                     deflateStream = null;
+                }
+                else if (bytes == 0)
+                {
+                    // Actual size is smaller than expected size.
+                    throw new InvalidDataException();
                 }
             }
             return totalRead;
@@ -229,21 +180,6 @@ namespace Biocs.IO
         /// <exception cref="NotSupportedException">This method is not supported on this stream.</exception>
         [StringResourceUsage("NotSup.Stream")]
         public override void SetLength(long value) => throw new NotSupportedException(Res.GetString("NotSup.Stream"));
-
-        /// <inheritdoc cref="Stream.Dispose(bool)"/>
-        protected override void Dispose(bool disposing)
-        {
-            try
-            {
-                if (disposing && !leaveOpen)
-                    stream?.Dispose();
-            }
-            finally
-            {
-                stream = null;
-            }
-            base.Dispose(disposing);
-        }
 
         /// <summary>
         /// Determines whether the specified file is in the BGZF format.
@@ -279,6 +215,102 @@ namespace Biocs.IO
             catch (UnauthorizedAccessException) { }
 
             return false;
+        }
+
+        /// <inheritdoc cref="Stream.Dispose(bool)"/>
+        protected override void Dispose(bool disposing)
+        {
+            try
+            {
+                if (disposing)
+                {
+                    if (!leaveOpen)
+                        stream?.Dispose();
+
+                    deflateStream?.Dispose();
+                    stream = null;
+                    deflateStream = null;
+                }
+            }
+            finally
+            {
+                base.Dispose(disposing);
+            }
+        }
+
+        // Reads the header of next BGZF block and prepares a DeflateStream object that contains the compressed data.
+        // @return true if next block was read successfully; false if there is no more block.
+        // @exception InvalidDataException
+        private bool ReadBgzfBlock()
+        {
+            var array = new byte[18];
+            int bytes = stream.Read(array, 0, 18);
+
+            if (bytes == 0)
+                return false;
+
+            if (bytes != 18 || !IsBgzfHeader(array))
+                throw new InvalidDataException();
+
+            int flag = array[3];
+            int dataLength = BitConverter.ToUInt16(array, 16) - 25;
+
+            // FNAME
+            if ((flag & 0b1000) != 0)
+            {
+                do
+                {
+                    int value = stream.ReadByte();
+
+                    if (value == 0)
+                        break;
+
+                    if (value == -1)
+                        throw new InvalidDataException();
+                }
+                while (true);
+            }
+
+            // FCOMMENT
+            if ((flag & 0b1_0000) != 0)
+            {
+                do
+                {
+                    int value = stream.ReadByte();
+
+                    if (value == 0)
+                        break;
+
+                    if (value == -1)
+                        throw new InvalidDataException();
+                }
+                while (true);
+            }
+
+            // FHCRC
+            if ((flag & 0b10) != 0)
+            {
+                bytes = stream.Read(array, 0, 2);
+
+                if (bytes != 2)
+                    throw new InvalidDataException();
+            }
+
+            var dataArray = new byte[dataLength];
+            bytes = stream.Read(dataArray, 0, dataLength);
+
+            if (bytes != dataLength)
+                throw new InvalidDataException();
+
+            // Footer (CRC32 and ISIZE)
+            bytes = stream.Read(array, 0, 8);
+
+            if (bytes != 8)
+                throw new InvalidDataException();
+
+            deflateStream = new DeflateStream(new MemoryStream(dataArray, false), CompressionMode.Decompress);
+            inputLength = BitConverter.ToInt32(array, 4);
+            return true;
         }
 
         private static bool IsBgzfHeader(byte[] header)
