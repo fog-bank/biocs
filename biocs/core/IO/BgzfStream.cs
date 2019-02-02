@@ -13,6 +13,7 @@ namespace Biocs.IO
         private Stream stream;
         private readonly CompressionMode mode;
         private readonly bool leaveOpen;
+        private byte[] blockData;
         private DeflateStream deflateStream;
         private int inputLength;
 
@@ -77,8 +78,19 @@ namespace Biocs.IO
             set => throw new NotSupportedException(Res.GetString("NotSup.Stream"));
         }
 
+        private byte[] Buffer
+        {
+            get
+            {
+                if (blockData == null)
+                    blockData = new byte[0xffff - 25];
+
+                return blockData;
+            }
+        }
+
         /// <summary>
-        /// Reads a sequence of decompressed bytes from the current stream.
+        /// Reads a sequence of decompressed bytes from the underlying stream.
         /// </summary>
         /// <param name="buffer">An array of bytes used to store decompressed bytes.</param>
         /// <param name="offset">
@@ -99,7 +111,7 @@ namespace Biocs.IO
         /// <exception cref="InvalidDataException">The data is in an invalid format.</exception>
         /// <exception cref="IOException">An I/O error occurs.</exception>
         /// <exception cref="NotSupportedException">The stream does not support reading.</exception>
-        /// <exception cref="ObjectDisposedException">Methods were called after the stream was closed.</exception>
+        /// <exception cref="ObjectDisposedException">The method were called after the stream was closed.</exception>
         [StringResourceUsage("Arg.InvalidBufferRange", 3)]
         [StringResourceUsage("NotSup.Stream")]
         public override int Read(byte[] buffer, int offset, int count)
@@ -158,8 +170,71 @@ namespace Biocs.IO
             return totalRead;
         }
 
-        /// <inheritdoc cref="Stream.Write"/>
-        public override void Write(byte[] buffer, int offset, int count) => throw new NotImplementedException();
+        /// <summary>
+        /// Writes a sequence of compressed bytes to the underlying stream.
+        /// </summary>
+        /// <param name="buffer">An array of bytes to compress.</param>
+        /// <param name="offset">The zero-based byte offset in <paramref name="buffer"/> at which to begin compressing.</param>
+        /// <param name="count">The number of bytes to be compress.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="buffer"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="offset"/> or <paramref name="count"/> is negative.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The sum of <paramref name="offset"/> and <paramref name="count"/> is larger than the buffer length.
+        /// </exception>
+        /// <exception cref="IOException">An I/O error occurs.</exception>
+        /// <exception cref="NotSupportedException">The stream does not support writing.</exception>
+        /// <exception cref="ObjectDisposedException">The method were called after the stream was closed.</exception>
+        [StringResourceUsage("Arg.InvalidBufferRange", 3)]
+        [StringResourceUsage("NotSup.Stream")]
+        public override void Write(byte[] buffer, int offset, int count)
+        {
+            if (buffer == null)
+                throw new ArgumentNullException(nameof(buffer));
+
+            if (offset < 0)
+                throw new ArgumentOutOfRangeException(nameof(offset));
+
+            if (count < 0)
+                throw new ArgumentOutOfRangeException(nameof(count));
+
+            if (offset + count > buffer.Length)
+                throw new ArgumentException(Res.GetString("Arg.InvalidBufferRange", offset, count, buffer.Length));
+
+            if (stream == null)
+                throw new ObjectDisposedException(GetType().Name);
+
+            if (!CanWrite)
+                throw new NotSupportedException(Res.GetString("NotSup.Stream"));
+
+            while (count > 0)
+            {
+                if (deflateStream == null)
+                    deflateStream = new DeflateStream(new MemoryStream(Buffer), CompressionMode.Compress);
+
+                int capacity = Buffer.Length - (int)deflateStream.BaseStream.Position;
+
+                if (capacity <= 0)
+                    throw new InvalidOperationException();
+
+                int length = Math.Min(count, capacity);
+                deflateStream.Write(buffer, offset, length);
+                inputLength += length;
+                capacity -= length;
+                offset += length;
+                count -= length;
+
+                if (capacity == 0)
+                {
+                    WriteBgzfBlock();
+
+                    deflateStream.Dispose();
+                    deflateStream = null;
+                    inputLength = 0;
+                }
+            }
+        }
 
         /// <inheritdoc cref="Stream.Flush"/>
         public override void Flush() => throw new NotImplementedException();
@@ -253,7 +328,6 @@ namespace Biocs.IO
                 throw new InvalidDataException();
 
             int flag = array[3];
-            int dataLength = BitConverter.ToUInt16(array, 16) - 25;
 
             // FNAME
             if ((flag & 0b1000) != 0)
@@ -296,8 +370,12 @@ namespace Biocs.IO
                     throw new InvalidDataException();
             }
 
-            var dataArray = new byte[dataLength];
-            bytes = stream.Read(dataArray, 0, dataLength);
+            int dataLength = BitConverter.ToUInt16(array, 16) - 25;
+
+            if (dataLength < 0)
+                throw new InvalidDataException();
+
+            bytes = stream.Read(Buffer, 0, dataLength);
 
             if (bytes != dataLength)
                 throw new InvalidDataException();
@@ -308,9 +386,53 @@ namespace Biocs.IO
             if (bytes != 8)
                 throw new InvalidDataException();
 
-            deflateStream = new DeflateStream(new MemoryStream(dataArray, false), CompressionMode.Decompress);
+            deflateStream = new DeflateStream(new MemoryStream(Buffer, 0, dataLength, false), CompressionMode.Decompress);
             inputLength = BitConverter.ToInt32(array, 4);
             return true;
+        }
+
+        private void WriteBgzfBlock()
+        {
+            var array = new byte[18];
+            // ID
+            array[0] = 0x1f;
+            array[1] = 0x8b;
+            // CM
+            array[2] = 8;
+            // FLG
+            array[3] = 4;
+            // OS
+            array[9] = 0xff;
+            // XLEN
+            array[10] = 6;
+            // SI
+            array[12] = 66;
+            array[13] = 67;
+            // SLEN
+            array[14] = 2;
+
+            // BSIZE
+            int dataLength = (int)deflateStream.BaseStream.Position;
+            int bsize = dataLength + 25;
+            array[16] = (byte)(bsize & 0xff);
+            array[17] = (byte)((bsize & 0xff00) >> 8);
+
+            stream.Write(array, 0, array.Length);
+            stream.Write(Buffer, 0, dataLength);
+
+            // TODO: CRC32
+            array[0] = 0;
+            array[1] = 0;
+            array[2] = 0;
+            array[3] = 0;
+
+            // ISIZE
+            array[4] = (byte)(inputLength & 0xff);
+            array[5] = (byte)((inputLength & 0xff00) >> 8);
+            array[6] = (byte)((inputLength & 0xff0000) >> 16);
+            array[7] = (byte)((inputLength & 0xff000000) >> 24);
+
+            stream.Write(array, 0, 8);
         }
 
         private static bool IsBgzfHeader(byte[] header)
