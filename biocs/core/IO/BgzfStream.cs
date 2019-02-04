@@ -79,7 +79,7 @@ namespace Biocs.IO
             set => throw new NotSupportedException(Res.GetString("NotSup.Stream"));
         }
 
-        private byte[] Buffer
+        private byte[] CompressedData
         {
             get
             {
@@ -214,7 +214,7 @@ namespace Biocs.IO
             while (count > 0)
             {
                 if (deflateStream == null)
-                    deflateStream = new DeflateStream(new MemoryStream(Buffer), CompressionMode.Compress, true);
+                    deflateStream = new DeflateStream(new MemoryStream(CompressedData), CompressionMode.Compress, true);
 
                 int capacity = MaxInputLength - inputLength;
                 int length = Math.Min(count, capacity);
@@ -310,8 +310,8 @@ namespace Biocs.IO
 
                     if (!eofMarker)
                     {
-                        Buffer[0] = 3;
-                        Buffer[1] = 0;
+                        CompressedData[0] = 3;
+                        CompressedData[1] = 0;
                         WriteBgzfBlock(2);
                         eofMarker = true;
                     }
@@ -397,7 +397,7 @@ namespace Biocs.IO
             if (dataLength < 0)
                 throw new InvalidDataException();
 
-            bytes = stream.Read(Buffer, 0, dataLength);
+            bytes = stream.Read(CompressedData, 0, dataLength);
 
             if (bytes != dataLength)
                 throw new InvalidDataException();
@@ -410,7 +410,7 @@ namespace Biocs.IO
 
             inputLength = BitConverter.ToInt32(array, 4);
 
-            if (inputLength == 0 && dataLength == 2 && Buffer[0] == 3 && Buffer[1] == 0)
+            if (inputLength == 0 && dataLength == 2 && CompressedData[0] == 3 && CompressedData[1] == 0)
             {
                 dataLength = 0;
                 eofMarker = true;
@@ -418,7 +418,7 @@ namespace Biocs.IO
             else
                 eofMarker = false;
 
-            deflateStream = new DeflateStream(new MemoryStream(Buffer, 0, dataLength), CompressionMode.Decompress);
+            deflateStream = new DeflateStream(new MemoryStream(CompressedData, 0, dataLength), CompressionMode.Decompress);
             return true;
         }
 
@@ -448,7 +448,7 @@ namespace Biocs.IO
             array[17] = (byte)((bsize & 0xff00) >> 8);
 
             stream.Write(array, 0, array.Length);
-            stream.Write(Buffer, 0, compressedLength);
+            stream.Write(CompressedData, 0, compressedLength);
 
             // TODO: CRC32
             if (inputLength > 0)
