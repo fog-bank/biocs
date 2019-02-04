@@ -16,6 +16,7 @@ namespace Biocs.IO
         private byte[] blockData;
         private DeflateStream deflateStream;
         private int inputLength;
+        private bool eofMarker;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BgzfStream"/> class using the specified stream and
@@ -190,6 +191,8 @@ namespace Biocs.IO
         [StringResourceUsage("NotSup.Stream")]
         public override void Write(byte[] buffer, int offset, int count)
         {
+            const int MaxInputLength = 0xff00;
+
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
 
@@ -213,24 +216,19 @@ namespace Biocs.IO
                 if (deflateStream == null)
                     deflateStream = new DeflateStream(new MemoryStream(Buffer), CompressionMode.Compress, true);
 
-                int capacity = 0x10000 - inputLength;
+                int capacity = MaxInputLength - inputLength;
                 int length = Math.Min(count, capacity);
 
                 deflateStream.Write(buffer, offset, length);
+                // TODO: Catch NotSupportedException in capacity over.
+
                 inputLength += length;
                 capacity -= length;
                 offset += length;
                 count -= length;
 
                 if (capacity == 0)
-                {
-                    var baseStream = deflateStream.BaseStream;
-                    deflateStream.Dispose();
-                    WriteBgzfBlock((int)baseStream.Position);
-
-                    deflateStream = null;
-                    inputLength = 0;
-                }
+                    Flush();
             }
         }
 
@@ -307,7 +305,17 @@ namespace Biocs.IO
             try
             {
                 if (CanWrite)
+                {
                     Flush();
+
+                    if (!eofMarker)
+                    {
+                        Buffer[0] = 3;
+                        Buffer[1] = 0;
+                        WriteBgzfBlock(2);
+                        eofMarker = true;
+                    }
+                }
             }
             finally
             {
@@ -400,8 +408,17 @@ namespace Biocs.IO
             if (bytes != 8)
                 throw new InvalidDataException();
 
-            deflateStream = new DeflateStream(new MemoryStream(Buffer, 0, dataLength), CompressionMode.Decompress);
             inputLength = BitConverter.ToInt32(array, 4);
+
+            if (inputLength == 0 && dataLength == 2 && Buffer[0] == 3 && Buffer[1] == 0)
+            {
+                dataLength = 0;
+                eofMarker = true;
+            }
+            else
+                eofMarker = false;
+
+            deflateStream = new DeflateStream(new MemoryStream(Buffer, 0, dataLength), CompressionMode.Decompress);
             return true;
         }
 
@@ -434,10 +451,13 @@ namespace Biocs.IO
             stream.Write(Buffer, 0, compressedLength);
 
             // TODO: CRC32
-            array[0] = 0;
-            array[1] = 0;
-            array[2] = 0;
-            array[3] = 0;
+            if (inputLength > 0)
+            {
+                array[0] = 0;
+                array[1] = 0;
+                array[2] = 0;
+                array[3] = 0;
+            }
 
             // ISIZE
             array[4] = (byte)(inputLength & 0xff);
