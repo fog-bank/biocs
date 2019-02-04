@@ -211,14 +211,11 @@ namespace Biocs.IO
             while (count > 0)
             {
                 if (deflateStream == null)
-                    deflateStream = new DeflateStream(new MemoryStream(Buffer), CompressionMode.Compress);
+                    deflateStream = new DeflateStream(new MemoryStream(Buffer), CompressionMode.Compress, true);
 
-                int capacity = Buffer.Length - (int)deflateStream.BaseStream.Position;
-
-                if (capacity <= 0)
-                    throw new InvalidOperationException();
-
+                int capacity = 0x10000 - inputLength;
                 int length = Math.Min(count, capacity);
+
                 deflateStream.Write(buffer, offset, length);
                 inputLength += length;
                 capacity -= length;
@@ -227,9 +224,10 @@ namespace Biocs.IO
 
                 if (capacity == 0)
                 {
-                    WriteBgzfBlock();
-
+                    var baseStream = deflateStream.BaseStream;
                     deflateStream.Dispose();
+                    WriteBgzfBlock((int)baseStream.Position);
+
                     deflateStream = null;
                     inputLength = 0;
                 }
@@ -237,7 +235,18 @@ namespace Biocs.IO
         }
 
         /// <inheritdoc cref="Stream.Flush"/>
-        public override void Flush() => throw new NotImplementedException();
+        public override void Flush()
+        {
+            if (CanWrite && inputLength > 0)
+            {
+                var baseStream = deflateStream.BaseStream;
+                deflateStream.Dispose();
+                WriteBgzfBlock((int)baseStream.Position);
+
+                deflateStream = null;
+                inputLength = 0;
+            }
+        }
 
         /// <summary>
         /// This method is not supported and always throws a <see cref="NotSupportedException"/>.
@@ -297,7 +306,12 @@ namespace Biocs.IO
         {
             try
             {
-                if (disposing)
+                if (CanWrite)
+                    Flush();
+            }
+            finally
+            {
+                try
                 {
                     if (!leaveOpen)
                         stream?.Dispose();
@@ -306,10 +320,10 @@ namespace Biocs.IO
                     stream = null;
                     deflateStream = null;
                 }
-            }
-            finally
-            {
-                base.Dispose(disposing);
+                finally
+                {
+                    base.Dispose(disposing);
+                }
             }
         }
 
@@ -386,12 +400,12 @@ namespace Biocs.IO
             if (bytes != 8)
                 throw new InvalidDataException();
 
-            deflateStream = new DeflateStream(new MemoryStream(Buffer, 0, dataLength, false), CompressionMode.Decompress);
+            deflateStream = new DeflateStream(new MemoryStream(Buffer, 0, dataLength), CompressionMode.Decompress);
             inputLength = BitConverter.ToInt32(array, 4);
             return true;
         }
 
-        private void WriteBgzfBlock()
+        private void WriteBgzfBlock(int compressedLength)
         {
             var array = new byte[18];
             // ID
@@ -412,13 +426,12 @@ namespace Biocs.IO
             array[14] = 2;
 
             // BSIZE
-            int dataLength = (int)deflateStream.BaseStream.Position;
-            int bsize = dataLength + 25;
+            int bsize = compressedLength + 25;
             array[16] = (byte)(bsize & 0xff);
             array[17] = (byte)((bsize & 0xff00) >> 8);
 
             stream.Write(array, 0, array.Length);
-            stream.Write(Buffer, 0, dataLength);
+            stream.Write(Buffer, 0, compressedLength);
 
             // TODO: CRC32
             array[0] = 0;
