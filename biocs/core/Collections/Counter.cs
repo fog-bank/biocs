@@ -19,8 +19,7 @@ namespace Biocs.Collections
         /// Initializes a new instance of the <see cref="Counter{T}"/> class that is empty, has zero capacity, and uses 
         /// the default equality comparer.
         /// </summary>
-        public Counter()
-            : this(0)
+        public Counter() : this(0)
         { }
 
         /// <summary>
@@ -29,8 +28,7 @@ namespace Biocs.Collections
         /// </summary>
         /// <param name="capacity">The initial number of items that the <see cref="Counter{T}"/> can contain.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> is less than 0.</exception>
-        public Counter(int capacity)
-            : this(capacity, null)
+        public Counter(int capacity) : this(capacity, null)
         { }
 
         /// <summary>
@@ -41,8 +39,7 @@ namespace Biocs.Collections
         /// The <see cref="IEqualityComparer{T}"/> implementation to use when comparing items, or <see langword="null"/> to
         /// use the default <see cref="IEqualityComparer{T}"/> for the type of the item.
         /// </param>
-        public Counter(IEqualityComparer<T> comparer)
-            : this(0, comparer)
+        public Counter(IEqualityComparer<T> comparer) : this(0, comparer)
         { }
 
         /// <summary>

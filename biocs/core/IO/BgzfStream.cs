@@ -12,6 +12,7 @@ namespace Biocs.IO
     {
         private Stream stream;
         private readonly CompressionMode mode;
+        private readonly CompressionLevel level;
         private readonly bool leaveOpen;
         private byte[] blockData;
         private DeflateStream deflateStream;
@@ -19,8 +20,24 @@ namespace Biocs.IO
         private bool eofMarker;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BgzfStream"/> class using the specified stream and
-        /// <see cref="CompressionMode"/> value, and a value that specifies whether to leave the stream open.
+        /// Initializes a new instance of the <see cref="BgzfStream"/> class with the specified stream and compression mode.
+        /// </summary>
+        /// <param name="stream">The stream to compress or decompress.</param>
+        /// <param name="mode">One of the <see cref="CompressionMode"/> values that indicates the action to take.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="stream"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="mode"/> is not a valid <see cref="CompressionMode"/> enumeration value.
+        /// </exception>
+        /// <remarks>
+        /// Closing the stream also closes the underlying stream. The compression level is set to
+        /// <see cref="CompressionLevel.Optimal"/> when the compression mode is <see cref="CompressionMode.Compress"/>.
+        /// </remarks>
+        public BgzfStream(Stream stream, CompressionMode mode) : this(stream, mode, false)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BgzfStream"/> class with the specified stream and compression mode,
+        /// and a value that specifies whether to leave the stream open.
         /// </summary>
         /// <param name="stream">The stream to compress or decompress.</param>
         /// <param name="mode">One of the <see cref="CompressionMode"/> values that indicates the action to take.</param>
@@ -29,6 +46,10 @@ namespace Biocs.IO
         /// <exception cref="ArgumentException">
         /// <paramref name="mode"/> is not a valid <see cref="CompressionMode"/> enumeration value.
         /// </exception>
+        /// <remarks>
+        /// The compression level is set to <see cref="CompressionLevel.Optimal"/> when the compression mode is
+        /// <see cref="CompressionMode.Compress"/>.
+        /// </remarks>
         [StringResourceUsage("Arg.InvalidEnumValue", 1)]
         public BgzfStream(Stream stream, CompressionMode mode, bool leaveOpen)
         {
@@ -39,6 +60,44 @@ namespace Biocs.IO
 
             this.mode = mode;
             this.leaveOpen = leaveOpen;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BgzfStream"/> class with the specified stream and compression level.
+        /// </summary>
+        /// <param name="stream">The stream to compress.</param>
+        /// <param name="level">
+        /// One of the <see cref="CompressionLevel"/> values that indicates whether to emphasize speed or compression size.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="stream"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="level"/> is not a valid <see cref="CompressionLevel"/> enumeration value.
+        /// </exception>
+        /// <remarks>Closing the stream also closes the underlying stream.</remarks>
+        public BgzfStream(Stream stream, CompressionLevel level) : this(stream, level, false)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BgzfStream"/> class with the specified stream and compression level,
+        /// and a value that specifies whether to leave the stream open.
+        /// </summary>
+        /// <param name="stream">The stream to compress.</param>
+        /// <param name="level">
+        /// One of the <see cref="CompressionLevel"/> values that indicates whether to emphasize speed or compression size.
+        /// </param>
+        /// <param name="leaveOpen"><see langword="true"/> to leave the stream open; otherwise, <see langword="false"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="stream"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="level"/> is not a valid <see cref="CompressionLevel"/> enumeration value.
+        /// </exception>
+        [StringResourceUsage("Arg.InvalidEnumValue", 1)]
+        public BgzfStream(Stream stream, CompressionLevel level, bool leaveOpen)
+            : this(stream, CompressionMode.Compress, leaveOpen)
+        {
+            if (level != CompressionLevel.Optimal && level != CompressionLevel.Fastest && level != CompressionLevel.NoCompression)
+                throw new ArgumentException(Res.GetString("Arg.InvalidEnumValue", nameof(CompressionLevel)), nameof(level));
+
+            this.level = level;
         }
 
         /// <summary>
@@ -214,13 +273,20 @@ namespace Biocs.IO
             while (count > 0)
             {
                 if (deflateStream == null)
-                    deflateStream = new DeflateStream(new MemoryStream(CompressedData), CompressionMode.Compress, true);
+                    deflateStream = new DeflateStream(new MemoryStream(CompressedData), level, true);
 
                 int capacity = MaxInputLength - inputLength;
                 int length = Math.Min(count, capacity);
 
-                deflateStream.Write(buffer, offset, length);
-                // TODO: Catch NotSupportedException in capacity over.
+                try
+                {
+                    deflateStream.Write(buffer, offset, length);
+                }
+                catch (NotSupportedException nse)
+                {
+                    // TODO: Catch NotSupportedException in capacity over.
+                    throw new NotSupportedException(null, nse);
+                }
 
                 inputLength += length;
                 capacity -= length;
@@ -353,35 +419,11 @@ namespace Biocs.IO
 
             // FNAME
             if ((flag & 0b1000) != 0)
-            {
-                do
-                {
-                    int value = stream.ReadByte();
-
-                    if (value == 0)
-                        break;
-
-                    if (value == -1)
-                        throw new InvalidDataException();
-                }
-                while (true);
-            }
+                SkipZeroTerminatedField();
 
             // FCOMMENT
             if ((flag & 0b1_0000) != 0)
-            {
-                do
-                {
-                    int value = stream.ReadByte();
-
-                    if (value == 0)
-                        break;
-
-                    if (value == -1)
-                        throw new InvalidDataException();
-                }
-                while (true);
-            }
+                SkipZeroTerminatedField();
 
             // FHCRC
             if ((flag & 0b10) != 0)
@@ -392,7 +434,7 @@ namespace Biocs.IO
                     throw new InvalidDataException();
             }
 
-            int dataLength = BitConverter.ToUInt16(array, 16) - 25;
+            int dataLength = array[16] + (array[17] << 8) - 25;
 
             if (dataLength < 0)
                 throw new InvalidDataException();
@@ -408,7 +450,7 @@ namespace Biocs.IO
             if (bytes != 8)
                 throw new InvalidDataException();
 
-            inputLength = BitConverter.ToInt32(array, 4);
+            inputLength = array[4] + (array[5] << 8) + (array[6] << 16) + (array[7] << 24);
 
             if (inputLength == 0 && dataLength == 2 && CompressedData[0] == 3 && CompressedData[1] == 0)
             {
@@ -420,6 +462,21 @@ namespace Biocs.IO
 
             deflateStream = new DeflateStream(new MemoryStream(CompressedData, 0, dataLength), CompressionMode.Decompress);
             return true;
+        }
+
+        private void SkipZeroTerminatedField()
+        {
+            do
+            {
+                int value = stream.ReadByte();
+
+                if (value == 0)
+                    break;
+
+                if (value == -1)
+                    throw new InvalidDataException();
+            }
+            while (true);
         }
 
         private void WriteBgzfBlock(int compressedLength)
@@ -458,6 +515,8 @@ namespace Biocs.IO
                 array[2] = 0;
                 array[3] = 0;
             }
+            else
+                Array.Clear(array, 0, 4);
 
             // ISIZE
             array[4] = (byte)(inputLength & 0xff);
