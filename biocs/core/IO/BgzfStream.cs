@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Security;
@@ -17,6 +18,8 @@ namespace Biocs.IO
         private byte[] blockData;
         private DeflateStream deflateStream;
         private int inputLength;
+        private uint crc;
+        private uint originalCrc;
         private bool eofMarker;
 
         /// <summary>
@@ -205,6 +208,8 @@ namespace Biocs.IO
                 }
 
                 int bytes = deflateStream.Read(buffer, offset, count);
+
+                crc = Crc32.UpdateCrc(crc, buffer, offset, bytes);
                 totalRead += bytes;
                 inputLength -= bytes;
                 offset += bytes;
@@ -217,6 +222,9 @@ namespace Biocs.IO
                         // Actual size is larger than expected size.
                         throw new InvalidDataException();
                     }
+
+                    if (crc != originalCrc)
+                        throw new InvalidDataException();
 
                     deflateStream.Dispose();
                     deflateStream = null;
@@ -244,7 +252,10 @@ namespace Biocs.IO
         /// The sum of <paramref name="offset"/> and <paramref name="count"/> is larger than the buffer length.
         /// </exception>
         /// <exception cref="IOException">An I/O error occurs.</exception>
-        /// <exception cref="NotSupportedException">The stream does not support writing.</exception>
+        /// <exception cref="NotSupportedException">
+        /// <para>The stream does not support writing.</para> -or-
+        /// <para>The size of compressed bytes for a BGZF block exceeds about 64 KB.</para>
+        /// </exception>
         /// <exception cref="ObjectDisposedException">The method were called after the stream was closed.</exception>
         [StringResourceUsage("Arg.InvalidBufferRange", 3)]
         [StringResourceUsage("NotSup.Stream")]
@@ -288,6 +299,7 @@ namespace Biocs.IO
                     throw new NotSupportedException(null, nse);
                 }
 
+                crc = Crc32.UpdateCrc(crc, buffer, offset, length);
                 inputLength += length;
                 capacity -= length;
                 offset += length;
@@ -298,7 +310,9 @@ namespace Biocs.IO
             }
         }
 
-        /// <inheritdoc cref="Stream.Flush"/>
+        /// <summary>
+        /// Writes any buffered data to the underlying stream.
+        /// </summary>
         public override void Flush()
         {
             if (CanWrite && inputLength > 0)
@@ -309,6 +323,7 @@ namespace Biocs.IO
 
                 deflateStream = null;
                 inputLength = 0;
+                crc = 0;
             }
         }
 
@@ -434,11 +449,13 @@ namespace Biocs.IO
                     throw new InvalidDataException();
             }
 
+            // BSIZE (total block size minus 1)
             int dataLength = array[16] + (array[17] << 8) - 25;
 
             if (dataLength < 0)
                 throw new InvalidDataException();
 
+            // CDATA
             bytes = stream.Read(CompressedData, 0, dataLength);
 
             if (bytes != dataLength)
@@ -447,11 +464,14 @@ namespace Biocs.IO
             // Footer (CRC32 and ISIZE)
             bytes = stream.Read(array, 0, 8);
 
-            if (bytes != 8)
+            if (bytes != 8 || array[6] > 1 || array[7] != 0)
                 throw new InvalidDataException();
 
-            inputLength = array[4] + (array[5] << 8) + (array[6] << 16) + (array[7] << 24);
+            originalCrc = unchecked((uint)(array[0] + (array[1] << 8) + (array[2] << 16) + (array[3] << 24)));
+            crc = 0;
+            inputLength = array[4] + (array[5] << 8) + (array[6] << 16);
 
+            // EOF marker
             if (inputLength == 0 && dataLength == 2 && CompressedData[0] == 3 && CompressedData[1] == 0)
             {
                 dataLength = 0;
@@ -479,6 +499,7 @@ namespace Biocs.IO
             while (true);
         }
 
+        // Writes a header, compressed data with specified range, and a footer.
         private void WriteBgzfBlock(int compressedLength)
         {
             var array = new byte[18];
@@ -499,7 +520,7 @@ namespace Biocs.IO
             // SLEN
             array[14] = 2;
 
-            // BSIZE
+            // BSIZE (total block size minus 1)
             int bsize = compressedLength + 25;
             array[16] = (byte)(bsize & 0xff);
             array[17] = (byte)((bsize & 0xff00) >> 8);
@@ -507,23 +528,26 @@ namespace Biocs.IO
             stream.Write(array, 0, array.Length);
             stream.Write(CompressedData, 0, compressedLength);
 
-            // TODO: CRC32
             if (inputLength > 0)
             {
-                array[0] = 0;
-                array[1] = 0;
-                array[2] = 0;
-                array[3] = 0;
+                // CRC32
+                array[0] = (byte)(crc & 0xff);
+                array[1] = (byte)((crc & 0xff00) >> 8);
+                array[2] = (byte)((crc & 0xff0000) >> 16);
+                array[3] = (byte)((crc & 0xff000000) >> 24);
+
+                // ISIZE
+                array[4] = (byte)(inputLength & 0xff);
+                array[5] = (byte)((inputLength & 0xff00) >> 8);
+                //array[6] = 0;
+                //array[7] = 0;
+                Debug.Assert(inputLength < 0x10000);
             }
             else
+            {
+                //Array.Clear(array, 0, 8);
                 Array.Clear(array, 0, 4);
-
-            // ISIZE
-            array[4] = (byte)(inputLength & 0xff);
-            array[5] = (byte)((inputLength & 0xff00) >> 8);
-            array[6] = (byte)((inputLength & 0xff0000) >> 16);
-            array[7] = (byte)((inputLength & 0xff000000) >> 24);
-
+            }
             stream.Write(array, 0, 8);
         }
 
