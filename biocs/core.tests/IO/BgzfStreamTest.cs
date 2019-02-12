@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Biocs.IO
@@ -20,7 +21,7 @@ namespace Biocs.IO
         }
 
         [TestMethod]
-        public void ReadTestThroughStreamReader()
+        public void ReadTest()
         {
             var raw = File.ReadAllBytes(PathRawFile);
             var actual = new byte[raw.Length];
@@ -41,6 +42,39 @@ namespace Biocs.IO
 
                     var buffer = new byte[Count];
                     bytes = gz.Read(buffer, 0, buffer.Length);
+
+                    Assert.AreEqual(actual.Length - offset, bytes);
+                    Assert.AreEqual(-1, gz.ReadByte());
+
+                    Array.Copy(buffer, 0, actual, offset, bytes);
+                    CollectionAssert.AreEqual(raw, actual);
+                }
+                Assert.AreEqual(fs.Length, fs.Position);
+            }
+        }
+
+        [TestMethod]
+        public async Task ReadAsyncTest()
+        {
+            var raw = File.ReadAllBytes(PathRawFile);
+            var actual = new byte[raw.Length];
+
+            using (var fs = File.OpenRead(PathGzFile))
+            {
+                using (var gz = new BgzfStream(fs, CompressionMode.Decompress, true))
+                {
+                    int offset = 0;
+                    int bytes = 0;
+                    const int Count = 100;
+
+                    for (; offset + Count <= actual.Length; offset += Count)
+                    {
+                        bytes = await gz.ReadAsync(actual, offset, Count);
+                        Assert.AreEqual(Count, bytes);
+                    }
+
+                    var buffer = new byte[Count];
+                    bytes = await gz.ReadAsync(buffer, 0, buffer.Length);
 
                     Assert.AreEqual(actual.Length - offset, bytes);
                     Assert.AreEqual(-1, gz.ReadByte());
