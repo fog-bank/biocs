@@ -524,6 +524,7 @@ namespace Biocs.IO
             int bsize = compressedLength + 25;
             array[16] = (byte)(bsize & 0xff);
             array[17] = (byte)((bsize & 0xff00) >> 8);
+            Debug.Assert(bsize < 0x10000);
 
             stream.Write(array, 0, array.Length);
             stream.Write(CompressedData, 0, compressedLength);
