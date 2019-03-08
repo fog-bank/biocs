@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Biocs.Collections
 {
@@ -322,6 +323,7 @@ namespace Biocs.Collections
         }
     }
 
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
     internal sealed class CounterDebugView<T>
     {
         private readonly Counter<T> counter;
