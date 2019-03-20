@@ -143,7 +143,7 @@ namespace Biocs
         public override int GetHashCode() => (int)Code;
 
         /// <inheritdoc cref="object.ToString"/>
-        public override string ToString() => Symbol.ToString();
+        public override string ToString() => char.ToString(Symbol);
 
         /// <summary>
         /// Converts the character representation of a nucleotide to an equivalent <see cref="DnaBase"/> instance.
