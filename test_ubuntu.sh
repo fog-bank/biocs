@@ -17,6 +17,8 @@ git checkout -f ${BRANCH}
 git merge origin/${BRANCH}
 chmod 777 test_ubuntu.sh
 
-dotnet --info
+dotnet --info | tee info.log
+dotnet restore biocs | tee restore.log
+dotnet build biocs | tee build.log
 dotnet test biocs/core.tests -f netcoreapp2.0 -v n | tee test2.0.log
 dotnet test biocs/core.tests -f netcoreapp1.0 -v n | tee test1.0.log
