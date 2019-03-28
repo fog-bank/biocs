@@ -35,7 +35,7 @@
     <PackageReleaseNotes>https://github.com/fog-bank/biocs/releases/tag/v$(Version)</PackageReleaseNotes>
     <NeutralLanguage>en</NeutralLanguage>
     <AssemblyVersion>0.1.0.0</AssemblyVersion>
-    <FileVersion>0.1.40320.0</FileVersion>
+    <FileVersion>0.1.40328.0</FileVersion>
   </PropertyGroup>
 
   <!-- Code Analysis -->
@@ -44,8 +44,12 @@
     <CodeAnalysisRuleSet Condition=" Exists('$(DevEnvDir)') ">AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <Features>$(Features);flow-analysis</Features>
+  </PropertyGroup>
+
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.3" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.0" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>

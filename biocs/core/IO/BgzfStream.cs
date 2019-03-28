@@ -259,6 +259,7 @@ namespace Biocs.IO
         /// <exception cref="ObjectDisposedException">The method were called after the stream was closed.</exception>
         [StringResourceUsage("Arg.InvalidBufferRange", 3)]
         [StringResourceUsage("NotSup.Stream")]
+        [StringResourceUsage("NotSup.BlockSizeExceeded")]
         public override void Write(byte[] buffer, int offset, int count)
         {
             const int MaxInputLength = 0xff00;
@@ -283,11 +284,13 @@ namespace Biocs.IO
 
             while (count > 0)
             {
+                // Creates a stream to compress data.
                 if (deflateStream == null)
                     deflateStream = new DeflateStream(new MemoryStream(CompressedData), level, true);
 
-                int capacity = MaxInputLength - inputLength;
-                int length = Math.Min(count, capacity);
+                // Calculates # of bytes to be written to the DeflateStream.
+                int availSpace = MaxInputLength - inputLength;
+                int length = Math.Min(count, availSpace);
 
                 try
                 {
@@ -295,17 +298,17 @@ namespace Biocs.IO
                 }
                 catch (NotSupportedException nse)
                 {
-                    // TODO: Catch NotSupportedException in capacity over.
-                    throw new NotSupportedException(null, nse);
+                    // The compressed size of a block exceeded the length of internal buffer (CompressedData).
+                    throw new NotSupportedException(Res.GetString("NotSup.BlockSizeExceeded"), nse);
                 }
 
                 crc = Crc32.UpdateCrc(crc, buffer, offset, length);
                 inputLength += length;
-                capacity -= length;
+                availSpace -= length;
                 offset += length;
                 count -= length;
 
-                if (capacity == 0)
+                if (availSpace == 0)
                     Flush();
             }
         }
@@ -407,6 +410,7 @@ namespace Biocs.IO
 
                     deflateStream?.Dispose();
                     stream = null;
+                    blockData = null;
                     deflateStream = null;
                 }
                 finally

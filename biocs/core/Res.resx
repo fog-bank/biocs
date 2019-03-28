@@ -144,6 +144,9 @@
   <data name="InvalOp.ModifiedCollection" xml:space="preserve">
     <value>The collection was modified after the enumerator was created.</value>
   </data>
+  <data name="NotSup.BlockSizeExceeded" xml:space="preserve">
+    <value>The compressed size of a BGZF block exceeded the limit of 64KB.</value>
+  </data>
   <data name="NotSup.Stream" xml:space="preserve">
     <value>This operation is not supported on this stream.</value>
   </data>
