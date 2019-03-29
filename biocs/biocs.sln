@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\appveyor.yml = ..\appveyor.yml
 		CustomDictionary.xml = CustomDictionary.xml
 		..\README.md = ..\README.md
+		..\test_ubuntu.sh = ..\test_ubuntu.sh
 	EndProjectSection
 EndProject
 Global

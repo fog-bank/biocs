@@ -1,6 +1,10 @@
 #!/bin/bash
-# sudo apt-get install dotnet-sdk-2.1.105
-# sudo apt-get install dotnet-sharedframework-microsoft.netcore.app-1.0.5
+# wget -q https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb
+# sudo dpkg -i packages-microsoft-prod.deb
+# sudo apt-get install apt-transport-https
+# sudo apt-get update
+# sudo apt-get install dotnet-sdk-2.2
+
 # git clone https://github.com/fog-bank/biocs/biocs.git
 # cd biocs
 # chmod 777 test_ubuntu.sh
