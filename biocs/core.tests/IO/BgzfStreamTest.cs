@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -13,7 +14,7 @@ namespace Biocs.IO
         private readonly string PathGzFile = Path.Combine("Deployments", "ce.sam.gz");
 
         [TestMethod]
-        public void IsBgzfFileTest()
+        public void IsBgzfFile_Test()
         {
             Assert.IsTrue(BgzfStream.IsBgzfFile(PathGzFile));
             Assert.IsFalse(BgzfStream.IsBgzfFile(PathRawFile));
@@ -21,7 +22,7 @@ namespace Biocs.IO
         }
 
         [TestMethod]
-        public void ReadTest()
+        public void Read_Test()
         {
             var raw = File.ReadAllBytes(PathRawFile);
             var actual = new byte[raw.Length];
@@ -54,7 +55,7 @@ namespace Biocs.IO
         }
 
         [TestMethod]
-        public async Task ReadAsyncTest()
+        public async Task ReadAsync_Test()
         {
             var raw = File.ReadAllBytes(PathRawFile);
             var actual = new byte[raw.Length];
@@ -87,7 +88,7 @@ namespace Biocs.IO
         }
 
         [TestMethod]
-        public void WriteTestByOwnDecompressor()
+        public void Write_TestByOwnDecompressor()
         {
             using (var fs = File.OpenRead(PathRawFile))
             using (var ms = new MemoryStream())
@@ -115,7 +116,33 @@ namespace Biocs.IO
         }
 
         [TestMethod]
-        public void WriteTestWithoutCompression()
+        public void Write_TestWithSingleBlock()
+        {
+            byte[] Data = "122333444455555".Select(x => (byte)x).ToArray();
+
+            using (var ms = new MemoryStream())
+            {
+                using (var gz = new BgzfStream(ms, CompressionMode.Compress, true))
+                {
+                    gz.Write(Data, 0, Data.Length);
+                }
+
+                ms.Position = 0;
+
+                using (var gz = new GZipStream(ms, CompressionMode.Decompress))
+                {
+                    var actual = new byte[Data.Length];
+                    int bytes = gz.Read(actual, 0, actual.Length);
+
+                    Assert.AreEqual(Data.Length, bytes);
+                    Assert.AreEqual(-1, gz.ReadByte());
+                    CollectionAssert.AreEqual(Data, actual);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void Write_TestWithoutCompression()
         {
             using (var fs = File.OpenRead(PathRawFile))
             using (var ms = new MemoryStream())
@@ -129,10 +156,10 @@ namespace Biocs.IO
                 ms.Position = 0;
 
                 var raw = File.ReadAllBytes(PathRawFile);
-                var actual = new byte[raw.Length];
 
                 using (var gz = new BgzfStream(ms, CompressionMode.Decompress, true))
                 {
+                    var actual = new byte[raw.Length];
                     int bytes = gz.Read(actual, 0, actual.Length);
 
                     Assert.AreEqual(raw.Length, bytes);
