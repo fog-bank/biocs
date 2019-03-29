@@ -113,5 +113,33 @@ namespace Biocs.IO
                 }
             }
         }
+
+        [TestMethod]
+        public void WriteTestWithoutCompression()
+        {
+            using (var fs = File.OpenRead(PathRawFile))
+            using (var ms = new MemoryStream())
+            {
+                using (var gz = new BgzfStream(ms, CompressionLevel.NoCompression, true))
+                {
+                    fs.CopyTo(gz, 100);
+                }
+
+                fs.Position = 0;
+                ms.Position = 0;
+
+                var raw = File.ReadAllBytes(PathRawFile);
+                var actual = new byte[raw.Length];
+
+                using (var gz = new BgzfStream(ms, CompressionMode.Decompress, true))
+                {
+                    int bytes = gz.Read(actual, 0, actual.Length);
+
+                    Assert.AreEqual(raw.Length, bytes);
+                    Assert.AreEqual(-1, gz.ReadByte());
+                    CollectionAssert.AreEqual(raw, actual);
+                }
+            }
+        }
     }
 }

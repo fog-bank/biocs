@@ -316,12 +316,23 @@ namespace Biocs.IO
         /// <summary>
         /// Writes any buffered data to the underlying stream.
         /// </summary>
+        /// <exception cref="IOException">An I/O error occurs.</exception>
+        /// <exception cref="NotSupportedException">The size of compressed bytes for a BGZF block exceeds about 64 KB.</exception>
+        [StringResourceUsage("NotSup.BlockSizeExceeded")]
         public override void Flush()
         {
             if (CanWrite && inputLength > 0)
             {
                 var baseStream = deflateStream.BaseStream;
-                deflateStream.Dispose();
+                try
+                {
+                    deflateStream.Dispose();
+                }
+                catch (NotSupportedException nse)
+                {
+                    // The compressed size of a block exceeded the length of internal buffer.
+                    throw new NotSupportedException(Res.GetString("NotSup.BlockSizeExceeded"), nse);
+                }
                 WriteBgzfBlock((int)baseStream.Position);
 
                 deflateStream = null;

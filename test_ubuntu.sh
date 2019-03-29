@@ -22,5 +22,5 @@ git merge origin/${BRANCH} | tee -a info.log
 chmod 777 test_ubuntu.sh
 
 dotnet --info | tee -a info.log
-dotnet test biocs/core.tests -f netcoreapp2.0 -v n | tee test2.0.log
-dotnet test biocs/core.tests -f netcoreapp1.0 -v n | tee test1.0.log
+dotnet test -c Release -f netcoreapp2.0 -v n biocs/core.tests | tee test2.0.log
+dotnet test -c Release -f netcoreapp1.0 -v n biocs/core.tests | tee test1.0.log
