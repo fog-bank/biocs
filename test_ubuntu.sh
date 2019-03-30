@@ -24,3 +24,5 @@ chmod 777 test_ubuntu.sh
 dotnet --info | tee -a info.log
 dotnet test -c Release -f netcoreapp2.0 -v n biocs/core.tests | tee test2.0.log
 dotnet test -c Release -f netcoreapp1.0 -v n biocs/core.tests | tee test1.0.log
+
+# dotnet run -c Release -p biocs/samples -- bgzf -i biocs/core.tests/Deployments/ce.sam -o biocs/samples/bin/Release/netcoreapp2.1/ce.sam.gz

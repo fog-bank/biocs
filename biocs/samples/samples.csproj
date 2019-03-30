@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Application -->
+  <PropertyGroup>
+    <AssemblyName>samples</AssemblyName>
+    <RootNamespace>Biocs</RootNamespace>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <!-- Build -->
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <!-- Dependencies -->
+  <ItemGroup>
+    <PackageReference Include="MicroBatchFramework" Version="0.4.6-beta10" />
+    <ProjectReference Include="..\core\core.csproj" />
+  </ItemGroup>
+
+</Project>
