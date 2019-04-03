@@ -171,7 +171,7 @@ namespace Biocs.IO
         /// <exception cref="ArgumentException">
         /// The sum of <paramref name="offset"/> and <paramref name="count"/> is larger than the buffer length.
         /// </exception>
-        /// <exception cref="InvalidDataException">The data is in an invalid format.</exception>
+        /// <exception cref="InvalidDataException">The stream data is in an invalid BGZF format.</exception>
         /// <exception cref="IOException">An I/O error occurs.</exception>
         /// <exception cref="NotSupportedException">The stream does not support reading.</exception>
         /// <exception cref="ObjectDisposedException">The method were called after the stream was closed.</exception>
@@ -201,6 +201,7 @@ namespace Biocs.IO
 
             while (count > 0)
             {
+                // Reads a single BGZF block and creates a DeflateStream object to decompress.
                 if (deflateStream == null)
                 {
                     if (!ReadBgzfBlock())
@@ -434,6 +435,7 @@ namespace Biocs.IO
         // Reads the header of next BGZF block and prepares a DeflateStream object that contains the compressed data.
         // @return true if next block was read successfully; false if there is no more block.
         // @exception InvalidDataException
+        // @exception IOException
         private bool ReadBgzfBlock()
         {
             var array = new byte[18];
@@ -457,12 +459,7 @@ namespace Biocs.IO
 
             // FHCRC
             if ((flag & 0b10) != 0)
-            {
-                bytes = stream.Read(array, 0, 2);
-
-                if (bytes != 2)
-                    throw new InvalidDataException();
-            }
+                ReadExactBytes(array, 2);
 
             // BSIZE (total block size minus 1)
             int dataLength = array[16] + (array[17] << 8) - 25;
@@ -471,15 +468,12 @@ namespace Biocs.IO
                 throw new InvalidDataException();
 
             // CDATA
-            bytes = stream.Read(CompressedData, 0, dataLength);
-
-            if (bytes != dataLength)
-                throw new InvalidDataException();
+            ReadExactBytes(CompressedData, dataLength);
 
             // Footer (CRC32 and ISIZE)
-            bytes = stream.Read(array, 0, 8);
+            ReadExactBytes(array, 8);
 
-            if (bytes != 8 || array[6] > 1 || array[7] != 0)
+            if (array[6] > 1 || array[7] != 0)
                 throw new InvalidDataException();
 
             originalCrc = unchecked((uint)(array[0] + (array[1] << 8) + (array[2] << 16) + (array[3] << 24)));
@@ -499,22 +493,51 @@ namespace Biocs.IO
             return true;
         }
 
+        // Reads the current stream by the requested length exactly.
+        // @param buffer An array of bytes used to store bytes.
+        // @param count The number of bytes to read.
+        // @exception InvalidDataException EOF has reached while reading.
+        // @exception IOException
+        [StringResourceUsage("InvalData.EndOfStream")]
+        private void ReadExactBytes(byte[] buffer, int count)
+        {
+            for (int offset = 0; count > 0;)
+            {
+                // An implementation of Stream.Read method is free to return fewer bytes than requested
+                // even if the end of the stream has not been reached.
+                int bytes = stream.Read(buffer, offset, count);
+
+                if (bytes == 0)
+                    throw new InvalidDataException(Res.GetString("InvalData.EndOfStream"));
+
+                offset += bytes;
+                count -= bytes;
+            }
+        }
+
+        // Reads the current stream until reaching a null character.
+        // @exception InvalidDataException EOF has reached while reading.
+        // @exception IOException
+        [StringResourceUsage("InvalData.EndOfStream")]
         private void SkipZeroTerminatedField()
         {
+            var buffer = new byte[1];
             do
             {
-                int value = stream.ReadByte();
+                int bytes = stream.Read(buffer, 0, 1);
 
-                if (value == 0)
+                if (bytes == 0)
+                    throw new InvalidDataException(Res.GetString("InvalData.EndOfStream"));
+
+                if (buffer[0] == 0)
                     break;
-
-                if (value == -1)
-                    throw new InvalidDataException();
             }
             while (true);
         }
 
-        // Writes a header, compressed data with specified range, and a footer.
+        // Writes a header, compressed data with specified length, and a footer.
+        // @param compressedLength The length of compressed data.
+        // @exception IOException
         private void WriteBgzfBlock(int compressedLength)
         {
             var array = new byte[18];

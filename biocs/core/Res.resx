@@ -138,6 +138,9 @@
   <data name="Arg.InvalidRemoveRange" xml:space="preserve">
     <value>The parameter index ({0}) and count ({1}) do not denote a valid range of elements in the collection (Count = {2}).</value>
   </data>
+  <data name="InvalData.EndOfStream" xml:space="preserve">
+    <value>The end of the stream has been reached while reading a BGZF header.</value>
+  </data>
   <data name="InvalOp.EmptyCollection" xml:space="preserve">
     <value>The collection is empty.</value>
   </data>
