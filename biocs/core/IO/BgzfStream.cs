@@ -378,7 +378,7 @@ namespace Biocs.IO
                 using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, HeaderSize))
                 {
                     var header = new byte[HeaderSize];
-                    int length = stream.Read(header, 0, header.Length);
+                    int length = TryReadExactBytes(stream, header, 0, header.Length);
 
                     if (length != header.Length)
                         return false;
@@ -436,18 +436,22 @@ namespace Biocs.IO
         // @return true if next block was read successfully; false if there is no more block.
         // @exception InvalidDataException
         // @exception IOException
+        [StringResourceUsage("InvalData.EndOfStream")]
         private bool ReadBgzfBlock()
         {
-            var array = new byte[18];
-            int bytes = stream.Read(array, 0, 18);
+            var buffer = new byte[18];
+            int bytes = TryReadExactBytes(stream, buffer, 0, 18);
 
             if (bytes == 0)
                 return false;
 
-            if (bytes != 18 || !IsBgzfHeader(array))
+            if (bytes != 18)
+                throw new InvalidDataException(Res.GetString("InvalData.EndOfStream"));
+
+            if (!IsBgzfHeader(buffer))
                 throw new InvalidDataException();
 
-            int flag = array[3];
+            int flag = buffer[3];
 
             // FNAME
             if ((flag & 0b1000) != 0)
@@ -459,10 +463,10 @@ namespace Biocs.IO
 
             // FHCRC
             if ((flag & 0b10) != 0)
-                ReadExactBytes(array, 2);
+                ReadExactBytes(buffer, 2);
 
-            // BSIZE (total block size minus 1)
-            int dataLength = array[16] + (array[17] << 8) - 25;
+            // BSIZE in FEXTRA (total block size minus 1)
+            int dataLength = buffer[16] + (buffer[17] << 8) - 25;
 
             if (dataLength < 0)
                 throw new InvalidDataException();
@@ -471,14 +475,14 @@ namespace Biocs.IO
             ReadExactBytes(CompressedData, dataLength);
 
             // Footer (CRC32 and ISIZE)
-            ReadExactBytes(array, 8);
+            ReadExactBytes(buffer, 8);
 
-            if (array[6] > 1 || array[7] != 0)
+            if (buffer[6] > 1 || buffer[7] != 0)
                 throw new InvalidDataException();
 
-            originalCrc = unchecked((uint)(array[0] + (array[1] << 8) + (array[2] << 16) + (array[3] << 24)));
+            originalCrc = unchecked((uint)(buffer[0] + (buffer[1] << 8) + (buffer[2] << 16) + (buffer[3] << 24)));
             crc = 0;
-            inputLength = array[4] + (array[5] << 8) + (array[6] << 16);
+            inputLength = buffer[4] + (buffer[5] << 8) + (buffer[6] << 16);
 
             // EOF marker
             if (inputLength == 0 && dataLength == 2 && CompressedData[0] == 3 && CompressedData[1] == 0)
@@ -501,33 +505,21 @@ namespace Biocs.IO
         [StringResourceUsage("InvalData.EndOfStream")]
         private void ReadExactBytes(byte[] buffer, int count)
         {
-            for (int offset = 0; count > 0;)
-            {
-                // An implementation of Stream.Read method is free to return fewer bytes than requested
-                // even if the end of the stream has not been reached.
-                int bytes = stream.Read(buffer, offset, count);
+            int bytes = TryReadExactBytes(stream, buffer, 0, count);
 
-                if (bytes == 0)
-                    throw new InvalidDataException(Res.GetString("InvalData.EndOfStream"));
-
-                offset += bytes;
-                count -= bytes;
-            }
+            if (bytes == 0)
+                throw new InvalidDataException(Res.GetString("InvalData.EndOfStream"));
         }
 
         // Reads the current stream until reaching a null character.
-        // @exception InvalidDataException EOF has reached while reading.
+        // @exception InvalidDataException The end of the stream has reached while reading.
         // @exception IOException
-        [StringResourceUsage("InvalData.EndOfStream")]
         private void SkipZeroTerminatedField()
         {
             var buffer = new byte[1];
             do
             {
-                int bytes = stream.Read(buffer, 0, 1);
-
-                if (bytes == 0)
-                    throw new InvalidDataException(Res.GetString("InvalData.EndOfStream"));
+                ReadExactBytes(buffer, 1);
 
                 if (buffer[0] == 0)
                     break;
@@ -588,6 +580,33 @@ namespace Biocs.IO
                 Array.Clear(array, 0, 4);
             }
             stream.Write(array, 0, 8);
+        }
+
+        // Reads a stream by the requested length exactly.
+        // @param stream The stream to read.
+        // @param buffer An array of bytes used to store bytes.
+        // @param offset The offset at which to begin storing bytes.
+        // @param count The number of bytes to read.
+        // @return The total number of bytes read into the buffer. If it is less than count, the end of the stream has reached.
+        // @exception IOException
+        private static int TryReadExactBytes(Stream stream, byte[] buffer, int offset, int count)
+        {
+            int totalBytes = 0;
+
+            while (count > 0)
+            {
+                // An implementation of Stream.Read method is free to return fewer bytes than requested
+                // even if the end of the stream has not reached.
+                int bytes = stream.Read(buffer, offset, count);
+
+                if (bytes == 0)
+                    break;
+
+                offset += bytes;
+                count -= bytes;
+                totalBytes += bytes;
+            }
+            return totalBytes;
         }
 
         private static bool IsBgzfHeader(byte[] header)

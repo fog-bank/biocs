@@ -17,7 +17,7 @@ namespace Biocs
     {
         [Command("bgzf", "Compress or decompress a file in the BGZF format.")]
         public void Compress(
-            [Option("i", " input file name (string)")] string input,
+            [Option("i", "input file name (string)")] string input,
             [Option("o", " output file name (string)")] string output = null,
             [Option("d", " decompress mode (bool)")] bool decompress = false,
             [Option("f", " overwrite a file without asking (bool)")] bool force = false)
