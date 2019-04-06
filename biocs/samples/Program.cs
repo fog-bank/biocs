@@ -3,14 +3,13 @@ using System.IO.Compression;
 using System.Threading.Tasks;
 using Biocs.IO;
 using MicroBatchFramework;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Biocs
 {
     class Program
     {
-        static async Task Main(string[] args) => await new HostBuilder().RunBatchEngineAsync<BiocsBatch>(args);
+        static async Task Main(string[] args) => await BatchHost.CreateDefaultBuilder().RunBatchEngineAsync<BiocsBatch>(args);
     }
 
     public class BiocsBatch : BatchBase
