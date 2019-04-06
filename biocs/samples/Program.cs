@@ -16,7 +16,7 @@ namespace Biocs
     public class BiocsBatch : BatchBase
     {
         [Command("bgzf", "Compress or decompress a file in the BGZF format.")]
-        public void Compress(
+        public async Task Compress(
             [Option("i", "input file name (string)")] string input,
             [Option("o", " output file name (string)")] string output = null,
             [Option("d", " decompress mode (bool)")] bool decompress = false,
@@ -24,7 +24,7 @@ namespace Biocs
         {
             if (!File.Exists(input))
             {
-                Context.Logger.LogError($"'{input}' doesn't exist.");
+                Context.Logger.LogError($"The input doesn't exist: '{input}'.");
                 return;
             }
 
@@ -46,7 +46,7 @@ namespace Biocs
 
             if (!force && File.Exists(output))
             {
-                Context.Logger.LogWarning($"'{output}' exists already.");
+                Context.Logger.LogWarning($"The output exists already: '{output}'.");
                 return;
             }
 
@@ -59,7 +59,7 @@ namespace Biocs
 
                     using (var gz = new BgzfStream(ifs, CompressionMode.Decompress))
                     {
-                        gz.CopyTo(ofs);
+                        await gz.CopyToAsync(ofs, Context.CancellationToken);
                     }
                 }
                 else
@@ -68,7 +68,7 @@ namespace Biocs
 
                     using (var gz = new BgzfStream(ofs, CompressionMode.Compress))
                     {
-                        ifs.CopyTo(gz);
+                        await ifs.CopyToAsync(gz, Context.CancellationToken);
                     }
                 }
             }
