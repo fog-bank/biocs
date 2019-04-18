@@ -15,7 +15,7 @@
 
   <!-- Dependencies -->
   <ItemGroup>
-    <PackageReference Include="MicroBatchFramework" Version="1.0.0" />
+    <PackageReference Include="MicroBatchFramework" Version="1.2.0" />
     <ProjectReference Include="..\core\core.csproj" />
   </ItemGroup>
 
