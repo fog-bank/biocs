@@ -2,17 +2,18 @@
 using System.IO.Compression;
 using System.Threading.Tasks;
 using Biocs.IO;
-using MicroBatchFramework;
+using ConsoleAppFramework;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Biocs
 {
     class Program
     {
-        static async Task Main(string[] args) => await BatchHost.CreateDefaultBuilder().RunBatchEngineAsync<BiocsBatch>(args);
+        static async Task Main(string[] args) => await Host.CreateDefaultBuilder().RunConsoleAppFrameworkAsync<BiocsBatch>(args);
     }
 
-    public class BiocsBatch : BatchBase
+    public class BiocsBatch : ConsoleAppBase
     {
         [Command("bgzf", "Compress or decompress a file in the BGZF format.")]
         public async Task Compress(
