@@ -176,6 +176,8 @@ namespace Biocs.IO
         /// <exception cref="NotSupportedException">The stream does not support reading.</exception>
         /// <exception cref="ObjectDisposedException">The method were called after the stream was closed.</exception>
         [StringResourceUsage("Arg.InvalidBufferRange", 3)]
+        [StringResourceUsage("InvalData.InvalidBlockSize")]
+        [StringResourceUsage("InvalData.InvalidCrc")]
         [StringResourceUsage("NotSup.Stream")]
         public override int Read(byte[] buffer, int offset, int count)
         {
@@ -210,30 +212,32 @@ namespace Biocs.IO
 
                 int bytes = deflateStream.Read(buffer, offset, count);
 
+                if (bytes == 0 && inputLength > 0)
+                {
+                    // Actual size is smaller than expected size.
+                    throw new InvalidDataException(Res.GetString("InvalData.InvalidBlockSize"));
+                }
+
                 crc = Crc32.UpdateCrc(crc, buffer, offset, bytes);
                 totalRead += bytes;
                 inputLength -= bytes;
                 offset += bytes;
                 count -= bytes;
 
+                // Check whether the BGZF block reaches the end.
                 if (inputLength <= 0)
                 {
                     if (inputLength < 0 || deflateStream.ReadByte() != -1)
                     {
                         // Actual size is larger than expected size.
-                        throw new InvalidDataException();
+                        throw new InvalidDataException(Res.GetString("InvalData.InvalidBlockSize"));
                     }
 
                     if (crc != originalCrc)
-                        throw new InvalidDataException();
+                        throw new InvalidDataException(Res.GetString("InvalData.InvalidCrc"));
 
                     deflateStream.Dispose();
                     deflateStream = null;
-                }
-                else if (bytes == 0)
-                {
-                    // Actual size is smaller than expected size.
-                    throw new InvalidDataException();
                 }
             }
             return totalRead;
@@ -436,6 +440,7 @@ namespace Biocs.IO
         // @return true if next block was read successfully; false if there is no more block.
         // @exception InvalidDataException
         // @exception IOException
+        [StringResourceUsage("InvalData.BadHeader")]
         [StringResourceUsage("InvalData.EndOfStream")]
         private bool ReadBgzfBlock()
         {
@@ -449,7 +454,7 @@ namespace Biocs.IO
                 throw new InvalidDataException(Res.GetString("InvalData.EndOfStream"));
 
             if (!IsBgzfHeader(buffer))
-                throw new InvalidDataException();
+                throw new InvalidDataException(Res.GetString("InvalData.BadHeader"));
 
             int flag = buffer[3];
 
@@ -469,7 +474,7 @@ namespace Biocs.IO
             int dataLength = buffer[16] + (buffer[17] << 8) - 25;
 
             if (dataLength < 0)
-                throw new InvalidDataException();
+                throw new InvalidDataException(Res.GetString("InvalData.BadHeader"));
 
             // CDATA
             ReadExactBytes(CompressedData, dataLength);
@@ -478,7 +483,7 @@ namespace Biocs.IO
             ReadExactBytes(buffer, 8);
 
             if (buffer[6] > 1 || buffer[7] != 0)
-                throw new InvalidDataException();
+                throw new InvalidDataException(Res.GetString("InvalData.BadHeader"));
 
             originalCrc = unchecked((uint)(buffer[0] + (buffer[1] << 8) + (buffer[2] << 16) + (buffer[3] << 24)));
             crc = 0;

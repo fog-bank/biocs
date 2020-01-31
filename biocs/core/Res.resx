@@ -138,8 +138,17 @@
   <data name="Arg.InvalidRemoveRange" xml:space="preserve">
     <value>The parameter index ({0}) and count ({1}) do not denote a valid range of elements in the collection (Count = {2}).</value>
   </data>
+  <data name="InvalData.BadHeader" xml:space="preserve">
+    <value>The header of a BGZF block has invalid structure or incorrect values.</value>
+  </data>
   <data name="InvalData.EndOfStream" xml:space="preserve">
     <value>The end of the stream has been reached while reading a BGZF header.</value>
+  </data>
+  <data name="InvalData.InvalidBlockSize" xml:space="preserve">
+    <value>The length of the structure is inconsistent.</value>
+  </data>
+  <data name="InvalData.InvalidCrc" xml:space="preserve">
+    <value>A consistency check failed.</value>
   </data>
   <data name="InvalOp.EmptyCollection" xml:space="preserve">
     <value>The collection is empty.</value>
