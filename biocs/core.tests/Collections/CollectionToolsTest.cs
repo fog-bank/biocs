@@ -10,6 +10,7 @@ namespace Biocs.Collections
         [TestMethod]
         public void AllItemsAreEqualTest()
         {
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
             var src = Enumerable.Empty<int>();
             int value = -1;
 
@@ -38,6 +39,7 @@ namespace Biocs.Collections
             Assert.IsFalse(src.AllItemsAreEqual());
             Assert.IsFalse(src.AllItemsAreEqual(null, out value));
             Assert.AreEqual(0, value);
+#pragma warning restore IDE0059
 
             var src2 = new[] { new object(), null };
             src2[1] = src2[0];

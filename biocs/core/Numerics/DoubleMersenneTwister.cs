@@ -19,7 +19,7 @@ namespace Biocs.Numerics
         //private const int N32 = N * 4;
         private const int N64 = N * 2;
 
-        private Union128[] status = new Union128[N + 1];
+        private readonly Union128[] status = new Union128[N + 1];
         private int index = N64;
 
         /// <summary>
@@ -222,14 +222,14 @@ namespace Biocs.Numerics
 
             var lung = status[N];
 
-            Recurse(ref status[0], ref status[0], ref status[Pos1], ref lung);
+            Recurse(ref status[0], status[0], status[Pos1], ref lung);
 
             int i = 1;
             for (; i < N - Pos1; i++)
-                Recurse(ref status[i], ref status[i], ref status[i + Pos1], ref lung);
+                Recurse(ref status[i], status[i], status[i + Pos1], ref lung);
 
             for (; i < N; i++)
-                Recurse(ref status[i], ref status[i], ref status[i + Pos1 - N], ref lung);
+                Recurse(ref status[i], status[i], status[i + Pos1 - N], ref lung);
 
             status[N] = lung;
         }
@@ -268,7 +268,7 @@ namespace Biocs.Numerics
         }
 
         // Represents the recursion formula.
-        private static void Recurse(ref Union128 r, ref Union128 a, ref Union128 b, ref Union128 lung)
+        private static void Recurse(ref Union128 r, in Union128 a, in Union128 b, ref Union128 lung)
         {
             const int SR = 12;
 

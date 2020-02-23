@@ -73,7 +73,7 @@ namespace Biocs.Collections
             }
             else
             {
-                items = CollectionTools.Empty<T>();
+                items = Array.Empty<T>();
 
                 foreach (var item in collection)
                     AddLast(item);

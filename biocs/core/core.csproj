@@ -4,21 +4,13 @@
   <PropertyGroup>
     <AssemblyName>Biocs.Core</AssemblyName>
     <RootNamespace>Biocs</RootNamespace>
-    <TargetFrameworks>netstandard2.0;netstandard1.3;net45</TargetFrameworks>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
   <!-- Build -->
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <DefineConstants>$(DefineConstants);MIN_NETSTANDARD1_3</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
-    <DefineConstants>$(DefineConstants);MIN_NETSTANDARD1_3</DefineConstants>
   </PropertyGroup>
 
   <!-- Package -->
@@ -35,22 +27,15 @@
     <PackageReleaseNotes>https://github.com/fog-bank/biocs/releases/tag/v$(Version)</PackageReleaseNotes>
     <NeutralLanguage>en</NeutralLanguage>
     <AssemblyVersion>0.1.0.0</AssemblyVersion>
-    <FileVersion>0.1.50131.0</FileVersion>
+    <FileVersion>0.1.50224.0</FileVersion>
   </PropertyGroup>
 
   <!-- Code Analysis -->
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' AND '$(TargetFramework)' == 'net45' ">
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-    <CodeAnalysisRuleSet Condition=" Exists('$(DevEnvDir)') ">AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8" PrivateAssets="all">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
   <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml" />
   </ItemGroup>
 

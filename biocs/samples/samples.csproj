@@ -4,7 +4,7 @@
   <PropertyGroup>
     <AssemblyName>samples</AssemblyName>
     <RootNamespace>Biocs</RootNamespace>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
 
@@ -15,7 +15,7 @@
 
   <!-- Dependencies -->
   <ItemGroup>
-    <PackageReference Include="ConsoleAppFramework" Version="2.0.2" />
+    <PackageReference Include="ConsoleAppFramework" Version="2.1.0" />
     <ProjectReference Include="..\core\core.csproj" />
   </ItemGroup>
 

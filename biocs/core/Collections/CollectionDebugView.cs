@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
@@ -23,7 +24,7 @@ namespace Biocs.Collections
                     return items;
                 }
                 else
-                    return CollectionTools.Empty<T>();
+                    return Array.Empty<T>();
             }
         }
     }
