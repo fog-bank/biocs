@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using Biocs.TestTools;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Biocs.Collections
@@ -27,8 +25,8 @@ namespace Biocs.Collections
 			var c4 = new Counter<string>(10, comparer4);
             TestProperties(c4, 0, 0, new HashSet<string>(comparer4), new string[0], comparer4);
 
-			BiocsAssert.Throws<ArgumentOutOfRangeException>(() => new Counter<object>(-1));
-			BiocsAssert.Throws<ArgumentOutOfRangeException>(() => new Counter<object>(-1, null));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Counter<object>(-1));
+			Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Counter<object>(-1, null));
         }
 
         [TestMethod]
@@ -50,7 +48,7 @@ namespace Biocs.Collections
             TestItem(clone, 1, 2);
             TestItem(clone, 0, 1);
 
-            BiocsAssert.Throws<ArgumentNullException>(() => new Counter<object>((Counter<object>)null));
+            Assert.ThrowsException<ArgumentNullException>(() => new Counter<object>((Counter<object>)null));
         }
 
         [TestMethod]
@@ -112,9 +110,9 @@ namespace Biocs.Collections
 
             TestProperties(counter, count, count, new HashSet<int>(query), query.ToArray(), EqualityComparer<int>.Default);
 
-            BiocsAssert.Throws<ArgumentNullException>(() => counter.CopyTo(null, 0));
-            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => counter.CopyTo(new int[count], -1));
-            BiocsAssert.Throws<ArgumentException>(() => counter.CopyTo(new int[count], 3));
+            Assert.ThrowsException<ArgumentNullException>(() => counter.CopyTo(null, 0));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => counter.CopyTo(new int[count], -1));
+            Assert.ThrowsException<ArgumentException>(() => counter.CopyTo(new int[count], 3));
         }
 
         [TestMethod]
@@ -163,7 +161,7 @@ namespace Biocs.Collections
             TestItem(counter, 2, 2);
             TestItem(counter, 3, 0);
 
-            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => new Counter<int>().Add(0, -1));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Counter<int>().Add(0, -1));
 		}
 
         [TestMethod]
@@ -212,7 +210,7 @@ namespace Biocs.Collections
             TestItem(counter, "B", 2);
             TestItem(counter, "C", 0);
 
-            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => new Counter<string>().Add(string.Empty, -1));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Counter<string>().Add(string.Empty, -1));
         }
 
 		[TestMethod]
@@ -237,7 +235,7 @@ namespace Biocs.Collections
 			for (int i = 0; i < items.Length; i++)
                 TestItem(counter, items[i], i + 1);
 
-            BiocsAssert.Throws<ArgumentNullException>(() => new Counter<object>().AddRange(null));
+            Assert.ThrowsException<ArgumentNullException>(() => new Counter<object>().AddRange(null));
 		}
 
         [TestMethod]
@@ -285,7 +283,7 @@ namespace Biocs.Collections
             TestProperties(counter, 4, 3, set, items.ToArray(), comparer);
             TestItem(counter, 4, null);
 
-            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => counter.Remove(0, -1));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => counter.Remove(0, -1));
         }
 
         [TestMethod]

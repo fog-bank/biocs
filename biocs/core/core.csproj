@@ -1,55 +1,57 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <!-- Application -->
   <PropertyGroup>
     <AssemblyName>Biocs.Core</AssemblyName>
     <RootNamespace>Biocs</RootNamespace>
     <TargetFrameworks>netstandard2.0;netstandard1.3;net45</TargetFrameworks>
+  </PropertyGroup>
+
+  <!-- Build -->
+  <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageId>Biocs.Core</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <DefineConstants>$(DefineConstants);MIN_NETSTANDARD1_3</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+    <DefineConstants>$(DefineConstants);MIN_NETSTANDARD1_3</DefineConstants>
+  </PropertyGroup>
+
+  <!-- Package -->
+  <PropertyGroup>
+    <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
     <Version>0.1.0</Version>
     <Authors>fog-bank</Authors>
     <Company>co3366353</Company>
     <Product>BioCSharp</Product>
     <Description></Description>
-    <NeutralLanguage>en</NeutralLanguage>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
-    <FileVersion>0.1.40116.0</FileVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://fog-bank.github.io/biocs/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/fog-bank/biocs.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/fog-bank/biocs</RepositoryUrl>
     <PackageReleaseNotes>https://github.com/fog-bank/biocs/releases/tag/v$(Version)</PackageReleaseNotes>
+    <NeutralLanguage>en</NeutralLanguage>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <FileVersion>0.1.50131.0</FileVersion>
   </PropertyGroup>
-  
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <DefineConstants>$(DefineConstants);MIN_NETSTANDARD1_3</DefineConstants>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
-    <DefineConstants>$(DefineConstants);MIN_NETSTANDARD1_3</DefineConstants>
-  </PropertyGroup>
-  
+
+  <!-- Code Analysis -->
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' AND '$(TargetFramework)' == 'net45' ">
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition=" Exists('$(DevEnvDir)') ">AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  
-  <ItemGroup Condition=" '$(Configuration)' == 'Debug' AND '$(TargetFramework)' == 'netstandard2.0' ">
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.3" PrivateAssets="all" />
-  </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8" PrivateAssets="all">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml" />
   </ItemGroup>
-  
+
 </Project>

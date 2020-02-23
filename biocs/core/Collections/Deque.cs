@@ -240,8 +240,8 @@ namespace Biocs.Collections
         /// the <see cref="Deque{T}"/>.</para> -or- <para><paramref name="count"/> is greater than the available space from 
         /// <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.</para>
         /// </exception>
-        [StringResourceUsage("ArgEx.InvalidCopySrcRange", 2)]
-        [StringResourceUsage("ArgEx.InvalidCopyDestRange", 2)]
+        [StringResourceUsage("Arg.InvalidCopySrcRange", 2)]
+        [StringResourceUsage("Arg.InvalidCopyDestRange", 2)]
         public void CopyTo(int index, T[] array, int arrayIndex, int count)
         {
             if (index < 0)
@@ -257,10 +257,10 @@ namespace Biocs.Collections
                 throw new ArgumentOutOfRangeException(nameof(count));
 
             if (index + count > size)
-                throw new ArgumentException(Res.GetString("ArgEx.InvalidCopySrcRange", count, size - index));
+                throw new ArgumentException(Res.GetString("Arg.InvalidCopySrcRange", count, size - index));
 
             if (arrayIndex + count > array.Length)
-                throw new ArgumentException(Res.GetString("ArgEx.InvalidCopyDestRange", count, array.Length - arrayIndex));
+                throw new ArgumentException(Res.GetString("Arg.InvalidCopyDestRange", count, array.Length - arrayIndex));
 
             if (count > 0)
             {
@@ -631,7 +631,7 @@ namespace Biocs.Collections
         /// <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in 
         /// the <see cref="Deque{T}"/>.
         /// </exception>
-        [StringResourceUsage("ArgEx.InvalidRemoveRange", 3)]
+        [StringResourceUsage("Arg.InvalidRemoveRange", 3)]
         public void RemoveRange(int index, int count)
         {
             if (index < 0)
@@ -641,7 +641,7 @@ namespace Biocs.Collections
                 throw new ArgumentOutOfRangeException(nameof(count));
 
             if (index + count > size)
-                throw new ArgumentException(Res.GetString("ArgEx.InvalidRemoveRange", index, count, size));
+                throw new ArgumentException(Res.GetString("Arg.InvalidRemoveRange", index, count, size));
 
             if (count == 0)
                 return;

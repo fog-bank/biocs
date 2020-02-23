@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Biocs.Collections
 {
@@ -19,8 +20,7 @@ namespace Biocs.Collections
         /// Initializes a new instance of the <see cref="Counter{T}"/> class that is empty, has zero capacity, and uses 
         /// the default equality comparer.
         /// </summary>
-        public Counter()
-            : this(0)
+        public Counter() : this(0)
         { }
 
         /// <summary>
@@ -29,8 +29,7 @@ namespace Biocs.Collections
         /// </summary>
         /// <param name="capacity">The initial number of items that the <see cref="Counter{T}"/> can contain.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> is less than 0.</exception>
-        public Counter(int capacity)
-            : this(capacity, null)
+        public Counter(int capacity) : this(capacity, null)
         { }
 
         /// <summary>
@@ -41,8 +40,7 @@ namespace Biocs.Collections
         /// The <see cref="IEqualityComparer{T}"/> implementation to use when comparing items, or <see langword="null"/> to
         /// use the default <see cref="IEqualityComparer{T}"/> for the type of the item.
         /// </param>
-        public Counter(IEqualityComparer<T> comparer)
-            : this(0, comparer)
+        public Counter(IEqualityComparer<T> comparer) : this(0, comparer)
         { }
 
         /// <summary>
@@ -177,7 +175,7 @@ namespace Biocs.Collections
         /// The number of items in the <see cref="Counter{T}"/> is greater than the available space from
         /// <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.
         /// </exception>
-        [StringResourceUsage("ArgEx.InvalidCopyDestRange", 2)]
+        [StringResourceUsage("Arg.InvalidCopyDestRange", 2)]
         public void CopyTo(T[] array, int arrayIndex)
         {
             if (array == null)
@@ -189,7 +187,7 @@ namespace Biocs.Collections
             if (arrayIndex + NumberOfItems > array.Length)
             {
                 throw new ArgumentException(
-                    Res.GetString("ArgEx.InvalidCopyDestRange", NumberOfItems, array.Length - arrayIndex));
+                    Res.GetString("Arg.InvalidCopyDestRange", NumberOfItems, array.Length - arrayIndex));
             }
             map.Keys.CopyTo(array, arrayIndex);
 
@@ -325,6 +323,7 @@ namespace Biocs.Collections
         }
     }
 
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
     internal sealed class CounterDebugView<T>
     {
         private readonly Counter<T> counter;

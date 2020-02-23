@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Biocs.TestTools;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Biocs.Collections
@@ -26,7 +25,7 @@ namespace Biocs.Collections
             Assert.AreEqual(capacity, target.Capacity);
             Assert.IsFalse((target as ICollection<string>).IsReadOnly);
 
-            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => new Deque<object>(-4));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Deque<object>(-4));
 
             // ICollection<T>
             var target2 = new Deque<object>(new object[0]);
@@ -41,7 +40,7 @@ namespace Biocs.Collections
             Assert.AreEqual(0, new Deque<int>(Enumerable.Empty<int>()).Count);
             Assert.AreEqual(count, new Deque<int>(Enumerable.Range(0, count)).Count);
 
-            BiocsAssert.Throws<ArgumentNullException>(() => new Deque<object>(null));
+            Assert.ThrowsException<ArgumentNullException>(() => new Deque<object>(null));
         }
 
         [TestMethod]
@@ -60,10 +59,10 @@ namespace Biocs.Collections
                 Assert.AreEqual(i + 100, target[i]);
             }
 
-            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target[-1]);
-            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target[count]);
-            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target[-1] = 0);
-            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target[count] = 0);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target[-1]);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target[count]);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target[-1] = 0);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target[count] = 0);
         }
 
         [TestMethod]
@@ -109,7 +108,7 @@ namespace Biocs.Collections
             Assert.AreEqual(compare.First(), target.First);
             Assert.AreEqual(compare.Last(), target.Last);
 
-            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target.Capacity = 5);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.Capacity = 5);
         }
 
         [TestMethod]
@@ -123,8 +122,8 @@ namespace Biocs.Collections
             target.First = 8;
             Assert.AreEqual(8, target.First);
 
-            BiocsAssert.Throws<InvalidOperationException>(() => new Deque<object>().First);
-            BiocsAssert.Throws<InvalidOperationException>(() => new Deque<object>().First = null);
+            Assert.ThrowsException<InvalidOperationException>(() => new Deque<object>().First);
+            Assert.ThrowsException<InvalidOperationException>(() => new Deque<object>().First = null);
         }
 
         [TestMethod]
@@ -138,8 +137,8 @@ namespace Biocs.Collections
             target.Last = 8;
             Assert.AreEqual(8, target.Last);
 
-            BiocsAssert.Throws<InvalidOperationException>(() => new Deque<object>().Last);
-            BiocsAssert.Throws<InvalidOperationException>(() => new Deque<object>().Last = null);
+            Assert.ThrowsException<InvalidOperationException>(() => new Deque<object>().Last);
+            Assert.ThrowsException<InvalidOperationException>(() => new Deque<object>().Last = null);
         }
 
         [TestMethod]
@@ -160,7 +159,7 @@ namespace Biocs.Collections
                 Assert.IsFalse(enumerator.MoveNext());
             }
 
-            BiocsAssert.Throws<InvalidOperationException>(() =>
+            Assert.ThrowsException<InvalidOperationException>(() =>
             {
                 var target = new Deque<int>(query);
 
@@ -168,7 +167,7 @@ namespace Biocs.Collections
                     target.Capacity *= 2;
             });
 
-            BiocsAssert.Throws<InvalidOperationException>(() =>
+            Assert.ThrowsException<InvalidOperationException>(() =>
             {
                 var target = new Deque<int>(query);
 
@@ -176,7 +175,7 @@ namespace Biocs.Collections
                     target.AddFirst(item);
             });
 
-            BiocsAssert.Throws<InvalidOperationException>(() =>
+            Assert.ThrowsException<InvalidOperationException>(() =>
             {
                 var target = new Deque<int>(query);
 
@@ -184,7 +183,7 @@ namespace Biocs.Collections
                     target.AddLast(item);
             });
 
-            BiocsAssert.Throws<InvalidOperationException>(() =>
+            Assert.ThrowsException<InvalidOperationException>(() =>
             {
                 var target = new Deque<int>(query);
 
@@ -192,7 +191,7 @@ namespace Biocs.Collections
                     target.Insert(0, item);
             });
 
-            BiocsAssert.Throws<InvalidOperationException>(() =>
+            Assert.ThrowsException<InvalidOperationException>(() =>
             {
                 var target = new Deque<int>(query);
 
@@ -200,7 +199,7 @@ namespace Biocs.Collections
                     target.InsertRange(0, new[] { item });
             });
 
-            BiocsAssert.Throws<InvalidOperationException>(() =>
+            Assert.ThrowsException<InvalidOperationException>(() =>
             {
                 var target = new Deque<int>(query);
 
@@ -208,7 +207,7 @@ namespace Biocs.Collections
                     target.RemoveFirst();
             });
 
-            BiocsAssert.Throws<InvalidOperationException>(() =>
+            Assert.ThrowsException<InvalidOperationException>(() =>
             {
                 var target = new Deque<int>(query);
 
@@ -216,7 +215,7 @@ namespace Biocs.Collections
                     target.RemoveLast();
             });
 
-            BiocsAssert.Throws<InvalidOperationException>(() =>
+            Assert.ThrowsException<InvalidOperationException>(() =>
             {
                 var target = new Deque<int>(query);
 
@@ -224,7 +223,7 @@ namespace Biocs.Collections
                     target.Remove(item);
             });
 
-            BiocsAssert.Throws<InvalidOperationException>(() =>
+            Assert.ThrowsException<InvalidOperationException>(() =>
             {
                 var target = new Deque<int>(query);
 
@@ -232,7 +231,7 @@ namespace Biocs.Collections
                     target.RemoveAt(0);
             });
 
-            BiocsAssert.Throws<InvalidOperationException>(() =>
+            Assert.ThrowsException<InvalidOperationException>(() =>
             {
                 var target = new Deque<int>(query);
 
@@ -240,7 +239,7 @@ namespace Biocs.Collections
                     target.RemoveRange(1, 2);
             });
 
-            BiocsAssert.Throws<InvalidOperationException>(() =>
+            Assert.ThrowsException<InvalidOperationException>(() =>
             {
                 var target = new Deque<int>(query);
 
@@ -270,9 +269,9 @@ namespace Biocs.Collections
                 Assert.IsTrue(query.SequenceEqual(array.Skip(1).Take(count)));
                 Assert.AreEqual(0, array.Last());
 
-                BiocsAssert.Throws<ArgumentNullException>(() => target.CopyTo(null, 0));
-                BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target.CopyTo(array, -1));
-                BiocsAssert.Throws<ArgumentException>(() => target.CopyTo(array, array.Length - count + 1));
+                Assert.ThrowsException<ArgumentNullException>(() => target.CopyTo(null, 0));
+                Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.CopyTo(array, -1));
+                Assert.ThrowsException<ArgumentException>(() => target.CopyTo(array, array.Length - count + 1));
             }
             {
                 var array2 = new int[count2 + 2];
@@ -282,13 +281,13 @@ namespace Biocs.Collections
                 Assert.IsTrue(Enumerable.Range(start + index, count2).SequenceEqual(array2.Skip(1).Take(count2)));
                 Assert.AreEqual(0, array2.Last());
 
-                BiocsAssert.Throws<ArgumentNullException>(() => target.CopyTo(0, null, 0, 0));
-                BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target.CopyTo(-1, array2, 0, 0));
-                BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target.CopyTo(0, array2, -1, 0));
-                BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target.CopyTo(0, array2, 0, -1));
-                BiocsAssert.Throws<ArgumentException>(() => target.CopyTo(count - 1, array2, 0, 2));
-                BiocsAssert.Throws<ArgumentException>(() => target.CopyTo(0, array2, array2.Length - 1, 2));
-                BiocsAssert.Throws<ArgumentException>(() => target.CopyTo(0, new int[count + 2], 0, count + 1));
+                Assert.ThrowsException<ArgumentNullException>(() => target.CopyTo(0, null, 0, 0));
+                Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.CopyTo(-1, array2, 0, 0));
+                Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.CopyTo(0, array2, -1, 0));
+                Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.CopyTo(0, array2, 0, -1));
+                Assert.ThrowsException<ArgumentException>(() => target.CopyTo(count - 1, array2, 0, 2));
+                Assert.ThrowsException<ArgumentException>(() => target.CopyTo(0, array2, array2.Length - 1, 2));
+                Assert.ThrowsException<ArgumentException>(() => target.CopyTo(0, new int[count + 2], 0, count + 1));
             }
         }
 
@@ -450,7 +449,7 @@ namespace Biocs.Collections
             // Call EnsureSpaceAndInsert
             Insert(target, compare, 4, ++count);
 
-            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target.Insert(-1, 0));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.Insert(-1, 0));
         }
 
         [TestMethod]
@@ -491,7 +490,7 @@ namespace Biocs.Collections
             // [8, +, 7, 6, 0, 1, 2, 3, 4, 5, 9, 10]
             Insert(target, compare, 8, ++count);
 
-            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target.Insert(count + 1, 0));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.Insert(count + 1, 0));
         }
 
         [TestMethod]
@@ -547,9 +546,9 @@ namespace Biocs.Collections
 
             InsertRange(target, compare, 0, new int[0]);
 
-            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target.InsertRange(-1, new int[0]));
-            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target.InsertRange(target.Count + 1, new int[0]));
-            BiocsAssert.Throws<ArgumentNullException>(() => target.InsertRange(0, null));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.InsertRange(-1, new int[0]));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.InsertRange(target.Count + 1, new int[0]));
+            Assert.ThrowsException<ArgumentNullException>(() => target.InsertRange(0, null));
         }
 
         [TestMethod]
@@ -575,7 +574,7 @@ namespace Biocs.Collections
             Assert.AreEqual(0, target.Count);
 
             target.Clear();
-            BiocsAssert.Throws<InvalidOperationException>(() => target.RemoveFirst());
+            Assert.ThrowsException<InvalidOperationException>(() => target.RemoveFirst());
         }
 
         [TestMethod]
@@ -601,7 +600,7 @@ namespace Biocs.Collections
             Assert.AreEqual(0, target.Count);
 
             target.Clear();
-            BiocsAssert.Throws<InvalidOperationException>(() => target.RemoveLast());
+            Assert.ThrowsException<InvalidOperationException>(() => target.RemoveLast());
         }
 
         [TestMethod]
@@ -624,8 +623,8 @@ namespace Biocs.Collections
             // Call RemoveLast
             RemoveAt(target, compare, target.Count - 1);
 
-            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target.RemoveAt(-1));
-            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target.RemoveAt(target.Count));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.RemoveAt(-1));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.RemoveAt(target.Count));
         }
 
         [TestMethod]
@@ -679,9 +678,9 @@ namespace Biocs.Collections
 
             RemoveRange(target, compare, 2, 7);
 
-            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target.RemoveRange(-1, 0));
-            BiocsAssert.Throws<ArgumentOutOfRangeException>(() => target.RemoveRange(0, -1));
-            BiocsAssert.Throws<ArgumentException>(() => new Deque<int>(Enumerable.Range(0, 10)).RemoveRange(8, 10));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.RemoveRange(-1, 0));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.RemoveRange(0, -1));
+            Assert.ThrowsException<ArgumentException>(() => new Deque<int>(Enumerable.Range(0, 10)).RemoveRange(8, 10));
         }
 
         [TestMethod]
@@ -708,7 +707,7 @@ namespace Biocs.Collections
 
             target.Clear();
             Assert.AreEqual(0, target.Count);
-            BiocsAssert.Throws<InvalidOperationException>(() => target.First);
+            Assert.ThrowsException<InvalidOperationException>(() => target.First);
         }
 
         private static void Insert(Deque<int> target, List<int> compare, int index, int value)

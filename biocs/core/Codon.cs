@@ -94,11 +94,11 @@ namespace Biocs
         /// <exception cref="ArgumentException">
         /// <paramref name="value"/> contains an unknown character in a certain position.
         /// </exception>
-        [StringResourceUsage("ArgEx.InvalidCodonSymbol", 1)]
+        [StringResourceUsage("Arg.InvalidCodonSymbol", 1)]
         public static Codon Parse(string value)
         {
             if (!TryParse(value, out var result))
-                throw new ArgumentException(Res.GetString("ArgEx.InvalidCodonSymbol", value), nameof(value));
+                throw new ArgumentException(Res.GetString("Arg.InvalidCodonSymbol", value), nameof(value));
 
             return result;
         }

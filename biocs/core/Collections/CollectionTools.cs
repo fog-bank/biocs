@@ -72,7 +72,6 @@ namespace Biocs.Collections
             return Array.Empty<T>();
 #else
             return new T[0];
-
 #endif
         }
     }

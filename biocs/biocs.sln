@@ -12,7 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\appveyor.yml = ..\appveyor.yml
 		CustomDictionary.xml = CustomDictionary.xml
 		..\README.md = ..\README.md
+		..\test_ubuntu.sh = ..\test_ubuntu.sh
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "samples", "samples\samples.csproj", "{1A340984-5BE9-47CE-926F-E76A88D4D4CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,6 +31,10 @@ Global
 		{6474E706-689E-4745-957D-849BE6647B13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6474E706-689E-4745-957D-849BE6647B13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6474E706-689E-4745-957D-849BE6647B13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A340984-5BE9-47CE-926F-E76A88D4D4CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A340984-5BE9-47CE-926F-E76A88D4D4CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A340984-5BE9-47CE-926F-E76A88D4D4CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A340984-5BE9-47CE-926F-E76A88D4D4CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

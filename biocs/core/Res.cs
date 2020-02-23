@@ -7,7 +7,7 @@ namespace Biocs
     {
         private static readonly ResourceManager rm = new ResourceManager(typeof(Res));
 
-        public static string GetString(string name) => rm.GetString(name);
+        public static string GetString(string name) => rm.GetString(name, null);
 
         public static string GetString(string name, object arg0) => GetStringInternal(name, arg0);
 

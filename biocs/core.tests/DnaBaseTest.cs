@@ -1,5 +1,4 @@
 ﻿using System;
-using Biocs.TestTools;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Biocs
@@ -27,7 +26,7 @@ namespace Biocs
             Test('D', "NotC", false, false, 'H');
             Test('N', "Any", false, false, 'N');
 
-            BiocsAssert.Throws<ArgumentException>(() => DnaBase.Parse('%'));
+            Assert.ThrowsException<ArgumentException>(() => DnaBase.Parse('%'));
 
             var result = DnaBase.Any;
             Assert.IsFalse(DnaBase.TryParse('%', out result));
