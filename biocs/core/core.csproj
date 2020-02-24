@@ -9,6 +9,7 @@
 
   <!-- Build -->
   <PropertyGroup>
+    <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>

@@ -40,7 +40,7 @@ namespace Biocs.Collections
         /// The <see cref="IEqualityComparer{T}"/> implementation to use when comparing items, or <see langword="null"/> to
         /// use the default <see cref="IEqualityComparer{T}"/> for the type of the item.
         /// </param>
-        public Counter(IEqualityComparer<T> comparer) : this(0, comparer)
+        public Counter(IEqualityComparer<T>? comparer) : this(0, comparer)
         { }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Biocs.Collections
         /// use the default <see cref="IEqualityComparer{T}"/> for the type of the item.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> is less than 0.</exception>
-        public Counter(int capacity, IEqualityComparer<T> comparer)
+        public Counter(int capacity, IEqualityComparer<T>? comparer)
         {
             if (capacity < 0)
                 throw new ArgumentOutOfRangeException(nameof(capacity));
@@ -123,7 +123,7 @@ namespace Biocs.Collections
                 if (nullCount.HasValue)
                 {
                     for (int n = nullCount.Value; n > 0; n--)
-                        yield return default;
+                        yield return default!;
                 }
             }
         }
@@ -141,7 +141,7 @@ namespace Biocs.Collections
                 foreach (var item in map.Keys)
                     yield return item;
 
-                yield return default;
+                yield return default!;
             }
         }
 
@@ -192,7 +192,7 @@ namespace Biocs.Collections
             map.Keys.CopyTo(array, arrayIndex);
 
             if (nullCount.HasValue)
-                array[arrayIndex + map.Count] = default;
+                array[arrayIndex + map.Count] = default!;
         }
 
         /// <summary>
@@ -326,9 +326,9 @@ namespace Biocs.Collections
     [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
     internal sealed class CounterDebugView<T>
     {
-        private readonly Counter<T> counter;
+        private readonly Counter<T>? counter;
 
-        public CounterDebugView(Counter<T> counter) => this.counter = counter;
+        public CounterDebugView(Counter<T>? counter) => this.counter = counter;
 
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public KeyValuePair<T, int>[] ItemsAndCounts
