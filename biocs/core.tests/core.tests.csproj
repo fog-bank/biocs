@@ -1,34 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <!-- Application -->
   <PropertyGroup>
     <AssemblyName>Biocs.Core.Tests</AssemblyName>
     <RootNamespace>Biocs</RootNamespace>
-    <TargetFrameworks>netcoreapp2.0;netcoreapp1.0;net45</TargetFrameworks>
-    <LangVersion>latest</LangVersion>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
+
+  <!-- Build -->
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
   
+  <!-- Dependencies -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="2.0.0" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\core\core.csproj" />
   </ItemGroup>
 
-  <!--<ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
-    <ProjectReference Include="..\core\core.csproj" SetTargetFramework="TargetFramework=netstandard1.3" />
-  </ItemGroup>-->
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
-    <Compile Remove="TestTools\Instruction.cs" />
-    <Compile Remove="TestTools\StringResourceTester.cs" />
-    <Compile Remove="ResTest.cs" />
-  </ItemGroup>
-
+  <!-- Contents -->
   <ItemGroup>
     <Content Include="Deployments\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

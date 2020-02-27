@@ -17,10 +17,10 @@ namespace Biocs
     {
         [Command("bgzf", "Compress or decompress a file in the BGZF format.")]
         public async Task Compress(
-            [Option("i", "input file name (string)")] string input,
-            [Option("o", " output file name (string)")] string output = null,
-            [Option("d", " decompress mode (bool)")] bool decompress = false,
-            [Option("f", " overwrite a file without asking (bool)")] bool force = false)
+            [Option("i", "input file name")] string input,
+            [Option("o", "output file name")] string output = null,
+            [Option("d", "decompress mode")] bool decompress = false,
+            [Option("f", "overwrite a file without asking")] bool force = false)
         {
             if (!File.Exists(input))
             {
@@ -38,7 +38,7 @@ namespace Biocs
             {
                 if (decompress)
                 {
-                    output = input.EndsWith(".gz") ? input.Substring(0, input.Length - 3) : input + ".out";
+                    output = input.EndsWith(".gz") ? input[0..^3] : input + ".out";
                 }
                 else
                     output = input + ".gz";

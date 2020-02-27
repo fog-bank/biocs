@@ -22,6 +22,13 @@ namespace Biocs.IO
         }
 
         [TestMethod]
+        public void Constructor_Test()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => new BgzfStream(null, CompressionMode.Decompress));
+            Assert.ThrowsException<ArgumentNullException>(() => new BgzfStream(null, CompressionLevel.Optimal));
+        }
+
+        [TestMethod]
         public void Read_Test()
         {
             var raw = File.ReadAllBytes(PathRawFile);

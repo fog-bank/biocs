@@ -41,7 +41,7 @@ namespace Biocs
         /// <summary>
         /// Gets the string representation of this codon.
         /// </summary>
-        public string Symbols => new string(new[] { First.Symbol, Second.Symbol, Third.Symbol });
+        public string Symbols => new string(stackalloc[] { First.Symbol, Second.Symbol, Third.Symbol });
 
         /// <summary>
         /// Gets a value indicating whether this codon is completely specified.

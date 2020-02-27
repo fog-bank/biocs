@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers.Binary;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -11,12 +12,12 @@ namespace Biocs.IO
     /// </summary>
     public class BgzfStream : Stream
     {
-        private Stream stream;
+        private Stream? stream;
         private readonly CompressionMode mode;
         private readonly CompressionLevel level;
         private readonly bool leaveOpen;
-        private byte[] blockData;
-        private DeflateStream deflateStream;
+        private byte[]? blockData;
+        private DeflateStream? deflateStream;
         private int inputLength;
         private uint crc;
         private uint originalCrc;
@@ -206,7 +207,9 @@ namespace Biocs.IO
                 // Reads a single BGZF block and creates a DeflateStream object to decompress.
                 if (deflateStream == null)
                 {
-                    if (!ReadBgzfBlock())
+                    deflateStream = ReadBgzfBlock();
+
+                    if (deflateStream == null)
                         break;
                 }
 
@@ -326,7 +329,7 @@ namespace Biocs.IO
         [StringResourceUsage("NotSup.BlockSizeExceeded")]
         public override void Flush()
         {
-            if (CanWrite && inputLength > 0)
+            if (CanWrite && deflateStream != null)
             {
                 var baseStream = deflateStream.BaseStream;
                 try
@@ -370,7 +373,7 @@ namespace Biocs.IO
         /// <returns>
         /// <see langword="true"/> if the specified file has the regular BGZF header; otherwise, <see langword="false"/>.
         /// </returns>
-        public static bool IsBgzfFile(string path)
+        public static bool IsBgzfFile(string? path)
         {
             const int HeaderSize = 16;
 
@@ -381,8 +384,8 @@ namespace Biocs.IO
             {
                 using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, HeaderSize))
                 {
-                    var header = new byte[HeaderSize];
-                    int length = TryReadExactBytes(stream, header, 0, header.Length);
+                    Span<byte> header = stackalloc byte[HeaderSize];
+                    int length = TryReadExactBytes(stream, header);
 
                     if (length != header.Length)
                         return false;
@@ -442,13 +445,13 @@ namespace Biocs.IO
         // @exception IOException
         [StringResourceUsage("InvalData.BadHeader")]
         [StringResourceUsage("InvalData.EndOfStream")]
-        private bool ReadBgzfBlock()
+        private DeflateStream? ReadBgzfBlock()
         {
-            var buffer = new byte[18];
-            int bytes = TryReadExactBytes(stream, buffer, 0, 18);
+            Span<byte> buffer = stackalloc byte[18];
+            int bytes = TryReadExactBytes(stream, buffer);
 
             if (bytes == 0)
-                return false;
+                return null;
 
             if (bytes != 18)
                 throw new InvalidDataException(Res.GetString("InvalData.EndOfStream"));
@@ -468,26 +471,26 @@ namespace Biocs.IO
 
             // FHCRC
             if ((flag & 0b10) != 0)
-                ReadExactBytes(buffer, 2);
+                ReadExactBytes(buffer[..2]);
 
             // BSIZE in FEXTRA (total block size minus 1)
-            int dataLength = buffer[16] + (buffer[17] << 8) - 25;
+            int dataLength = BinaryPrimitives.ReadUInt16LittleEndian(buffer[16..]) - 25;
 
             if (dataLength < 0)
                 throw new InvalidDataException(Res.GetString("InvalData.BadHeader"));
 
             // CDATA
-            ReadExactBytes(CompressedData, dataLength);
+            ReadExactBytes(CompressedData.AsSpan(..dataLength));
 
             // Footer (CRC32 and ISIZE)
-            ReadExactBytes(buffer, 8);
+            ReadExactBytes(buffer[..8]);
 
             if (buffer[6] > 1 || buffer[7] != 0)
                 throw new InvalidDataException(Res.GetString("InvalData.BadHeader"));
 
-            originalCrc = unchecked((uint)(buffer[0] + (buffer[1] << 8) + (buffer[2] << 16) + (buffer[3] << 24)));
+            originalCrc = BinaryPrimitives.ReadUInt32LittleEndian(buffer);
             crc = 0;
-            inputLength = buffer[4] + (buffer[5] << 8) + (buffer[6] << 16);
+            inputLength = BinaryPrimitives.ReadInt32LittleEndian(buffer[4..]);
 
             // EOF marker
             if (inputLength == 0 && dataLength == 2 && CompressedData[0] == 3 && CompressedData[1] == 0)
@@ -498,8 +501,7 @@ namespace Biocs.IO
             else
                 eofMarker = false;
 
-            deflateStream = new DeflateStream(new MemoryStream(CompressedData, 0, dataLength), CompressionMode.Decompress);
-            return true;
+            return new DeflateStream(new MemoryStream(CompressedData, 0, dataLength), CompressionMode.Decompress);
         }
 
         // Reads the current stream by the requested length exactly.
@@ -508,11 +510,11 @@ namespace Biocs.IO
         // @exception InvalidDataException EOF has reached while reading.
         // @exception IOException
         [StringResourceUsage("InvalData.EndOfStream")]
-        private void ReadExactBytes(byte[] buffer, int count)
+        private void ReadExactBytes(Span<byte> buffer)
         {
-            int bytes = TryReadExactBytes(stream, buffer, 0, count);
+            int bytes = TryReadExactBytes(stream, buffer);
 
-            if (bytes == 0)
+            if (bytes != buffer.Length)
                 throw new InvalidDataException(Res.GetString("InvalData.EndOfStream"));
         }
 
@@ -521,10 +523,10 @@ namespace Biocs.IO
         // @exception IOException
         private void SkipZeroTerminatedField()
         {
-            var buffer = new byte[1];
+            Span<byte> buffer = stackalloc byte[1];
             do
             {
-                ReadExactBytes(buffer, 1);
+                ReadExactBytes(buffer);
 
                 if (buffer[0] == 0)
                     break;
@@ -537,54 +539,48 @@ namespace Biocs.IO
         // @exception IOException
         private void WriteBgzfBlock(int compressedLength)
         {
-            var array = new byte[18];
+            if (stream == null)
+                return;
+
+            Span<byte> buffer = stackalloc byte[18];
             // ID
-            array[0] = 0x1f;
-            array[1] = 0x8b;
+            buffer[0] = 0x1f;
+            buffer[1] = 0x8b;
             // CM
-            array[2] = 8;
+            buffer[2] = 8;
             // FLG
-            array[3] = 4;
+            buffer[3] = 4;
             // OS
-            array[9] = 0xff;
+            buffer[9] = 0xff;
             // XLEN
-            array[10] = 6;
+            buffer[10] = 6;
             // SI
-            array[12] = 66;
-            array[13] = 67;
+            buffer[12] = 66;
+            buffer[13] = 67;
             // SLEN
-            array[14] = 2;
+            buffer[14] = 2;
 
             // BSIZE (total block size minus 1)
             int bsize = compressedLength + 25;
-            array[16] = (byte)(bsize & 0xff);
-            array[17] = (byte)((bsize & 0xff00) >> 8);
             Debug.Assert(bsize < 0x10000);
+            BinaryPrimitives.WriteUInt16LittleEndian(buffer[16..], (ushort)bsize);
 
-            stream.Write(array, 0, array.Length);
+            stream.Write(buffer);
             stream.Write(CompressedData, 0, compressedLength);
 
             if (inputLength > 0)
             {
                 // CRC32
-                array[0] = (byte)(crc & 0xff);
-                array[1] = (byte)((crc & 0xff00) >> 8);
-                array[2] = (byte)((crc & 0xff0000) >> 16);
-                array[3] = (byte)((crc & 0xff000000) >> 24);
+                BinaryPrimitives.WriteUInt32LittleEndian(buffer, crc);
 
                 // ISIZE
-                array[4] = (byte)(inputLength & 0xff);
-                array[5] = (byte)((inputLength & 0xff00) >> 8);
-                //array[6] = 0;
-                //array[7] = 0;
                 Debug.Assert(inputLength < 0x10000);
+                BinaryPrimitives.WriteInt32LittleEndian(buffer[4..], inputLength);
             }
             else
-            {
-                //Array.Clear(array, 0, 8);
-                Array.Clear(array, 0, 4);
-            }
-            stream.Write(array, 0, 8);
+                buffer[..4].Clear();
+
+            stream.Write(buffer[..8]);
         }
 
         // Reads a stream by the requested length exactly.
@@ -594,27 +590,29 @@ namespace Biocs.IO
         // @param count The number of bytes to read.
         // @return The total number of bytes read into the buffer. If it is less than count, the end of the stream has reached.
         // @exception IOException
-        private static int TryReadExactBytes(Stream stream, byte[] buffer, int offset, int count)
+        private static int TryReadExactBytes(Stream? stream, Span<byte> buffer)
         {
+            if (stream == null)
+                return 0;
+
             int totalBytes = 0;
 
-            while (count > 0)
+            while (buffer.Length > 0)
             {
                 // An implementation of Stream.Read method is free to return fewer bytes than requested
                 // even if the end of the stream has not reached.
-                int bytes = stream.Read(buffer, offset, count);
+                int bytes = stream.Read(buffer);
 
                 if (bytes == 0)
                     break;
 
-                offset += bytes;
-                count -= bytes;
+                buffer = buffer[bytes..];
                 totalBytes += bytes;
             }
             return totalBytes;
         }
 
-        private static bool IsBgzfHeader(byte[] header)
+        private static bool IsBgzfHeader(ReadOnlySpan<byte> header)
         {
             if (header.Length < 16)
                 return false;

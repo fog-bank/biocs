@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Biocs.Collections
 {
@@ -39,40 +40,29 @@ namespace Biocs.Collections
         /// otherwise, <see langword="false"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-        public static bool AllItemsAreEqual<T>(this IEnumerable<T> collection, IEqualityComparer<T> comparer, out T value)
+        public static bool AllItemsAreEqual<T>(this IEnumerable<T> collection, IEqualityComparer<T>? comparer, [MaybeNullWhen(false)] out T value)
         {
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
 
-            if (comparer == null)
-                comparer = EqualityComparer<T>.Default;
+            comparer ??= EqualityComparer<T>.Default;
+            value = default!;
+            bool isFirst = true;
 
-            value = default;
-
-            using (var enumetator = collection.GetEnumerator())
+            foreach (var item in collection)
             {
-                if (!enumetator.MoveNext())
-                    return false;
-
-                var item = enumetator.Current;
-
-                while (enumetator.MoveNext())
+                if (isFirst)
                 {
-                    if (!comparer.Equals(enumetator.Current, item))
-                        return false;
+                    value = item;
+                    isFirst = false;
                 }
-                value = item;
-                return true;
+                else if (!comparer.Equals(item, value))
+                {
+                    value = default!;
+                    return false;
+                }
             }
-        }
-
-        internal static T[] Empty<T>()
-        {
-#if MIN_NETSTANDARD1_3
-            return Array.Empty<T>();
-#else
-            return new T[0];
-#endif
+            return !isFirst;
         }
     }
 }
