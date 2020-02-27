@@ -44,6 +44,10 @@ test:
   assemblies:
     - '**\*.Tests.dll'
 
+# to run your custom scripts instead of automatic tests
+test_script:
+  - dotnet test --test-adapter-path:. --logger:Appveyor
+
 #---------------------------------#
 #      artifacts configuration    #
 #---------------------------------#
