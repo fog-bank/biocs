@@ -3,7 +3,7 @@
 #---------------------------------#
 
 # version format
-version: 0.1.0-{build}
+version: 0.1.0-{branch}.{build}
 
 # branches to build
 branches:
@@ -17,20 +17,38 @@ branches:
 #---------------------------------#
 
 # Build worker image (VM template)
-image: Visual Studio 2017
+image: Ubuntu
 
 #---------------------------------#
 #       build configuration       #
 #---------------------------------#
 
+# build Configuration, i.e. Debug, Release, etc.
+configuration: Release
+
 # scripts to run before build
 before_build:
-  - ps: dotnet --info
-  - ps: nuget restore biocs\biocs.sln
+  - dotnet --info
+
+# Build settings
+build:
+  verbosity: minimal
+
 
 #---------------------------------#
 #       tests configuration       #
 #---------------------------------#
+
+# to run tests against only selected assemblies and/or categories
 test:
   assemblies:
-    - Biocs.Core.Tests.dll
+    - '**\*.Tests.dll'
+
+#---------------------------------#
+#      artifacts configuration    #
+#---------------------------------#
+
+artifacts:
+
+  # pushing all *.nupkg files in build directory recursively
+  - path: '**\*.nupkg'
