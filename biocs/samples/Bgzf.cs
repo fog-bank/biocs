@@ -18,13 +18,13 @@ namespace Biocs
         {
             if (!File.Exists(input))
             {
-                Context.Logger.LogError($"The input doesn't exist: '{input}'.");
+                Context.Logger.LogError("The input doesn't exist: '{input}'.", input);
                 return 1;
             }
 
             if (decompress && !BgzfStream.IsBgzfFile(input))
             {
-                Context.Logger.LogError($"'{input}' isn't the BGZF format.");
+                Context.Logger.LogError("'{input}' isn't the BGZF format.", input);
                 return 1;
             }
 
@@ -40,7 +40,7 @@ namespace Biocs
 
             if (!force && File.Exists(output))
             {
-                Context.Logger.LogWarning($"The output exists already: '{output}'.");
+                Context.Logger.LogWarning("The output exists already: '{output}'.", output);
                 return 1;
             }
 
@@ -49,7 +49,7 @@ namespace Biocs
             {
                 if (decompress)
                 {
-                    Context.Logger.LogInformation($"Decompress '{input}' to '{output}'.");
+                    Context.Logger.LogInformation("Decompress '{input}' to '{output}'.", input, output);
 
                     using (var gz = new BgzfStream(ifs, CompressionMode.Decompress))
                     {
@@ -58,7 +58,7 @@ namespace Biocs
                 }
                 else
                 {
-                    Context.Logger.LogInformation($"Compress '{input}' to '{output}'.");
+                    Context.Logger.LogInformation("Compress '{input}' to '{output}'.", input, output);
 
                     using (var gz = new BgzfStream(ofs, CompressionMode.Compress))
                     {
