@@ -10,10 +10,10 @@ namespace Biocs
     public class ConsoleErrorLogger : ILogger
     {
         public void Log<TState>(
-            LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+            LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
-            string message = formatter?.Invoke(state, exception);
-            var stderr = Console.Out;
+            string message = formatter.Invoke(state, exception);
+            var stderr = Console.Error;
 
             if (!string.IsNullOrEmpty(message))
             {

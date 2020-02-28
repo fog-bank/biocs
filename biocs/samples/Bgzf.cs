@@ -12,7 +12,7 @@ namespace Biocs
         [Command("bgzf", "Compress or decompress a file in the BGZF format.")]
         public async Task<int> Compress(
             [Option("i", "input file name")] string input,
-            [Option("o", "output file name")] string output = null,
+            [Option("o", "output file name")] string? output = null,
             [Option("d", "decompress mode")] bool decompress = false,
             [Option("f", "overwrite a file without asking")] bool force = false)
         {
@@ -35,12 +35,13 @@ namespace Biocs
                     output = input.EndsWith(".gz") ? input[..^3] : input + ".out";
                 }
                 else
-                    output = input + ".gz";
+                    output += ".gz";
             }
 
             if (!force && File.Exists(output))
             {
-                Context.Logger.LogWarning("The output exists already: '{output}'.", output);
+                Context.Logger.LogWarning(
+                    "The output file exists already: '{output}'. To force overwriting, please specify -f option.", output);
                 return 1;
             }
 
