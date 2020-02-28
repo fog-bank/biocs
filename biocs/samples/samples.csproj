@@ -2,7 +2,7 @@
 
   <!-- Application -->
   <PropertyGroup>
-    <AssemblyName>samples</AssemblyName>
+    <AssemblyName>biocstools</AssemblyName>
     <RootNamespace>Biocs</RootNamespace>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <OutputType>Exe</OutputType>
