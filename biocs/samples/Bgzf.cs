@@ -50,7 +50,7 @@ namespace Biocs
             {
                 if (decompress)
                 {
-                    Context.Logger.LogInformation("Decompress '{input}' to '{output}'.", input, output);
+                    Context.Logger.LogInformation("Start to decompress '{input}' to '{output}'.", input, output);
 
                     using (var gz = new BgzfStream(ifs, CompressionMode.Decompress))
                     {
@@ -59,7 +59,7 @@ namespace Biocs
                 }
                 else
                 {
-                    Context.Logger.LogInformation("Compress '{input}' to '{output}'.", input, output);
+                    Context.Logger.LogInformation("Start to compress '{input}' to '{output}'.", input, output);
 
                     using (var gz = new BgzfStream(ofs, CompressionMode.Compress))
                     {
