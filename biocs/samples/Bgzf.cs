@@ -13,11 +13,13 @@ namespace Biocs
         [Command("bgzf", "Compress or decompress a file in the BGZF format.")]
         public async Task<int> Compress(
             [Option("i", "input file name")] string input,
-            [Option("o", "output file name. By default, generated from input if possible")] string? output = null,
+            [Option("o", "output file name. By default, generated from input file name")] string? output = null,
             [Option("c", "write to standard output instead of file")] bool stdout = false,
             [Option("d", "decompress mode")] bool decompress = false,
-            [Option("f", "overwrite a file without asking")] bool force = false)
+            [Option("f", "overwrite a file without asking")] bool force = false,
+            [Option("l", "compression level; -1 (optimal), 0 (no compression), 1 (fast)")] int level = -1)
         {
+            // Check input
             if (!File.Exists(input))
             {
                 Context.Logger.LogError("The input ({input}) doesn't exist.", input);
@@ -28,6 +30,14 @@ namespace Biocs
             {
                 Context.Logger.LogError("The input ({input}) isn't the BGZF format.", input);
                 return 1;
+            }
+
+            // Check output
+            if (output == "-")
+            {
+                // Regards dash "-" as stdout
+                stdout = true;
+                output = null;
             }
 
             if (stdout)
@@ -62,6 +72,31 @@ namespace Biocs
                 }
             }
 
+            // Check level
+            CompressionLevel compLevel;
+            switch (level)
+            {
+                case -1:
+                    compLevel = CompressionLevel.Optimal;
+                    break;
+
+                case 0:
+                    compLevel = CompressionLevel.NoCompression;
+                    break;
+
+                case 1:
+                    compLevel = CompressionLevel.Fastest;
+                    break;
+
+                default:
+                    Context.Logger.LogError("The invalid compression level ({level}).", level);
+                    return 1;
+            }
+
+            if (decompress && level != -1)
+                Context.Logger.LogWarning("When decompressing, -l option is ignored.");
+
+            // Main
             using (var ifs = File.OpenRead(input))
             using (var ofs = stdout ? Console.OpenStandardOutput() : File.Create(output))
             {
@@ -78,7 +113,7 @@ namespace Biocs
                 {
                     Context.Logger.LogInformation("Start to compress '{input}' to '{output}'.", input, output);
 
-                    using (var gz = new BgzfStream(ofs, CompressionMode.Compress))
+                    using (var gz = new BgzfStream(ofs, compLevel))
                     {
                         await ifs.CopyToAsync(gz, Context.CancellationToken);
                     }
