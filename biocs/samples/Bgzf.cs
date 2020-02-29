@@ -22,13 +22,19 @@ namespace Biocs
             if (input == null && output == null && !Console.IsInputRedirected && !Console.IsOutputRedirected)
             {
                 // No option
-                Context.Logger.LogWarning("For help, specify -help option.");
+                Context.Logger.LogError("For help, specify -help option.");
+                return 1;
             }
 
             // Check {input}
             bool stdin;
             if (input == null || input == "-")
             {
+                if (decompress && !Console.IsInputRedirected)
+                {
+                    Context.Logger.LogError("Compressed input should be read from a file or redirected from standard input.");
+                    return 1;
+                }
                 // Regards dash "-" as stdin
                 stdin = true;
                 input = "stdin";
@@ -57,6 +63,13 @@ namespace Biocs
             // Check {output}
             if (stdout || output == "-")
             {
+                if (!decompress && !Console.IsOutputRedirected)
+                {
+                    // For Linux environment, writing binary data to console may occur IOException.
+                    Context.Logger.LogError("Compressed output should be written to a file or redirected from standard output.");
+                    return 1;
+                }
+
                 if (stdout && output != null)
                 {
                     Context.Logger.LogWarning(
