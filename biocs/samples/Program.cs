@@ -15,6 +15,6 @@ namespace Biocs
                 logging.ClearProviders();
                 logging.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, ConsoleErrorLoggerProvider>());
             })
-            .RunConsoleAppFrameworkAsync<Program>(args);
+            .RunConsoleAppFrameworkAsync<Program>(args, new LogCommandInterceptor());
     }
 }
