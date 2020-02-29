@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
 using Biocs.IO;
@@ -12,41 +13,57 @@ namespace Biocs
         [Command("bgzf", "Compress or decompress a file in the BGZF format.")]
         public async Task<int> Compress(
             [Option("i", "input file name")] string input,
-            [Option("o", "output file name")] string? output = null,
+            [Option("o", "output file name. By default, generated from input if possible")] string? output = null,
+            [Option("c", "write to standard output instead of file")] bool stdout = false,
             [Option("d", "decompress mode")] bool decompress = false,
             [Option("f", "overwrite a file without asking")] bool force = false)
         {
             if (!File.Exists(input))
             {
-                Context.Logger.LogError("The input doesn't exist: '{input}'.", input);
+                Context.Logger.LogError("The input ({input}) doesn't exist.", input);
                 return 1;
             }
 
             if (decompress && !BgzfStream.IsBgzfFile(input))
             {
-                Context.Logger.LogError("'{input}' isn't the BGZF format.", input);
+                Context.Logger.LogError("The input ({input}) isn't the BGZF format.", input);
                 return 1;
             }
 
-            if (output == null)
+            if (stdout)
             {
-                if (decompress)
+                if (output != null)
                 {
-                    output = input.EndsWith(".gz") ? input[..^3] : input + ".out";
+                    Context.Logger.LogWarning(
+                        "Because the output is written to stdout, the output file name ({output}) is ignored.", output);
                 }
-                else
-                    output += ".gz";
-            }
+                output = "stdout";
 
-            if (!force && File.Exists(output))
+                if (force)
+                    Context.Logger.LogWarning("Because the output is written to stdout, -f option is ignored.");
+            }
+            else
             {
-                Context.Logger.LogWarning(
-                    "The output file exists already: '{output}'. To force overwriting, please specify -f option.", output);
-                return 1;
+                if (output == null)
+                {
+                    if (decompress)
+                    {
+                        output = input.EndsWith(".gz") ? input[..^3] : input + ".out";
+                    }
+                    else
+                        output += ".gz";
+                }
+
+                if (!force && File.Exists(output))
+                {
+                    Context.Logger.LogWarning(
+                        "The output file exists already: '{output}'. To force overwriting, please specify -f option.", output);
+                    return 1;
+                }
             }
 
             using (var ifs = File.OpenRead(input))
-            using (var ofs = File.Create(output))
+            using (var ofs = stdout ? Console.OpenStandardOutput() : File.Create(output))
             {
                 if (decompress)
                 {
