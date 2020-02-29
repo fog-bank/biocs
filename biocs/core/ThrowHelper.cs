@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Biocs
 {
-    // 
     internal static class ThrowHelper
     {
         [DoesNotReturn]
