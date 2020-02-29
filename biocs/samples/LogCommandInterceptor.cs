@@ -14,7 +14,6 @@ namespace Biocs
 
         public ValueTask OnMethodBeginAsync(ConsoleAppContext context)
         {
-            context.Logger.LogInformation("Command: " + string.Join(" ", context.Arguments));
             return default;
         }
 
@@ -25,7 +24,8 @@ namespace Biocs
 
         public ValueTask OnEngineCompleteAsync(ConsoleAppContext context, string? errorMessageIfFailed, Exception? exceptionIfExists)
         {
-            context.Logger.LogInformation("Elapsed time: " + (DateTimeOffset.UtcNow - context.Timestamp));
+            context.Logger.LogInformation("Elapsed time: {time}, Command: {command}",
+                DateTimeOffset.UtcNow - context.Timestamp, string.Join(" ", context.Arguments));
             return default;
         }
     }

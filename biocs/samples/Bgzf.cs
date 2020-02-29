@@ -63,17 +63,17 @@ namespace Biocs
             // Check {output}
             if (stdout || output == "-")
             {
+                if (stdout && output != null)
+                {
+                    Context.Logger.LogWarning(
+                        "Because -c options is specified, the output file name ({output}) is ignored.", output);
+                }
+
                 if (!decompress && !Console.IsOutputRedirected)
                 {
                     // For Linux environment, writing binary data to console may occur IOException.
                     Context.Logger.LogError("Compressed output should be written to a file or redirected from standard output.");
                     return 1;
-                }
-
-                if (stdout && output != null)
-                {
-                    Context.Logger.LogWarning(
-                        "Because the output is written to stdout, the output file name ({output}) is ignored.", output);
                 }
                 // Regards dash "-" as stdout
                 stdout = true;
