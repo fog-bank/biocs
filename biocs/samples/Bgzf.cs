@@ -12,41 +12,58 @@ namespace Biocs
     {
         [Command("bgzf", "Compress or decompress a file in the BGZF format.")]
         public async Task<int> Compress(
-            [Option("i", "input file name")] string input,
-            [Option("o", "output file name. By default, generated from input file name")] string? output = null,
-            [Option("c", "write to standard output instead of file")] bool stdout = false,
-            [Option("d", "decompress mode")] bool decompress = false,
-            [Option("f", "overwrite a file without asking")] bool force = false,
-            [Option("l", "compression level; -1 (optimal), 0 (no compression), 1 (fast)")] int level = -1)
+            [Option("i", "Input file name. By default, read from standard input")] string? input = null,
+            [Option("o", "Output file name. By default, generate from input file name")] string? output = null,
+            [Option("c", "Write to standard output instead of file")] bool stdout = false,
+            [Option("d", "Decompress mode")] bool decompress = false,
+            [Option("f", "Overwrite a file without asking")] bool force = false,
+            [Option("l", "Compression level; -1 (optimal), 0 (no compression), 1 (fast)")] int level = -1)
         {
-            // Check input
-            if (!File.Exists(input))
+            if (input == null && output == null && !Console.IsInputRedirected && !Console.IsOutputRedirected)
             {
-                Context.Logger.LogError("The input ({input}) doesn't exist.", input);
-                return 1;
+                // No option
+                Context.Logger.LogWarning("For help, specify -help option.");
             }
 
-            if (decompress && !BgzfStream.IsBgzfFile(input))
+            // Check {input}
+            bool stdin;
+            if (input == null || input == "-")
             {
-                Context.Logger.LogError("The input ({input}) isn't the BGZF format.", input);
-                return 1;
+                // Regards dash "-" as stdin
+                stdin = true;
+                input = "stdin";
+
+                // Use stdout if {output} isn't specified
+                if (output == null)
+                    stdout = true;
+            }
+            else
+            {
+                stdin = false;
+
+                if (!File.Exists(input))
+                {
+                    Context.Logger.LogError("The input ({input}) doesn't exist.", input);
+                    return 1;
+                }
+
+                if (decompress && !BgzfStream.IsBgzfFile(input))
+                {
+                    Context.Logger.LogError("The input ({input}) isn't the BGZF format.", input);
+                    return 1;
+                }
             }
 
-            // Check output
-            if (output == "-")
+            // Check {output}
+            if (stdout || output == "-")
             {
-                // Regards dash "-" as stdout
-                stdout = true;
-                output = null;
-            }
-
-            if (stdout)
-            {
-                if (output != null)
+                if (stdout && output != null)
                 {
                     Context.Logger.LogWarning(
                         "Because the output is written to stdout, the output file name ({output}) is ignored.", output);
                 }
+                // Regards dash "-" as stdout
+                stdout = true;
                 output = "stdout";
 
                 if (force)
@@ -61,18 +78,18 @@ namespace Biocs
                         output = input.EndsWith(".gz") ? input[..^3] : input + ".out";
                     }
                     else
-                        output += ".gz";
+                        output = input + ".gz";
                 }
 
                 if (!force && File.Exists(output))
                 {
-                    Context.Logger.LogWarning(
+                    Context.Logger.LogError(
                         "The output file exists already: '{output}'. To force overwriting, please specify -f option.", output);
                     return 1;
                 }
             }
 
-            // Check level
+            // Check {level}
             CompressionLevel compLevel;
             switch (level)
             {
@@ -89,7 +106,7 @@ namespace Biocs
                     break;
 
                 default:
-                    Context.Logger.LogError("The invalid compression level ({level}).", level);
+                    Context.Logger.LogError("The specified compression level ({level}) is not supported.", level);
                     return 1;
             }
 
@@ -97,7 +114,7 @@ namespace Biocs
                 Context.Logger.LogWarning("When decompressing, -l option is ignored.");
 
             // Main
-            using (var ifs = File.OpenRead(input))
+            using (var ifs = stdin ? Console.OpenStandardInput() : File.OpenRead(input))
             using (var ofs = stdout ? Console.OpenStandardOutput() : File.Create(output))
             {
                 if (decompress)
