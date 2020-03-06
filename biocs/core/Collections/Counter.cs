@@ -13,7 +13,9 @@ namespace Biocs.Collections
     [DebuggerDisplay("NumberOfItems = {NumberOfItems}, TotalCount = {TotalCount}"), DebuggerTypeProxy(typeof(CounterDebugView<>))]
     public class Counter<T>
     {
+#nullable disable warnings
         private readonly Dictionary<T, int> map;
+#nullable restore warnings
         private int? nullCount;
 
         /// <summary>
@@ -58,7 +60,9 @@ namespace Biocs.Collections
             if (capacity < 0)
                 throw new ArgumentOutOfRangeException(nameof(capacity));
 
+#nullable disable warnings
             map = new Dictionary<T, int>(capacity, comparer);
+#nullable restore warnings
         }
 
         /// <summary>
@@ -74,7 +78,9 @@ namespace Biocs.Collections
             if (other == null)
                 throw new ArgumentNullException(nameof(other));
 
+#nullable disable warnings
             map = new Dictionary<T, int>(other.map, other.map.Comparer);
+#nullable restore warnings
             nullCount = other.nullCount;
             TotalCount = other.TotalCount;
         }

@@ -77,8 +77,8 @@ namespace Biocs
         /// <returns><see langword="true"/> if the two instances are equal; otherwise, <see langword="false"/>.</returns>
         public bool Equals(Codon other) => First == other.First && Second == other.Second && Third == other.Third;
 
-        /// <inheritdoc cref="object.Equals(object)"/>
-        public override bool Equals(object obj) => obj is Codon other && Equals(other);
+        /// <inheritdoc cref="object.Equals(object?)"/>
+        public override bool Equals(object? obj) => obj is Codon other && Equals(other);
 
         /// <inheritdoc cref="object.GetHashCode"/>
         public override int GetHashCode() => (First.GetHashCode() << 16) + (Second.GetHashCode() << 8) + Third.GetHashCode();

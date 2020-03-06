@@ -136,8 +136,8 @@ namespace Biocs
         /// <returns><see langword="true"/> if the two instances are equal; otherwise, <see langword="false"/>.</returns>
         public bool EqualsCaseInsensitive(DnaBase other) => ToUpper(Code) == ToUpper(other.Code);
 
-        /// <inheritdoc cref="object.Equals(object)"/>
-        public override bool Equals(object obj) => obj is DnaBase other && Equals(other);
+        /// <inheritdoc cref="object.Equals(object?)"/>
+        public override bool Equals(object? obj) => obj is DnaBase other && Equals(other);
 
         /// <inheritdoc cref="object.GetHashCode"/>
         public override int GetHashCode() => (int)Code;
