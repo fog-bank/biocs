@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Biocs.Codon.html",
-          "hash": "r76a4zsgkg+45II2A2ebNQ=="
+          "hash": "UqvjoQ1cwSY0wia3nE/UUQ=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Biocs.Collections.CollectionTools.html",
-          "hash": "Sd8Ij9M9yzqpLR0rneq8HA=="
+          "hash": "/XBYkyRDSMUHeYQU6UGJHw=="
         }
       },
       "is_incremental": false,
@@ -42,7 +42,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Biocs.Collections.Counter-1.html",
-          "hash": "ZP98kv/BtbXlARsqxHHj8g=="
+          "hash": "+IXrYhb0WGqnHl3V5m1zfQ=="
         }
       },
       "is_incremental": false,
@@ -78,7 +78,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Biocs.DnaBase.html",
-          "hash": "JKV831/dghFqlPvzPZ6WRA=="
+          "hash": "7geaqv30YeUS0sPic2Ib9A=="
         }
       },
       "is_incremental": false,
@@ -90,7 +90,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Biocs.IO.BgzfStream.html",
-          "hash": "jjq1QiAi3N7sNFkc8RNepw=="
+          "hash": "ch80pOEYEBfUnTqVwiO6pw=="
         }
       },
       "is_incremental": false,
@@ -162,7 +162,7 @@
       "output": {
         ".html": {
           "relative_path": "api/index.html",
-          "hash": "3e8WDxzkd7qyz7MSCga5DA=="
+          "hash": "pGVNm5T5SHx2VwW0kUZCXg=="
         }
       },
       "is_incremental": false,
@@ -217,12 +217,15 @@
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
       "type": "Conceptual",
       "source_relative_path": "index.md",
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "tybJJQ/oWBZwcYA3QU72kA=="
+          "hash": "rToC1wqg/69P9JLFXUL/3Q=="
         }
       },
       "is_incremental": false,
@@ -234,7 +237,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "+CleWK2DYEsQcNTRMOMQyA=="
+          "hash": "yz4QaxCgFXMAykF+7WF6lg=="
         }
       },
       "is_incremental": false,
@@ -244,23 +247,25 @@
   "incremental_info": [
     {
       "status": {
-        "can_incremental": true,
+        "can_incremental": false,
+        "details": "Cannot build incrementally because config changed.",
         "incrementalPhase": "build",
         "total_file_count": 0,
-        "skipped_file_count": 0
+        "skipped_file_count": 0,
+        "full_build_reason_code": "ConfigChanged"
       },
       "processors": {
         "ConceptualDocumentProcessor": {
-          "can_incremental": true,
+          "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 4,
-          "skipped_file_count": 4
+          "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
-          "can_incremental": true,
+          "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 12,
-          "skipped_file_count": 12
+          "skipped_file_count": 0
         },
         "TocDocumentProcessor": {
           "can_incremental": false,
