@@ -3,20 +3,15 @@
     {
       "src": [
         {
-          "files": [
-            "biocs/core/project.json"
-          ],
-          "exclude": [
-            "**/bin/**",
-            "**/obj/**",
-            "docs/**"
-          ],
-          "src": "../"
+          "src": "../biocs",
+          "files": [ "core/core.csproj" ]
         }
       ],
       "dest": "api",
       "force": true,
-      "filter": "filterConfig.yml"
+      "filter": "filterConfig.yml",
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false
     }
   ],
   "build": {
@@ -33,29 +28,17 @@
           "articles/**/toc.yml",
           "toc.yml",
           "*.md"
-        ],
-        "exclude": [
-          "obj/**",
-          "docs/**"
         ]
       }
     ],
     "resource": [
       {
-        "files": [
-          "images/**"
-        ],
-        "exclude": [
-          "obj/**",
-          "docs/**"
-        ]
+        "files": [ "images/**" ]
       }
     ],
     "overwrite": [
       {
-        "files": [
-          "apidoc/**.md"
-        ],
+        "files": [ "apidoc/**.md" ],
         "exclude": [
           "obj/**",
           "docs/**"
@@ -63,18 +46,16 @@
       }
     ],
     "dest": "../docs",
-    "globalMetadataFiles": [
-      "global.json"
-    ],
+    "globalMetadataFiles": [ "global.json" ],
     "fileMetadataFiles": [],
-    "template": [
-      "default"
-    ],
+    "template": [ "default" ],
     "postProcessors": [],
     "maxParallelism": 4,
+    "markdownEngineName": "markdig",
     "noLangKeyword": false,
-    "xref": [
-      "msdn.4.5.2.zip"
-    ]
+    "keepFileLink": false,
+    "cleanupCacheHistory": false,
+    "disableGitFeatures": false,
+    "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ]
   }
 }

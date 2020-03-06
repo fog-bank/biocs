@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Counter&lt;T&gt;
    | BioC# Documents ">
-    <meta name="generator" content="docfx 2.18.1.0">
+    <meta name="generator" content="docfx 2.50.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -19,9 +19,10 @@
     <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
-    
+    <meta property="docfx:rel" content="../">
+    <meta property="docfx:newtab" content="true">
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -57,6 +58,16 @@
           </div>
         </div>
       </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
       <div role="main" class="container body-content hide-when-search">
         
         <div class="sidenav hide-when-search">
@@ -70,45 +81,21 @@
             <article class="content wrap" id="_content" data-uid="Biocs.Collections.Counter`1">
   
   
-  <h1 id="Biocs_Collections_Counter_1" data-uid="Biocs.Collections.Counter`1">Class Counter&lt;T&gt;
+  <h1 id="Biocs_Collections_Counter_1" data-uid="Biocs.Collections.Counter`1" class="text-break">Class Counter&lt;T&gt;
   </h1>
   <div class="markdown level0 summary"><p>Represents a tally counter to count the frequency of items.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.object(v=vs.110).aspx">Object</a></div>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">Counter&lt;T&gt;</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://msdn.microsoft.com/en-us/library/bsc2ak47(v=vs.110).aspx">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://msdn.microsoft.com/en-us/library/w4hkze5k(v=vs.110).aspx">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://msdn.microsoft.com/en-us/library/zdee4b3y(v=vs.110).aspx">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://msdn.microsoft.com/en-us/library/dfwy45w9(v=vs.110).aspx">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://msdn.microsoft.com/en-us/library/57ctke0a(v=vs.110).aspx">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://msdn.microsoft.com/en-us/library/hz2a0b8x(v=vs.110).aspx">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://msdn.microsoft.com/en-us/library/7bxwbwt2(v=vs.110).aspx">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Biocs.Collections.html">Biocs.Collections</a></h6>
-  <h6><strong>Assembly</strong>: core.dll</h6>
+  <h6><strong>Assembly</strong>: Biocs.Core.dll</h6>
   <h5 id="Biocs_Collections_Counter_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Counter&lt;T&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public class Counter&lt;T&gt; : object</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -131,11 +118,16 @@
 </div>
   <h3 id="constructors">Constructors
   </h3>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1__ctor.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L23">View Source</a>
+  </span>
   <a id="Biocs_Collections_Counter_1__ctor_" data-uid="Biocs.Collections.Counter`1.#ctor*"></a>
   <h4 id="Biocs_Collections_Counter_1__ctor" data-uid="Biocs.Collections.Counter`1.#ctor">Counter()</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> class that is empty, has zero capacity, and uses 
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> class that is empty, has zero capacity, and uses
 the default equality comparer.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -143,8 +135,13 @@ the default equality comparer.</p>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Counter()</code></pre>
   </div>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1__ctor_Biocs_Collections_Counter__0__.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.%23ctor(Biocs.Collections.Counter%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L72">View Source</a>
+  </span>
   <a id="Biocs_Collections_Counter_1__ctor_" data-uid="Biocs.Collections.Counter`1.#ctor*"></a>
   <h4 id="Biocs_Collections_Counter_1__ctor_Biocs_Collections_Counter__0__" data-uid="Biocs.Collections.Counter`1.#ctor(Biocs.Collections.Counter{`0})">Counter(Counter&lt;T&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> class that contains unique items and counts copied from
@@ -173,55 +170,13 @@ the specified <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
-        <td><p><span class="paramref">other</span> is <span class="xref">null</span>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Biocs_Collections_Counter_1__ctor_" data-uid="Biocs.Collections.Counter`1.#ctor*"></a>
-  <h4 id="Biocs_Collections_Counter_1__ctor_System_Collections_Generic_IEqualityComparer__0__" data-uid="Biocs.Collections.Counter`1.#ctor(System.Collections.Generic.IEqualityComparer{`0})">Counter(IEqualityComparer&lt;T&gt;)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> class that is empty, has zero capacity, and uses 
-the specified equality comparer.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Counter(IEqualityComparer&lt;T&gt; comparer)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer</a>&lt;T&gt;</td>
-        <td><span class="parametername">comparer</span></td>
-        <td><p>The <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> implementation to use when comparing items, or <span class="xref">null</span> to
-use the default <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> for the type of the item.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1__ctor_System_Int32_.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.%23ctor(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L32">View Source</a>
+  </span>
   <a id="Biocs_Collections_Counter_1__ctor_" data-uid="Biocs.Collections.Counter`1.#ctor*"></a>
   <h4 id="Biocs_Collections_Counter_1__ctor_System_Int32_" data-uid="Biocs.Collections.Counter`1.#ctor(System.Int32)">Counter(Int32)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> class that is empty, has the specified initial capacity,
@@ -243,40 +198,29 @@ and uses the default equality comparer.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">capacity</span></td>
         <td><p>The initial number of items that the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> can contain.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
-        <td><p><span class="paramref">capacity</span> is less than 0.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1__ctor_System_Int32_System_Nullable_IEqualityComparer__0___.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.%23ctor(System.Int32%2CSystem.Nullable%7BIEqualityComparer%7B%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L56">View Source</a>
+  </span>
   <a id="Biocs_Collections_Counter_1__ctor_" data-uid="Biocs.Collections.Counter`1.#ctor*"></a>
-  <h4 id="Biocs_Collections_Counter_1__ctor_System_Int32_System_Collections_Generic_IEqualityComparer__0__" data-uid="Biocs.Collections.Counter`1.#ctor(System.Int32,System.Collections.Generic.IEqualityComparer{`0})">Counter(Int32, IEqualityComparer&lt;T&gt;)</h4>
+  <h4 id="Biocs_Collections_Counter_1__ctor_System_Int32_System_Nullable_IEqualityComparer__0___" data-uid="Biocs.Collections.Counter`1.#ctor(System.Int32,System.Nullable{IEqualityComparer{`0}})">Counter(Int32, Nullable&lt;IEqualityComparer&lt;T&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> class that is empty, has the specified initial capacity,
 and uses the specified equality comparer.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Counter(int capacity, IEqualityComparer&lt;T&gt; comparer)</code></pre>
+    <pre><code class="lang-csharp hljs">public Counter(int capacity, IEqualityComparer&lt;T&gt;? comparer)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -289,44 +233,69 @@ and uses the specified equality comparer.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">capacity</span></td>
         <td><p>The initial number of items that the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> can contain.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer</a>&lt;T&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IEqualityComparer</span>&lt;T&gt;&gt;</td>
         <td><span class="parametername">comparer</span></td>
-        <td><p>The <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> implementation to use when comparing items, or <span class="xref">null</span> to
-use the default <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> for the type of the item.</p>
+        <td><p>The <see cref="!:IEqualityComparer&lt;T>"></see> implementation to use when comparing items, or <span class="xref">null</span> to
+use the default <see cref="!:IEqualityComparer&lt;T>"></see> for the type of the item.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1__ctor_System_Nullable_IEqualityComparer__0___.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.%23ctor(System.Nullable%7BIEqualityComparer%7B%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L43">View Source</a>
+  </span>
+  <a id="Biocs_Collections_Counter_1__ctor_" data-uid="Biocs.Collections.Counter`1.#ctor*"></a>
+  <h4 id="Biocs_Collections_Counter_1__ctor_System_Nullable_IEqualityComparer__0___" data-uid="Biocs.Collections.Counter`1.#ctor(System.Nullable{IEqualityComparer{`0}})">Counter(Nullable&lt;IEqualityComparer&lt;T&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> class that is empty, has zero capacity, and uses
+the specified equality comparer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Counter(IEqualityComparer&lt;T&gt;? comparer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Condition</th>
+        <th>Name</th>
+        <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
-        <td><p><span class="paramref">capacity</span> is less than 0.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IEqualityComparer</span>&lt;T&gt;&gt;</td>
+        <td><span class="parametername">comparer</span></td>
+        <td><p>The <see cref="!:IEqualityComparer&lt;T>"></see> implementation to use when comparing items, or <span class="xref">null</span> to
+use the default <see cref="!:IEqualityComparer&lt;T>"></see> for the type of the item.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h3 id="properties">Properties
   </h3>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1_Comparer.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.Comparer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L135">View Source</a>
+  </span>
   <a id="Biocs_Collections_Counter_1_Comparer_" data-uid="Biocs.Collections.Counter`1.Comparer*"></a>
   <h4 id="Biocs_Collections_Counter_1_Comparer" data-uid="Biocs.Collections.Counter`1.Comparer">Comparer</h4>
-  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> that is used to determine equality of items for 
-the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>. </p>
+  <div class="markdown level1 summary"><p>Gets the <see cref="!:IEqualityComparer&lt;T>"></see> that is used to determine equality of items for
+the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -343,13 +312,18 @@ the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer</a>&lt;T&gt;</td>
+        <td><span class="xref">IEqualityComparer</span>&lt;T&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1_NumberOfItems.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.NumberOfItems%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L90">View Source</a>
+  </span>
   <a id="Biocs_Collections_Counter_1_NumberOfItems_" data-uid="Biocs.Collections.Counter`1.NumberOfItems*"></a>
   <h4 id="Biocs_Collections_Counter_1_NumberOfItems" data-uid="Biocs.Collections.Counter`1.NumberOfItems">NumberOfItems</h4>
   <div class="markdown level1 summary"><p>Gets the number of the kinds of items that the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> contains.</p>
@@ -369,13 +343,18 @@ the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1_RepeatedItems.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.RepeatedItems%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L113">View Source</a>
+  </span>
   <a id="Biocs_Collections_Counter_1_RepeatedItems_" data-uid="Biocs.Collections.Counter`1.RepeatedItems*"></a>
   <h4 id="Biocs_Collections_Counter_1_RepeatedItems" data-uid="Biocs.Collections.Counter`1.RepeatedItems">RepeatedItems</h4>
   <div class="markdown level1 summary"><p>Gets an enumerable collection that contains items repeated by each count.</p>
@@ -395,13 +374,18 @@ the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;T&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;T&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1_TotalCount.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.TotalCount%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L85">View Source</a>
+  </span>
   <a id="Biocs_Collections_Counter_1_TotalCount_" data-uid="Biocs.Collections.Counter`1.TotalCount*"></a>
   <h4 id="Biocs_Collections_Counter_1_TotalCount" data-uid="Biocs.Collections.Counter`1.TotalCount">TotalCount</h4>
   <div class="markdown level1 summary"><p>Gets the total count of items.</p>
@@ -421,13 +405,18 @@ the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1_UniqueItems.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.UniqueItems%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L108">View Source</a>
+  </span>
   <a id="Biocs_Collections_Counter_1_UniqueItems_" data-uid="Biocs.Collections.Counter`1.UniqueItems*"></a>
   <h4 id="Biocs_Collections_Counter_1_UniqueItems" data-uid="Biocs.Collections.Counter`1.UniqueItems">UniqueItems</h4>
   <div class="markdown level1 summary"><p>Gets an enumerable collection of unique items that the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> has counted before now.</p>
@@ -447,26 +436,31 @@ the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;T&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;T&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 id="Biocs_Collections_Counter_1_UniqueItems_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p><p>This enumerable collection also contains items whose the count is 0.</p>
+  <div class="markdown level1 remarks"><p>This enumerable collection also contains items whose the count is 0.</p>
 <p>Enumerators retured by this enumerable collection cannot be used to modify the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.
-For example, the following enumeration raises an <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.invalidoperationexception(v=vs.110).aspx">InvalidOperationException</a>.</p>
-<pre><code>var counter = new Counter&lt;int&gt;();
+For example, the following enumeration raises an <see cref="!:InvalidOperationException"></see>.</p>
+<pre><code>var counter = new Counter&lt;int>();
 counter.AddRange(new[] { 1, 2, 3 });
 foreach (int item in counter.UniqueItems)
 {
   counter.Reset(item);
-}</code></pre></p>
+}</code></pre>
 </div>
   <h3 id="methods">Methods
   </h3>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1_Add__0_.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.Add(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L212">View Source</a>
+  </span>
   <a id="Biocs_Collections_Counter_1_Add_" data-uid="Biocs.Collections.Counter`1.Add*"></a>
   <h4 id="Biocs_Collections_Counter_1_Add__0_" data-uid="Biocs.Collections.Counter`1.Add(`0)">Add(T)</h4>
   <div class="markdown level1 summary"><p>Counts an object once.</p>
@@ -494,8 +488,13 @@ foreach (int item in counter.UniqueItems)
       </tr>
     </tbody>
   </table>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1_Add__0_System_Int32_.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.Add(%600%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L220">View Source</a>
+  </span>
   <a id="Biocs_Collections_Counter_1_Add_" data-uid="Biocs.Collections.Counter`1.Add*"></a>
   <h4 id="Biocs_Collections_Counter_1_Add__0_System_Int32_" data-uid="Biocs.Collections.Counter`1.Add(`0,System.Int32)">Add(T, Int32)</h4>
   <div class="markdown level1 summary"><p>Counts an object a specified number of times.</p>
@@ -522,33 +521,22 @@ foreach (int item in counter.UniqueItems)
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">times</span></td>
-        <td><p>The number of times to count <span class="paramref">item</span>.</p>
+        <td><p>The number of times to count <code data-dev-comment-type="paramref" class="paramref">item</code>.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
-        <td><p><span class="paramref">times</span> is less than 0.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1_AddRange_IEnumerable__0__.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.AddRange(IEnumerable%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L238">View Source</a>
+  </span>
   <a id="Biocs_Collections_Counter_1_AddRange_" data-uid="Biocs.Collections.Counter`1.AddRange*"></a>
-  <h4 id="Biocs_Collections_Counter_1_AddRange_System_Collections_Generic_IEnumerable__0__" data-uid="Biocs.Collections.Counter`1.AddRange(System.Collections.Generic.IEnumerable{`0})">AddRange(IEnumerable&lt;T&gt;)</h4>
+  <h4 id="Biocs_Collections_Counter_1_AddRange_IEnumerable__0__" data-uid="Biocs.Collections.Counter`1.AddRange(IEnumerable{`0})">AddRange(IEnumerable&lt;T&gt;)</h4>
   <div class="markdown level1 summary"><p>Counts the items of the specified collection.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -567,31 +555,20 @@ foreach (int item in counter.UniqueItems)
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;T&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;T&gt;</td>
         <td><span class="parametername">items</span></td>
         <td><p>The collection whose items should be counted.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
-        <td><p><span class="paramref">items</span> is <span class="xref">null</span>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1_Clear.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.Clear%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L318">View Source</a>
+  </span>
   <a id="Biocs_Collections_Counter_1_Clear_" data-uid="Biocs.Collections.Counter`1.Clear*"></a>
   <h4 id="Biocs_Collections_Counter_1_Clear" data-uid="Biocs.Collections.Counter`1.Clear">Clear()</h4>
   <div class="markdown level1 summary"><p>Removes all items from the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.</p>
@@ -601,8 +578,13 @@ foreach (int item in counter.UniqueItems)
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void Clear()</code></pre>
   </div>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1_Contains__0_.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.Contains(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L206">View Source</a>
+  </span>
   <a id="Biocs_Collections_Counter_1_Contains_" data-uid="Biocs.Collections.Counter`1.Contains*"></a>
   <h4 id="Biocs_Collections_Counter_1_Contains__0_" data-uid="Biocs.Collections.Counter`1.Contains(`0)">Contains(T)</h4>
   <div class="markdown level1 summary"><p>Determines whether the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> contains the specified object.</p>
@@ -640,18 +622,23 @@ foreach (int item in counter.UniqueItems)
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
-        <td><p><span class="xref">true</span> if <span class="paramref">item</span> is found in the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>;
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">item</code> is found in the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>;
 otherwise, <span class="xref">false</span>.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1_CopyTo__0___System_Int32_.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.CopyTo(%600%5B%5D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L178">View Source</a>
+  </span>
   <a id="Biocs_Collections_Counter_1_CopyTo_" data-uid="Biocs.Collections.Counter`1.CopyTo*"></a>
   <h4 id="Biocs_Collections_Counter_1_CopyTo__0___System_Int32_" data-uid="Biocs.Collections.Counter`1.CopyTo(`0[],System.Int32)">CopyTo(T[], Int32)</h4>
-  <div class="markdown level1 summary"><p>Copies the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> unique items to an existing one-dimensional <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.array(v=vs.110).aspx">Array</a>,
+  <div class="markdown level1 summary"><p>Copies the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> unique items to an existing one-dimensional <see cref="!:Array"></see>,
 starting at the specified array index.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -672,47 +659,25 @@ starting at the specified array index.</p>
       <tr>
         <td>T[]</td>
         <td><span class="parametername">array</span></td>
-        <td><p>The one-dimensional <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.array(v=vs.110).aspx">Array</a> that is the destination of the unique items copied
+        <td><p>The one-dimensional <see cref="!:Array"></see> that is the destination of the unique items copied
 from <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">arrayIndex</span></td>
-        <td><p>The zero-based index in <span class="paramref">array</span> at which copying begins.</p>
+        <td><p>The zero-based index in <code data-dev-comment-type="paramref" class="paramref">array</code> at which copying begins.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
-        <td><p><span class="paramref">array</span> is <span class="xref">null</span>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
-        <td><p><span class="paramref">arrayIndex</span> is less than 0.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentexception(v=vs.110).aspx">ArgumentException</a></td>
-        <td><p>The number of items in the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> is greater than the available space from
-<span class="paramref">arrayIndex</span> to the end of the destination <span class="paramref">array</span>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1_GetCount__0_.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.GetCount(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L154">View Source</a>
+  </span>
   <a id="Biocs_Collections_Counter_1_GetCount_" data-uid="Biocs.Collections.Counter`1.GetCount*"></a>
   <h4 id="Biocs_Collections_Counter_1_GetCount__0_" data-uid="Biocs.Collections.Counter`1.GetCount(`0)">GetCount(T)</h4>
   <div class="markdown level1 summary"><p>Gets the number of times that the item occurs in the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.</p>
@@ -750,17 +715,22 @@ from <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
-        <td><p>The number of times that <span class="paramref">item</span> occurs in the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p>The number of times that <code data-dev-comment-type="paramref" class="paramref">item</code> occurs in the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 id="Biocs_Collections_Counter_1_GetCount__0__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>If <span class="paramref">item</span> is not contained in the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>, this method returns 0.</p>
+  <div class="markdown level1 remarks"><p>If <code data-dev-comment-type="paramref" class="paramref">item</code> is not contained in the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>, this method returns 0.</p>
 </div>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1_Remove__0_.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.Remove(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L255">View Source</a>
+  </span>
   <a id="Biocs_Collections_Counter_1_Remove_" data-uid="Biocs.Collections.Counter`1.Remove*"></a>
   <h4 id="Biocs_Collections_Counter_1_Remove__0_" data-uid="Biocs.Collections.Counter`1.Remove(`0)">Remove(T)</h4>
   <div class="markdown level1 summary"><p>Decreases the count of the specified item by one.</p>
@@ -798,15 +768,20 @@ from <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
-        <td><p><span class="xref">true</span> if the count of <span class="paramref">item</span> was successfully decremented;
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><span class="xref">true</span> if the count of <code data-dev-comment-type="paramref" class="paramref">item</code> was successfully decremented;
 otherwise, <span class="xref">false</span>.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1_Remove__0_System_Int32_.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.Remove(%600%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L263">View Source</a>
+  </span>
   <a id="Biocs_Collections_Counter_1_Remove_" data-uid="Biocs.Collections.Counter`1.Remove*"></a>
   <h4 id="Biocs_Collections_Counter_1_Remove__0_System_Int32_" data-uid="Biocs.Collections.Counter`1.Remove(`0,System.Int32)">Remove(T, Int32)</h4>
   <div class="markdown level1 summary"><p>Decreases the count of the specified item by the specified amount.</p>
@@ -833,7 +808,7 @@ otherwise, <span class="xref">false</span>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">times</span></td>
         <td><p>The amount by which to decrement the counter value.</p>
 </td>
@@ -850,14 +825,19 @@ otherwise, <span class="xref">false</span>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><p>The amount of the count to be decreased acutually.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1_Reset.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.Reset%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L287">View Source</a>
+  </span>
   <a id="Biocs_Collections_Counter_1_Reset_" data-uid="Biocs.Collections.Counter`1.Reset*"></a>
   <h4 id="Biocs_Collections_Counter_1_Reset" data-uid="Biocs.Collections.Counter`1.Reset">Reset()</h4>
   <div class="markdown level1 summary"><p>Sets the number of times that each item occurs in the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> to zero.
@@ -868,8 +848,13 @@ The collection of items is preserved.</p>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void Reset()</code></pre>
   </div>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1_Reset__0_.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601.Reset(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L305">View Source</a>
+  </span>
   <a id="Biocs_Collections_Counter_1_Reset_" data-uid="Biocs.Collections.Counter`1.Reset*"></a>
   <h4 id="Biocs_Collections_Counter_1_Reset__0_" data-uid="Biocs.Collections.Counter`1.Reset(`0)">Reset(T)</h4>
   <div class="markdown level1 summary"><p>Sets the number of times that the specified item occurs in the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> to zero.</p>
@@ -904,6 +889,12 @@ The collection of items is preserved.</p>
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_Collections_Counter_1.md&amp;value=---%0Auid%3A%20Biocs.Collections.Counter%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/Collections/Counter.cs/#L13" class="contribution-link">View Source</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
@@ -921,7 +912,7 @@ The collection of items is preserved.</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2017 fog-bank. Some rights reserved. Generated by <a href="https://dotnet.github.io/docfx/">DocFX</a>.
+            Copyright © 2020 fog-bank. Some rights reserved. Generated by <a href="https://dotnet.github.io/docfx/">DocFX</a>.
             
           </div>
         </div>

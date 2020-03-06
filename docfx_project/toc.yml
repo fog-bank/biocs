@@ -1,6 +1,4 @@
 - name: Articles
   href: articles/
-  topicHref: articles/index.md
 - name: Api Documentation
   href: api/
-  topicHref: api/index.md
