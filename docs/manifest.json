@@ -1,6 +1,6 @@
 {
   "homepages": [],
-  "source_base_path": "f:/Data/src/biocs/docfx_project",
+  "source_base_path": "F:/Data/src/biocs/docfx_project",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Biocs.Codon.html",
-          "hash": "UqvjoQ1cwSY0wia3nE/UUQ=="
+          "hash": "kKcZ8FocviRguB5llPW4lQ=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Biocs.Collections.CollectionTools.html",
-          "hash": "/XBYkyRDSMUHeYQU6UGJHw=="
+          "hash": "TxIoGerFTqyeGo6BHs/fqg=="
         }
       },
       "is_incremental": false,
@@ -42,7 +42,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Biocs.Collections.Counter-1.html",
-          "hash": "+IXrYhb0WGqnHl3V5m1zfQ=="
+          "hash": "XGoNrAVquPWlsYWxRouWUg=="
         }
       },
       "is_incremental": false,
@@ -54,7 +54,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Biocs.Collections.Deque-1.html",
-          "hash": "meBog9JvLRnHdkUb26UC8g=="
+          "hash": "lwYoo297JrJ3Nvr/uUTeOw=="
         }
       },
       "is_incremental": false,
@@ -78,7 +78,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Biocs.DnaBase.html",
-          "hash": "7geaqv30YeUS0sPic2Ib9A=="
+          "hash": "dPjlHTMzvz3kxWmTEFRuLA=="
         }
       },
       "is_incremental": false,
@@ -90,7 +90,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Biocs.IO.BgzfStream.html",
-          "hash": "ch80pOEYEBfUnTqVwiO6pw=="
+          "hash": "UQ3Pk0uukzUzjaGgoR73Xg=="
         }
       },
       "is_incremental": false,
@@ -114,7 +114,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Biocs.Numerics.DoubleMersenneTwister.html",
-          "hash": "7PW8z7kd4GDIpL5Q4M1YDA=="
+          "hash": "jUW2MSsPr+q6OcvG9w+0/A=="
         }
       },
       "is_incremental": false,
@@ -138,7 +138,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Biocs.StringResourceUsageAttribute.html",
-          "hash": "G7wAgX3hRlrxPXECu48sqw=="
+          "hash": "jbeb+Dy5GseCiQkfhla7hA=="
         }
       },
       "is_incremental": false,
@@ -247,25 +247,23 @@
   "incremental_info": [
     {
       "status": {
-        "can_incremental": false,
-        "details": "Cannot build incrementally because config changed.",
+        "can_incremental": true,
         "incrementalPhase": "build",
         "total_file_count": 0,
-        "skipped_file_count": 0,
-        "full_build_reason_code": "ConfigChanged"
+        "skipped_file_count": 0
       },
       "processors": {
         "ConceptualDocumentProcessor": {
-          "can_incremental": false,
+          "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 4,
-          "skipped_file_count": 0
+          "skipped_file_count": 4
         },
         "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
+          "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 12,
-          "skipped_file_count": 0
+          "skipped_file_count": 12
         },
         "TocDocumentProcessor": {
           "can_incremental": false,

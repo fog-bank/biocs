@@ -92,20 +92,15 @@
     <div class="level1"><span class="xref">BgzfStream</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Biocs.IO.html">Biocs.IO</a></h6>
-  <h6><strong>Assembly</strong>: Biocs.Core.dll</h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Biocs_IO_BgzfStream_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class BgzfStream : Stream</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_IO_BgzfStream__ctor_Stream_CompressionLevel_.md&amp;value=---%0Auid%3A%20Biocs.IO.BgzfStream.%23ctor(Stream%2CCompressionLevel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/IO/BgzfStream.cs/#L81">View Source</a>
-  </span>
+  
+  
   <a id="Biocs_IO_BgzfStream__ctor_" data-uid="Biocs.IO.BgzfStream.#ctor*"></a>
   <h4 id="Biocs_IO_BgzfStream__ctor_Stream_CompressionLevel_" data-uid="Biocs.IO.BgzfStream.#ctor(Stream,CompressionLevel)">BgzfStream(Stream, CompressionLevel)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.IO.BgzfStream.html">BgzfStream</a> class with the specified stream and compression level.</p>
@@ -142,13 +137,29 @@
   <h5 id="Biocs_IO_BgzfStream__ctor_Stream_CompressionLevel__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Closing the stream also closes the underlying stream.</p>
 </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_IO_BgzfStream__ctor_Stream_CompressionLevel_System_Boolean_.md&amp;value=---%0Auid%3A%20Biocs.IO.BgzfStream.%23ctor(Stream%2CCompressionLevel%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/IO/BgzfStream.cs/#L97">View Source</a>
-  </span>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">stream</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">level</code> is not a valid <see cref="!:CompressionLevel"></see> enumeration value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Biocs_IO_BgzfStream__ctor_" data-uid="Biocs.IO.BgzfStream.#ctor*"></a>
   <h4 id="Biocs_IO_BgzfStream__ctor_Stream_CompressionLevel_System_Boolean_" data-uid="Biocs.IO.BgzfStream.#ctor(Stream,CompressionLevel,System.Boolean)">BgzfStream(Stream, CompressionLevel, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.IO.BgzfStream.html">BgzfStream</a> class with the specified stream and compression level,
@@ -189,13 +200,29 @@ and a value that specifies whether to leave the stream open.</p>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_IO_BgzfStream__ctor_Stream_CompressionMode_.md&amp;value=---%0Auid%3A%20Biocs.IO.BgzfStream.%23ctor(Stream%2CCompressionMode)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/IO/BgzfStream.cs/#L39">View Source</a>
-  </span>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">stream</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">level</code> is not a valid <see cref="!:CompressionLevel"></see> enumeration value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Biocs_IO_BgzfStream__ctor_" data-uid="Biocs.IO.BgzfStream.#ctor*"></a>
   <h4 id="Biocs_IO_BgzfStream__ctor_Stream_CompressionMode_" data-uid="Biocs.IO.BgzfStream.#ctor(Stream,CompressionMode)">BgzfStream(Stream, CompressionMode)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.IO.BgzfStream.html">BgzfStream</a> class with the specified stream and compression mode.</p>
@@ -233,13 +260,29 @@ and a value that specifies whether to leave the stream open.</p>
   <div class="markdown level1 remarks"><p>Closing the stream also closes the underlying stream. The compression level is set to
 <see cref="!:CompressionLevel.Optimal"></see> when the compression mode is <see cref="!:CompressionMode.Compress"></see>.</p>
 </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_IO_BgzfStream__ctor_Stream_CompressionMode_System_Boolean_.md&amp;value=---%0Auid%3A%20Biocs.IO.BgzfStream.%23ctor(Stream%2CCompressionMode%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/IO/BgzfStream.cs/#L57">View Source</a>
-  </span>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">stream</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">mode</code> is not a valid <see cref="!:CompressionMode"></see> enumeration value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Biocs_IO_BgzfStream__ctor_" data-uid="Biocs.IO.BgzfStream.#ctor*"></a>
   <h4 id="Biocs_IO_BgzfStream__ctor_Stream_CompressionMode_System_Boolean_" data-uid="Biocs.IO.BgzfStream.#ctor(Stream,CompressionMode,System.Boolean)">BgzfStream(Stream, CompressionMode, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.IO.BgzfStream.html">BgzfStream</a> class with the specified stream and compression mode,
@@ -284,15 +327,31 @@ and a value that specifies whether to leave the stream open.</p>
   <div class="markdown level1 remarks"><p>The compression level is set to <see cref="!:CompressionLevel.Optimal"></see> when the compression mode is
 <see cref="!:CompressionMode.Compress"></see>.</p>
 </div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">stream</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">mode</code> is not a valid <see cref="!:CompressionMode"></see> enumeration value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
   </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_IO_BgzfStream_CanRead.md&amp;value=---%0Auid%3A%20Biocs.IO.BgzfStream.CanRead%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/IO/BgzfStream.cs/#L110">View Source</a>
-  </span>
+  
+  
   <a id="Biocs_IO_BgzfStream_CanRead_" data-uid="Biocs.IO.BgzfStream.CanRead*"></a>
   <h4 id="Biocs_IO_BgzfStream_CanRead" data-uid="Biocs.IO.BgzfStream.CanRead">CanRead</h4>
   <div class="markdown level1 summary"><p>Gets a value indicating whether the current stream supports reading.</p>
@@ -317,13 +376,8 @@ and a value that specifies whether to leave the stream open.</p>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_IO_BgzfStream_CanSeek.md&amp;value=---%0Auid%3A%20Biocs.IO.BgzfStream.CanSeek%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/IO/BgzfStream.cs/#L115">View Source</a>
-  </span>
+  
+  
   <a id="Biocs_IO_BgzfStream_CanSeek_" data-uid="Biocs.IO.BgzfStream.CanSeek*"></a>
   <h4 id="Biocs_IO_BgzfStream_CanSeek" data-uid="Biocs.IO.BgzfStream.CanSeek">CanSeek</h4>
   <div class="markdown level1 summary"><p>Gets a value indicating whether the current stream supports seeking.</p>
@@ -348,13 +402,8 @@ and a value that specifies whether to leave the stream open.</p>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_IO_BgzfStream_CanWrite.md&amp;value=---%0Auid%3A%20Biocs.IO.BgzfStream.CanWrite%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/IO/BgzfStream.cs/#L120">View Source</a>
-  </span>
+  
+  
   <a id="Biocs_IO_BgzfStream_CanWrite_" data-uid="Biocs.IO.BgzfStream.CanWrite*"></a>
   <h4 id="Biocs_IO_BgzfStream_CanWrite" data-uid="Biocs.IO.BgzfStream.CanWrite">CanWrite</h4>
   <div class="markdown level1 summary"><p>Gets a value indicating whether the current stream supports writing.</p>
@@ -379,16 +428,11 @@ and a value that specifies whether to leave the stream open.</p>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_IO_BgzfStream_Length.md&amp;value=---%0Auid%3A%20Biocs.IO.BgzfStream.Length%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/IO/BgzfStream.cs/#L126">View Source</a>
-  </span>
+  
+  
   <a id="Biocs_IO_BgzfStream_Length_" data-uid="Biocs.IO.BgzfStream.Length*"></a>
   <h4 id="Biocs_IO_BgzfStream_Length" data-uid="Biocs.IO.BgzfStream.Length">Length</h4>
-  <div class="markdown level1 summary"><p>This property is not supported and always throws a <see cref="!:NotSupportedException"></see>.</p>
+  <div class="markdown level1 summary"><p>This property is not supported and always throws a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -410,16 +454,27 @@ and a value that specifies whether to leave the stream open.</p>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_IO_BgzfStream_Position.md&amp;value=---%0Auid%3A%20Biocs.IO.BgzfStream.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/IO/BgzfStream.cs/#L136">View Source</a>
-  </span>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>This property is not supported on this stream.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Biocs_IO_BgzfStream_Position_" data-uid="Biocs.IO.BgzfStream.Position*"></a>
   <h4 id="Biocs_IO_BgzfStream_Position" data-uid="Biocs.IO.BgzfStream.Position">Position</h4>
-  <div class="markdown level1 summary"><p>This property is not supported and always throws a <see cref="!:NotSupportedException"></see>.</p>
+  <div class="markdown level1 summary"><p>This property is not supported and always throws a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -441,15 +496,26 @@ and a value that specifies whether to leave the stream open.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>This property is not supported on this stream.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_IO_BgzfStream_Dispose_System_Boolean_.md&amp;value=---%0Auid%3A%20Biocs.IO.BgzfStream.Dispose(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/IO/BgzfStream.cs/#L406">View Source</a>
-  </span>
+  
+  
   <a id="Biocs_IO_BgzfStream_Dispose_" data-uid="Biocs.IO.BgzfStream.Dispose*"></a>
   <h4 id="Biocs_IO_BgzfStream_Dispose_System_Boolean_" data-uid="Biocs.IO.BgzfStream.Dispose(System.Boolean)">Dispose(Boolean)</h4>
   <div class="markdown level1 summary"></div>
@@ -475,13 +541,8 @@ and a value that specifies whether to leave the stream open.</p>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_IO_BgzfStream_Flush.md&amp;value=---%0Auid%3A%20Biocs.IO.BgzfStream.Flush%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/IO/BgzfStream.cs/#L329">View Source</a>
-  </span>
+  
+  
   <a id="Biocs_IO_BgzfStream_Flush_" data-uid="Biocs.IO.BgzfStream.Flush*"></a>
   <h4 id="Biocs_IO_BgzfStream_Flush" data-uid="Biocs.IO.BgzfStream.Flush">Flush()</h4>
   <div class="markdown level1 summary"><p>Writes any buffered data to the underlying stream.</p>
@@ -491,21 +552,32 @@ and a value that specifies whether to leave the stream open.</p>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override void Flush()</code></pre>
   </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_IO_BgzfStream_IsBgzfFile_System_Nullable_System_String__.md&amp;value=---%0Auid%3A%20Biocs.IO.BgzfStream.IsBgzfFile(System.Nullable%7BSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/IO/BgzfStream.cs/#L376">View Source</a>
-  </span>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>The size of compressed bytes for a BGZF block exceeds about 64 KB.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Biocs_IO_BgzfStream_IsBgzfFile_" data-uid="Biocs.IO.BgzfStream.IsBgzfFile*"></a>
-  <h4 id="Biocs_IO_BgzfStream_IsBgzfFile_System_Nullable_System_String__" data-uid="Biocs.IO.BgzfStream.IsBgzfFile(System.Nullable{System.String})">IsBgzfFile(Nullable&lt;String&gt;)</h4>
+  <h4 id="Biocs_IO_BgzfStream_IsBgzfFile_System_String_" data-uid="Biocs.IO.BgzfStream.IsBgzfFile(System.String)">IsBgzfFile(String)</h4>
   <div class="markdown level1 summary"><p>Determines whether the specified file is in the BGZF format.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool IsBgzfFile(string? path)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool IsBgzfFile(string path)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -518,7 +590,7 @@ and a value that specifies whether to leave the stream open.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">path</span></td>
         <td><p>The file to check.</p>
 </td>
@@ -541,13 +613,8 @@ and a value that specifies whether to leave the stream open.</p>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_IO_BgzfStream_Read_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Biocs.IO.BgzfStream.Read(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/IO/BgzfStream.cs/#L179">View Source</a>
-  </span>
+  
+  
   <a id="Biocs_IO_BgzfStream_Read_" data-uid="Biocs.IO.BgzfStream.Read*"></a>
   <h4 id="Biocs_IO_BgzfStream_Read_System_Byte___System_Int32_System_Int32_" data-uid="Biocs.IO.BgzfStream.Read(System.Byte[],System.Int32,System.Int32)">Read(Byte[], Int32, Int32)</h4>
   <div class="markdown level1 summary"><p>Reads a sequence of decompressed bytes from the underlying stream.</p>
@@ -604,16 +671,47 @@ if the end of the stream has been reached.</p>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_IO_BgzfStream_Seek_System_Int64_SeekOrigin_.md&amp;value=---%0Auid%3A%20Biocs.IO.BgzfStream.Seek(System.Int64%2CSeekOrigin)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/IO/BgzfStream.cs/#L356">View Source</a>
-  </span>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">buffer</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">offset</code> or <code data-dev-comment-type="paramref" class="paramref">count</code> is negative.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>The sum of <code data-dev-comment-type="paramref" class="paramref">offset</code> and <code data-dev-comment-type="paramref" class="paramref">count</code> is larger than the buffer length.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>The stream does not support reading.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></td>
+        <td><p>The method were called after the stream was closed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Biocs_IO_BgzfStream_Seek_" data-uid="Biocs.IO.BgzfStream.Seek*"></a>
   <h4 id="Biocs_IO_BgzfStream_Seek_System_Int64_SeekOrigin_" data-uid="Biocs.IO.BgzfStream.Seek(System.Int64,SeekOrigin)">Seek(Int64, SeekOrigin)</h4>
-  <div class="markdown level1 summary"><p>This method is not supported and always throws a <see cref="!:NotSupportedException"></see>.</p>
+  <div class="markdown level1 summary"><p>This method is not supported and always throws a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -657,16 +755,27 @@ if the end of the stream has been reached.</p>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_IO_BgzfStream_SetLength_System_Int64_.md&amp;value=---%0Auid%3A%20Biocs.IO.BgzfStream.SetLength(System.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/IO/BgzfStream.cs/#L366">View Source</a>
-  </span>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>This method is not supported on this stream.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Biocs_IO_BgzfStream_SetLength_" data-uid="Biocs.IO.BgzfStream.SetLength*"></a>
   <h4 id="Biocs_IO_BgzfStream_SetLength_System_Int64_" data-uid="Biocs.IO.BgzfStream.SetLength(System.Int64)">SetLength(Int64)</h4>
-  <div class="markdown level1 summary"><p>This method is not supported and always throws a <see cref="!:NotSupportedException"></see>.</p>
+  <div class="markdown level1 summary"><p>This method is not supported and always throws a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -690,13 +799,24 @@ if the end of the stream has been reached.</p>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_IO_BgzfStream_Write_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Biocs.IO.BgzfStream.Write(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/IO/BgzfStream.cs/#L268">View Source</a>
-  </span>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>This method is not supported on this stream.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Biocs_IO_BgzfStream_Write_" data-uid="Biocs.IO.BgzfStream.Write*"></a>
   <h4 id="Biocs_IO_BgzfStream_Write_System_Byte___System_Int32_System_Int32_" data-uid="Biocs.IO.BgzfStream.Write(System.Byte[],System.Int32,System.Int32)">Write(Byte[], Int32, Int32)</h4>
   <div class="markdown level1 summary"><p>Writes a sequence of compressed bytes to the underlying stream.</p>
@@ -736,6 +856,43 @@ if the end of the stream has been reached.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">buffer</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">offset</code> or <code data-dev-comment-type="paramref" class="paramref">count</code> is negative.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>The sum of <code data-dev-comment-type="paramref" class="paramref">offset</code> and <code data-dev-comment-type="paramref" class="paramref">count</code> is larger than the buffer length.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>The stream does not support writing.</p> -or-
+<p>The size of compressed bytes for a BGZF block exceeds about 64 KB.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></td>
+        <td><p>The method were called after the stream was closed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           
@@ -743,12 +900,6 @@ if the end of the stream has been reached.</p>
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
-                  <li>
-                    <a href="https://github.com/fog-bank/biocs/new/develop/docfx_project/apidoc/new?filename=Biocs_IO_BgzfStream.md&amp;value=---%0Auid%3A%20Biocs.IO.BgzfStream%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
-                  </li>
-                  <li>
-                    <a href="https://github.com/fog-bank/biocs/blob/feature/update-doc/biocs/core/IO/BgzfStream.cs/#L13" class="contribution-link">View Source</a>
-                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

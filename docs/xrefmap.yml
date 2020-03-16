@@ -45,15 +45,12 @@ references:
   commentId: M:Biocs.Codon.Equals(Biocs.Codon)
   fullName: Biocs.Codon.Equals(Biocs.Codon)
   nameWithType: Codon.Equals(Codon)
-- uid: Biocs.Codon.Equals(System.Nullable{System.Object})
-  name: Equals(Nullable<Object>)
-  href: api/Biocs.Codon.html#Biocs_Codon_Equals_System_Nullable_System_Object__
-  commentId: M:Biocs.Codon.Equals(System.Nullable{System.Object})
-  name.vb: Equals(Nullable(Of Object))
-  fullName: Biocs.Codon.Equals(System.Nullable<System.Object>)
-  fullName.vb: Biocs.Codon.Equals(System.Nullable(Of System.Object))
-  nameWithType: Codon.Equals(Nullable<Object>)
-  nameWithType.vb: Codon.Equals(Nullable(Of Object))
+- uid: Biocs.Codon.Equals(System.Object)
+  name: Equals(Object)
+  href: api/Biocs.Codon.html#Biocs_Codon_Equals_System_Object_
+  commentId: M:Biocs.Codon.Equals(System.Object)
+  fullName: Biocs.Codon.Equals(System.Object)
+  nameWithType: Codon.Equals(Object)
 - uid: Biocs.Codon.Equals*
   name: Equals
   href: api/Biocs.Codon.html#Biocs_Codon_Equals_
@@ -1033,15 +1030,12 @@ references:
   commentId: M:Biocs.DnaBase.Equals(Biocs.DnaBase)
   fullName: Biocs.DnaBase.Equals(Biocs.DnaBase)
   nameWithType: DnaBase.Equals(DnaBase)
-- uid: Biocs.DnaBase.Equals(System.Nullable{System.Object})
-  name: Equals(Nullable<Object>)
-  href: api/Biocs.DnaBase.html#Biocs_DnaBase_Equals_System_Nullable_System_Object__
-  commentId: M:Biocs.DnaBase.Equals(System.Nullable{System.Object})
-  name.vb: Equals(Nullable(Of Object))
-  fullName: Biocs.DnaBase.Equals(System.Nullable<System.Object>)
-  fullName.vb: Biocs.DnaBase.Equals(System.Nullable(Of System.Object))
-  nameWithType: DnaBase.Equals(Nullable<Object>)
-  nameWithType.vb: DnaBase.Equals(Nullable(Of Object))
+- uid: Biocs.DnaBase.Equals(System.Object)
+  name: Equals(Object)
+  href: api/Biocs.DnaBase.html#Biocs_DnaBase_Equals_System_Object_
+  commentId: M:Biocs.DnaBase.Equals(System.Object)
+  fullName: Biocs.DnaBase.Equals(System.Object)
+  nameWithType: DnaBase.Equals(Object)
 - uid: Biocs.DnaBase.Equals*
   name: Equals
   href: api/Biocs.DnaBase.html#Biocs_DnaBase_Equals_
@@ -1394,15 +1388,12 @@ references:
   isSpec: "True"
   fullName: Biocs.IO.BgzfStream.Flush
   nameWithType: BgzfStream.Flush
-- uid: Biocs.IO.BgzfStream.IsBgzfFile(System.Nullable{System.String})
-  name: IsBgzfFile(Nullable<String>)
-  href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream_IsBgzfFile_System_Nullable_System_String__
-  commentId: M:Biocs.IO.BgzfStream.IsBgzfFile(System.Nullable{System.String})
-  name.vb: IsBgzfFile(Nullable(Of String))
-  fullName: Biocs.IO.BgzfStream.IsBgzfFile(System.Nullable<System.String>)
-  fullName.vb: Biocs.IO.BgzfStream.IsBgzfFile(System.Nullable(Of System.String))
-  nameWithType: BgzfStream.IsBgzfFile(Nullable<String>)
-  nameWithType.vb: BgzfStream.IsBgzfFile(Nullable(Of String))
+- uid: Biocs.IO.BgzfStream.IsBgzfFile(System.String)
+  name: IsBgzfFile(String)
+  href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream_IsBgzfFile_System_String_
+  commentId: M:Biocs.IO.BgzfStream.IsBgzfFile(System.String)
+  fullName: Biocs.IO.BgzfStream.IsBgzfFile(System.String)
+  nameWithType: BgzfStream.IsBgzfFile(String)
 - uid: Biocs.IO.BgzfStream.IsBgzfFile*
   name: IsBgzfFile
   href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream_IsBgzfFile_

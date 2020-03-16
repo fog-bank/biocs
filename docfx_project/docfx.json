@@ -9,25 +9,23 @@
       ],
       "dest": "api",
       "force": true,
-      "filter": "filterConfig.yml",
-      "disableGitFeatures": false,
-      "disableDefaultFilter": false
+      "filter": "filterConfig.yml"
     }
   ],
   "build": {
     "content": [
       {
         "files": [
-          "api/**.yml",
-          "api/index.md"
+          "api/**.md",
+          "api/**.yml"
         ]
       },
       {
         "files": [
           "articles/**.md",
           "articles/**/toc.yml",
-          "toc.yml",
-          "*.md"
+          "index.md",
+          "toc.yml"
         ]
       }
     ],
@@ -36,26 +34,12 @@
         "files": [ "images/**" ]
       }
     ],
-    "overwrite": [
-      {
-        "files": [ "apidoc/**.md" ],
-        "exclude": [
-          "obj/**",
-          "docs/**"
-        ]
-      }
-    ],
+    "overwrite": "apidoc/**.md",
     "dest": "../docs",
     "globalMetadataFiles": [ "global.json" ],
-    "fileMetadataFiles": [],
     "template": [ "default" ],
-    "postProcessors": [],
-    "maxParallelism": 4,
     "markdownEngineName": "markdig",
-    "noLangKeyword": false,
-    "keepFileLink": false,
-    "cleanupCacheHistory": false,
-    "disableGitFeatures": false,
+    "maxParallelism": 4,
     "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ]
   }
 }
