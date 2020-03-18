@@ -290,7 +290,7 @@ namespace Biocs.Collections
         /// Sets the number of times that each item occurs in the <see cref="Counter{T}"/> to zero.
         /// The collection of items is preserved.
         /// </summary>
-        public void Reset()
+        public void ResetCounts()
         {
             var items = new T[map.Count];
             map.Keys.CopyTo(items, 0);
@@ -308,7 +308,7 @@ namespace Biocs.Collections
         /// Sets the number of times that the specified item occurs in the <see cref="Counter{T}"/> to zero.
         /// </summary>
         /// <param name="item">The item to reset the count.</param>
-        public void Reset(T item)
+        public void ResetCount(T item)
         {
             TotalCount -= GetCount(item);
 

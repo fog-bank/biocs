@@ -59,7 +59,7 @@ namespace Biocs.Collections
                 }
                 else if (!comparer.Equals(item, value))
                 {
-                    value = default!;
+                    value = default;
                     return false;
                 }
             }

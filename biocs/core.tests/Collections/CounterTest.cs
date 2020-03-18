@@ -323,7 +323,7 @@ namespace Biocs.Collections
         }
 
 		[TestMethod]
-		public void Reset_ValTest()
+		public void ResetCount_ValTest()
 		{
 			var query = Enumerable.Range(1, 10);
             var items = new List<int>();
@@ -338,17 +338,17 @@ namespace Biocs.Collections
             }
             TestProperties(counter, 10, 55, set, items.ToArray(), comparer);
 
-			counter.Reset(1);
+			counter.ResetCount(1);
             items.Remove(1);
             TestProperties(counter, 10, 54, set, items.ToArray(), comparer);
             TestItem(counter, 1, 0);
 
-			counter.Reset(10);
+			counter.ResetCount(10);
             items.RemoveAll(x => x == 10);
             TestProperties(counter, 10, 44, set, items.ToArray(), comparer);
             TestItem(counter, 10, 0);
 
-            counter.Reset();
+            counter.ResetCounts();
             TestProperties(counter, 10, 0, set, new int[0], comparer);
 
 			foreach (int num in query)
@@ -356,7 +356,7 @@ namespace Biocs.Collections
         }
 
         [TestMethod]
-        public void Reset_RefTest()
+        public void ResetCount_RefTest()
         {
             var query = new[] { null, "A", "A", "B" };
             var items = new List<string>(query);
@@ -367,17 +367,17 @@ namespace Biocs.Collections
             counter.AddRange(query);
             TestProperties(counter, 3, 4, set, query, comparer);
 
-            counter.Reset("A");
+            counter.ResetCount("A");
             items.RemoveAll(x => x == "A");
             TestProperties(counter, 3, 2, set, items.ToArray(), comparer);
             TestItem(counter, "A", 0);
 
-            counter.Reset(null);
+            counter.ResetCount(null);
             items.Remove(null);
             TestProperties(counter, 3, 1, set, items.ToArray(), comparer);
             TestItem(counter, null, 0);
 
-            counter.Reset();
+            counter.ResetCounts();
             TestProperties(counter, 3, 0, set, new string[0], comparer);
             TestItem(counter, "B", 0);
         }

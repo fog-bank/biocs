@@ -4,7 +4,7 @@
       "src": [
         {
           "src": "../biocs",
-          "files": [ "core/core.csproj" ]
+          "files": [ "core/**.cs" ]
         }
       ],
       "dest": "api",

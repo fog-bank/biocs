@@ -529,31 +529,40 @@ references:
   fullName.vb: Biocs.Collections.Counter(Of T).RepeatedItems
   nameWithType: Counter<T>.RepeatedItems
   nameWithType.vb: Counter(Of T).RepeatedItems
-- uid: Biocs.Collections.Counter`1.Reset
-  name: Reset()
-  href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_Reset
-  commentId: M:Biocs.Collections.Counter`1.Reset
-  fullName: Biocs.Collections.Counter<T>.Reset()
-  fullName.vb: Biocs.Collections.Counter(Of T).Reset()
-  nameWithType: Counter<T>.Reset()
-  nameWithType.vb: Counter(Of T).Reset()
-- uid: Biocs.Collections.Counter`1.Reset(`0)
-  name: Reset(T)
-  href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_Reset__0_
-  commentId: M:Biocs.Collections.Counter`1.Reset(`0)
-  fullName: Biocs.Collections.Counter<T>.Reset(T)
-  fullName.vb: Biocs.Collections.Counter(Of T).Reset(T)
-  nameWithType: Counter<T>.Reset(T)
-  nameWithType.vb: Counter(Of T).Reset(T)
-- uid: Biocs.Collections.Counter`1.Reset*
-  name: Reset
-  href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_Reset_
-  commentId: Overload:Biocs.Collections.Counter`1.Reset
+- uid: Biocs.Collections.Counter`1.ResetCount(`0)
+  name: ResetCount(T)
+  href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_ResetCount__0_
+  commentId: M:Biocs.Collections.Counter`1.ResetCount(`0)
+  fullName: Biocs.Collections.Counter<T>.ResetCount(T)
+  fullName.vb: Biocs.Collections.Counter(Of T).ResetCount(T)
+  nameWithType: Counter<T>.ResetCount(T)
+  nameWithType.vb: Counter(Of T).ResetCount(T)
+- uid: Biocs.Collections.Counter`1.ResetCount*
+  name: ResetCount
+  href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_ResetCount_
+  commentId: Overload:Biocs.Collections.Counter`1.ResetCount
   isSpec: "True"
-  fullName: Biocs.Collections.Counter<T>.Reset
-  fullName.vb: Biocs.Collections.Counter(Of T).Reset
-  nameWithType: Counter<T>.Reset
-  nameWithType.vb: Counter(Of T).Reset
+  fullName: Biocs.Collections.Counter<T>.ResetCount
+  fullName.vb: Biocs.Collections.Counter(Of T).ResetCount
+  nameWithType: Counter<T>.ResetCount
+  nameWithType.vb: Counter(Of T).ResetCount
+- uid: Biocs.Collections.Counter`1.ResetCounts
+  name: ResetCounts()
+  href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_ResetCounts
+  commentId: M:Biocs.Collections.Counter`1.ResetCounts
+  fullName: Biocs.Collections.Counter<T>.ResetCounts()
+  fullName.vb: Biocs.Collections.Counter(Of T).ResetCounts()
+  nameWithType: Counter<T>.ResetCounts()
+  nameWithType.vb: Counter(Of T).ResetCounts()
+- uid: Biocs.Collections.Counter`1.ResetCounts*
+  name: ResetCounts
+  href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_ResetCounts_
+  commentId: Overload:Biocs.Collections.Counter`1.ResetCounts
+  isSpec: "True"
+  fullName: Biocs.Collections.Counter<T>.ResetCounts
+  fullName.vb: Biocs.Collections.Counter(Of T).ResetCounts
+  nameWithType: Counter<T>.ResetCounts
+  nameWithType.vb: Counter(Of T).ResetCounts
 - uid: Biocs.Collections.Counter`1.TotalCount
   name: TotalCount
   href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_TotalCount
