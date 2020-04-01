@@ -9,7 +9,10 @@
       ],
       "dest": "api",
       "force": true,
-      "filter": "filterConfig.yml"
+      "filter": "filterConfig.yml",
+      "properties": {
+          "TargetFramework": "netcoreapp3.1"
+      }
     }
   ],
   "build": {
