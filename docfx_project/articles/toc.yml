@@ -1,2 +1,5 @@
 - name: Getting Started
   href: getting-started.md
+- name: How-to Topics
+  href: how-to-topics/toc.yml
+  topicHref: how-to-topics/

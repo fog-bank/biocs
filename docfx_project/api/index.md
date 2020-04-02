@@ -5,3 +5,5 @@ The following is a list of namespaces.
 |:--|:--|
 | <xref:Biocs> |  |
 | <xref:Biocs.Collections> |  |
+| <xref:Biocs.IO> |  |
+| <xref:Biocs.Numerics> |  |

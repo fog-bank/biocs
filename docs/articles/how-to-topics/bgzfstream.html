@@ -5,19 +5,19 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Getting started | BioC# Documents </title>
+    <title>How to: Compress and extract a BFZF file | BioC# Documents </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Getting started | BioC# Documents ">
+    <meta name="title" content="How to: Compress and extract a BFZF file | BioC# Documents ">
     <meta name="generator" content="docfx 2.50.0.0">
     
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
     
-    <meta property="docfx:rel" content="../">
+    <meta property="docfx:rel" content="../../">
     <meta property="docfx:newtab" content="true">
   </head>
   <body data-spy="scroll" data-target="#affix" data-offset="120">
@@ -34,8 +34,8 @@
                 <span class="icon-bar"></span>
               </button>
               
-              <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../logo.svg" alt="">
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="">
               </a>
             </div>
             <div class="collapse navbar-collapse" id="navbar">
@@ -77,12 +77,47 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="getting-started">Getting started</h1>
+<h1 id="how-to-compress-and-extract-a-bfzf-file">How to: Compress and extract a BFZF file</h1>
 
-<div class="NOTE">
-<h5>Note</h5>
-<p>WIP</p>
-</div>
+<h2 id="example-1-compress-a-file-as-bgzf">Example 1: Compress a file as BGZF</h2>
+<pre><code class="lang-cs">using System.IO;
+using System.IO.Compression;
+using Biocs.IO;
+
+string input = @&quot;.\data.txt&quot;;
+string output = @&quot;.\data.txt.gz&quot;;
+
+using (var ifs = File.OpenRead(input))
+using (var ofs = File.Create(output))
+{
+  using (var gz = new BgzfStream(ofs, CompressionMode.Compress))
+  {
+    ifs.CopyTo(gz);
+  }
+}
+</code></pre>
+<h2 id="example-2-extract-a-gz-file">Example 2: Extract a .gz file</h2>
+<p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.compression.gzipstream">GZipStream</a> class may not be able to decompress concatenated gzip archives such as BGZF files. Meanwhile, the <a class="xref" href="../../api/Biocs.IO.BgzfStream.html">BgzfStream</a> class can decompress BGZF files only. Threfore, before using the BgzfStream class, you should check if the input file is in the BGZF format.</p>
+<pre><code class="lang-cs">using System.IO;
+using System.IO.Compression;
+using Biocs.IO;
+
+string input = @&quot;.\data.txt.gz&quot;;
+string output = @&quot;.\data.txt&quot;;
+
+bool isBgzf = BgzfStream.IsBgzfFile(input);
+
+using (var ifs = File.OpenRead(input))
+using (var ofs = File.Create(output))
+{
+  using (var gz = isBgzf ?
+    new BgzfStream(ifs, CompressionMode.Decompress) as Stream :
+    new GZipStream(ifs, CompressionMode.Decompress))
+  {
+    gz.CopyTo(ofs);
+  }
+}
+</code></pre>
 </article>
           </div>
           
@@ -91,7 +126,7 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/fog-bank/biocs/blob/develop/docfx_project/articles/getting-started.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/fog-bank/biocs/blob/develop/docfx_project/articles/how-to-topics/bgzfstream.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
@@ -117,8 +152,8 @@
       </footer>
     </div>
     
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
-    <script type="text/javascript" src="../styles/docfx.js"></script>
-    <script type="text/javascript" src="../styles/main.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
   </body>
 </html>

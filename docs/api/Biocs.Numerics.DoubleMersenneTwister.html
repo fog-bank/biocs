@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class CollectionTools
+    <title>Class DoubleMersenneTwister
    | BioC# Documents </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class CollectionTools
+    <meta name="title" content="Class DoubleMersenneTwister
    | BioC# Documents ">
     <meta name="generator" content="docfx 2.50.0.0">
     
@@ -78,18 +78,18 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Biocs.Collections.CollectionTools">
+            <article class="content wrap" id="_content" data-uid="Biocs.Numerics.DoubleMersenneTwister">
   
   
-  <h1 id="Biocs_Collections_CollectionTools" data-uid="Biocs.Collections.CollectionTools" class="text-break">Class CollectionTools
+  <h1 id="Biocs_Numerics_DoubleMersenneTwister" data-uid="Biocs.Numerics.DoubleMersenneTwister" class="text-break">Class DoubleMersenneTwister
   </h1>
-  <div class="markdown level0 summary"><p>Provides static methods for collections.</p>
+  <div class="markdown level0 summary"><p>Represents double-precision Mersenne Twister pseudorandom number generator based on IEEE 754 format.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">CollectionTools</span></div>
+    <div class="level1"><span class="xref">DoubleMersenneTwister</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -115,43 +115,119 @@
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Biocs.Collections.html">Biocs.Collections</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Biocs.Numerics.html">Biocs.Numerics</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
-  <h5 id="Biocs_Collections_CollectionTools_syntax">Syntax</h5>
+  <h5 id="Biocs_Numerics_DoubleMersenneTwister_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class CollectionTools</code></pre>
+    <pre><code class="lang-csharp hljs">public class DoubleMersenneTwister</code></pre>
   </div>
+  <h5 id="Biocs_Numerics_DoubleMersenneTwister_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>
+For details about Mersenne Twister, see http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/.
+</p>
+<p>Currently, the environment where the architecture is big-endian is not supported.</p>
+</div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="Biocs_Numerics_DoubleMersenneTwister__ctor_" data-uid="Biocs.Numerics.DoubleMersenneTwister.#ctor*"></a>
+  <h4 id="Biocs_Numerics_DoubleMersenneTwister__ctor" data-uid="Biocs.Numerics.DoubleMersenneTwister.#ctor">DoubleMersenneTwister()</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Numerics.DoubleMersenneTwister.html">DoubleMersenneTwister</a> class,
+using a time-dependent default seed value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DoubleMersenneTwister()</code></pre>
+  </div>
+  
+  
+  <a id="Biocs_Numerics_DoubleMersenneTwister__ctor_" data-uid="Biocs.Numerics.DoubleMersenneTwister.#ctor*"></a>
+  <h4 id="Biocs_Numerics_DoubleMersenneTwister__ctor_System_Int32_" data-uid="Biocs.Numerics.DoubleMersenneTwister.#ctor(System.Int32)">DoubleMersenneTwister(Int32)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Numerics.DoubleMersenneTwister.html">DoubleMersenneTwister</a> class, using the specified seed value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DoubleMersenneTwister(int seed)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">seed</span></td>
+        <td><p>A 32-bit integer used as the seed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Biocs_Numerics_DoubleMersenneTwister__ctor_" data-uid="Biocs.Numerics.DoubleMersenneTwister.#ctor*"></a>
+  <h4 id="Biocs_Numerics_DoubleMersenneTwister__ctor_System_Int32___" data-uid="Biocs.Numerics.DoubleMersenneTwister.#ctor(System.Int32[])">DoubleMersenneTwister(Int32[])</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Numerics.DoubleMersenneTwister.html">DoubleMersenneTwister</a> class, using the specified seed array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DoubleMersenneTwister(int[] seeds)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>[]</td>
+        <td><span class="parametername">seeds</span></td>
+        <td><p>An array of 32-bit integers used as the seed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">seeds</code> is <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="Biocs_Collections_CollectionTools_AllItemsAreEqual_" data-uid="Biocs.Collections.CollectionTools.AllItemsAreEqual*"></a>
-  <h4 id="Biocs_Collections_CollectionTools_AllItemsAreEqual__1_IEnumerable___0__" data-uid="Biocs.Collections.CollectionTools.AllItemsAreEqual``1(IEnumerable{``0})">AllItemsAreEqual&lt;T&gt;(IEnumerable&lt;T&gt;)</h4>
-  <div class="markdown level1 summary"><p>Determines whether all items in the specified collection are equal.</p>
+  <a id="Biocs_Numerics_DoubleMersenneTwister_Next_" data-uid="Biocs.Numerics.DoubleMersenneTwister.Next*"></a>
+  <h4 id="Biocs_Numerics_DoubleMersenneTwister_Next" data-uid="Biocs.Numerics.DoubleMersenneTwister.Next">Next()</h4>
+  <div class="markdown level1 summary"><p>Returns a double-precision pseudorandom number that distributes uniformly in the range [0, 1).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool AllItemsAreEqual&lt;T&gt;(this IEnumerable&lt;T&gt; collection)</code></pre>
+    <pre><code class="lang-csharp hljs">public double Next()</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerable</span>&lt;T&gt;</td>
-        <td><span class="parametername">collection</span></td>
-        <td><p>The <see cref="!:IEnumerable&lt;T>"></see> to check equality between items.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -162,89 +238,23 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">collection</code> is not empty and all items are equal;
-otherwise, <span class="xref">false</span>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">T</span></td>
-        <td><p>The type of items of <code data-dev-comment-type="paramref" class="paramref">collection</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">collection</code> is <span class="xref">null</span>.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><p>A random floating-point number that is greater than or equal to 0.0, and less than 1.0.</p>
 </td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="Biocs_Collections_CollectionTools_AllItemsAreEqual_" data-uid="Biocs.Collections.CollectionTools.AllItemsAreEqual*"></a>
-  <h4 id="Biocs_Collections_CollectionTools_AllItemsAreEqual__1_IEnumerable___0__System_Nullable_IEqualityComparer___0_____0__" data-uid="Biocs.Collections.CollectionTools.AllItemsAreEqual``1(IEnumerable{``0},System.Nullable{IEqualityComparer{``0}},``0@)">AllItemsAreEqual&lt;T&gt;(IEnumerable&lt;T&gt;, Nullable&lt;IEqualityComparer&lt;T&gt;&gt;, out T)</h4>
-  <div class="markdown level1 summary"><p>Determines whether all items in the specified collection are equal, and tries to get the unique item.</p>
+  <a id="Biocs_Numerics_DoubleMersenneTwister_NextOpen_" data-uid="Biocs.Numerics.DoubleMersenneTwister.NextOpen*"></a>
+  <h4 id="Biocs_Numerics_DoubleMersenneTwister_NextOpen" data-uid="Biocs.Numerics.DoubleMersenneTwister.NextOpen">NextOpen()</h4>
+  <div class="markdown level1 summary"><p>Returns a double-precision pseudorandom number that distributes uniformly in the range (0, 1).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool AllItemsAreEqual&lt;T&gt;(this IEnumerable&lt;T&gt; collection, IEqualityComparer&lt;T&gt;? comparer, out T value)</code></pre>
+    <pre><code class="lang-csharp hljs">public double NextOpen()</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerable</span>&lt;T&gt;</td>
-        <td><span class="parametername">collection</span></td>
-        <td><p>The <see cref="!:IEnumerable&lt;T>"></see> to check equality between items.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">IEqualityComparer</span>&lt;T&gt;&gt;</td>
-        <td><span class="parametername">comparer</span></td>
-        <td><p>An <see cref="!:IEqualityComparer&lt;T>"></see> to use to compare items, or
-<span class="xref">null</span> to use the default <see cref="!:IEqualityComparer&lt;T>"></see>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">T</span></td>
-        <td><span class="parametername">value</span></td>
-        <td><p>When this method returns, <code data-dev-comment-type="paramref" class="paramref">value</code> contains the first item of <code data-dev-comment-type="paramref" class="paramref">collection</code>
-if all items are equal, or the default value for the <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> type
-if <code data-dev-comment-type="paramref" class="paramref">collection</code> is empty or contains different items.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -255,41 +265,8 @@ if <code data-dev-comment-type="paramref" class="paramref">collection</code> is 
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">collection</code> is not empty and all items are equal;
-otherwise, <span class="xref">false</span>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">T</span></td>
-        <td><p>The type of items of <code data-dev-comment-type="paramref" class="paramref">collection</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">collection</code> is <span class="xref">null</span>.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><p>A random floating-point number that is greater than 0.0, and less than 1.0.</p>
 </td>
       </tr>
     </tbody>

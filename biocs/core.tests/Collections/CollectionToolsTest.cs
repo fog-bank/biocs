@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Biocs.Collections
 {
     [TestClass]
-    public class CollectionTools
+    public class CollectionToolsTest
     {
         [TestMethod]
         public void AllItemsAreEqualTest()

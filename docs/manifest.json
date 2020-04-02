@@ -1,1 +1,24 @@
-{"homepages":[],"source_base_path":"F:/Data/src/biocs/docfx_project","xrefmap":"xrefmap.yml","files":[{"type":"ManagedReference","source_relative_path":"api/Biocs.Collections.Deque-1.yml","output":{".html":{"relative_path":"api/Biocs.Collections.Deque-1.html","hash":"IsmGxGANUfZ3VHcwRBww7w=="}},"is_incremental":false,"version":""},{"type":"Conceptual","source_relative_path":"api/index.md","output":{".html":{"relative_path":"api/index.html","hash":"ROjb04z1luPZ9HNd1+DpGg=="}},"is_incremental":false,"version":""},{"type":"Conceptual","source_relative_path":"index.md","output":{".html":{"relative_path":"index.html","hash":"aGrn2bue53IGvPM4FrcFlw=="}},"is_incremental":false,"version":""},{"type":"Conceptual","source_relative_path":"articles/getting-started.md","output":{".html":{"relative_path":"articles/getting-started.html","hash":"S66h/1/gug4QnVxiNuiU9w=="}},"is_incremental":false,"version":""},{"type":"ManagedReference","source_relative_path":"api/Biocs.yml","output":{".html":{"relative_path":"api/Biocs.html","hash":"h7eQiCGy62f9+joTcFGnRA=="}},"is_incremental":false,"version":""},{"type":"ManagedReference","source_relative_path":"api/Biocs.Codon.yml","output":{".html":{"relative_path":"api/Biocs.Codon.html","hash":"plYdEPkBu7Q54uVHvH5zgg=="}},"is_incremental":false,"version":""},{"type":"Toc","source_relative_path":"toc.yml","output":{".html":{"relative_path":"toc.html","hash":"ssUwTq/WSUMa8Xvzdd05HA=="}},"is_incremental":false,"version":""},{"type":"Toc","source_relative_path":"articles/toc.yml","output":{".html":{"relative_path":"articles/toc.html","hash":"3DQJuXG3slW5j/cfB61vAA=="}},"is_incremental":false,"version":""},{"type":"Toc","source_relative_path":"api/toc.yml","output":{".html":{"relative_path":"api/toc.html","hash":"+U5vPwi7Owr0hNBMk3KaaA=="}},"is_incremental":false,"version":""},{"type":"ManagedReference","source_relative_path":"api/Biocs.DnaBase.yml","output":{".html":{"relative_path":"api/Biocs.DnaBase.html","hash":"GvGggLEjZeMBa2UAySdfZw=="}},"is_incremental":false,"version":""},{"type":"ManagedReference","source_relative_path":"api/Biocs.Collections.Counter-1.yml","output":{".html":{"relative_path":"api/Biocs.Collections.Counter-1.html","hash":"fFLfwlQKWUhe5y+bPbYjdw=="}},"is_incremental":false,"version":""},{"type":"ManagedReference","source_relative_path":"api/Biocs.StringResourceUsageAttribute.yml","output":{".html":{"relative_path":"api/Biocs.StringResourceUsageAttribute.html","hash":"XwYdVFhkXvGzKYXu82morw=="}},"is_incremental":false,"version":""},{"type":"Conceptual","source_relative_path":"articles/index.md","output":{".html":{"relative_path":"articles/index.html","hash":"JDeLASW+OWewHYxVA0vyXQ=="}},"is_incremental":false,"version":""},{"type":"ManagedReference","source_relative_path":"api/Biocs.Collections.CollectionTools.yml","output":{".html":{"relative_path":"api/Biocs.Collections.CollectionTools.html","hash":"LHv+XxP4/9B0kEMsRBaCRg=="}},"is_incremental":false,"version":""},{"type":"ManagedReference","source_relative_path":"api/Biocs.Collections.yml","output":{".html":{"relative_path":"api/Biocs.Collections.html","hash":"tr7PpwVPA0HMMUqI/WX/bA=="}},"is_incremental":false,"version":""}],"version_info":{}}
+{
+  "homepages": [],
+  "source_base_path": "F:/Data/src/biocs/docfx_project",
+  "xrefmap": "xrefmap.yml",
+  "files": [],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: should not trace intermediate info.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

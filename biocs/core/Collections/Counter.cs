@@ -13,7 +13,9 @@ namespace Biocs.Collections
     [DebuggerDisplay("NumberOfItems = {NumberOfItems}, TotalCount = {TotalCount}"), DebuggerTypeProxy(typeof(CounterDebugView<>))]
     public class Counter<T>
     {
+#nullable disable warnings
         private readonly Dictionary<T, int> map;
+#nullable restore warnings
         private int? nullCount;
 
         /// <summary>
@@ -58,7 +60,9 @@ namespace Biocs.Collections
             if (capacity < 0)
                 throw new ArgumentOutOfRangeException(nameof(capacity));
 
+#nullable disable warnings
             map = new Dictionary<T, int>(capacity, comparer);
+#nullable restore warnings
         }
 
         /// <summary>
@@ -74,7 +78,9 @@ namespace Biocs.Collections
             if (other == null)
                 throw new ArgumentNullException(nameof(other));
 
+#nullable disable warnings
             map = new Dictionary<T, int>(other.map, other.map.Comparer);
+#nullable restore warnings
             nullCount = other.nullCount;
             TotalCount = other.TotalCount;
         }
@@ -284,7 +290,7 @@ namespace Biocs.Collections
         /// Sets the number of times that each item occurs in the <see cref="Counter{T}"/> to zero.
         /// The collection of items is preserved.
         /// </summary>
-        public void Reset()
+        public void ResetCounts()
         {
             var items = new T[map.Count];
             map.Keys.CopyTo(items, 0);
@@ -302,7 +308,7 @@ namespace Biocs.Collections
         /// Sets the number of times that the specified item occurs in the <see cref="Counter{T}"/> to zero.
         /// </summary>
         /// <param name="item">The item to reset the count.</param>
-        public void Reset(T item)
+        public void ResetCount(T item)
         {
             TotalCount -= GetCount(item);
 

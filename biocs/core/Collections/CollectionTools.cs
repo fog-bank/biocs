@@ -40,7 +40,8 @@ namespace Biocs.Collections
         /// otherwise, <see langword="false"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-        public static bool AllItemsAreEqual<T>(this IEnumerable<T> collection, IEqualityComparer<T>? comparer, [MaybeNullWhen(false)] out T value)
+        public static bool AllItemsAreEqual<T>(
+            this IEnumerable<T> collection, IEqualityComparer<T>? comparer, [MaybeNullWhen(false)] out T value)
         {
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
@@ -58,7 +59,7 @@ namespace Biocs.Collections
                 }
                 else if (!comparer.Equals(item, value))
                 {
-                    value = default!;
+                    value = default;
                     return false;
                 }
             }

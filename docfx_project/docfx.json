@@ -3,78 +3,46 @@
     {
       "src": [
         {
-          "files": [
-            "biocs/core/project.json"
-          ],
-          "exclude": [
-            "**/bin/**",
-            "**/obj/**",
-            "docs/**"
-          ],
-          "src": "../"
+          "src": "../biocs",
+          "files": [ "core/**.cs" ]
         }
       ],
       "dest": "api",
       "force": true,
-      "filter": "filterConfig.yml"
+      "filter": "filterConfig.yml",
+      "properties": {
+          "TargetFramework": "netcoreapp3.1"
+      }
     }
   ],
   "build": {
     "content": [
       {
         "files": [
-          "api/**.yml",
-          "api/index.md"
+          "api/**.md",
+          "api/**.yml"
         ]
       },
       {
         "files": [
           "articles/**.md",
           "articles/**/toc.yml",
-          "toc.yml",
-          "*.md"
-        ],
-        "exclude": [
-          "obj/**",
-          "docs/**"
+          "index.md",
+          "toc.yml"
         ]
       }
     ],
     "resource": [
       {
-        "files": [
-          "images/**"
-        ],
-        "exclude": [
-          "obj/**",
-          "docs/**"
-        ]
+        "files": [ "images/**" ]
       }
     ],
-    "overwrite": [
-      {
-        "files": [
-          "apidoc/**.md"
-        ],
-        "exclude": [
-          "obj/**",
-          "docs/**"
-        ]
-      }
-    ],
+    "overwrite": "apidoc/**.md",
     "dest": "../docs",
-    "globalMetadataFiles": [
-      "global.json"
-    ],
-    "fileMetadataFiles": [],
-    "template": [
-      "default"
-    ],
-    "postProcessors": [],
+    "globalMetadataFiles": [ "global.json" ],
+    "template": [ "default" ],
+    "markdownEngineName": "markdig",
     "maxParallelism": 4,
-    "noLangKeyword": false,
-    "xref": [
-      "msdn.4.5.2.zip"
-    ]
+    "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ]
   }
 }
