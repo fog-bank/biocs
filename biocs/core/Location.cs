@@ -65,7 +65,26 @@ namespace Biocs
 
         public override string ToString()
         {
-            throw new NotImplementedException();
+            string id = string.IsNullOrEmpty(SequenceID) ? string.Empty : SequenceID + ":";
+
+            return locationOperator switch
+            {
+                LocationOperator.Span => Length switch
+                {
+                    0 => string.Empty,
+                    1 => id + start.ToString(),
+                    _ => id + start + ".." + end
+                },
+                LocationOperator.Site => Length switch
+                {
+                    2 => id + start + "^" + end,
+                    _ => id + start + "." + end
+                },
+                LocationOperator.Join => id + "join(" + string.Join(",", Elements) + ")",
+                LocationOperator.Complement => id + "complement(" + string.Join(",", Elements) + ")",
+                LocationOperator.Order => id + "order(" + string.Join(",", Elements) + ")",
+                _ => GetType().ToString()
+            };
         }
 
         public static Location Parse(string value)
