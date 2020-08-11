@@ -17,15 +17,15 @@ namespace Biocs
             return default;
         }
 
-        public ValueTask OnMethodEndAsync()
-        {
-            return default;
-        }
-
-        public ValueTask OnEngineCompleteAsync(ConsoleAppContext context, string? errorMessageIfFailed, Exception? exceptionIfExists)
+        public ValueTask OnMethodEndAsync(ConsoleAppContext context, string? errorMessageIfFailed, Exception? exceptionIfExists)
         {
             context.Logger.LogInformation("Elapsed time: {time}, Command: {command}",
                 DateTimeOffset.UtcNow - context.Timestamp, string.Join(" ", context.Arguments));
+            return default;
+        }
+
+        public ValueTask OnEngineCompleteAsync(IServiceProvider serviceProvider, ILogger<ConsoleAppEngine> logger)
+        {
             return default;
         }
     }
