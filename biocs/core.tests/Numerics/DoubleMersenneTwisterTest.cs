@@ -101,7 +101,7 @@ namespace Biocs.Numerics
         }
 
         // Resolves the difference C# Format("f15") and C++ prinf(".15f")
-        private Tuple<string, string, string> Round(double value)
+        private static Tuple<string, string, string> Round(double value)
         {
             Assert.IsTrue(value >= 0 && value <= 2);
 
@@ -122,10 +122,10 @@ namespace Biocs.Numerics
                 string exp = value.ToString("e14");
                 string expToEven = Math.Round(value, 15, MidpointRounding.ToEven).ToString("e14");
 
-                int pow = int.Parse(exp.Substring(18));
+                int pow = int.Parse(exp[18..]);
 
-                return Tuple.Create(roundTrip, 
-                    "0." + new string('0', pow - 1) + exp[0] + exp.Substring(2, 15 - pow), 
+                return Tuple.Create(roundTrip,
+                    "0." + new string('0', pow - 1) + exp[0] + exp.Substring(2, 15 - pow),
                     "0." + new string('0', pow - 1) + expToEven[0] + expToEven.Substring(2, 15 - pow));
             }
         }

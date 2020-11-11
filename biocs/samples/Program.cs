@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Biocs
 {
+    [ConsoleAppFilter(typeof(LogCommandFilter))]
     partial class Program : ConsoleAppBase
     {
         static async Task Main(string[] args) => await Host.CreateDefaultBuilder()
@@ -15,6 +16,6 @@ namespace Biocs
                 logging.ClearProviders();
                 logging.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, ConsoleErrorLoggerProvider>());
             })
-            .RunConsoleAppFrameworkAsync<Program>(args, new LogCommandInterceptor());
+            .RunConsoleAppFrameworkAsync<Program>(args);
     }
 }

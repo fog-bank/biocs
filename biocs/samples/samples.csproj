@@ -4,7 +4,7 @@
   <PropertyGroup>
     <AssemblyName>biocstools</AssemblyName>
     <RootNamespace>Biocs</RootNamespace>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
 
@@ -16,7 +16,7 @@
 
   <!-- Dependencies -->
   <ItemGroup>
-    <PackageReference Include="ConsoleAppFramework" Version="2.4.0" />
+    <PackageReference Include="ConsoleAppFramework" Version="3.2.0" />
     <ProjectReference Include="..\core\core.csproj" />
   </ItemGroup>
 

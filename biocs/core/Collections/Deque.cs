@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Biocs.Collections
 {
@@ -13,7 +12,6 @@ namespace Biocs.Collections
     /// <seealso cref="LinkedList{T}"/>
     /// <seealso cref="Queue{T}"/>
     [DebuggerDisplay("Count = {Count}"), DebuggerTypeProxy(typeof(CollectionDebugView<>))]
-    [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
     public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
     {
         private T[] items;

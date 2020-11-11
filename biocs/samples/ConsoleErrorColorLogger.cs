@@ -66,7 +66,7 @@ namespace Biocs
     /// <summary>
     /// A provider of a <see cref="ConsoleErrorColorLogger"/> instance.
     /// </summary>
-    public class ConsoleErrorColorLoggerProvider : ILoggerProvider
+    public sealed class ConsoleErrorColorLoggerProvider : ILoggerProvider
     {
         private readonly ConsoleErrorColorLogger logger = new ConsoleErrorColorLogger();
 

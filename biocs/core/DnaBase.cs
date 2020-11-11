@@ -39,15 +39,11 @@ namespace Biocs
         {
             get
             {
-                switch (ToUpper(Code))
+                return ToUpper(Code) switch
                 {
-                    case DnaBases.Adenine:
-                    case DnaBases.Guanine:
-                    case DnaBases.Thymine:
-                    case DnaBases.Cytosine:
-                        return true;
-                }
-                return false;
+                    DnaBases.Adenine or DnaBases.Guanine or DnaBases.Thymine or DnaBases.Cytosine => true,
+                    _ => false,
+                };
             }
         }
 

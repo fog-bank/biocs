@@ -34,7 +34,7 @@ namespace Biocs
         {
             return logLevel switch
             {
-                LogLevel.Trace => "TRACE",
+                LogLevel.Trace => "Trace",
                 LogLevel.Debug => "DEBUG",
                 LogLevel.Information => "INFO",
                 LogLevel.Warning => "WARN",
@@ -48,7 +48,7 @@ namespace Biocs
     /// <summary>
     /// A provider of a <see cref="ConsoleErrorLogger"/> instance.
     /// </summary>
-    public class ConsoleErrorLoggerProvider : ILoggerProvider
+    public sealed class ConsoleErrorLoggerProvider : ILoggerProvider
     {
         private readonly ConsoleErrorLogger logger = new ConsoleErrorLogger();
 
@@ -61,7 +61,7 @@ namespace Biocs
         { }
     }
 
-    internal class NullScope : IDisposable
+    internal sealed class NullScope : IDisposable
     {
         public static IDisposable Instance { get; } = new NullScope();
 
