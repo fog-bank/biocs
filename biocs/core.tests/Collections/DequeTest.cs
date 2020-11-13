@@ -28,7 +28,7 @@ namespace Biocs.Collections
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Deque<object>(-4));
 
             // ICollection<T>
-            var target2 = new Deque<object>(new object[0]);
+            var target2 = new Deque<object>(Array.Empty<object>());
             Assert.AreEqual(0, target2.Count);
             Assert.AreEqual(0, target2.Capacity);
 
@@ -544,10 +544,10 @@ namespace Biocs.Collections
             Assert.AreEqual(compare.First(), target.First);
             Assert.AreEqual(compare.Last(), target.Last);
 
-            InsertRange(target, compare, 0, new int[0]);
+            InsertRange(target, compare, 0, Array.Empty<int>());
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.InsertRange(-1, new int[0]));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.InsertRange(target.Count + 1, new int[0]));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.InsertRange(-1, Array.Empty<int>()));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.InsertRange(target.Count + 1, Array.Empty<int>()));
             Assert.ThrowsException<ArgumentNullException>(() => target.InsertRange(0, null));
         }
 

@@ -1,4 +1,6 @@
-﻿namespace Biocs.IO
+﻿using System;
+
+namespace Biocs.IO
 {
     // Ref: https://tools.ietf.org/html/rfc1952#section-8
     internal static class Crc32
@@ -6,12 +8,12 @@
         private static readonly uint[] CrcTable = MakeCrcTable();
 
         // Updates a running crc with the bytes and returns the updated CRC32 value.
-        public static uint UpdateCrc(uint crc, byte[] array, int offset, int length)
+        public static uint UpdateCrc(uint crc, ReadOnlySpan<byte> buffer)
         {
             crc ^= 0xffffffff;
 
-            for (int i = 0; i < length; i++)
-                crc = CrcTable[(crc ^ array[offset + i]) & 0xff] ^ (crc >> 8);
+            for (int i = 0; i < buffer.Length; i++)
+                crc = CrcTable[(crc ^ buffer[i]) & 0xff] ^ (crc >> 8);
 
             return crc ^ 0xffffffff;
         }

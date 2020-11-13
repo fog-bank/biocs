@@ -8,8 +8,6 @@ namespace Biocs
     {
         [TestMethod]
         public void StringResource_Test()
-        {
-            StringResourceTester.CheckStringResource(typeof(StringResourceUsageAttribute).Assembly.GetType("Biocs.Res"));
-        }
+            => StringResourceTester.CheckStringResource(typeof(StringResourceUsageAttribute).Assembly.GetType("Biocs.Res"));
     }
 }

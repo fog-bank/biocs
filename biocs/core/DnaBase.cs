@@ -35,17 +35,11 @@ namespace Biocs
         /// <summary>
         /// Gets a value indicating whether this nucleotide is completely specified.
         /// </summary>
-        public bool IsAtomic
+        public bool IsAtomic => ToUpper(Code) switch
         {
-            get
-            {
-                return ToUpper(Code) switch
-                {
-                    DnaBases.Adenine or DnaBases.Guanine or DnaBases.Thymine or DnaBases.Cytosine => true,
-                    _ => false,
-                };
-            }
-        }
+            DnaBases.Adenine or DnaBases.Guanine or DnaBases.Thymine or DnaBases.Cytosine => true,
+            _ => false,
+        };
 
         /// <summary>
         /// Gets a value indicating whether this instance represents a gap.
@@ -216,9 +210,9 @@ namespace Biocs
     [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Lazy initialization")]
     internal class DnaBaseParser
     {
-        private static readonly Lazy<DnaBaseParser> instance = new Lazy<DnaBaseParser>();
+        private static readonly Lazy<DnaBaseParser> instance = new();
         private readonly char[] codeToSymbol = new char[32];
-        private readonly Dictionary<char, DnaBase> symbolToCode = new Dictionary<char, DnaBase>(31);
+        private readonly Dictionary<char, DnaBase> symbolToCode = new(31);
 
         public DnaBaseParser()
         {

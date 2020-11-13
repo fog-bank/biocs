@@ -24,22 +24,6 @@ namespace Biocs.IO
         private bool eofMarker;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BgzfStream"/> class with the specified stream and compression mode.
-        /// </summary>
-        /// <param name="stream">The stream to compress or decompress.</param>
-        /// <param name="mode">One of the <see cref="CompressionMode"/> values that indicates the action to take.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="stream"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="mode"/> is not a valid <see cref="CompressionMode"/> enumeration value.
-        /// </exception>
-        /// <remarks>
-        /// Closing the stream also closes the underlying stream. The compression level is set to
-        /// <see cref="CompressionLevel.Optimal"/> when the compression mode is <see cref="CompressionMode.Compress"/>.
-        /// </remarks>
-        public BgzfStream(Stream stream, CompressionMode mode) : this(stream, mode, false)
-        { }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="BgzfStream"/> class with the specified stream and compression mode,
         /// and a value that specifies whether to leave the stream open.
         /// </summary>
@@ -55,7 +39,7 @@ namespace Biocs.IO
         /// <see cref="CompressionMode.Compress"/>.
         /// </remarks>
         [StringResourceUsage("Arg.InvalidEnumValue", 1)]
-        public BgzfStream(Stream stream, CompressionMode mode, bool leaveOpen)
+        public BgzfStream(Stream stream, CompressionMode mode, bool leaveOpen = false)
         {
             this.stream = stream ?? throw new ArgumentNullException(nameof(stream));
 
@@ -65,21 +49,6 @@ namespace Biocs.IO
             this.mode = mode;
             this.leaveOpen = leaveOpen;
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BgzfStream"/> class with the specified stream and compression level.
-        /// </summary>
-        /// <param name="stream">The stream to compress.</param>
-        /// <param name="level">
-        /// One of the <see cref="CompressionLevel"/> values that indicates whether to emphasize speed or compression size.
-        /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="stream"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="level"/> is not a valid <see cref="CompressionLevel"/> enumeration value.
-        /// </exception>
-        /// <remarks>Closing the stream also closes the underlying stream.</remarks>
-        public BgzfStream(Stream stream, CompressionLevel level) : this(stream, level, false)
-        { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BgzfStream"/> class with the specified stream and compression level,
@@ -95,7 +64,7 @@ namespace Biocs.IO
         /// <paramref name="level"/> is not a valid <see cref="CompressionLevel"/> enumeration value.
         /// </exception>
         [StringResourceUsage("Arg.InvalidEnumValue", 1)]
-        public BgzfStream(Stream stream, CompressionLevel level, bool leaveOpen)
+        public BgzfStream(Stream stream, CompressionLevel level, bool leaveOpen = false)
             : this(stream, CompressionMode.Compress, leaveOpen)
         {
             if (level != CompressionLevel.Optimal && level != CompressionLevel.Fastest && level != CompressionLevel.NoCompression)
@@ -154,7 +123,7 @@ namespace Biocs.IO
         }
 
         /// <summary>
-        /// Reads a sequence of decompressed bytes from the underlying stream.
+        /// Reads a number of decompressed bytes from the underlying stream into the specified byte array.
         /// </summary>
         /// <param name="buffer">An array of bytes used to store decompressed bytes.</param>
         /// <param name="offset">
@@ -167,83 +136,38 @@ namespace Biocs.IO
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="buffer"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="offset"/> or <paramref name="count"/> is negative.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// The sum of <paramref name="offset"/> and <paramref name="count"/> is larger than the buffer length.
+        /// <para><paramref name="offset"/> or <paramref name="count"/> is negative.</para> -or-
+        /// <para>The sum of <paramref name="offset"/> and <paramref name="count"/> is larger than the length of
+        /// <paramref name="buffer"/>.</para>
         /// </exception>
         /// <exception cref="InvalidDataException">The stream data is in an invalid BGZF format.</exception>
         /// <exception cref="IOException">An I/O error occurs.</exception>
         /// <exception cref="NotSupportedException">The stream does not support reading.</exception>
         /// <exception cref="ObjectDisposedException">The method were called after the stream was closed.</exception>
-        [StringResourceUsage("Arg.InvalidBufferRange", 3)]
-        [StringResourceUsage("InvalData.InvalidBlockSize")]
-        [StringResourceUsage("InvalData.InvalidCrc")]
-        [StringResourceUsage("NotSup.Stream")]
         public override int Read(byte[] buffer, int offset, int count)
         {
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
 
-            if (offset < 0)
-                throw new ArgumentOutOfRangeException(nameof(offset));
+            return ReadCore(buffer.AsSpan(offset, count));
+        }
 
-            if (count < 0)
-                throw new ArgumentOutOfRangeException(nameof(count));
-
-            if (offset + count > buffer.Length)
-                throw new ArgumentException(Res.GetString("Arg.InvalidBufferRange", offset, count, buffer.Length));
-
-            if (stream == null)
-                throw new ObjectDisposedException(GetType().Name);
-
-            if (!CanRead)
-                throw new NotSupportedException(Res.GetString("NotSup.Stream"));
-
-            int totalRead = 0;
-
-            while (count > 0)
-            {
-                // Reads a single BGZF block and creates a DeflateStream object to decompress.
-                if (deflateStream == null)
-                {
-                    deflateStream = ReadBgzfBlock();
-
-                    if (deflateStream == null)
-                        break;
-                }
-
-                int bytes = deflateStream.Read(buffer, offset, count);
-
-                if (bytes == 0 && inputLength > 0)
-                {
-                    // Actual size is smaller than expected size.
-                    throw new InvalidDataException(Res.GetString("InvalData.InvalidBlockSize"));
-                }
-
-                crc = Crc32.UpdateCrc(crc, buffer, offset, bytes);
-                totalRead += bytes;
-                inputLength -= bytes;
-                offset += bytes;
-                count -= bytes;
-
-                // Check whether the BGZF block reaches the end.
-                if (inputLength <= 0)
-                {
-                    if (inputLength < 0 || deflateStream.ReadByte() != -1)
-                    {
-                        // Actual size is larger than expected size.
-                        throw new InvalidDataException(Res.GetString("InvalData.InvalidBlockSize"));
-                    }
-
-                    if (crc != originalCrc)
-                        throw new InvalidDataException(Res.GetString("InvalData.InvalidCrc"));
-
-                    deflateStream.Dispose();
-                    deflateStream = null;
-                }
-            }
-            return totalRead;
+        /// <summary>
+        /// Reads a number of decompressed bytes from the underlying stream into the specified byte span.
+        /// </summary>
+        /// <param name="buffer">A region of memory.</param>
+        /// <returns>
+        /// The total number of decompressed bytes read into the buffer. This can be less than the length of
+        /// <paramref name="buffer"/> or zero if the end of the stream has been reached.
+        /// </returns>
+        /// <exception cref="InvalidDataException">The stream data is in an invalid BGZF format.</exception>
+        /// <exception cref="IOException">An I/O error occurs.</exception>
+        /// <exception cref="NotSupportedException">The stream does not support reading.</exception>
+        /// <exception cref="ObjectDisposedException">The method were called after the stream was closed.</exception>
+        public override int Read(Span<byte> buffer)
+        {
+            // The required minimum implementation in the derived class is Read(byte[], int, int).
+            return GetType() != typeof(BgzfStream) ? base.Read(buffer) : ReadCore(buffer);
         }
 
         /// <summary>
@@ -254,10 +178,9 @@ namespace Biocs.IO
         /// <param name="count">The number of bytes to be compress.</param>
         /// <exception cref="ArgumentNullException"><paramref name="buffer"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="offset"/> or <paramref name="count"/> is negative.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// The sum of <paramref name="offset"/> and <paramref name="count"/> is larger than the buffer length.
+        /// <para><paramref name="offset"/> or <paramref name="count"/> is negative.</para> -or-
+        /// <para>The sum of <paramref name="offset"/> and <paramref name="count"/> is larger than the length of
+        /// <paramref name="buffer"/>.</para>
         /// </exception>
         /// <exception cref="IOException">An I/O error occurs.</exception>
         /// <exception cref="NotSupportedException">
@@ -265,60 +188,31 @@ namespace Biocs.IO
         /// <para>The size of compressed bytes for a BGZF block exceeds about 64 KB.</para>
         /// </exception>
         /// <exception cref="ObjectDisposedException">The method were called after the stream was closed.</exception>
-        [StringResourceUsage("Arg.InvalidBufferRange", 3)]
-        [StringResourceUsage("NotSup.Stream")]
-        [StringResourceUsage("NotSup.BlockSizeExceeded")]
         public override void Write(byte[] buffer, int offset, int count)
         {
-            const int MaxInputLength = 0xff00;
-
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
 
-            if (offset < 0)
-                throw new ArgumentOutOfRangeException(nameof(offset));
+            WriteCore(buffer.AsSpan(offset, count));
+        }
 
-            if (count < 0)
-                throw new ArgumentOutOfRangeException(nameof(count));
-
-            if (offset + count > buffer.Length)
-                throw new ArgumentException(Res.GetString("Arg.InvalidBufferRange", offset, count, buffer.Length));
-
-            if (stream == null)
-                throw new ObjectDisposedException(GetType().Name);
-
-            if (!CanWrite)
-                throw new NotSupportedException(Res.GetString("NotSup.Stream"));
-
-            while (count > 0)
-            {
-                // Creates a stream to compress data.
-                if (deflateStream == null)
-                    deflateStream = new DeflateStream(new MemoryStream(CompressedData), level, true);
-
-                // Calculates # of bytes to be written to the DeflateStream.
-                int availSpace = MaxInputLength - inputLength;
-                int length = Math.Min(count, availSpace);
-
-                try
-                {
-                    deflateStream.Write(buffer, offset, length);
-                }
-                catch (NotSupportedException nse)
-                {
-                    // The compressed size of a block exceeded the length of internal buffer (CompressedData).
-                    throw new NotSupportedException(Res.GetString("NotSup.BlockSizeExceeded"), nse);
-                }
-
-                crc = Crc32.UpdateCrc(crc, buffer, offset, length);
-                inputLength += length;
-                availSpace -= length;
-                offset += length;
-                count -= length;
-
-                if (availSpace == 0)
-                    Flush();
-            }
+        /// <summary>
+        /// Writes a sequence of compressed bytes to the underlying stream.
+        /// </summary>
+        /// <param name="buffer">A region of memory.</param>
+        /// <exception cref="IOException">An I/O error occurs.</exception>
+        /// <exception cref="NotSupportedException">
+        /// <para>The stream does not support writing.</para> -or-
+        /// <para>The size of compressed bytes for a BGZF block exceeds about 64 KB.</para>
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">The method were called after the stream was closed.</exception>
+        public override void Write(ReadOnlySpan<byte> buffer)
+        {
+            // The required minimum implementation in the derived class is Write(byte[], int, int).
+            if (GetType() != typeof(BgzfStream))
+                base.Write(buffer);
+            else
+                WriteCore(buffer);
         }
 
         /// <summary>
@@ -334,6 +228,7 @@ namespace Biocs.IO
                 var baseStream = deflateStream.BaseStream;
                 try
                 {
+                    // Purges buffers in DeflateStream.
                     deflateStream.Dispose();
                 }
                 catch (NotSupportedException nse)
@@ -355,9 +250,7 @@ namespace Biocs.IO
         /// <exception cref="NotSupportedException">This method is not supported on this stream.</exception>
         [StringResourceUsage("NotSup.Stream")]
         public override long Seek(long offset, SeekOrigin origin)
-        {
-            throw new NotSupportedException(Res.GetString("NotSup.Stream"));
-        }
+            => throw new NotSupportedException(Res.GetString("NotSup.Stream"));
 
         /// <summary>
         /// This method is not supported and always throws a <see cref="NotSupportedException"/>.
@@ -437,6 +330,66 @@ namespace Biocs.IO
                     base.Dispose(disposing);
                 }
             }
+        }
+
+        // @exception InvalidDataException
+        // @exception IOException
+        // @exception NotSupportedException
+        // @exception ObjectDisposedException
+        [StringResourceUsage("InvalData.InvalidBlockSize")]
+        [StringResourceUsage("InvalData.InvalidCrc")]
+        [StringResourceUsage("NotSup.Stream")]
+        private int ReadCore(Span<byte> buffer)
+        {
+            if (stream == null)
+                throw new ObjectDisposedException(GetType().Name);
+
+            if (!CanRead)
+                throw new NotSupportedException(Res.GetString("NotSup.Stream"));
+
+            int totalRead = 0;
+
+            while (buffer.Length > 0)
+            {
+                // Reads a single BGZF block and creates a DeflateStream object to decompress.
+                if (deflateStream == null)
+                {
+                    deflateStream = ReadBgzfBlock();
+
+                    if (deflateStream == null)
+                        break;
+                }
+
+                int bytes = deflateStream.Read(buffer);
+
+                if (bytes == 0 && inputLength > 0)
+                {
+                    // Actual size is smaller than expected size.
+                    throw new InvalidDataException(Res.GetString("InvalData.InvalidBlockSize"));
+                }
+
+                crc = Crc32.UpdateCrc(crc, buffer[..bytes]);
+                totalRead += bytes;
+                inputLength -= bytes;
+                buffer = buffer[bytes..];
+
+                // Check whether the BGZF block reaches the end.
+                if (inputLength <= 0)
+                {
+                    if (inputLength < 0 || deflateStream.ReadByte() != -1)
+                    {
+                        // Actual size is larger than expected size.
+                        throw new InvalidDataException(Res.GetString("InvalData.InvalidBlockSize"));
+                    }
+
+                    if (crc != originalCrc)
+                        throw new InvalidDataException(Res.GetString("InvalData.InvalidCrc"));
+
+                    deflateStream.Dispose();
+                    deflateStream = null;
+                }
+            }
+            return totalRead;
         }
 
         // Reads the header of next BGZF block and prepares a DeflateStream object that contains the compressed data.
@@ -534,6 +487,51 @@ namespace Biocs.IO
             while (true);
         }
 
+        // @exception IOException
+        // @exception NotSupportedException
+        // @exception ObjectDisposedException
+        [StringResourceUsage("NotSup.Stream")]
+        [StringResourceUsage("NotSup.BlockSizeExceeded")]
+        private void WriteCore(ReadOnlySpan<byte> buffer)
+        {
+            if (stream == null)
+                throw new ObjectDisposedException(GetType().Name);
+
+            if (!CanWrite)
+                throw new NotSupportedException(Res.GetString("NotSup.Stream"));
+
+            const int MaxInputLength = 0xff00;
+
+            while (buffer.Length > 0)
+            {
+                // Creates a stream to compress data.
+                if (deflateStream == null)
+                    deflateStream = new DeflateStream(new MemoryStream(CompressedData), level, true);
+
+                // Calculates # of bytes to be written to the DeflateStream.
+                int maxBytesToWrite = MaxInputLength - inputLength;
+                int length = Math.Min(buffer.Length, maxBytesToWrite);
+
+                try
+                {
+                    deflateStream.Write(buffer[..length]);
+                }
+                catch (NotSupportedException nse)
+                {
+                    // The compressed size of a block exceeded the length of internal buffer (CompressedData).
+                    throw new NotSupportedException(Res.GetString("NotSup.BlockSizeExceeded"), nse);
+                }
+
+                crc = Crc32.UpdateCrc(crc, buffer[..length]);
+                inputLength += length;
+                maxBytesToWrite -= length;
+                buffer = buffer[length..];
+
+                if (maxBytesToWrite == 0)
+                    Flush();
+            }
+        }
+
         // Writes a header, compressed data with specified length, and a footer.
         // @param compressedLength The length of compressed data.
         // @exception IOException
@@ -586,8 +584,6 @@ namespace Biocs.IO
         // Reads a stream by the requested length exactly.
         // @param stream The stream to read.
         // @param buffer An array of bytes used to store bytes.
-        // @param offset The offset at which to begin storing bytes.
-        // @param count The number of bytes to read.
         // @return The total number of bytes read into the buffer. If it is less than count, the end of the stream has reached.
         // @exception IOException
         private static int TryReadExactBytes(Stream? stream, Span<byte> buffer)

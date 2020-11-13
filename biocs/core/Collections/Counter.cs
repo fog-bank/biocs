@@ -20,22 +20,6 @@ namespace Biocs.Collections
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Counter{T}"/> class that is empty, has zero capacity, and uses 
-        /// the default equality comparer.
-        /// </summary>
-        public Counter() : this(0)
-        { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Counter{T}"/> class that is empty, has the specified initial capacity,
-        /// and uses the default equality comparer.
-        /// </summary>
-        /// <param name="capacity">The initial number of items that the <see cref="Counter{T}"/> can contain.</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> is less than 0.</exception>
-        public Counter(int capacity) : this(capacity, null)
-        { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Counter{T}"/> class that is empty, has zero capacity, and uses 
         /// the specified equality comparer.
         /// </summary>
         /// <param name="comparer">
@@ -51,11 +35,11 @@ namespace Biocs.Collections
         /// </summary>
         /// <param name="capacity">The initial number of items that the <see cref="Counter{T}"/> can contain.</param>
         /// <param name="comparer">
-        /// The <see cref="IEqualityComparer{T}"/> implementation to use when comparing items, or <see langword="null"/> to
-        /// use the default <see cref="IEqualityComparer{T}"/> for the type of the item.
+        /// The <see cref="IEqualityComparer{T}"/> implementation to use when comparing items. The default value is
+        /// <see cref="EqualityComparer{T}.Default"/>.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> is less than 0.</exception>
-        public Counter(int capacity, IEqualityComparer<T>? comparer)
+        public Counter(int capacity = 0, IEqualityComparer<T>? comparer = default)
         {
             if (capacity < 0)
                 throw new ArgumentOutOfRangeException(nameof(capacity));

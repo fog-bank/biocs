@@ -20,18 +20,11 @@ namespace Biocs.Collections
         private int version;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Deque{T}"/> class that is empty and has zero capacity.
-        /// </summary>
-        public Deque()
-            : this(0)
-        { }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Deque{T}"/> class that is empty and has the specified initial capacity.
         /// </summary>
         /// <param name="capacity">The initial number of elements that the <see cref="Deque{T}"/> can contain.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> is less than 0.</exception>
-        public Deque(int capacity)
+        public Deque(int capacity = 0)
         {
             if (capacity < 0)
                 throw new ArgumentOutOfRangeException(nameof(capacity));

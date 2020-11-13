@@ -12,18 +12,18 @@ namespace Biocs.Collections
 		public void Constructor_Test()
 		{
 			var c1 = new Counter<object>();
-            TestProperties(c1, 0, 0, new HashSet<object>(), new object[0], EqualityComparer<object>.Default);
+            TestProperties(c1, 0, 0, new HashSet<object>(), Array.Empty<object>(), EqualityComparer<object>.Default);
 
             var c2 = new Counter<int>(10);
-            TestProperties(c2, 0, 0, new HashSet<int>(), new int[0], EqualityComparer<int>.Default);
+            TestProperties(c2, 0, 0, new HashSet<int>(), Array.Empty<int>(), EqualityComparer<int>.Default);
 
             var comparer3 = StringComparer.Ordinal;
             var c3 = new Counter<string>(comparer3);
-            TestProperties(c3, 0, 0, new HashSet<string>(comparer3), new string[0], comparer3);
+            TestProperties(c3, 0, 0, new HashSet<string>(comparer3), Array.Empty<string>(), comparer3);
 
             var comparer4 = StringComparer.OrdinalIgnoreCase;
 			var c4 = new Counter<string>(10, comparer4);
-            TestProperties(c4, 0, 0, new HashSet<string>(comparer4), new string[0], comparer4);
+            TestProperties(c4, 0, 0, new HashSet<string>(comparer4), Array.Empty<string>(), comparer4);
 
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Counter<object>(-1));
 			Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Counter<object>(-1, null));
@@ -349,7 +349,7 @@ namespace Biocs.Collections
             TestItem(counter, 10, 0);
 
             counter.ResetCounts();
-            TestProperties(counter, 10, 0, set, new int[0], comparer);
+            TestProperties(counter, 10, 0, set, Array.Empty<int>(), comparer);
 
 			foreach (int num in query)
                 TestItem(counter, num, 0);
@@ -378,7 +378,7 @@ namespace Biocs.Collections
             TestItem(counter, null, 0);
 
             counter.ResetCounts();
-            TestProperties(counter, 3, 0, set, new string[0], comparer);
+            TestProperties(counter, 3, 0, set, Array.Empty<string>(), comparer);
             TestItem(counter, "B", 0);
         }
 
@@ -389,7 +389,7 @@ namespace Biocs.Collections
 			counter.AddRange(Enumerable.Range(0, 10));
 
 			counter.Clear();
-            TestProperties(counter, 0, 0, new HashSet<int>(), new int[0], EqualityComparer<int>.Default);
+            TestProperties(counter, 0, 0, new HashSet<int>(), Array.Empty<int>(), EqualityComparer<int>.Default);
             TestItem(counter, 0, null);
 
             var counter2 = new Counter<string>();
@@ -397,11 +397,11 @@ namespace Biocs.Collections
             counter2.Add("A");
 
             counter2.Clear();
-            TestProperties(counter2, 0, 0, new HashSet<string>(), new string[0], EqualityComparer<string>.Default);
+            TestProperties(counter2, 0, 0, new HashSet<string>(), Array.Empty<string>(), EqualityComparer<string>.Default);
             TestItem(counter2, null, null);
 		}
 
-        private void TestProperties<T>(Counter<T> target, int numberOfItemsExpected, int totalCountExpected,
+        private static void TestProperties<T>(Counter<T> target, int numberOfItemsExpected, int totalCountExpected,
             HashSet<T> uniqueItemsExpected, T[] repeatedItemsExpected, IEqualityComparer<T> comparerExpected)
         {
             Assert.AreEqual(totalCountExpected, target.TotalCount);
@@ -415,7 +415,7 @@ namespace Biocs.Collections
             Assert.IsTrue(uniqueItemsExpected.SetEquals(array));
         }
 
-        private void TestItem<T>(Counter<T> target, T item, int? countExpected)
+        private static void TestItem<T>(Counter<T> target, T item, int? countExpected)
         {
             if (countExpected.HasValue)
             {

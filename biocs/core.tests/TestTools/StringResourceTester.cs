@@ -134,7 +134,7 @@ namespace Biocs.TestTools
                 var args = new object[usage.FormatItemCount];
                 try
                 {
-                    string.Format(CultureInfo.InvariantCulture, str, args);
+                    _ = string.Format(CultureInfo.InvariantCulture, str, args);
                 }
                 catch (FormatException)
                 {
@@ -207,9 +207,6 @@ namespace Biocs.TestTools
             return map;
         }
 
-        private static bool IsCompilerGenerated(MemberInfo member)
-        {
-            return member.IsDefined(typeof(CompilerGeneratedAttribute), false);
-        }
+        private static bool IsCompilerGenerated(MemberInfo member) => member.IsDefined(typeof(CompilerGeneratedAttribute), false);
     }
 }

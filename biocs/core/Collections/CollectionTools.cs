@@ -14,12 +14,17 @@ namespace Biocs.Collections
         /// </summary>
         /// <typeparam name="T">The type of items of <paramref name="collection"/>.</typeparam>
         /// <param name="collection">The <see cref="IEnumerable{T}"/> to check equality between items.</param>
+        /// <param name="comparer">
+        /// An <see cref="IEqualityComparer{T}"/> to use to compare items. The default value is
+        /// <see cref="EqualityComparer{T}.Default"/>.
+        /// </param>
         /// <returns>
         /// <see langword="true"/> if <paramref name="collection"/> is not empty and all items are equal;
         /// otherwise, <see langword="false"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-        public static bool AllItemsAreEqual<T>(this IEnumerable<T> collection) => AllItemsAreEqual(collection, null, out _);
+        public static bool AllItemsAreEqual<T>(this IEnumerable<T> collection, IEqualityComparer<T>? comparer = default)
+            => AllItemsAreEqual(collection, comparer, out _);
 
         /// <summary>
         /// Determines whether all items in the specified collection are equal, and tries to get the unique item.

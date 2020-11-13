@@ -45,7 +45,7 @@ namespace Biocs
             Assert.AreEqual('N', DnaBase.Any.Symbol);
         }
 
-        private void Test(char symbol, string name, bool atomic, bool gap, char complement)
+        private static void Test(char symbol, string name, bool atomic, bool gap, char complement)
         {
             char lowerSymbol = char.ToLowerInvariant(symbol);
 
@@ -70,7 +70,7 @@ namespace Biocs
             Assert.AreEqual(lowerDna, lowerDna.ToLower());
         }
 
-        private void BasicTest(char symbol, string name, bool atomic, bool gap, char complement)
+        private static void BasicTest(char symbol, string name, bool atomic, bool gap, char complement)
         {
             var dna = DnaBase.Parse(symbol);
 

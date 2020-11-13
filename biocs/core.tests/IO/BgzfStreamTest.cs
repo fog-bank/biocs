@@ -77,12 +77,12 @@ namespace Biocs.IO
 
                     for (; offset + Count <= actual.Length; offset += Count)
                     {
-                        bytes = await gz.ReadAsync(actual, offset, Count);
+                        bytes = await gz.ReadAsync(actual.AsMemory(offset, Count));
                         Assert.AreEqual(Count, bytes);
                     }
 
                     var buffer = new byte[Count];
-                    bytes = await gz.ReadAsync(buffer, 0, buffer.Length);
+                    bytes = await gz.ReadAsync(buffer.AsMemory(0, buffer.Length));
 
                     Assert.AreEqual(actual.Length - offset, bytes);
                     Assert.AreEqual(-1, gz.ReadByte());

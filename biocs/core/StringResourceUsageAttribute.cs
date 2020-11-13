@@ -12,22 +12,13 @@ namespace Biocs
     public sealed class StringResourceUsageAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StringResourceUsageAttribute"/> class.
-        /// </summary>
-        /// <param name="name">The name of the string resource to be used.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null"/>.</exception>
-        public StringResourceUsageAttribute(string name)
-            : this(name, 0)
-        { }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="StringResourceUsageAttribute"/> class with the number of format items.
         /// </summary>
         /// <param name="name">The name of the string resource to be used.</param>
         /// <param name="formatItemCount">The number of format items contained in the value of the string resource.</param>
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="formatItemCount"/> is less than 0.</exception>
-        public StringResourceUsageAttribute(string name, int formatItemCount)
+        public StringResourceUsageAttribute(string name, int formatItemCount = 0)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
 
