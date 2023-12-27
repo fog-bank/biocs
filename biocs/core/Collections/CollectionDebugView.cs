@@ -1,31 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics;
+namespace Biocs.Collections;
 
-namespace Biocs.Collections
+internal sealed class CollectionDebugView<T>(ICollection<T>? collection)
 {
-    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
-    internal sealed class CollectionDebugView<T>
+    [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+    public T[] Items
     {
-        private readonly ICollection<T>? coll;
-
-        public CollectionDebugView(ICollection<T>? collection) => coll = collection;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-        public T[] Items
+        get
         {
-            get
-            {
-                if (coll != null)
-                {
-                    var items = new T[coll.Count];
-                    coll.CopyTo(items, 0);
-                    return items;
-                }
-                else
-                    return Array.Empty<T>();
-            }
+            if (collection == null)
+                return [];
+
+            var items = new T[collection.Count];
+            collection.CopyTo(items, 0);
+            return items;
         }
     }
 }
