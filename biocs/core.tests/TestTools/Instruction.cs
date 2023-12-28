@@ -21,7 +21,7 @@ internal sealed class Instruction(OpCode opCode, int operand = 0)
     /// <summary>
     /// Reads IL and gets <see cref="OpCode"/> and its operand (32-bit only).
     /// </summary>
-    public static IEnumerable<Instruction?> ReadIL(MethodBase method)
+    public static IEnumerable<Instruction> ReadIL(MethodBase method)
     {
         var il = method.GetMethodBody()?.GetILAsByteArray();
 
@@ -30,8 +30,10 @@ internal sealed class Instruction(OpCode opCode, int operand = 0)
             for (int pos = 0; pos < il.Length;)
             {
                 int codeValue = il[pos++];
+                var inst = GetInstruction(codeValue, il, ref pos);
 
-                yield return GetInstruction(codeValue, il, ref pos);
+                if (inst != null)
+                    yield return inst;
             }
         }
     }

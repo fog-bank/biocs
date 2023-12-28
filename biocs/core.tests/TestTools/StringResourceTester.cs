@@ -76,21 +76,21 @@ public static class StringResourceTester
                 if (declaredUsages.ContainsKey(str))
                     loadedName.Add(str);
             }
-            else if (inst.IsCallMethod && getStringMethods.ContainsKey(inst.Operand))
+            else if (inst.IsCallMethod && getStringMethods.TryGetValue(inst.Operand, out int formatItemCount))
             {
                 Assert.AreNotEqual(0, loadedName.Count, "The name of the string resource is not found in " + 
-                    method.DeclaringType.FullName + "." + method.Name + ".");
+                    method.DeclaringType?.FullName + "." + method.Name + ".");
 
                 foreach (string name in loadedName)
                 {
                     if (declaredUsages[name].ResourceCheckOnly)
                     {
-                        Console.WriteLine("The usage of '" + name + "' in " + method.DeclaringType.FullName + "." + 
+                        Console.WriteLine("The usage of '" + name + "' in " + method.DeclaringType?.FullName + "." + 
                             method.Name + " is not checked.");
                         continue;
                     }
-                    Assert.AreEqual(declaredUsages[name].FormatItemCount, getStringMethods[inst.Operand],
-                        "The usage of '" + name + "' in " + method.DeclaringType.FullName + "." + method.Name + " is wrong.");
+                    Assert.AreEqual(declaredUsages[name].FormatItemCount, formatItemCount,
+                        "The usage of '" + name + "' in " + method.DeclaringType?.FullName + "." + method.Name + " is wrong.");
                 }
                 actualUsages.UnionWith(loadedName);
                 loadedName.Clear();
@@ -106,12 +106,12 @@ public static class StringResourceTester
                 if (usage.Value.ResourceCheckOnly)
                 {
                     escaped++;
-                    Console.WriteLine("The usage of '" + usage.Key + "' in " + method.DeclaringType.FullName + "." + 
+                    Console.WriteLine("The usage of '" + usage.Key + "' in " + method.DeclaringType?.FullName + "." + 
                         method.Name + " is not checked.");
                 }
             }
             Assert.AreEqual(declaredUsages.Count, actualUsages.Count + escaped,
-                "The usage information in " + method.DeclaringType.FullName + "." + method.Name + " is inconsistent.");
+                "The usage information in " + method.DeclaringType?.FullName + "." + method.Name + " is inconsistent.");
         }
         return declaredUsages;
     }
@@ -124,7 +124,7 @@ public static class StringResourceTester
         foreach (var usage in usages)
         {
             // Does the manifest resource define the name of the string resource?
-            string str = resources.GetString(usage.Name);
+            string? str = resources.GetString(usage.Name);
             Assert.IsNotNull(str, "The resource '" + usage.Name + "' is not defined.");
 
             // Does the format string have the valid number of format items?
@@ -176,16 +176,17 @@ public static class StringResourceTester
     {
         var names = new HashSet<string>(StringComparer.Ordinal);
 
-        using (var stream =
-            resourceClass.Assembly.GetManifestResourceStream(resourceClass, resourceClass.Name + ".resources"))
-        using (var reader = new ResourceReader(stream))
+        using (var stream = resourceClass.Assembly.GetManifestResourceStream(resourceClass, resourceClass.Name + ".resources"))
         {
+            Assert.IsNotNull(stream);
+
+            using var reader = new ResourceReader(stream);
             var enumerator = reader.GetEnumerator();
 
             while (enumerator.MoveNext())
             {
                 if (enumerator.Value is string)
-                    names.Add(enumerator.Key.ToString());
+                    names.Add(enumerator.Key.ToString()!);
             }
         }
         return names;
@@ -193,14 +194,11 @@ public static class StringResourceTester
 
     private static Dictionary<string, StringResourceUsageAttribute> GetUsageAttributes(MemberInfo member)
     {
-        var attrs = member.GetCustomAttributes(typeof(StringResourceUsageAttribute), false);
-        var map = new Dictionary<string, StringResourceUsageAttribute>(attrs.Length, StringComparer.Ordinal);
+        var map = new Dictionary<string, StringResourceUsageAttribute>(StringComparer.Ordinal);
 
-        for (int i = 0; i < attrs.Length; i++)
-        {
-            var attr = attrs[i] as StringResourceUsageAttribute;
+        foreach (var attr in member.GetCustomAttributes<StringResourceUsageAttribute>(false))
             map[attr.Name] = attr;
-        }
+
         return map;
     }
 
