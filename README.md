@@ -1,3 +1,3 @@
 # BioC&#35;
 
-[![Build status](https://ci.appveyor.com/api/projects/status/81evcvrvmkibx57s?svg=true)](https://ci.appveyor.com/project/fog-bank/biocs)
+[![Release](https://img.shields.io/github/v/release/fog-bank/biocs)](https://github.com/fog-bank/biocs/releases) [![AppVeyor](https://ci.appveyor.com/api/projects/status/81evcvrvmkibx57s?svg=true)](https://ci.appveyor.com/project/fog-bank/biocs) [![CodeQL](https://github.com/fog-bank/biocs/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/fog-bank/biocs/actions/workflows/github-code-scanning/codeql)

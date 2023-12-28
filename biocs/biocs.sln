@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.271
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "core", "core\core.csproj", "{DA6634B1-C212-47B7-9484-296B585A3423}"
 EndProject
@@ -11,11 +11,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		..\appveyor.yml = ..\appveyor.yml
 		CustomDictionary.xml = CustomDictionary.xml
+		..\.github\workflows\dotnet.yml = ..\.github\workflows\dotnet.yml
 		..\README.md = ..\README.md
 		..\test_ubuntu.sh = ..\test_ubuntu.sh
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "samples", "samples\samples.csproj", "{1A340984-5BE9-47CE-926F-E76A88D4D4CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "samples", "samples\samples.csproj", "{1A340984-5BE9-47CE-926F-E76A88D4D4CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
