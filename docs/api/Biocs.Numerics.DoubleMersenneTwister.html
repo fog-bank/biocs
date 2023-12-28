@@ -1,309 +1,359 @@
 ﻿<!DOCTYPE html>
-<!--[if IE]><![endif]-->
 <html>
-  
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class DoubleMersenneTwister
-   | BioC# Documents </title>
-    <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class DoubleMersenneTwister
-   | BioC# Documents ">
-    <meta name="generator" content="docfx 2.50.0.0">
-    
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
-    
-    <meta property="docfx:rel" content="../">
-    <meta property="docfx:newtab" content="true">
+      <title>Class DoubleMersenneTwister
+ | BioC# Documents </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class DoubleMersenneTwister
+ | BioC# Documents ">
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/fog-bank/biocs/new/feature/location/apiSpec/new?filename=Biocs_Numerics_DoubleMersenneTwister.md&amp;value=---%0Auid%3A%20Biocs.Numerics.DoubleMersenneTwister%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
   </head>
-  <body data-spy="scroll" data-target="#affix" data-offset="120">
-    <div id="wrapper">
-      <header>
-        
-        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              
-              <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../logo.svg" alt="">
-              </a>
-            </div>
-            <div class="collapse navbar-collapse" id="navbar">
-              <form class="navbar-form navbar-right" role="search" id="search">
-                <div class="form-group">
-                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
-                </div>
+
+  <script type="module" src="./../public/docfx.min.js"></script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="BioC#">
+            BioC#
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
               </form>
             </div>
           </div>
-        </nav>
-        
-        <div class="subnav navbar navbar-default">
-          <div class="container hide-when-search" id="breadcrumb">
-            <ul class="breadcrumb">
-              <li></li>
-            </ul>
-          </div>
         </div>
-      </header>
-      <div class="container body-content">
-        
-        <div id="search-results">
-          <div class="search-list"></div>
-          <div class="sr-items">
-            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
           </div>
-          <ul id="pagination"></ul>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
         </div>
       </div>
-      <div role="main" class="container body-content hide-when-search">
-        
-        <div class="sidenav hide-when-search">
-          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
-          <div class="sidetoggle collapse" id="sidetoggle">
-            <div id="sidetoc"></div>
-          </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
         </div>
-        <div class="article row grid-right">
-          <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Biocs.Numerics.DoubleMersenneTwister">
-  
-  
-  <h1 id="Biocs_Numerics_DoubleMersenneTwister" data-uid="Biocs.Numerics.DoubleMersenneTwister" class="text-break">Class DoubleMersenneTwister
+
+        <article data-uid="Biocs.Numerics.DoubleMersenneTwister">
+
+
+
+  <h1 id="Biocs_Numerics_DoubleMersenneTwister" data-uid="Biocs.Numerics.DoubleMersenneTwister" class="text-break">
+    Class DoubleMersenneTwister
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L14"><i class="bi bi-code-slash"></i></a>
   </h1>
-  <div class="markdown level0 summary"><p>Represents double-precision Mersenne Twister pseudorandom number generator based on IEEE 754 format.</p>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Biocs.html">Biocs</a>.<a class="xref" href="Biocs.Numerics.html">Numerics</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Biocs.Core.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Represents double-precision Mersenne Twister pseudorandom number generator based on IEEE 754 format.</p>
 </div>
-  <div class="markdown level0 conceptual"></div>
-  <div class="inheritance">
-    <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">DoubleMersenneTwister</span></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-  </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Biocs.Numerics.html">Biocs.Numerics</a></h6>
-  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
-  <h5 id="Biocs_Numerics_DoubleMersenneTwister_syntax">Syntax</h5>
+  <div class="markdown conceptual"></div>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class DoubleMersenneTwister</code></pre>
   </div>
-  <h5 id="Biocs_Numerics_DoubleMersenneTwister_remarks"><strong>Remarks</strong></h5>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">DoubleMersenneTwister</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist derived">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+  <h2 id="Biocs_Numerics_DoubleMersenneTwister_remarks">Remarks</h2>
   <div class="markdown level0 remarks"><p>
 For details about Mersenne Twister, see http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/.
 </p>
 <p>Currently, the environment where the architecture is big-endian is not supported.</p>
 </div>
-  <h3 id="constructors">Constructors
-  </h3>
-  
-  
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
   <a id="Biocs_Numerics_DoubleMersenneTwister__ctor_" data-uid="Biocs.Numerics.DoubleMersenneTwister.#ctor*"></a>
-  <h4 id="Biocs_Numerics_DoubleMersenneTwister__ctor" data-uid="Biocs.Numerics.DoubleMersenneTwister.#ctor">DoubleMersenneTwister()</h4>
+
+  <h3 id="Biocs_Numerics_DoubleMersenneTwister__ctor" data-uid="Biocs.Numerics.DoubleMersenneTwister.#ctor">
+  DoubleMersenneTwister()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Numerics.DoubleMersenneTwister.html">DoubleMersenneTwister</a> class,
 using a time-dependent default seed value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public DoubleMersenneTwister()</code></pre>
   </div>
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Biocs_Numerics_DoubleMersenneTwister__ctor_" data-uid="Biocs.Numerics.DoubleMersenneTwister.#ctor*"></a>
-  <h4 id="Biocs_Numerics_DoubleMersenneTwister__ctor_System_Int32_" data-uid="Biocs.Numerics.DoubleMersenneTwister.#ctor(System.Int32)">DoubleMersenneTwister(Int32)</h4>
+
+  <h3 id="Biocs_Numerics_DoubleMersenneTwister__ctor_System_Int32_" data-uid="Biocs.Numerics.DoubleMersenneTwister.#ctor(System.Int32)">
+  DoubleMersenneTwister(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Numerics.DoubleMersenneTwister.html">DoubleMersenneTwister</a> class, using the specified seed value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public DoubleMersenneTwister(int seed)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">seed</span></td>
-        <td><p>A 32-bit integer used as the seed.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>seed</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A 32-bit integer used as the seed.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Biocs_Numerics_DoubleMersenneTwister__ctor_" data-uid="Biocs.Numerics.DoubleMersenneTwister.#ctor*"></a>
-  <h4 id="Biocs_Numerics_DoubleMersenneTwister__ctor_System_Int32___" data-uid="Biocs.Numerics.DoubleMersenneTwister.#ctor(System.Int32[])">DoubleMersenneTwister(Int32[])</h4>
+
+  <h3 id="Biocs_Numerics_DoubleMersenneTwister__ctor_System_Int32___" data-uid="Biocs.Numerics.DoubleMersenneTwister.#ctor(System.Int32[])">
+  DoubleMersenneTwister(int[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Numerics.DoubleMersenneTwister.html">DoubleMersenneTwister</a> class, using the specified seed array.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public DoubleMersenneTwister(int[] seeds)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>[]</td>
-        <td><span class="parametername">seeds</span></td>
-        <td><p>An array of 32-bit integers used as the seed.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">seeds</code> is <span class="xref">null</span>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="methods">Methods
-  </h3>
-  
-  
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>seeds</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>[]</dt>
+    <dd><p>An array of 32-bit integers used as the seed.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">seeds</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+  </dl>
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
   <a id="Biocs_Numerics_DoubleMersenneTwister_Next_" data-uid="Biocs.Numerics.DoubleMersenneTwister.Next*"></a>
-  <h4 id="Biocs_Numerics_DoubleMersenneTwister_Next" data-uid="Biocs.Numerics.DoubleMersenneTwister.Next">Next()</h4>
+
+  <h3 id="Biocs_Numerics_DoubleMersenneTwister_Next" data-uid="Biocs.Numerics.DoubleMersenneTwister.Next">
+  Next()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L138"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Returns a double-precision pseudorandom number that distributes uniformly in the range [0, 1).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public double Next()</code></pre>
   </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
-        <td><p>A random floating-point number that is greater than or equal to 0.0, and less than 1.0.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>A random floating-point number that is greater than or equal to 0.0, and less than 1.0.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Biocs_Numerics_DoubleMersenneTwister_NextOpen_" data-uid="Biocs.Numerics.DoubleMersenneTwister.NextOpen*"></a>
-  <h4 id="Biocs_Numerics_DoubleMersenneTwister_NextOpen" data-uid="Biocs.Numerics.DoubleMersenneTwister.NextOpen">NextOpen()</h4>
+
+  <h3 id="Biocs_Numerics_DoubleMersenneTwister_NextOpen" data-uid="Biocs.Numerics.DoubleMersenneTwister.NextOpen">
+  NextOpen()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L144"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Returns a double-precision pseudorandom number that distributes uniformly in the range (0, 1).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public double NextOpen()</code></pre>
   </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
-        <td><p>A random floating-point number that is greater than 0.0, and less than 1.0.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>A random floating-point number that is greater than 0.0, and less than 1.0.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
 </article>
-          </div>
-          
-          <div class="hidden-sm col-md-2" role="complementary">
-            <div class="sideaffix">
-              <div class="contribution">
-                <ul class="nav">
-                </ul>
-              </div>
-              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
-              </nav>
-            </div>
-          </div>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L14" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright © 2024 fog-bank. Some rights reserved. Generated by <a href="https://dotnet.github.io/docfx/">DocFX</a>.
         </div>
       </div>
-      
-      <footer>
-        <div class="grad-bottom"></div>
-        <div class="footer">
-          <div class="container">
-            <span class="pull-right">
-              <a href="#top">Back to top</a>
-            </span>
-            Copyright © 2020 fog-bank. Some rights reserved. Generated by <a href="https://dotnet.github.io/docfx/">DocFX</a>.
-            
-          </div>
-        </div>
-      </footer>
-    </div>
-    
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
-    <script type="text/javascript" src="../styles/docfx.js"></script>
-    <script type="text/javascript" src="../styles/main.js"></script>
+    </footer>
   </body>
 </html>

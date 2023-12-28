@@ -17,15 +17,21 @@ references:
   name: Codon(DnaBase, DnaBase, DnaBase)
   href: api/Biocs.Codon.html#Biocs_Codon__ctor_Biocs_DnaBase_Biocs_DnaBase_Biocs_DnaBase_
   commentId: M:Biocs.Codon.#ctor(Biocs.DnaBase,Biocs.DnaBase,Biocs.DnaBase)
+  name.vb: New(DnaBase, DnaBase, DnaBase)
   fullName: Biocs.Codon.Codon(Biocs.DnaBase, Biocs.DnaBase, Biocs.DnaBase)
+  fullName.vb: Biocs.Codon.New(Biocs.DnaBase, Biocs.DnaBase, Biocs.DnaBase)
   nameWithType: Codon.Codon(DnaBase, DnaBase, DnaBase)
+  nameWithType.vb: Codon.New(DnaBase, DnaBase, DnaBase)
 - uid: Biocs.Codon.#ctor*
   name: Codon
   href: api/Biocs.Codon.html#Biocs_Codon__ctor_
   commentId: Overload:Biocs.Codon.#ctor
   isSpec: "True"
+  name.vb: New
   fullName: Biocs.Codon.Codon
+  fullName.vb: Biocs.Codon.New
   nameWithType: Codon.Codon
+  nameWithType.vb: Codon.New
 - uid: Biocs.Codon.Any
   name: Any
   href: api/Biocs.Codon.html#Biocs_Codon_Any
@@ -46,11 +52,14 @@ references:
   fullName: Biocs.Codon.Equals(Biocs.Codon)
   nameWithType: Codon.Equals(Codon)
 - uid: Biocs.Codon.Equals(System.Object)
-  name: Equals(Object)
+  name: Equals(object?)
   href: api/Biocs.Codon.html#Biocs_Codon_Equals_System_Object_
   commentId: M:Biocs.Codon.Equals(System.Object)
-  fullName: Biocs.Codon.Equals(System.Object)
-  nameWithType: Codon.Equals(Object)
+  name.vb: Equals(Object)
+  fullName: Biocs.Codon.Equals(object?)
+  fullName.vb: Biocs.Codon.Equals(Object)
+  nameWithType: Codon.Equals(object?)
+  nameWithType.vb: Codon.Equals(Object)
 - uid: Biocs.Codon.Equals*
   name: Equals
   href: api/Biocs.Codon.html#Biocs_Codon_Equals_
@@ -110,38 +119,15 @@ references:
   isSpec: "True"
   fullName: Biocs.Codon.IsAtomic
   nameWithType: Codon.IsAtomic
-- uid: Biocs.Codon.op_Equality(Biocs.Codon,Biocs.Codon)
-  name: Equality(Codon, Codon)
-  href: api/Biocs.Codon.html#Biocs_Codon_op_Equality_Biocs_Codon_Biocs_Codon_
-  commentId: M:Biocs.Codon.op_Equality(Biocs.Codon,Biocs.Codon)
-  fullName: Biocs.Codon.Equality(Biocs.Codon, Biocs.Codon)
-  nameWithType: Codon.Equality(Codon, Codon)
-- uid: Biocs.Codon.op_Equality*
-  name: Equality
-  href: api/Biocs.Codon.html#Biocs_Codon_op_Equality_
-  commentId: Overload:Biocs.Codon.op_Equality
-  isSpec: "True"
-  fullName: Biocs.Codon.Equality
-  nameWithType: Codon.Equality
-- uid: Biocs.Codon.op_Inequality(Biocs.Codon,Biocs.Codon)
-  name: Inequality(Codon, Codon)
-  href: api/Biocs.Codon.html#Biocs_Codon_op_Inequality_Biocs_Codon_Biocs_Codon_
-  commentId: M:Biocs.Codon.op_Inequality(Biocs.Codon,Biocs.Codon)
-  fullName: Biocs.Codon.Inequality(Biocs.Codon, Biocs.Codon)
-  nameWithType: Codon.Inequality(Codon, Codon)
-- uid: Biocs.Codon.op_Inequality*
-  name: Inequality
-  href: api/Biocs.Codon.html#Biocs_Codon_op_Inequality_
-  commentId: Overload:Biocs.Codon.op_Inequality
-  isSpec: "True"
-  fullName: Biocs.Codon.Inequality
-  nameWithType: Codon.Inequality
-- uid: Biocs.Codon.Parse(System.String)
-  name: Parse(String)
-  href: api/Biocs.Codon.html#Biocs_Codon_Parse_System_String_
-  commentId: M:Biocs.Codon.Parse(System.String)
-  fullName: Biocs.Codon.Parse(System.String)
-  nameWithType: Codon.Parse(String)
+- uid: Biocs.Codon.Parse(System.ReadOnlySpan{System.Char})
+  name: Parse(ReadOnlySpan<char>)
+  href: api/Biocs.Codon.html#Biocs_Codon_Parse_System_ReadOnlySpan_System_Char__
+  commentId: M:Biocs.Codon.Parse(System.ReadOnlySpan{System.Char})
+  name.vb: Parse(ReadOnlySpan(Of Char))
+  fullName: Biocs.Codon.Parse(System.ReadOnlySpan<char>)
+  fullName.vb: Biocs.Codon.Parse(System.ReadOnlySpan(Of Char))
+  nameWithType: Codon.Parse(ReadOnlySpan<char>)
+  nameWithType.vb: Codon.Parse(ReadOnlySpan(Of Char))
 - uid: Biocs.Codon.Parse*
   name: Parse
   href: api/Biocs.Codon.html#Biocs_Codon_Parse_
@@ -227,15 +213,15 @@ references:
   isSpec: "True"
   fullName: Biocs.Codon.ToUpper
   nameWithType: Codon.ToUpper
-- uid: Biocs.Codon.TryParse(System.String,Biocs.Codon@)
-  name: TryParse(String, out Codon)
-  href: api/Biocs.Codon.html#Biocs_Codon_TryParse_System_String_Biocs_Codon__
-  commentId: M:Biocs.Codon.TryParse(System.String,Biocs.Codon@)
-  name.vb: TryParse(String, ByRef Codon)
-  fullName: Biocs.Codon.TryParse(System.String, out Biocs.Codon)
-  fullName.vb: Biocs.Codon.TryParse(System.String, ByRef Biocs.Codon)
-  nameWithType: Codon.TryParse(String, out Codon)
-  nameWithType.vb: Codon.TryParse(String, ByRef Codon)
+- uid: Biocs.Codon.TryParse(System.ReadOnlySpan{System.Char},Biocs.Codon@)
+  name: TryParse(ReadOnlySpan<char>, out Codon)
+  href: api/Biocs.Codon.html#Biocs_Codon_TryParse_System_ReadOnlySpan_System_Char__Biocs_Codon__
+  commentId: M:Biocs.Codon.TryParse(System.ReadOnlySpan{System.Char},Biocs.Codon@)
+  name.vb: TryParse(ReadOnlySpan(Of Char), Codon)
+  fullName: Biocs.Codon.TryParse(System.ReadOnlySpan<char>, out Biocs.Codon)
+  fullName.vb: Biocs.Codon.TryParse(System.ReadOnlySpan(Of Char), Biocs.Codon)
+  nameWithType: Codon.TryParse(ReadOnlySpan<char>, out Codon)
+  nameWithType.vb: Codon.TryParse(ReadOnlySpan(Of Char), Codon)
 - uid: Biocs.Codon.TryParse*
   name: TryParse
   href: api/Biocs.Codon.html#Biocs_Codon_TryParse_
@@ -243,6 +229,44 @@ references:
   isSpec: "True"
   fullName: Biocs.Codon.TryParse
   nameWithType: Codon.TryParse
+- uid: Biocs.Codon.op_Equality(Biocs.Codon,Biocs.Codon)
+  name: operator ==(Codon, Codon)
+  href: api/Biocs.Codon.html#Biocs_Codon_op_Equality_Biocs_Codon_Biocs_Codon_
+  commentId: M:Biocs.Codon.op_Equality(Biocs.Codon,Biocs.Codon)
+  name.vb: =(Codon, Codon)
+  fullName: Biocs.Codon.operator ==(Biocs.Codon, Biocs.Codon)
+  fullName.vb: Biocs.Codon.=(Biocs.Codon, Biocs.Codon)
+  nameWithType: Codon.operator ==(Codon, Codon)
+  nameWithType.vb: Codon.=(Codon, Codon)
+- uid: Biocs.Codon.op_Equality*
+  name: operator ==
+  href: api/Biocs.Codon.html#Biocs_Codon_op_Equality_
+  commentId: Overload:Biocs.Codon.op_Equality
+  isSpec: "True"
+  name.vb: =
+  fullName: Biocs.Codon.operator ==
+  fullName.vb: Biocs.Codon.=
+  nameWithType: Codon.operator ==
+  nameWithType.vb: Codon.=
+- uid: Biocs.Codon.op_Inequality(Biocs.Codon,Biocs.Codon)
+  name: operator !=(Codon, Codon)
+  href: api/Biocs.Codon.html#Biocs_Codon_op_Inequality_Biocs_Codon_Biocs_Codon_
+  commentId: M:Biocs.Codon.op_Inequality(Biocs.Codon,Biocs.Codon)
+  name.vb: <>(Codon, Codon)
+  fullName: Biocs.Codon.operator !=(Biocs.Codon, Biocs.Codon)
+  fullName.vb: Biocs.Codon.<>(Biocs.Codon, Biocs.Codon)
+  nameWithType: Codon.operator !=(Codon, Codon)
+  nameWithType.vb: Codon.<>(Codon, Codon)
+- uid: Biocs.Codon.op_Inequality*
+  name: operator !=
+  href: api/Biocs.Codon.html#Biocs_Codon_op_Inequality_
+  commentId: Overload:Biocs.Codon.op_Inequality
+  isSpec: "True"
+  name.vb: <>
+  fullName: Biocs.Codon.operator !=
+  fullName.vb: Biocs.Codon.<>
+  nameWithType: Codon.operator !=
+  nameWithType.vb: Codon.<>
 - uid: Biocs.Collections
   name: Biocs.Collections
   href: api/Biocs.Collections.html
@@ -262,24 +286,24 @@ references:
   isSpec: "True"
   fullName: Biocs.Collections.CollectionTools.AllItemsAreEqual
   nameWithType: CollectionTools.AllItemsAreEqual
-- uid: Biocs.Collections.CollectionTools.AllItemsAreEqual``1(IEnumerable{``0})
-  name: AllItemsAreEqual<T>(IEnumerable<T>)
-  href: api/Biocs.Collections.CollectionTools.html#Biocs_Collections_CollectionTools_AllItemsAreEqual__1_IEnumerable___0__
-  commentId: M:Biocs.Collections.CollectionTools.AllItemsAreEqual``1(IEnumerable{``0})
-  name.vb: AllItemsAreEqual(Of T)(IEnumerable(Of T))
-  fullName: Biocs.Collections.CollectionTools.AllItemsAreEqual<T>(IEnumerable<T>)
-  fullName.vb: Biocs.Collections.CollectionTools.AllItemsAreEqual(Of T)(IEnumerable(Of T))
-  nameWithType: CollectionTools.AllItemsAreEqual<T>(IEnumerable<T>)
-  nameWithType.vb: CollectionTools.AllItemsAreEqual(Of T)(IEnumerable(Of T))
-- uid: Biocs.Collections.CollectionTools.AllItemsAreEqual``1(IEnumerable{``0},System.Nullable{IEqualityComparer{``0}},``0@)
-  name: AllItemsAreEqual<T>(IEnumerable<T>, Nullable<IEqualityComparer<T>>, out T)
-  href: api/Biocs.Collections.CollectionTools.html#Biocs_Collections_CollectionTools_AllItemsAreEqual__1_IEnumerable___0__System_Nullable_IEqualityComparer___0_____0__
-  commentId: M:Biocs.Collections.CollectionTools.AllItemsAreEqual``1(IEnumerable{``0},System.Nullable{IEqualityComparer{``0}},``0@)
-  name.vb: AllItemsAreEqual(Of T)(IEnumerable(Of T), Nullable(Of IEqualityComparer(Of T)), ByRef T)
-  fullName: Biocs.Collections.CollectionTools.AllItemsAreEqual<T>(IEnumerable<T>, System.Nullable<IEqualityComparer<T>>, out T)
-  fullName.vb: Biocs.Collections.CollectionTools.AllItemsAreEqual(Of T)(IEnumerable(Of T), System.Nullable(Of IEqualityComparer(Of T)), ByRef T)
-  nameWithType: CollectionTools.AllItemsAreEqual<T>(IEnumerable<T>, Nullable<IEqualityComparer<T>>, out T)
-  nameWithType.vb: CollectionTools.AllItemsAreEqual(Of T)(IEnumerable(Of T), Nullable(Of IEqualityComparer(Of T)), ByRef T)
+- uid: Biocs.Collections.CollectionTools.AllItemsAreEqual``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})
+  name: AllItemsAreEqual<T>(IEnumerable<T>, IEqualityComparer<T>?)
+  href: api/Biocs.Collections.CollectionTools.html#Biocs_Collections_CollectionTools_AllItemsAreEqual__1_System_Collections_Generic_IEnumerable___0__System_Collections_Generic_IEqualityComparer___0__
+  commentId: M:Biocs.Collections.CollectionTools.AllItemsAreEqual``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})
+  name.vb: AllItemsAreEqual(Of T)(IEnumerable(Of T), IEqualityComparer(Of T))
+  fullName: Biocs.Collections.CollectionTools.AllItemsAreEqual<T>(System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.IEqualityComparer<T>?)
+  fullName.vb: Biocs.Collections.CollectionTools.AllItemsAreEqual(Of T)(System.Collections.Generic.IEnumerable(Of T), System.Collections.Generic.IEqualityComparer(Of T))
+  nameWithType: CollectionTools.AllItemsAreEqual<T>(IEnumerable<T>, IEqualityComparer<T>?)
+  nameWithType.vb: CollectionTools.AllItemsAreEqual(Of T)(IEnumerable(Of T), IEqualityComparer(Of T))
+- uid: Biocs.Collections.CollectionTools.AllItemsAreEqual``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0},``0@)
+  name: AllItemsAreEqual<T>(IEnumerable<T>, IEqualityComparer<T>?, out T)
+  href: api/Biocs.Collections.CollectionTools.html#Biocs_Collections_CollectionTools_AllItemsAreEqual__1_System_Collections_Generic_IEnumerable___0__System_Collections_Generic_IEqualityComparer___0____0__
+  commentId: M:Biocs.Collections.CollectionTools.AllItemsAreEqual``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0},``0@)
+  name.vb: AllItemsAreEqual(Of T)(IEnumerable(Of T), IEqualityComparer(Of T), T)
+  fullName: Biocs.Collections.CollectionTools.AllItemsAreEqual<T>(System.Collections.Generic.IEnumerable<T>, System.Collections.Generic.IEqualityComparer<T>?, out T)
+  fullName.vb: Biocs.Collections.CollectionTools.AllItemsAreEqual(Of T)(System.Collections.Generic.IEnumerable(Of T), System.Collections.Generic.IEqualityComparer(Of T), T)
+  nameWithType: CollectionTools.AllItemsAreEqual<T>(IEnumerable<T>, IEqualityComparer<T>?, out T)
+  nameWithType.vb: CollectionTools.AllItemsAreEqual(Of T)(IEnumerable(Of T), IEqualityComparer(Of T), T)
 - uid: Biocs.Collections.Counter`1
   name: Counter<T>
   href: api/Biocs.Collections.Counter-1.html
@@ -289,58 +313,43 @@ references:
   fullName.vb: Biocs.Collections.Counter(Of T)
   nameWithType: Counter<T>
   nameWithType.vb: Counter(Of T)
-- uid: Biocs.Collections.Counter`1.#ctor
-  name: Counter()
-  href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1__ctor
-  commentId: M:Biocs.Collections.Counter`1.#ctor
-  fullName: Biocs.Collections.Counter<T>.Counter()
-  fullName.vb: Biocs.Collections.Counter(Of T).Counter()
-  nameWithType: Counter<T>.Counter()
-  nameWithType.vb: Counter(Of T).Counter()
 - uid: Biocs.Collections.Counter`1.#ctor(Biocs.Collections.Counter{`0})
   name: Counter(Counter<T>)
   href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1__ctor_Biocs_Collections_Counter__0__
   commentId: M:Biocs.Collections.Counter`1.#ctor(Biocs.Collections.Counter{`0})
-  name.vb: Counter(Counter(Of T))
+  name.vb: New(Counter(Of T))
   fullName: Biocs.Collections.Counter<T>.Counter(Biocs.Collections.Counter<T>)
-  fullName.vb: Biocs.Collections.Counter(Of T).Counter(Biocs.Collections.Counter(Of T))
+  fullName.vb: Biocs.Collections.Counter(Of T).New(Biocs.Collections.Counter(Of T))
   nameWithType: Counter<T>.Counter(Counter<T>)
-  nameWithType.vb: Counter(Of T).Counter(Counter(Of T))
-- uid: Biocs.Collections.Counter`1.#ctor(System.Int32)
-  name: Counter(Int32)
-  href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1__ctor_System_Int32_
-  commentId: M:Biocs.Collections.Counter`1.#ctor(System.Int32)
-  fullName: Biocs.Collections.Counter<T>.Counter(System.Int32)
-  fullName.vb: Biocs.Collections.Counter(Of T).Counter(System.Int32)
-  nameWithType: Counter<T>.Counter(Int32)
-  nameWithType.vb: Counter(Of T).Counter(Int32)
-- uid: Biocs.Collections.Counter`1.#ctor(System.Int32,System.Nullable{IEqualityComparer{`0}})
-  name: Counter(Int32, Nullable<IEqualityComparer<T>>)
-  href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1__ctor_System_Int32_System_Nullable_IEqualityComparer__0___
-  commentId: M:Biocs.Collections.Counter`1.#ctor(System.Int32,System.Nullable{IEqualityComparer{`0}})
-  name.vb: Counter(Int32, Nullable(Of IEqualityComparer(Of T)))
-  fullName: Biocs.Collections.Counter<T>.Counter(System.Int32, System.Nullable<IEqualityComparer<T>>)
-  fullName.vb: Biocs.Collections.Counter(Of T).Counter(System.Int32, System.Nullable(Of IEqualityComparer(Of T)))
-  nameWithType: Counter<T>.Counter(Int32, Nullable<IEqualityComparer<T>>)
-  nameWithType.vb: Counter(Of T).Counter(Int32, Nullable(Of IEqualityComparer(Of T)))
-- uid: Biocs.Collections.Counter`1.#ctor(System.Nullable{IEqualityComparer{`0}})
-  name: Counter(Nullable<IEqualityComparer<T>>)
-  href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1__ctor_System_Nullable_IEqualityComparer__0___
-  commentId: M:Biocs.Collections.Counter`1.#ctor(System.Nullable{IEqualityComparer{`0}})
-  name.vb: Counter(Nullable(Of IEqualityComparer(Of T)))
-  fullName: Biocs.Collections.Counter<T>.Counter(System.Nullable<IEqualityComparer<T>>)
-  fullName.vb: Biocs.Collections.Counter(Of T).Counter(System.Nullable(Of IEqualityComparer(Of T)))
-  nameWithType: Counter<T>.Counter(Nullable<IEqualityComparer<T>>)
-  nameWithType.vb: Counter(Of T).Counter(Nullable(Of IEqualityComparer(Of T)))
+  nameWithType.vb: Counter(Of T).New(Counter(Of T))
+- uid: Biocs.Collections.Counter`1.#ctor(System.Collections.Generic.IEqualityComparer{`0})
+  name: Counter(IEqualityComparer<T>?)
+  href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1__ctor_System_Collections_Generic_IEqualityComparer__0__
+  commentId: M:Biocs.Collections.Counter`1.#ctor(System.Collections.Generic.IEqualityComparer{`0})
+  name.vb: New(IEqualityComparer(Of T))
+  fullName: Biocs.Collections.Counter<T>.Counter(System.Collections.Generic.IEqualityComparer<T>?)
+  fullName.vb: Biocs.Collections.Counter(Of T).New(System.Collections.Generic.IEqualityComparer(Of T))
+  nameWithType: Counter<T>.Counter(IEqualityComparer<T>?)
+  nameWithType.vb: Counter(Of T).New(IEqualityComparer(Of T))
+- uid: Biocs.Collections.Counter`1.#ctor(System.Int32,System.Collections.Generic.IEqualityComparer{`0})
+  name: Counter(int, IEqualityComparer<T>?)
+  href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1__ctor_System_Int32_System_Collections_Generic_IEqualityComparer__0__
+  commentId: M:Biocs.Collections.Counter`1.#ctor(System.Int32,System.Collections.Generic.IEqualityComparer{`0})
+  name.vb: New(Integer, IEqualityComparer(Of T))
+  fullName: Biocs.Collections.Counter<T>.Counter(int, System.Collections.Generic.IEqualityComparer<T>?)
+  fullName.vb: Biocs.Collections.Counter(Of T).New(Integer, System.Collections.Generic.IEqualityComparer(Of T))
+  nameWithType: Counter<T>.Counter(int, IEqualityComparer<T>?)
+  nameWithType.vb: Counter(Of T).New(Integer, IEqualityComparer(Of T))
 - uid: Biocs.Collections.Counter`1.#ctor*
   name: Counter
   href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1__ctor_
   commentId: Overload:Biocs.Collections.Counter`1.#ctor
   isSpec: "True"
+  name.vb: New
   fullName: Biocs.Collections.Counter<T>.Counter
-  fullName.vb: Biocs.Collections.Counter(Of T).Counter
+  fullName.vb: Biocs.Collections.Counter(Of T).New
   nameWithType: Counter<T>.Counter
-  nameWithType.vb: Counter(Of T).Counter
+  nameWithType.vb: Counter(Of T).New
 - uid: Biocs.Collections.Counter`1.Add(`0)
   name: Add(T)
   href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_Add__0_
@@ -350,13 +359,14 @@ references:
   nameWithType: Counter<T>.Add(T)
   nameWithType.vb: Counter(Of T).Add(T)
 - uid: Biocs.Collections.Counter`1.Add(`0,System.Int32)
-  name: Add(T, Int32)
+  name: Add(T, int)
   href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_Add__0_System_Int32_
   commentId: M:Biocs.Collections.Counter`1.Add(`0,System.Int32)
-  fullName: Biocs.Collections.Counter<T>.Add(T, System.Int32)
-  fullName.vb: Biocs.Collections.Counter(Of T).Add(T, System.Int32)
-  nameWithType: Counter<T>.Add(T, Int32)
-  nameWithType.vb: Counter(Of T).Add(T, Int32)
+  name.vb: Add(T, Integer)
+  fullName: Biocs.Collections.Counter<T>.Add(T, int)
+  fullName.vb: Biocs.Collections.Counter(Of T).Add(T, Integer)
+  nameWithType: Counter<T>.Add(T, int)
+  nameWithType.vb: Counter(Of T).Add(T, Integer)
 - uid: Biocs.Collections.Counter`1.Add*
   name: Add
   href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_Add_
@@ -366,13 +376,13 @@ references:
   fullName.vb: Biocs.Collections.Counter(Of T).Add
   nameWithType: Counter<T>.Add
   nameWithType.vb: Counter(Of T).Add
-- uid: Biocs.Collections.Counter`1.AddRange(IEnumerable{`0})
+- uid: Biocs.Collections.Counter`1.AddRange(System.Collections.Generic.IEnumerable{`0})
   name: AddRange(IEnumerable<T>)
-  href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_AddRange_IEnumerable__0__
-  commentId: M:Biocs.Collections.Counter`1.AddRange(IEnumerable{`0})
+  href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_AddRange_System_Collections_Generic_IEnumerable__0__
+  commentId: M:Biocs.Collections.Counter`1.AddRange(System.Collections.Generic.IEnumerable{`0})
   name.vb: AddRange(IEnumerable(Of T))
-  fullName: Biocs.Collections.Counter<T>.AddRange(IEnumerable<T>)
-  fullName.vb: Biocs.Collections.Counter(Of T).AddRange(IEnumerable(Of T))
+  fullName: Biocs.Collections.Counter<T>.AddRange(System.Collections.Generic.IEnumerable<T>)
+  fullName.vb: Biocs.Collections.Counter(Of T).AddRange(System.Collections.Generic.IEnumerable(Of T))
   nameWithType: Counter<T>.AddRange(IEnumerable<T>)
   nameWithType.vb: Counter(Of T).AddRange(IEnumerable(Of T))
 - uid: Biocs.Collections.Counter`1.AddRange*
@@ -436,14 +446,14 @@ references:
   nameWithType: Counter<T>.Contains
   nameWithType.vb: Counter(Of T).Contains
 - uid: Biocs.Collections.Counter`1.CopyTo(`0[],System.Int32)
-  name: CopyTo(T[], Int32)
+  name: CopyTo(T[], int)
   href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_CopyTo__0___System_Int32_
   commentId: M:Biocs.Collections.Counter`1.CopyTo(`0[],System.Int32)
-  name.vb: CopyTo(T(), Int32)
-  fullName: Biocs.Collections.Counter<T>.CopyTo(T[], System.Int32)
-  fullName.vb: Biocs.Collections.Counter(Of T).CopyTo(T(), System.Int32)
-  nameWithType: Counter<T>.CopyTo(T[], Int32)
-  nameWithType.vb: Counter(Of T).CopyTo(T(), Int32)
+  name.vb: CopyTo(T(), Integer)
+  fullName: Biocs.Collections.Counter<T>.CopyTo(T[], int)
+  fullName.vb: Biocs.Collections.Counter(Of T).CopyTo(T(), Integer)
+  nameWithType: Counter<T>.CopyTo(T[], int)
+  nameWithType.vb: Counter(Of T).CopyTo(T(), Integer)
 - uid: Biocs.Collections.Counter`1.CopyTo*
   name: CopyTo
   href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_CopyTo_
@@ -496,13 +506,14 @@ references:
   nameWithType: Counter<T>.Remove(T)
   nameWithType.vb: Counter(Of T).Remove(T)
 - uid: Biocs.Collections.Counter`1.Remove(`0,System.Int32)
-  name: Remove(T, Int32)
+  name: Remove(T, int)
   href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_Remove__0_System_Int32_
   commentId: M:Biocs.Collections.Counter`1.Remove(`0,System.Int32)
-  fullName: Biocs.Collections.Counter<T>.Remove(T, System.Int32)
-  fullName.vb: Biocs.Collections.Counter(Of T).Remove(T, System.Int32)
-  nameWithType: Counter<T>.Remove(T, Int32)
-  nameWithType.vb: Counter(Of T).Remove(T, Int32)
+  name.vb: Remove(T, Integer)
+  fullName: Biocs.Collections.Counter<T>.Remove(T, int)
+  fullName.vb: Biocs.Collections.Counter(Of T).Remove(T, Integer)
+  nameWithType: Counter<T>.Remove(T, int)
+  nameWithType.vb: Counter(Of T).Remove(T, Integer)
 - uid: Biocs.Collections.Counter`1.Remove*
   name: Remove
   href: api/Biocs.Collections.Counter-1.html#Biocs_Collections_Counter_1_Remove_
@@ -606,40 +617,34 @@ references:
   fullName.vb: Biocs.Collections.Deque(Of T)
   nameWithType: Deque<T>
   nameWithType.vb: Deque(Of T)
-- uid: Biocs.Collections.Deque`1.#ctor
-  name: Deque()
-  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1__ctor
-  commentId: M:Biocs.Collections.Deque`1.#ctor
-  fullName: Biocs.Collections.Deque<T>.Deque()
-  fullName.vb: Biocs.Collections.Deque(Of T).Deque()
-  nameWithType: Deque<T>.Deque()
-  nameWithType.vb: Deque(Of T).Deque()
-- uid: Biocs.Collections.Deque`1.#ctor(IEnumerable{`0})
+- uid: Biocs.Collections.Deque`1.#ctor(System.Collections.Generic.IEnumerable{`0})
   name: Deque(IEnumerable<T>)
-  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1__ctor_IEnumerable__0__
-  commentId: M:Biocs.Collections.Deque`1.#ctor(IEnumerable{`0})
-  name.vb: Deque(IEnumerable(Of T))
-  fullName: Biocs.Collections.Deque<T>.Deque(IEnumerable<T>)
-  fullName.vb: Biocs.Collections.Deque(Of T).Deque(IEnumerable(Of T))
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1__ctor_System_Collections_Generic_IEnumerable__0__
+  commentId: M:Biocs.Collections.Deque`1.#ctor(System.Collections.Generic.IEnumerable{`0})
+  name.vb: New(IEnumerable(Of T))
+  fullName: Biocs.Collections.Deque<T>.Deque(System.Collections.Generic.IEnumerable<T>)
+  fullName.vb: Biocs.Collections.Deque(Of T).New(System.Collections.Generic.IEnumerable(Of T))
   nameWithType: Deque<T>.Deque(IEnumerable<T>)
-  nameWithType.vb: Deque(Of T).Deque(IEnumerable(Of T))
+  nameWithType.vb: Deque(Of T).New(IEnumerable(Of T))
 - uid: Biocs.Collections.Deque`1.#ctor(System.Int32)
-  name: Deque(Int32)
+  name: Deque(int)
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1__ctor_System_Int32_
   commentId: M:Biocs.Collections.Deque`1.#ctor(System.Int32)
-  fullName: Biocs.Collections.Deque<T>.Deque(System.Int32)
-  fullName.vb: Biocs.Collections.Deque(Of T).Deque(System.Int32)
-  nameWithType: Deque<T>.Deque(Int32)
-  nameWithType.vb: Deque(Of T).Deque(Int32)
+  name.vb: New(Integer)
+  fullName: Biocs.Collections.Deque<T>.Deque(int)
+  fullName.vb: Biocs.Collections.Deque(Of T).New(Integer)
+  nameWithType: Deque<T>.Deque(int)
+  nameWithType.vb: Deque(Of T).New(Integer)
 - uid: Biocs.Collections.Deque`1.#ctor*
   name: Deque
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1__ctor_
   commentId: Overload:Biocs.Collections.Deque`1.#ctor
   isSpec: "True"
+  name.vb: New
   fullName: Biocs.Collections.Deque<T>.Deque
-  fullName.vb: Biocs.Collections.Deque(Of T).Deque
+  fullName.vb: Biocs.Collections.Deque(Of T).New
   nameWithType: Deque<T>.Deque
-  nameWithType.vb: Deque(Of T).Deque
+  nameWithType.vb: Deque(Of T).New
 - uid: Biocs.Collections.Deque`1.AddFirst(`0)
   name: AddFirst(T)
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_AddFirst__0_
@@ -725,24 +730,24 @@ references:
   fullName.vb: Biocs.Collections.Deque(Of T).Contains
   nameWithType: Deque<T>.Contains
   nameWithType.vb: Deque(Of T).Contains
-- uid: Biocs.Collections.Deque`1.CopyTo(`0[],System.Int32)
-  name: CopyTo(T[], Int32)
-  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_CopyTo__0___System_Int32_
-  commentId: M:Biocs.Collections.Deque`1.CopyTo(`0[],System.Int32)
-  name.vb: CopyTo(T(), Int32)
-  fullName: Biocs.Collections.Deque<T>.CopyTo(T[], System.Int32)
-  fullName.vb: Biocs.Collections.Deque(Of T).CopyTo(T(), System.Int32)
-  nameWithType: Deque<T>.CopyTo(T[], Int32)
-  nameWithType.vb: Deque(Of T).CopyTo(T(), Int32)
 - uid: Biocs.Collections.Deque`1.CopyTo(System.Int32,`0[],System.Int32,System.Int32)
-  name: CopyTo(Int32, T[], Int32, Int32)
+  name: CopyTo(int, T[], int, int)
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_CopyTo_System_Int32__0___System_Int32_System_Int32_
   commentId: M:Biocs.Collections.Deque`1.CopyTo(System.Int32,`0[],System.Int32,System.Int32)
-  name.vb: CopyTo(Int32, T(), Int32, Int32)
-  fullName: Biocs.Collections.Deque<T>.CopyTo(System.Int32, T[], System.Int32, System.Int32)
-  fullName.vb: Biocs.Collections.Deque(Of T).CopyTo(System.Int32, T(), System.Int32, System.Int32)
-  nameWithType: Deque<T>.CopyTo(Int32, T[], Int32, Int32)
-  nameWithType.vb: Deque(Of T).CopyTo(Int32, T(), Int32, Int32)
+  name.vb: CopyTo(Integer, T(), Integer, Integer)
+  fullName: Biocs.Collections.Deque<T>.CopyTo(int, T[], int, int)
+  fullName.vb: Biocs.Collections.Deque(Of T).CopyTo(Integer, T(), Integer, Integer)
+  nameWithType: Deque<T>.CopyTo(int, T[], int, int)
+  nameWithType.vb: Deque(Of T).CopyTo(Integer, T(), Integer, Integer)
+- uid: Biocs.Collections.Deque`1.CopyTo(`0[],System.Int32)
+  name: CopyTo(T[], int)
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_CopyTo__0___System_Int32_
+  commentId: M:Biocs.Collections.Deque`1.CopyTo(`0[],System.Int32)
+  name.vb: CopyTo(T(), Integer)
+  fullName: Biocs.Collections.Deque<T>.CopyTo(T[], int)
+  fullName.vb: Biocs.Collections.Deque(Of T).CopyTo(T(), Integer)
+  nameWithType: Deque<T>.CopyTo(T[], int)
+  nameWithType.vb: Deque(Of T).CopyTo(T(), Integer)
 - uid: Biocs.Collections.Deque`1.CopyTo*
   name: CopyTo
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_CopyTo_
@@ -821,13 +826,14 @@ references:
   nameWithType: Deque<T>.IndexOf
   nameWithType.vb: Deque(Of T).IndexOf
 - uid: Biocs.Collections.Deque`1.Insert(System.Int32,`0)
-  name: Insert(Int32, T)
+  name: Insert(int, T)
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Insert_System_Int32__0_
   commentId: M:Biocs.Collections.Deque`1.Insert(System.Int32,`0)
-  fullName: Biocs.Collections.Deque<T>.Insert(System.Int32, T)
-  fullName.vb: Biocs.Collections.Deque(Of T).Insert(System.Int32, T)
-  nameWithType: Deque<T>.Insert(Int32, T)
-  nameWithType.vb: Deque(Of T).Insert(Int32, T)
+  name.vb: Insert(Integer, T)
+  fullName: Biocs.Collections.Deque<T>.Insert(int, T)
+  fullName.vb: Biocs.Collections.Deque(Of T).Insert(Integer, T)
+  nameWithType: Deque<T>.Insert(int, T)
+  nameWithType.vb: Deque(Of T).Insert(Integer, T)
 - uid: Biocs.Collections.Deque`1.Insert*
   name: Insert
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Insert_
@@ -837,15 +843,15 @@ references:
   fullName.vb: Biocs.Collections.Deque(Of T).Insert
   nameWithType: Deque<T>.Insert
   nameWithType.vb: Deque(Of T).Insert
-- uid: Biocs.Collections.Deque`1.InsertRange(System.Int32,IEnumerable{`0})
-  name: InsertRange(Int32, IEnumerable<T>)
-  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_InsertRange_System_Int32_IEnumerable__0__
-  commentId: M:Biocs.Collections.Deque`1.InsertRange(System.Int32,IEnumerable{`0})
-  name.vb: InsertRange(Int32, IEnumerable(Of T))
-  fullName: Biocs.Collections.Deque<T>.InsertRange(System.Int32, IEnumerable<T>)
-  fullName.vb: Biocs.Collections.Deque(Of T).InsertRange(System.Int32, IEnumerable(Of T))
-  nameWithType: Deque<T>.InsertRange(Int32, IEnumerable<T>)
-  nameWithType.vb: Deque(Of T).InsertRange(Int32, IEnumerable(Of T))
+- uid: Biocs.Collections.Deque`1.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{`0})
+  name: InsertRange(int, IEnumerable<T>)
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_InsertRange_System_Int32_System_Collections_Generic_IEnumerable__0__
+  commentId: M:Biocs.Collections.Deque`1.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{`0})
+  name.vb: InsertRange(Integer, IEnumerable(Of T))
+  fullName: Biocs.Collections.Deque<T>.InsertRange(int, System.Collections.Generic.IEnumerable<T>)
+  fullName.vb: Biocs.Collections.Deque(Of T).InsertRange(Integer, System.Collections.Generic.IEnumerable(Of T))
+  nameWithType: Deque<T>.InsertRange(int, IEnumerable<T>)
+  nameWithType.vb: Deque(Of T).InsertRange(Integer, IEnumerable(Of T))
 - uid: Biocs.Collections.Deque`1.InsertRange*
   name: InsertRange
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_InsertRange_
@@ -856,23 +862,24 @@ references:
   nameWithType: Deque<T>.InsertRange
   nameWithType.vb: Deque(Of T).InsertRange
 - uid: Biocs.Collections.Deque`1.Item(System.Int32)
-  name: Item[Int32]
+  name: this[int]
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Item_System_Int32_
   commentId: P:Biocs.Collections.Deque`1.Item(System.Int32)
-  name.vb: Item(Int32)
-  fullName: Biocs.Collections.Deque<T>.Item[System.Int32]
-  fullName.vb: Biocs.Collections.Deque(Of T).Item(System.Int32)
-  nameWithType: Deque<T>.Item[Int32]
-  nameWithType.vb: Deque(Of T).Item(Int32)
+  name.vb: this[](Integer)
+  fullName: Biocs.Collections.Deque<T>.this[int]
+  fullName.vb: Biocs.Collections.Deque(Of T).this[](Integer)
+  nameWithType: Deque<T>.this[int]
+  nameWithType.vb: Deque(Of T).this[](Integer)
 - uid: Biocs.Collections.Deque`1.Item*
-  name: Item
+  name: this
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Item_
   commentId: Overload:Biocs.Collections.Deque`1.Item
   isSpec: "True"
-  fullName: Biocs.Collections.Deque<T>.Item
-  fullName.vb: Biocs.Collections.Deque(Of T).Item
-  nameWithType: Deque<T>.Item
-  nameWithType.vb: Deque(Of T).Item
+  name.vb: this[]
+  fullName: Biocs.Collections.Deque<T>.this
+  fullName.vb: Biocs.Collections.Deque(Of T).this[]
+  nameWithType: Deque<T>.this
+  nameWithType.vb: Deque(Of T).this[]
 - uid: Biocs.Collections.Deque`1.Last
   name: Last
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_Last
@@ -908,13 +915,14 @@ references:
   nameWithType: Deque<T>.Remove
   nameWithType.vb: Deque(Of T).Remove
 - uid: Biocs.Collections.Deque`1.RemoveAt(System.Int32)
-  name: RemoveAt(Int32)
+  name: RemoveAt(int)
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_RemoveAt_System_Int32_
   commentId: M:Biocs.Collections.Deque`1.RemoveAt(System.Int32)
-  fullName: Biocs.Collections.Deque<T>.RemoveAt(System.Int32)
-  fullName.vb: Biocs.Collections.Deque(Of T).RemoveAt(System.Int32)
-  nameWithType: Deque<T>.RemoveAt(Int32)
-  nameWithType.vb: Deque(Of T).RemoveAt(Int32)
+  name.vb: RemoveAt(Integer)
+  fullName: Biocs.Collections.Deque<T>.RemoveAt(int)
+  fullName.vb: Biocs.Collections.Deque(Of T).RemoveAt(Integer)
+  nameWithType: Deque<T>.RemoveAt(int)
+  nameWithType.vb: Deque(Of T).RemoveAt(Integer)
 - uid: Biocs.Collections.Deque`1.RemoveAt*
   name: RemoveAt
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_RemoveAt_
@@ -959,13 +967,14 @@ references:
   nameWithType: Deque<T>.RemoveLast
   nameWithType.vb: Deque(Of T).RemoveLast
 - uid: Biocs.Collections.Deque`1.RemoveRange(System.Int32,System.Int32)
-  name: RemoveRange(Int32, Int32)
+  name: RemoveRange(int, int)
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_RemoveRange_System_Int32_System_Int32_
   commentId: M:Biocs.Collections.Deque`1.RemoveRange(System.Int32,System.Int32)
-  fullName: Biocs.Collections.Deque<T>.RemoveRange(System.Int32, System.Int32)
-  fullName.vb: Biocs.Collections.Deque(Of T).RemoveRange(System.Int32, System.Int32)
-  nameWithType: Deque<T>.RemoveRange(Int32, Int32)
-  nameWithType.vb: Deque(Of T).RemoveRange(Int32, Int32)
+  name.vb: RemoveRange(Integer, Integer)
+  fullName: Biocs.Collections.Deque<T>.RemoveRange(int, int)
+  fullName.vb: Biocs.Collections.Deque(Of T).RemoveRange(Integer, Integer)
+  nameWithType: Deque<T>.RemoveRange(int, int)
+  nameWithType.vb: Deque(Of T).RemoveRange(Integer, Integer)
 - uid: Biocs.Collections.Deque`1.RemoveRange*
   name: RemoveRange
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_RemoveRange_
@@ -1040,11 +1049,14 @@ references:
   fullName: Biocs.DnaBase.Equals(Biocs.DnaBase)
   nameWithType: DnaBase.Equals(DnaBase)
 - uid: Biocs.DnaBase.Equals(System.Object)
-  name: Equals(Object)
+  name: Equals(object?)
   href: api/Biocs.DnaBase.html#Biocs_DnaBase_Equals_System_Object_
   commentId: M:Biocs.DnaBase.Equals(System.Object)
-  fullName: Biocs.DnaBase.Equals(System.Object)
-  nameWithType: DnaBase.Equals(Object)
+  name.vb: Equals(Object)
+  fullName: Biocs.DnaBase.Equals(object?)
+  fullName.vb: Biocs.DnaBase.Equals(Object)
+  nameWithType: DnaBase.Equals(object?)
+  nameWithType.vb: DnaBase.Equals(Object)
 - uid: Biocs.DnaBase.Equals*
   name: Equals
   href: api/Biocs.DnaBase.html#Biocs_DnaBase_Equals_
@@ -1169,38 +1181,15 @@ references:
   isSpec: "True"
   fullName: Biocs.DnaBase.Name
   nameWithType: DnaBase.Name
-- uid: Biocs.DnaBase.op_Equality(Biocs.DnaBase,Biocs.DnaBase)
-  name: Equality(DnaBase, DnaBase)
-  href: api/Biocs.DnaBase.html#Biocs_DnaBase_op_Equality_Biocs_DnaBase_Biocs_DnaBase_
-  commentId: M:Biocs.DnaBase.op_Equality(Biocs.DnaBase,Biocs.DnaBase)
-  fullName: Biocs.DnaBase.Equality(Biocs.DnaBase, Biocs.DnaBase)
-  nameWithType: DnaBase.Equality(DnaBase, DnaBase)
-- uid: Biocs.DnaBase.op_Equality*
-  name: Equality
-  href: api/Biocs.DnaBase.html#Biocs_DnaBase_op_Equality_
-  commentId: Overload:Biocs.DnaBase.op_Equality
-  isSpec: "True"
-  fullName: Biocs.DnaBase.Equality
-  nameWithType: DnaBase.Equality
-- uid: Biocs.DnaBase.op_Inequality(Biocs.DnaBase,Biocs.DnaBase)
-  name: Inequality(DnaBase, DnaBase)
-  href: api/Biocs.DnaBase.html#Biocs_DnaBase_op_Inequality_Biocs_DnaBase_Biocs_DnaBase_
-  commentId: M:Biocs.DnaBase.op_Inequality(Biocs.DnaBase,Biocs.DnaBase)
-  fullName: Biocs.DnaBase.Inequality(Biocs.DnaBase, Biocs.DnaBase)
-  nameWithType: DnaBase.Inequality(DnaBase, DnaBase)
-- uid: Biocs.DnaBase.op_Inequality*
-  name: Inequality
-  href: api/Biocs.DnaBase.html#Biocs_DnaBase_op_Inequality_
-  commentId: Overload:Biocs.DnaBase.op_Inequality
-  isSpec: "True"
-  fullName: Biocs.DnaBase.Inequality
-  nameWithType: DnaBase.Inequality
 - uid: Biocs.DnaBase.Parse(System.Char)
-  name: Parse(Char)
+  name: Parse(char)
   href: api/Biocs.DnaBase.html#Biocs_DnaBase_Parse_System_Char_
   commentId: M:Biocs.DnaBase.Parse(System.Char)
-  fullName: Biocs.DnaBase.Parse(System.Char)
-  nameWithType: DnaBase.Parse(Char)
+  name.vb: Parse(Char)
+  fullName: Biocs.DnaBase.Parse(char)
+  fullName.vb: Biocs.DnaBase.Parse(Char)
+  nameWithType: DnaBase.Parse(char)
+  nameWithType.vb: DnaBase.Parse(Char)
 - uid: Biocs.DnaBase.Parse*
   name: Parse
   href: api/Biocs.DnaBase.html#Biocs_DnaBase_Parse_
@@ -1274,14 +1263,14 @@ references:
   fullName: Biocs.DnaBase.ToUpper
   nameWithType: DnaBase.ToUpper
 - uid: Biocs.DnaBase.TryParse(System.Char,Biocs.DnaBase@)
-  name: TryParse(Char, out DnaBase)
+  name: TryParse(char, out DnaBase)
   href: api/Biocs.DnaBase.html#Biocs_DnaBase_TryParse_System_Char_Biocs_DnaBase__
   commentId: M:Biocs.DnaBase.TryParse(System.Char,Biocs.DnaBase@)
-  name.vb: TryParse(Char, ByRef DnaBase)
-  fullName: Biocs.DnaBase.TryParse(System.Char, out Biocs.DnaBase)
-  fullName.vb: Biocs.DnaBase.TryParse(System.Char, ByRef Biocs.DnaBase)
-  nameWithType: DnaBase.TryParse(Char, out DnaBase)
-  nameWithType.vb: DnaBase.TryParse(Char, ByRef DnaBase)
+  name.vb: TryParse(Char, DnaBase)
+  fullName: Biocs.DnaBase.TryParse(char, out Biocs.DnaBase)
+  fullName.vb: Biocs.DnaBase.TryParse(Char, Biocs.DnaBase)
+  nameWithType: DnaBase.TryParse(char, out DnaBase)
+  nameWithType.vb: DnaBase.TryParse(Char, DnaBase)
 - uid: Biocs.DnaBase.TryParse*
   name: TryParse
   href: api/Biocs.DnaBase.html#Biocs_DnaBase_TryParse_
@@ -1289,6 +1278,44 @@ references:
   isSpec: "True"
   fullName: Biocs.DnaBase.TryParse
   nameWithType: DnaBase.TryParse
+- uid: Biocs.DnaBase.op_Equality(Biocs.DnaBase,Biocs.DnaBase)
+  name: operator ==(DnaBase, DnaBase)
+  href: api/Biocs.DnaBase.html#Biocs_DnaBase_op_Equality_Biocs_DnaBase_Biocs_DnaBase_
+  commentId: M:Biocs.DnaBase.op_Equality(Biocs.DnaBase,Biocs.DnaBase)
+  name.vb: =(DnaBase, DnaBase)
+  fullName: Biocs.DnaBase.operator ==(Biocs.DnaBase, Biocs.DnaBase)
+  fullName.vb: Biocs.DnaBase.=(Biocs.DnaBase, Biocs.DnaBase)
+  nameWithType: DnaBase.operator ==(DnaBase, DnaBase)
+  nameWithType.vb: DnaBase.=(DnaBase, DnaBase)
+- uid: Biocs.DnaBase.op_Equality*
+  name: operator ==
+  href: api/Biocs.DnaBase.html#Biocs_DnaBase_op_Equality_
+  commentId: Overload:Biocs.DnaBase.op_Equality
+  isSpec: "True"
+  name.vb: =
+  fullName: Biocs.DnaBase.operator ==
+  fullName.vb: Biocs.DnaBase.=
+  nameWithType: DnaBase.operator ==
+  nameWithType.vb: DnaBase.=
+- uid: Biocs.DnaBase.op_Inequality(Biocs.DnaBase,Biocs.DnaBase)
+  name: operator !=(DnaBase, DnaBase)
+  href: api/Biocs.DnaBase.html#Biocs_DnaBase_op_Inequality_Biocs_DnaBase_Biocs_DnaBase_
+  commentId: M:Biocs.DnaBase.op_Inequality(Biocs.DnaBase,Biocs.DnaBase)
+  name.vb: <>(DnaBase, DnaBase)
+  fullName: Biocs.DnaBase.operator !=(Biocs.DnaBase, Biocs.DnaBase)
+  fullName.vb: Biocs.DnaBase.<>(Biocs.DnaBase, Biocs.DnaBase)
+  nameWithType: DnaBase.operator !=(DnaBase, DnaBase)
+  nameWithType.vb: DnaBase.<>(DnaBase, DnaBase)
+- uid: Biocs.DnaBase.op_Inequality*
+  name: operator !=
+  href: api/Biocs.DnaBase.html#Biocs_DnaBase_op_Inequality_
+  commentId: Overload:Biocs.DnaBase.op_Inequality
+  isSpec: "True"
+  name.vb: <>
+  fullName: Biocs.DnaBase.operator !=
+  fullName.vb: Biocs.DnaBase.<>
+  nameWithType: DnaBase.operator !=
+  nameWithType.vb: DnaBase.<>
 - uid: Biocs.IO
   name: Biocs.IO
   href: api/Biocs.IO.html
@@ -1301,37 +1328,34 @@ references:
   commentId: T:Biocs.IO.BgzfStream
   fullName: Biocs.IO.BgzfStream
   nameWithType: BgzfStream
-- uid: Biocs.IO.BgzfStream.#ctor(Stream,CompressionLevel)
-  name: BgzfStream(Stream, CompressionLevel)
-  href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream__ctor_Stream_CompressionLevel_
-  commentId: M:Biocs.IO.BgzfStream.#ctor(Stream,CompressionLevel)
-  fullName: Biocs.IO.BgzfStream.BgzfStream(Stream, CompressionLevel)
-  nameWithType: BgzfStream.BgzfStream(Stream, CompressionLevel)
-- uid: Biocs.IO.BgzfStream.#ctor(Stream,CompressionLevel,System.Boolean)
-  name: BgzfStream(Stream, CompressionLevel, Boolean)
-  href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream__ctor_Stream_CompressionLevel_System_Boolean_
-  commentId: M:Biocs.IO.BgzfStream.#ctor(Stream,CompressionLevel,System.Boolean)
-  fullName: Biocs.IO.BgzfStream.BgzfStream(Stream, CompressionLevel, System.Boolean)
-  nameWithType: BgzfStream.BgzfStream(Stream, CompressionLevel, Boolean)
-- uid: Biocs.IO.BgzfStream.#ctor(Stream,CompressionMode)
-  name: BgzfStream(Stream, CompressionMode)
-  href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream__ctor_Stream_CompressionMode_
-  commentId: M:Biocs.IO.BgzfStream.#ctor(Stream,CompressionMode)
-  fullName: Biocs.IO.BgzfStream.BgzfStream(Stream, CompressionMode)
-  nameWithType: BgzfStream.BgzfStream(Stream, CompressionMode)
-- uid: Biocs.IO.BgzfStream.#ctor(Stream,CompressionMode,System.Boolean)
-  name: BgzfStream(Stream, CompressionMode, Boolean)
-  href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream__ctor_Stream_CompressionMode_System_Boolean_
-  commentId: M:Biocs.IO.BgzfStream.#ctor(Stream,CompressionMode,System.Boolean)
-  fullName: Biocs.IO.BgzfStream.BgzfStream(Stream, CompressionMode, System.Boolean)
-  nameWithType: BgzfStream.BgzfStream(Stream, CompressionMode, Boolean)
+- uid: Biocs.IO.BgzfStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionLevel,System.Boolean)
+  name: BgzfStream(Stream, CompressionLevel, bool)
+  href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream__ctor_System_IO_Stream_System_IO_Compression_CompressionLevel_System_Boolean_
+  commentId: M:Biocs.IO.BgzfStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionLevel,System.Boolean)
+  name.vb: New(Stream, CompressionLevel, Boolean)
+  fullName: Biocs.IO.BgzfStream.BgzfStream(System.IO.Stream, System.IO.Compression.CompressionLevel, bool)
+  fullName.vb: Biocs.IO.BgzfStream.New(System.IO.Stream, System.IO.Compression.CompressionLevel, Boolean)
+  nameWithType: BgzfStream.BgzfStream(Stream, CompressionLevel, bool)
+  nameWithType.vb: BgzfStream.New(Stream, CompressionLevel, Boolean)
+- uid: Biocs.IO.BgzfStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionMode,System.Boolean)
+  name: BgzfStream(Stream, CompressionMode, bool)
+  href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream__ctor_System_IO_Stream_System_IO_Compression_CompressionMode_System_Boolean_
+  commentId: M:Biocs.IO.BgzfStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionMode,System.Boolean)
+  name.vb: New(Stream, CompressionMode, Boolean)
+  fullName: Biocs.IO.BgzfStream.BgzfStream(System.IO.Stream, System.IO.Compression.CompressionMode, bool)
+  fullName.vb: Biocs.IO.BgzfStream.New(System.IO.Stream, System.IO.Compression.CompressionMode, Boolean)
+  nameWithType: BgzfStream.BgzfStream(Stream, CompressionMode, bool)
+  nameWithType.vb: BgzfStream.New(Stream, CompressionMode, Boolean)
 - uid: Biocs.IO.BgzfStream.#ctor*
   name: BgzfStream
   href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream__ctor_
   commentId: Overload:Biocs.IO.BgzfStream.#ctor
   isSpec: "True"
+  name.vb: New
   fullName: Biocs.IO.BgzfStream.BgzfStream
+  fullName.vb: Biocs.IO.BgzfStream.New
   nameWithType: BgzfStream.BgzfStream
+  nameWithType.vb: BgzfStream.New
 - uid: Biocs.IO.BgzfStream.CanRead
   name: CanRead
   href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream_CanRead
@@ -1372,11 +1396,14 @@ references:
   fullName: Biocs.IO.BgzfStream.CanWrite
   nameWithType: BgzfStream.CanWrite
 - uid: Biocs.IO.BgzfStream.Dispose(System.Boolean)
-  name: Dispose(Boolean)
+  name: Dispose(bool)
   href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream_Dispose_System_Boolean_
   commentId: M:Biocs.IO.BgzfStream.Dispose(System.Boolean)
-  fullName: Biocs.IO.BgzfStream.Dispose(System.Boolean)
-  nameWithType: BgzfStream.Dispose(Boolean)
+  name.vb: Dispose(Boolean)
+  fullName: Biocs.IO.BgzfStream.Dispose(bool)
+  fullName.vb: Biocs.IO.BgzfStream.Dispose(Boolean)
+  nameWithType: BgzfStream.Dispose(bool)
+  nameWithType.vb: BgzfStream.Dispose(Boolean)
 - uid: Biocs.IO.BgzfStream.Dispose*
   name: Dispose
   href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream_Dispose_
@@ -1398,11 +1425,14 @@ references:
   fullName: Biocs.IO.BgzfStream.Flush
   nameWithType: BgzfStream.Flush
 - uid: Biocs.IO.BgzfStream.IsBgzfFile(System.String)
-  name: IsBgzfFile(String)
+  name: IsBgzfFile(string?)
   href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream_IsBgzfFile_System_String_
   commentId: M:Biocs.IO.BgzfStream.IsBgzfFile(System.String)
-  fullName: Biocs.IO.BgzfStream.IsBgzfFile(System.String)
-  nameWithType: BgzfStream.IsBgzfFile(String)
+  name.vb: IsBgzfFile(String)
+  fullName: Biocs.IO.BgzfStream.IsBgzfFile(string?)
+  fullName.vb: Biocs.IO.BgzfStream.IsBgzfFile(String)
+  nameWithType: BgzfStream.IsBgzfFile(string?)
+  nameWithType.vb: BgzfStream.IsBgzfFile(String)
 - uid: Biocs.IO.BgzfStream.IsBgzfFile*
   name: IsBgzfFile
   href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream_IsBgzfFile_
@@ -1437,14 +1467,23 @@ references:
   fullName: Biocs.IO.BgzfStream.Position
   nameWithType: BgzfStream.Position
 - uid: Biocs.IO.BgzfStream.Read(System.Byte[],System.Int32,System.Int32)
-  name: Read(Byte[], Int32, Int32)
+  name: Read(byte[], int, int)
   href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream_Read_System_Byte___System_Int32_System_Int32_
   commentId: M:Biocs.IO.BgzfStream.Read(System.Byte[],System.Int32,System.Int32)
-  name.vb: Read(Byte(), Int32, Int32)
-  fullName: Biocs.IO.BgzfStream.Read(System.Byte[], System.Int32, System.Int32)
-  fullName.vb: Biocs.IO.BgzfStream.Read(System.Byte(), System.Int32, System.Int32)
-  nameWithType: BgzfStream.Read(Byte[], Int32, Int32)
-  nameWithType.vb: BgzfStream.Read(Byte(), Int32, Int32)
+  name.vb: Read(Byte(), Integer, Integer)
+  fullName: Biocs.IO.BgzfStream.Read(byte[], int, int)
+  fullName.vb: Biocs.IO.BgzfStream.Read(Byte(), Integer, Integer)
+  nameWithType: BgzfStream.Read(byte[], int, int)
+  nameWithType.vb: BgzfStream.Read(Byte(), Integer, Integer)
+- uid: Biocs.IO.BgzfStream.Read(System.Span{System.Byte})
+  name: Read(Span<byte>)
+  href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream_Read_System_Span_System_Byte__
+  commentId: M:Biocs.IO.BgzfStream.Read(System.Span{System.Byte})
+  name.vb: Read(Span(Of Byte))
+  fullName: Biocs.IO.BgzfStream.Read(System.Span<byte>)
+  fullName.vb: Biocs.IO.BgzfStream.Read(System.Span(Of Byte))
+  nameWithType: BgzfStream.Read(Span<byte>)
+  nameWithType.vb: BgzfStream.Read(Span(Of Byte))
 - uid: Biocs.IO.BgzfStream.Read*
   name: Read
   href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream_Read_
@@ -1452,12 +1491,15 @@ references:
   isSpec: "True"
   fullName: Biocs.IO.BgzfStream.Read
   nameWithType: BgzfStream.Read
-- uid: Biocs.IO.BgzfStream.Seek(System.Int64,SeekOrigin)
-  name: Seek(Int64, SeekOrigin)
-  href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream_Seek_System_Int64_SeekOrigin_
-  commentId: M:Biocs.IO.BgzfStream.Seek(System.Int64,SeekOrigin)
-  fullName: Biocs.IO.BgzfStream.Seek(System.Int64, SeekOrigin)
-  nameWithType: BgzfStream.Seek(Int64, SeekOrigin)
+- uid: Biocs.IO.BgzfStream.Seek(System.Int64,System.IO.SeekOrigin)
+  name: Seek(long, SeekOrigin)
+  href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream_Seek_System_Int64_System_IO_SeekOrigin_
+  commentId: M:Biocs.IO.BgzfStream.Seek(System.Int64,System.IO.SeekOrigin)
+  name.vb: Seek(Long, SeekOrigin)
+  fullName: Biocs.IO.BgzfStream.Seek(long, System.IO.SeekOrigin)
+  fullName.vb: Biocs.IO.BgzfStream.Seek(Long, System.IO.SeekOrigin)
+  nameWithType: BgzfStream.Seek(long, SeekOrigin)
+  nameWithType.vb: BgzfStream.Seek(Long, SeekOrigin)
 - uid: Biocs.IO.BgzfStream.Seek*
   name: Seek
   href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream_Seek_
@@ -1466,11 +1508,14 @@ references:
   fullName: Biocs.IO.BgzfStream.Seek
   nameWithType: BgzfStream.Seek
 - uid: Biocs.IO.BgzfStream.SetLength(System.Int64)
-  name: SetLength(Int64)
+  name: SetLength(long)
   href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream_SetLength_System_Int64_
   commentId: M:Biocs.IO.BgzfStream.SetLength(System.Int64)
-  fullName: Biocs.IO.BgzfStream.SetLength(System.Int64)
-  nameWithType: BgzfStream.SetLength(Int64)
+  name.vb: SetLength(Long)
+  fullName: Biocs.IO.BgzfStream.SetLength(long)
+  fullName.vb: Biocs.IO.BgzfStream.SetLength(Long)
+  nameWithType: BgzfStream.SetLength(long)
+  nameWithType.vb: BgzfStream.SetLength(Long)
 - uid: Biocs.IO.BgzfStream.SetLength*
   name: SetLength
   href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream_SetLength_
@@ -1479,14 +1524,23 @@ references:
   fullName: Biocs.IO.BgzfStream.SetLength
   nameWithType: BgzfStream.SetLength
 - uid: Biocs.IO.BgzfStream.Write(System.Byte[],System.Int32,System.Int32)
-  name: Write(Byte[], Int32, Int32)
+  name: Write(byte[], int, int)
   href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream_Write_System_Byte___System_Int32_System_Int32_
   commentId: M:Biocs.IO.BgzfStream.Write(System.Byte[],System.Int32,System.Int32)
-  name.vb: Write(Byte(), Int32, Int32)
-  fullName: Biocs.IO.BgzfStream.Write(System.Byte[], System.Int32, System.Int32)
-  fullName.vb: Biocs.IO.BgzfStream.Write(System.Byte(), System.Int32, System.Int32)
-  nameWithType: BgzfStream.Write(Byte[], Int32, Int32)
-  nameWithType.vb: BgzfStream.Write(Byte(), Int32, Int32)
+  name.vb: Write(Byte(), Integer, Integer)
+  fullName: Biocs.IO.BgzfStream.Write(byte[], int, int)
+  fullName.vb: Biocs.IO.BgzfStream.Write(Byte(), Integer, Integer)
+  nameWithType: BgzfStream.Write(byte[], int, int)
+  nameWithType.vb: BgzfStream.Write(Byte(), Integer, Integer)
+- uid: Biocs.IO.BgzfStream.Write(System.ReadOnlySpan{System.Byte})
+  name: Write(ReadOnlySpan<byte>)
+  href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream_Write_System_ReadOnlySpan_System_Byte__
+  commentId: M:Biocs.IO.BgzfStream.Write(System.ReadOnlySpan{System.Byte})
+  name.vb: Write(ReadOnlySpan(Of Byte))
+  fullName: Biocs.IO.BgzfStream.Write(System.ReadOnlySpan<byte>)
+  fullName.vb: Biocs.IO.BgzfStream.Write(System.ReadOnlySpan(Of Byte))
+  nameWithType: BgzfStream.Write(ReadOnlySpan<byte>)
+  nameWithType.vb: BgzfStream.Write(ReadOnlySpan(Of Byte))
 - uid: Biocs.IO.BgzfStream.Write*
   name: Write
   href: api/Biocs.IO.BgzfStream.html#Biocs_IO_BgzfStream_Write_
@@ -1494,6 +1548,360 @@ references:
   isSpec: "True"
   fullName: Biocs.IO.BgzfStream.Write
   nameWithType: BgzfStream.Write
+- uid: Biocs.Location
+  name: Location
+  href: api/Biocs.Location.html
+  commentId: T:Biocs.Location
+  fullName: Biocs.Location
+  nameWithType: Location
+- uid: Biocs.Location.CompareTo(Biocs.Location)
+  name: CompareTo(Location?)
+  href: api/Biocs.Location.html#Biocs_Location_CompareTo_Biocs_Location_
+  commentId: M:Biocs.Location.CompareTo(Biocs.Location)
+  name.vb: CompareTo(Location)
+  fullName: Biocs.Location.CompareTo(Biocs.Location?)
+  fullName.vb: Biocs.Location.CompareTo(Biocs.Location)
+  nameWithType: Location.CompareTo(Location?)
+  nameWithType.vb: Location.CompareTo(Location)
+- uid: Biocs.Location.CompareTo*
+  name: CompareTo
+  href: api/Biocs.Location.html#Biocs_Location_CompareTo_
+  commentId: Overload:Biocs.Location.CompareTo
+  isSpec: "True"
+  fullName: Biocs.Location.CompareTo
+  nameWithType: Location.CompareTo
+- uid: Biocs.Location.Elements
+  name: Elements
+  href: api/Biocs.Location.html#Biocs_Location_Elements
+  commentId: P:Biocs.Location.Elements
+  fullName: Biocs.Location.Elements
+  nameWithType: Location.Elements
+- uid: Biocs.Location.Elements*
+  name: Elements
+  href: api/Biocs.Location.html#Biocs_Location_Elements_
+  commentId: Overload:Biocs.Location.Elements
+  isSpec: "True"
+  fullName: Biocs.Location.Elements
+  nameWithType: Location.Elements
+- uid: Biocs.Location.End
+  name: End
+  href: api/Biocs.Location.html#Biocs_Location_End
+  commentId: P:Biocs.Location.End
+  fullName: Biocs.Location.End
+  nameWithType: Location.End
+- uid: Biocs.Location.End*
+  name: End
+  href: api/Biocs.Location.html#Biocs_Location_End_
+  commentId: Overload:Biocs.Location.End
+  isSpec: "True"
+  fullName: Biocs.Location.End
+  nameWithType: Location.End
+- uid: Biocs.Location.Equals(Biocs.Location)
+  name: Equals(Location?)
+  href: api/Biocs.Location.html#Biocs_Location_Equals_Biocs_Location_
+  commentId: M:Biocs.Location.Equals(Biocs.Location)
+  name.vb: Equals(Location)
+  fullName: Biocs.Location.Equals(Biocs.Location?)
+  fullName.vb: Biocs.Location.Equals(Biocs.Location)
+  nameWithType: Location.Equals(Location?)
+  nameWithType.vb: Location.Equals(Location)
+- uid: Biocs.Location.Equals(System.Object)
+  name: Equals(object?)
+  href: api/Biocs.Location.html#Biocs_Location_Equals_System_Object_
+  commentId: M:Biocs.Location.Equals(System.Object)
+  name.vb: Equals(Object)
+  fullName: Biocs.Location.Equals(object?)
+  fullName.vb: Biocs.Location.Equals(Object)
+  nameWithType: Location.Equals(object?)
+  nameWithType.vb: Location.Equals(Object)
+- uid: Biocs.Location.Equals*
+  name: Equals
+  href: api/Biocs.Location.html#Biocs_Location_Equals_
+  commentId: Overload:Biocs.Location.Equals
+  isSpec: "True"
+  fullName: Biocs.Location.Equals
+  nameWithType: Location.Equals
+- uid: Biocs.Location.GetHashCode
+  name: GetHashCode()
+  href: api/Biocs.Location.html#Biocs_Location_GetHashCode
+  commentId: M:Biocs.Location.GetHashCode
+  fullName: Biocs.Location.GetHashCode()
+  nameWithType: Location.GetHashCode()
+- uid: Biocs.Location.GetHashCode*
+  name: GetHashCode
+  href: api/Biocs.Location.html#Biocs_Location_GetHashCode_
+  commentId: Overload:Biocs.Location.GetHashCode
+  isSpec: "True"
+  fullName: Biocs.Location.GetHashCode
+  nameWithType: Location.GetHashCode
+- uid: Biocs.Location.IsComplement
+  name: IsComplement
+  href: api/Biocs.Location.html#Biocs_Location_IsComplement
+  commentId: P:Biocs.Location.IsComplement
+  fullName: Biocs.Location.IsComplement
+  nameWithType: Location.IsComplement
+- uid: Biocs.Location.IsComplement*
+  name: IsComplement
+  href: api/Biocs.Location.html#Biocs_Location_IsComplement_
+  commentId: Overload:Biocs.Location.IsComplement
+  isSpec: "True"
+  fullName: Biocs.Location.IsComplement
+  nameWithType: Location.IsComplement
+- uid: Biocs.Location.IsExactEnd
+  name: IsExactEnd
+  href: api/Biocs.Location.html#Biocs_Location_IsExactEnd
+  commentId: P:Biocs.Location.IsExactEnd
+  fullName: Biocs.Location.IsExactEnd
+  nameWithType: Location.IsExactEnd
+- uid: Biocs.Location.IsExactEnd*
+  name: IsExactEnd
+  href: api/Biocs.Location.html#Biocs_Location_IsExactEnd_
+  commentId: Overload:Biocs.Location.IsExactEnd
+  isSpec: "True"
+  fullName: Biocs.Location.IsExactEnd
+  nameWithType: Location.IsExactEnd
+- uid: Biocs.Location.IsExactStart
+  name: IsExactStart
+  href: api/Biocs.Location.html#Biocs_Location_IsExactStart
+  commentId: P:Biocs.Location.IsExactStart
+  fullName: Biocs.Location.IsExactStart
+  nameWithType: Location.IsExactStart
+- uid: Biocs.Location.IsExactStart*
+  name: IsExactStart
+  href: api/Biocs.Location.html#Biocs_Location_IsExactStart_
+  commentId: Overload:Biocs.Location.IsExactStart
+  isSpec: "True"
+  fullName: Biocs.Location.IsExactStart
+  nameWithType: Location.IsExactStart
+- uid: Biocs.Location.IsSpan
+  name: IsSpan
+  href: api/Biocs.Location.html#Biocs_Location_IsSpan
+  commentId: P:Biocs.Location.IsSpan
+  fullName: Biocs.Location.IsSpan
+  nameWithType: Location.IsSpan
+- uid: Biocs.Location.IsSpan*
+  name: IsSpan
+  href: api/Biocs.Location.html#Biocs_Location_IsSpan_
+  commentId: Overload:Biocs.Location.IsSpan
+  isSpec: "True"
+  fullName: Biocs.Location.IsSpan
+  nameWithType: Location.IsSpan
+- uid: Biocs.Location.Length
+  name: Length
+  href: api/Biocs.Location.html#Biocs_Location_Length
+  commentId: P:Biocs.Location.Length
+  fullName: Biocs.Location.Length
+  nameWithType: Location.Length
+- uid: Biocs.Location.Length*
+  name: Length
+  href: api/Biocs.Location.html#Biocs_Location_Length_
+  commentId: Overload:Biocs.Location.Length
+  isSpec: "True"
+  fullName: Biocs.Location.Length
+  nameWithType: Location.Length
+- uid: Biocs.Location.Parse(System.ReadOnlySpan{System.Char},System.IFormatProvider)
+  name: Parse(ReadOnlySpan<char>, IFormatProvider?)
+  href: api/Biocs.Location.html#Biocs_Location_Parse_System_ReadOnlySpan_System_Char__System_IFormatProvider_
+  commentId: M:Biocs.Location.Parse(System.ReadOnlySpan{System.Char},System.IFormatProvider)
+  name.vb: Parse(ReadOnlySpan(Of Char), IFormatProvider)
+  fullName: Biocs.Location.Parse(System.ReadOnlySpan<char>, System.IFormatProvider?)
+  fullName.vb: Biocs.Location.Parse(System.ReadOnlySpan(Of Char), System.IFormatProvider)
+  nameWithType: Location.Parse(ReadOnlySpan<char>, IFormatProvider?)
+  nameWithType.vb: Location.Parse(ReadOnlySpan(Of Char), IFormatProvider)
+- uid: Biocs.Location.Parse(System.String,System.IFormatProvider)
+  name: Parse(string, IFormatProvider?)
+  href: api/Biocs.Location.html#Biocs_Location_Parse_System_String_System_IFormatProvider_
+  commentId: M:Biocs.Location.Parse(System.String,System.IFormatProvider)
+  name.vb: Parse(String, IFormatProvider)
+  fullName: Biocs.Location.Parse(string, System.IFormatProvider?)
+  fullName.vb: Biocs.Location.Parse(String, System.IFormatProvider)
+  nameWithType: Location.Parse(string, IFormatProvider?)
+  nameWithType.vb: Location.Parse(String, IFormatProvider)
+- uid: Biocs.Location.Parse*
+  name: Parse
+  href: api/Biocs.Location.html#Biocs_Location_Parse_
+  commentId: Overload:Biocs.Location.Parse
+  isSpec: "True"
+  fullName: Biocs.Location.Parse
+  nameWithType: Location.Parse
+- uid: Biocs.Location.SequenceID
+  name: SequenceID
+  href: api/Biocs.Location.html#Biocs_Location_SequenceID
+  commentId: P:Biocs.Location.SequenceID
+  fullName: Biocs.Location.SequenceID
+  nameWithType: Location.SequenceID
+- uid: Biocs.Location.SequenceID*
+  name: SequenceID
+  href: api/Biocs.Location.html#Biocs_Location_SequenceID_
+  commentId: Overload:Biocs.Location.SequenceID
+  isSpec: "True"
+  fullName: Biocs.Location.SequenceID
+  nameWithType: Location.SequenceID
+- uid: Biocs.Location.Start
+  name: Start
+  href: api/Biocs.Location.html#Biocs_Location_Start
+  commentId: P:Biocs.Location.Start
+  fullName: Biocs.Location.Start
+  nameWithType: Location.Start
+- uid: Biocs.Location.Start*
+  name: Start
+  href: api/Biocs.Location.html#Biocs_Location_Start_
+  commentId: Overload:Biocs.Location.Start
+  isSpec: "True"
+  fullName: Biocs.Location.Start
+  nameWithType: Location.Start
+- uid: Biocs.Location.ToString
+  name: ToString()
+  href: api/Biocs.Location.html#Biocs_Location_ToString
+  commentId: M:Biocs.Location.ToString
+  fullName: Biocs.Location.ToString()
+  nameWithType: Location.ToString()
+- uid: Biocs.Location.ToString*
+  name: ToString
+  href: api/Biocs.Location.html#Biocs_Location_ToString_
+  commentId: Overload:Biocs.Location.ToString
+  isSpec: "True"
+  fullName: Biocs.Location.ToString
+  nameWithType: Location.ToString
+- uid: Biocs.Location.TryParse(System.ReadOnlySpan{System.Char},System.IFormatProvider,Biocs.Location@)
+  name: TryParse(ReadOnlySpan<char>, IFormatProvider?, out Location)
+  href: api/Biocs.Location.html#Biocs_Location_TryParse_System_ReadOnlySpan_System_Char__System_IFormatProvider_Biocs_Location__
+  commentId: M:Biocs.Location.TryParse(System.ReadOnlySpan{System.Char},System.IFormatProvider,Biocs.Location@)
+  name.vb: TryParse(ReadOnlySpan(Of Char), IFormatProvider, Location)
+  fullName: Biocs.Location.TryParse(System.ReadOnlySpan<char>, System.IFormatProvider?, out Biocs.Location)
+  fullName.vb: Biocs.Location.TryParse(System.ReadOnlySpan(Of Char), System.IFormatProvider, Biocs.Location)
+  nameWithType: Location.TryParse(ReadOnlySpan<char>, IFormatProvider?, out Location)
+  nameWithType.vb: Location.TryParse(ReadOnlySpan(Of Char), IFormatProvider, Location)
+- uid: Biocs.Location.TryParse(System.String,System.IFormatProvider,Biocs.Location@)
+  name: TryParse(string?, IFormatProvider?, out Location)
+  href: api/Biocs.Location.html#Biocs_Location_TryParse_System_String_System_IFormatProvider_Biocs_Location__
+  commentId: M:Biocs.Location.TryParse(System.String,System.IFormatProvider,Biocs.Location@)
+  name.vb: TryParse(String, IFormatProvider, Location)
+  fullName: Biocs.Location.TryParse(string?, System.IFormatProvider?, out Biocs.Location)
+  fullName.vb: Biocs.Location.TryParse(String, System.IFormatProvider, Biocs.Location)
+  nameWithType: Location.TryParse(string?, IFormatProvider?, out Location)
+  nameWithType.vb: Location.TryParse(String, IFormatProvider, Location)
+- uid: Biocs.Location.TryParse*
+  name: TryParse
+  href: api/Biocs.Location.html#Biocs_Location_TryParse_
+  commentId: Overload:Biocs.Location.TryParse
+  isSpec: "True"
+  fullName: Biocs.Location.TryParse
+  nameWithType: Location.TryParse
+- uid: Biocs.Location.op_Equality(Biocs.Location,Biocs.Location)
+  name: operator ==(Location?, Location?)
+  href: api/Biocs.Location.html#Biocs_Location_op_Equality_Biocs_Location_Biocs_Location_
+  commentId: M:Biocs.Location.op_Equality(Biocs.Location,Biocs.Location)
+  name.vb: =(Location, Location)
+  fullName: Biocs.Location.operator ==(Biocs.Location?, Biocs.Location?)
+  fullName.vb: Biocs.Location.=(Biocs.Location, Biocs.Location)
+  nameWithType: Location.operator ==(Location?, Location?)
+  nameWithType.vb: Location.=(Location, Location)
+- uid: Biocs.Location.op_Equality*
+  name: operator ==
+  href: api/Biocs.Location.html#Biocs_Location_op_Equality_
+  commentId: Overload:Biocs.Location.op_Equality
+  isSpec: "True"
+  name.vb: =
+  fullName: Biocs.Location.operator ==
+  fullName.vb: Biocs.Location.=
+  nameWithType: Location.operator ==
+  nameWithType.vb: Location.=
+- uid: Biocs.Location.op_GreaterThan(Biocs.Location,Biocs.Location)
+  name: operator >(Location?, Location?)
+  href: api/Biocs.Location.html#Biocs_Location_op_GreaterThan_Biocs_Location_Biocs_Location_
+  commentId: M:Biocs.Location.op_GreaterThan(Biocs.Location,Biocs.Location)
+  name.vb: '>(Location, Location)'
+  fullName: Biocs.Location.operator >(Biocs.Location?, Biocs.Location?)
+  fullName.vb: Biocs.Location.>(Biocs.Location, Biocs.Location)
+  nameWithType: Location.operator >(Location?, Location?)
+  nameWithType.vb: Location.>(Location, Location)
+- uid: Biocs.Location.op_GreaterThan*
+  name: operator >
+  href: api/Biocs.Location.html#Biocs_Location_op_GreaterThan_
+  commentId: Overload:Biocs.Location.op_GreaterThan
+  isSpec: "True"
+  name.vb: '>'
+  fullName: Biocs.Location.operator >
+  fullName.vb: Biocs.Location.>
+  nameWithType: Location.operator >
+  nameWithType.vb: Location.>
+- uid: Biocs.Location.op_GreaterThanOrEqual(Biocs.Location,Biocs.Location)
+  name: operator >=(Location?, Location?)
+  href: api/Biocs.Location.html#Biocs_Location_op_GreaterThanOrEqual_Biocs_Location_Biocs_Location_
+  commentId: M:Biocs.Location.op_GreaterThanOrEqual(Biocs.Location,Biocs.Location)
+  name.vb: '>=(Location, Location)'
+  fullName: Biocs.Location.operator >=(Biocs.Location?, Biocs.Location?)
+  fullName.vb: Biocs.Location.>=(Biocs.Location, Biocs.Location)
+  nameWithType: Location.operator >=(Location?, Location?)
+  nameWithType.vb: Location.>=(Location, Location)
+- uid: Biocs.Location.op_GreaterThanOrEqual*
+  name: operator >=
+  href: api/Biocs.Location.html#Biocs_Location_op_GreaterThanOrEqual_
+  commentId: Overload:Biocs.Location.op_GreaterThanOrEqual
+  isSpec: "True"
+  name.vb: '>='
+  fullName: Biocs.Location.operator >=
+  fullName.vb: Biocs.Location.>=
+  nameWithType: Location.operator >=
+  nameWithType.vb: Location.>=
+- uid: Biocs.Location.op_Inequality(Biocs.Location,Biocs.Location)
+  name: operator !=(Location?, Location?)
+  href: api/Biocs.Location.html#Biocs_Location_op_Inequality_Biocs_Location_Biocs_Location_
+  commentId: M:Biocs.Location.op_Inequality(Biocs.Location,Biocs.Location)
+  name.vb: <>(Location, Location)
+  fullName: Biocs.Location.operator !=(Biocs.Location?, Biocs.Location?)
+  fullName.vb: Biocs.Location.<>(Biocs.Location, Biocs.Location)
+  nameWithType: Location.operator !=(Location?, Location?)
+  nameWithType.vb: Location.<>(Location, Location)
+- uid: Biocs.Location.op_Inequality*
+  name: operator !=
+  href: api/Biocs.Location.html#Biocs_Location_op_Inequality_
+  commentId: Overload:Biocs.Location.op_Inequality
+  isSpec: "True"
+  name.vb: <>
+  fullName: Biocs.Location.operator !=
+  fullName.vb: Biocs.Location.<>
+  nameWithType: Location.operator !=
+  nameWithType.vb: Location.<>
+- uid: Biocs.Location.op_LessThan(Biocs.Location,Biocs.Location)
+  name: operator <(Location?, Location?)
+  href: api/Biocs.Location.html#Biocs_Location_op_LessThan_Biocs_Location_Biocs_Location_
+  commentId: M:Biocs.Location.op_LessThan(Biocs.Location,Biocs.Location)
+  name.vb: <(Location, Location)
+  fullName: Biocs.Location.operator <(Biocs.Location?, Biocs.Location?)
+  fullName.vb: Biocs.Location.<(Biocs.Location, Biocs.Location)
+  nameWithType: Location.operator <(Location?, Location?)
+  nameWithType.vb: Location.<(Location, Location)
+- uid: Biocs.Location.op_LessThan*
+  name: operator <
+  href: api/Biocs.Location.html#Biocs_Location_op_LessThan_
+  commentId: Overload:Biocs.Location.op_LessThan
+  isSpec: "True"
+  name.vb: <
+  fullName: Biocs.Location.operator <
+  fullName.vb: Biocs.Location.<
+  nameWithType: Location.operator <
+  nameWithType.vb: Location.<
+- uid: Biocs.Location.op_LessThanOrEqual(Biocs.Location,Biocs.Location)
+  name: operator <=(Location?, Location?)
+  href: api/Biocs.Location.html#Biocs_Location_op_LessThanOrEqual_Biocs_Location_Biocs_Location_
+  commentId: M:Biocs.Location.op_LessThanOrEqual(Biocs.Location,Biocs.Location)
+  name.vb: <=(Location, Location)
+  fullName: Biocs.Location.operator <=(Biocs.Location?, Biocs.Location?)
+  fullName.vb: Biocs.Location.<=(Biocs.Location, Biocs.Location)
+  nameWithType: Location.operator <=(Location?, Location?)
+  nameWithType.vb: Location.<=(Location, Location)
+- uid: Biocs.Location.op_LessThanOrEqual*
+  name: operator <=
+  href: api/Biocs.Location.html#Biocs_Location_op_LessThanOrEqual_
+  commentId: Overload:Biocs.Location.op_LessThanOrEqual
+  isSpec: "True"
+  name.vb: <=
+  fullName: Biocs.Location.operator <=
+  fullName.vb: Biocs.Location.<=
+  nameWithType: Location.operator <=
+  nameWithType.vb: Location.<=
 - uid: Biocs.Numerics
   name: Biocs.Numerics
   href: api/Biocs.Numerics.html
@@ -1510,30 +1918,39 @@ references:
   name: DoubleMersenneTwister()
   href: api/Biocs.Numerics.DoubleMersenneTwister.html#Biocs_Numerics_DoubleMersenneTwister__ctor
   commentId: M:Biocs.Numerics.DoubleMersenneTwister.#ctor
+  name.vb: New()
   fullName: Biocs.Numerics.DoubleMersenneTwister.DoubleMersenneTwister()
+  fullName.vb: Biocs.Numerics.DoubleMersenneTwister.New()
   nameWithType: DoubleMersenneTwister.DoubleMersenneTwister()
+  nameWithType.vb: DoubleMersenneTwister.New()
 - uid: Biocs.Numerics.DoubleMersenneTwister.#ctor(System.Int32)
-  name: DoubleMersenneTwister(Int32)
+  name: DoubleMersenneTwister(int)
   href: api/Biocs.Numerics.DoubleMersenneTwister.html#Biocs_Numerics_DoubleMersenneTwister__ctor_System_Int32_
   commentId: M:Biocs.Numerics.DoubleMersenneTwister.#ctor(System.Int32)
-  fullName: Biocs.Numerics.DoubleMersenneTwister.DoubleMersenneTwister(System.Int32)
-  nameWithType: DoubleMersenneTwister.DoubleMersenneTwister(Int32)
+  name.vb: New(Integer)
+  fullName: Biocs.Numerics.DoubleMersenneTwister.DoubleMersenneTwister(int)
+  fullName.vb: Biocs.Numerics.DoubleMersenneTwister.New(Integer)
+  nameWithType: DoubleMersenneTwister.DoubleMersenneTwister(int)
+  nameWithType.vb: DoubleMersenneTwister.New(Integer)
 - uid: Biocs.Numerics.DoubleMersenneTwister.#ctor(System.Int32[])
-  name: DoubleMersenneTwister(Int32[])
+  name: DoubleMersenneTwister(int[])
   href: api/Biocs.Numerics.DoubleMersenneTwister.html#Biocs_Numerics_DoubleMersenneTwister__ctor_System_Int32___
   commentId: M:Biocs.Numerics.DoubleMersenneTwister.#ctor(System.Int32[])
-  name.vb: DoubleMersenneTwister(Int32())
-  fullName: Biocs.Numerics.DoubleMersenneTwister.DoubleMersenneTwister(System.Int32[])
-  fullName.vb: Biocs.Numerics.DoubleMersenneTwister.DoubleMersenneTwister(System.Int32())
-  nameWithType: DoubleMersenneTwister.DoubleMersenneTwister(Int32[])
-  nameWithType.vb: DoubleMersenneTwister.DoubleMersenneTwister(Int32())
+  name.vb: New(Integer())
+  fullName: Biocs.Numerics.DoubleMersenneTwister.DoubleMersenneTwister(int[])
+  fullName.vb: Biocs.Numerics.DoubleMersenneTwister.New(Integer())
+  nameWithType: DoubleMersenneTwister.DoubleMersenneTwister(int[])
+  nameWithType.vb: DoubleMersenneTwister.New(Integer())
 - uid: Biocs.Numerics.DoubleMersenneTwister.#ctor*
   name: DoubleMersenneTwister
   href: api/Biocs.Numerics.DoubleMersenneTwister.html#Biocs_Numerics_DoubleMersenneTwister__ctor_
   commentId: Overload:Biocs.Numerics.DoubleMersenneTwister.#ctor
   isSpec: "True"
+  name.vb: New
   fullName: Biocs.Numerics.DoubleMersenneTwister.DoubleMersenneTwister
+  fullName.vb: Biocs.Numerics.DoubleMersenneTwister.New
   nameWithType: DoubleMersenneTwister.DoubleMersenneTwister
+  nameWithType.vb: DoubleMersenneTwister.New
 - uid: Biocs.Numerics.DoubleMersenneTwister.Next
   name: Next()
   href: api/Biocs.Numerics.DoubleMersenneTwister.html#Biocs_Numerics_DoubleMersenneTwister_Next
@@ -1566,25 +1983,25 @@ references:
   commentId: T:Biocs.StringResourceUsageAttribute
   fullName: Biocs.StringResourceUsageAttribute
   nameWithType: StringResourceUsageAttribute
-- uid: Biocs.StringResourceUsageAttribute.#ctor(System.String)
-  name: StringResourceUsageAttribute(String)
-  href: api/Biocs.StringResourceUsageAttribute.html#Biocs_StringResourceUsageAttribute__ctor_System_String_
-  commentId: M:Biocs.StringResourceUsageAttribute.#ctor(System.String)
-  fullName: Biocs.StringResourceUsageAttribute.StringResourceUsageAttribute(System.String)
-  nameWithType: StringResourceUsageAttribute.StringResourceUsageAttribute(String)
 - uid: Biocs.StringResourceUsageAttribute.#ctor(System.String,System.Int32)
-  name: StringResourceUsageAttribute(String, Int32)
+  name: StringResourceUsageAttribute(string, int)
   href: api/Biocs.StringResourceUsageAttribute.html#Biocs_StringResourceUsageAttribute__ctor_System_String_System_Int32_
   commentId: M:Biocs.StringResourceUsageAttribute.#ctor(System.String,System.Int32)
-  fullName: Biocs.StringResourceUsageAttribute.StringResourceUsageAttribute(System.String, System.Int32)
-  nameWithType: StringResourceUsageAttribute.StringResourceUsageAttribute(String, Int32)
+  name.vb: New(String, Integer)
+  fullName: Biocs.StringResourceUsageAttribute.StringResourceUsageAttribute(string, int)
+  fullName.vb: Biocs.StringResourceUsageAttribute.New(String, Integer)
+  nameWithType: StringResourceUsageAttribute.StringResourceUsageAttribute(string, int)
+  nameWithType.vb: StringResourceUsageAttribute.New(String, Integer)
 - uid: Biocs.StringResourceUsageAttribute.#ctor*
   name: StringResourceUsageAttribute
   href: api/Biocs.StringResourceUsageAttribute.html#Biocs_StringResourceUsageAttribute__ctor_
   commentId: Overload:Biocs.StringResourceUsageAttribute.#ctor
   isSpec: "True"
+  name.vb: New
   fullName: Biocs.StringResourceUsageAttribute.StringResourceUsageAttribute
+  fullName.vb: Biocs.StringResourceUsageAttribute.New
   nameWithType: StringResourceUsageAttribute.StringResourceUsageAttribute
+  nameWithType.vb: StringResourceUsageAttribute.New
 - uid: Biocs.StringResourceUsageAttribute.FormatItemCount
   name: FormatItemCount
   href: api/Biocs.StringResourceUsageAttribute.html#Biocs_StringResourceUsageAttribute_FormatItemCount

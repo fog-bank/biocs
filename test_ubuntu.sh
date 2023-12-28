@@ -27,3 +27,12 @@ dotnet test -c Release -v n biocs/core.tests | tee test.log
 # dotnet test -c Release -f netcoreapp1.0 -v n biocs/core.tests | tee test1.0.log
 
 # dotnet run -c Release -p biocs/samples -- bgzf -i biocs/core.tests/Deployments/ce.sam -o biocs/samples/bin/Release/netcoreapp2.1/ce.sam.gz
+
+
+## code coverage
+# dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=TestResults/ -c Release --verbosity normal
+# reportgenerator -reports:.\biocs\core.tests\TestResults\coverage.opencover.xml -targetdir:.\biocs\core.tests\TestResults\report\
+
+## docfx project
+# cd docfx_project
+# docfx build --serve

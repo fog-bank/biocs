@@ -39,6 +39,7 @@
     <Content Include="Deployments\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Remove="TestResults\**" />
   </ItemGroup>
 
 </Project>

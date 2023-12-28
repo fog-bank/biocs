@@ -46,14 +46,14 @@ public class Counter<T>
     }
 
     /// <summary>
-		/// Initializes a new instance of the <see cref="Counter{T}"/> class that contains unique items and counts copied from
+    /// Initializes a new instance of the <see cref="Counter{T}"/> class that contains unique items and counts copied from
     /// the specified <see cref="Counter{T}"/> and uses the same equality comparer.
-		/// </summary>
-		/// <param name="other">
+    /// </summary>
+    /// <param name="other">
     /// The <see cref="Counter{T}"/> whose unique items and counts are copied to the new <see cref="Counter{T}"/>.
     /// </param>
-		/// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
-		public Counter(Counter<T> other)
+    /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
+    public Counter(Counter<T> other)
     {
         ArgumentNullException.ThrowIfNull(other);
 
@@ -79,15 +79,13 @@ public class Counter<T>
     /// </summary>
     /// <remarks>
     /// <para>This enumerable collection also contains items whose the count is 0.</para>
-    /// <para>Enumerators retured by this enumerable collection cannot be used to modify the <see cref="Counter{T}"/>.
+    /// <para>The enumerator retured by this enumerable collection cannot be used to modify the <see cref="Counter{T}"/>.
     /// For example, the following enumeration raises an <see cref="InvalidOperationException"/>.</para>
     /// <code>
     /// var counter = new Counter&lt;int&gt;();
-    /// counter.AddRange(new[] { 1, 2, 3 });
+    /// counter.AddRange([1, 2, 3]);
     /// foreach (int item in counter.UniqueItems)
-    /// {
     ///   counter.Reset(item);
-    /// }
     /// </code>
     /// </remarks>
     public IEnumerable<T> UniqueItems => nullCount.HasValue ? KeysWithNull : map.Keys;

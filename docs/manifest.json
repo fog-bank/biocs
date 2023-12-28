@@ -1,21 +1,250 @@
 {
-  "homepages": [],
-  "source_base_path": "F:/Data/src/biocs/docfx_project",
+  "source_base_path": "E:/src/biocs/docfx_project",
   "xrefmap": "xrefmap.yml",
-  "files": [],
-  "incremental_info": [
+  "files": [
     {
-      "status": {
-        "can_incremental": false,
-        "details": "Cannot support incremental post processing, the reason is: should not trace intermediate info.",
-        "incrementalPhase": "postProcessing",
-        "total_file_count": 0,
-        "skipped_file_count": 0
+      "type": "ManagedReference",
+      "source_relative_path": "api/Biocs.Codon.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Biocs.Codon.html"
+        }
       },
-      "processors": {}
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Biocs.Collections.CollectionTools.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Biocs.Collections.CollectionTools.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Biocs.Collections.Counter-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Biocs.Collections.Counter-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Biocs.Collections.Deque-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Biocs.Collections.Deque-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Biocs.Collections.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Biocs.Collections.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Biocs.DnaBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Biocs.DnaBase.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Biocs.IO.BgzfStream.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Biocs.IO.BgzfStream.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Biocs.IO.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Biocs.IO.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Biocs.Location.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Biocs.Location.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Biocs.Numerics.DoubleMersenneTwister.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Biocs.Numerics.DoubleMersenneTwister.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Biocs.Numerics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Biocs.Numerics.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Biocs.StringResourceUsageAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Biocs.StringResourceUsageAttribute.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Biocs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Biocs.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        },
+        ".json": {
+          "relative_path": "api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/getting-started.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/getting-started.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/how-to-topics/bgzfstream.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/how-to-topics/bgzfstream.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/how-to-topics/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/how-to-topics/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/how-to-topics/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/how-to-topics/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/how-to-topics/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
     }
   ],
-  "version_info": {},
   "groups": [
     {
       "xrefmap": "xrefmap.yml"
