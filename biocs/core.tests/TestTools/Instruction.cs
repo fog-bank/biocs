@@ -108,8 +108,8 @@ internal sealed class Instruction(OpCode opCode, int operand = 0)
 
         foreach (var field in fields)
         {
-            var opCode = (OpCode)field.GetValue(null);
-            map[opCode.Value & 0xffff] = opCode;
+            if (field.GetValue(null) is OpCode opCode)
+                map[opCode.Value & 0xffff] = opCode;
         }
         return map;
     }

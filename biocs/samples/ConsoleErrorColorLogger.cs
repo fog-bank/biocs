@@ -1,12 +1,11 @@
-﻿using System;
-using System.IO;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
 namespace Biocs;
 
 /// <summary>
 /// Sends log output to <see cref="Console.Error"/> with changing console color.
 /// </summary>
+/// <remarks>When the input and/or output are redirected, the color system will not work as expected.</remarks>
 public class ConsoleErrorColorLogger : ConsoleErrorLogger
 {
     public override void Log<TState>(
@@ -70,10 +69,7 @@ public sealed class ConsoleErrorColorLoggerProvider : ILoggerProvider
 {
     private readonly ConsoleErrorColorLogger logger = new();
 
-    public ILogger CreateLogger(string categoryName)
-    {
-        return logger;
-    }
+    public ILogger CreateLogger(string categoryName) => logger;
 
     public void Dispose()
     { }

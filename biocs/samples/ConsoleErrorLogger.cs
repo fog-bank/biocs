@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
 namespace Biocs;
 
@@ -14,21 +13,15 @@ public class ConsoleErrorLogger : ILogger
         string message = formatter(state, exception);
 
         if (!string.IsNullOrEmpty(message))
-            Console.Error.WriteLine("[{0}] {1}: {2}", DateTime.Now, LogLevelToString(logLevel), message);
+            Console.Error.WriteLine($"[{DateTime.Now}] {LogLevelToString(logLevel)}: {message}");
 
         if (exception != null)
             Console.Error.WriteLine(exception);
     }
 
-    public bool IsEnabled(LogLevel logLevel)
-    {
-        return logLevel != LogLevel.None;
-    }
+    public bool IsEnabled(LogLevel logLevel) => logLevel != LogLevel.None;
 
-    public IDisposable BeginScope<TState>(TState state)
-    {
-        return NullScope.Instance;
-    }
+    public IDisposable BeginScope<TState>(TState state) => NullScope.Instance;
 
     protected static string LogLevelToString(LogLevel logLevel)
     {
@@ -52,10 +45,7 @@ public sealed class ConsoleErrorLoggerProvider : ILoggerProvider
 {
     private readonly ConsoleErrorLogger logger = new();
 
-    public ILogger CreateLogger(string categoryName)
-    {
-        return logger;
-    }
+    public ILogger CreateLogger(string categoryName) => logger;
 
     public void Dispose()
     { }
@@ -63,7 +53,7 @@ public sealed class ConsoleErrorLoggerProvider : ILoggerProvider
 
 internal sealed class NullScope : IDisposable
 {
-    public static IDisposable Instance { get; } = new NullScope();
+    public static NullScope Instance { get; } = new();
 
     public void Dispose()
     { }

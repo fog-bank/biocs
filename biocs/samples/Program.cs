@@ -1,19 +1,19 @@
-﻿using System.Threading.Tasks;
+﻿using Biocs;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Biocs;
-
-[ConsoleAppFilter(typeof(LogCommandFilter))]
-partial class Program : ConsoleAppBase
+var builder = ConsoleApp.CreateBuilder(args, options =>
 {
-    static async Task Main(string[] args) => await Host.CreateDefaultBuilder()
-        .ConfigureLogging(logging =>
-        {
-            logging.ClearProviders();
-            logging.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, ConsoleErrorLoggerProvider>());
-        })
-        .RunConsoleAppFrameworkAsync<Program>(args);
-}
+    options.GlobalFilters = new[] { new LogRunningTimeFilter() };
+    options.HelpSortCommandsByFullName = true;
+});
+
+builder.ConfigureLogging(builder =>
+{
+    builder.ClearProviders();
+    builder.Services.AddSingleton<ILoggerProvider, ConsoleErrorColorLoggerProvider>();
+});
+
+var app = builder.Build();
+app.AddCommands<Bgzf>();
+app.Run();

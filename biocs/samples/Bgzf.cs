@@ -1,22 +1,20 @@
-﻿using System;
-using System.IO;
+﻿using System.ComponentModel.DataAnnotations;
 using System.IO.Compression;
-using System.Threading.Tasks;
 using Biocs.IO;
 using Microsoft.Extensions.Logging;
 
 namespace Biocs;
 
-partial class Program
+partial class Bgzf : ConsoleAppBase
 {
     [Command("bgzf", "Compress or decompress a file in the BGZF format.")]
     public async Task<int> Compress(
-        [Option("i", "Input file name. By default, read from standard input")] string? input = null,
-        [Option("o", "Output file name. By default, generate from input file name")] string? output = null,
-        [Option("c", "Write to standard output instead of file")] bool stdout = false,
-        [Option("d", "Decompress mode")] bool decompress = false,
-        [Option("f", "Overwrite a file without asking")] bool force = false,
-        [Option("l", "Compression level; -1 (optimal), 0 (no compression), 1 (fast)")] int level = -1)
+        [Option("i", "Input file name. By default, read from standard input.")] string? input = null,
+        [Option("o", "Output file name. By default, generate from input file name.")] string? output = null,
+        [Option("c", "Write to standard output instead of file.")] bool stdout = false,
+        [Option("d", "Decompress mode.")] bool decompress = false,
+        [Option("f", "Overwrite a file without asking.")] bool force = false,
+        [Option("l", "Compression level; -1 (optimal), 0 (no compression), 1 (fast)."), Range(-1, 1)] int level = -1)
     {
         if (input == null && output == null && !Console.IsInputRedirected && !Console.IsOutputRedirected)
         {
@@ -86,9 +84,7 @@ partial class Program
             if (output == null)
             {
                 if (decompress)
-                {
                     output = input.EndsWith(".gz") ? input[..^3] : input + ".out";
-                }
                 else
                     output = input + ".gz";
             }
@@ -102,47 +98,33 @@ partial class Program
         }
 
         // Check {level}
-        CompressionLevel compLevel;
-        switch (level)
+        var compLevel = level switch
         {
-            case -1:
-                compLevel = CompressionLevel.Optimal;
-                break;
-
-            case 0:
-                compLevel = CompressionLevel.NoCompression;
-                break;
-
-            case 1:
-                compLevel = CompressionLevel.Fastest;
-                break;
-
-            default:
-                Context.Logger.LogError("The specified compression level ({level}) is not supported.", level);
-                return 1;
-        }
+            0 => CompressionLevel.NoCompression,
+            1 => CompressionLevel.Fastest,
+            _ => CompressionLevel.Optimal
+        };
 
         if (decompress && level != -1)
             Context.Logger.LogWarning("When decompressing, -l option is ignored.");
 
         // Main
-        using (var ifs = stdin ? Console.OpenStandardInput() : File.OpenRead(input))
-        using (var ofs = stdout ? Console.OpenStandardOutput() : File.Create(output))
+        using var ifs = stdin ? Console.OpenStandardInput() : File.OpenRead(input);
+        using var ofs = stdout ? Console.OpenStandardOutput() : File.Create(output);
+
+        if (decompress)
         {
-            if (decompress)
-            {
-                Context.Logger.LogInformation("Start to decompress '{input}' to '{output}'.", input, output);
+            Context.Logger.LogInformation("Start to decompress '{input}' to '{output}'.", input, output);
 
-                using var gz = new BgzfStream(ifs, CompressionMode.Decompress);
-                await gz.CopyToAsync(ofs, Context.CancellationToken);
-            }
-            else
-            {
-                Context.Logger.LogInformation("Start to compress '{input}' to '{output}'.", input, output);
+            using var gz = new BgzfStream(ifs, CompressionMode.Decompress);
+            await gz.CopyToAsync(ofs, Context.CancellationToken);
+        }
+        else
+        {
+            Context.Logger.LogInformation("Start to compress '{input}' to '{output}'.", input, output);
 
-                using var gz = new BgzfStream(ofs, compLevel);
-                await ifs.CopyToAsync(gz, Context.CancellationToken);
-            }
+            using var gz = new BgzfStream(ofs, compLevel);
+            await ifs.CopyToAsync(gz, Context.CancellationToken);
         }
         return 0;
     }
