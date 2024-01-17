@@ -13,6 +13,7 @@ public class BgzfStreamTest
     {
         Assert.IsTrue(BgzfStream.IsBgzfFile(PathGzFile));
         Assert.IsFalse(BgzfStream.IsBgzfFile(PathRawFile));
+        Assert.IsFalse(BgzfStream.IsBgzfFile(null));
         Assert.IsFalse(BgzfStream.IsBgzfFile(Path.Combine("Deployments", "nonexist.txt.gz")));
     }
 
@@ -21,6 +22,17 @@ public class BgzfStreamTest
     {
         Assert.ThrowsException<ArgumentNullException>(() => new BgzfStream(null!, CompressionMode.Decompress));
         Assert.ThrowsException<ArgumentNullException>(() => new BgzfStream(null!, CompressionLevel.Optimal));
+        Assert.ThrowsException<ArgumentException>(() => new BgzfStream(Stream.Null, (CompressionMode)1000));
+        Assert.ThrowsException<ArgumentException>(() => new BgzfStream(Stream.Null, (CompressionLevel)1000));
+
+        using var gz = new BgzfStream(Stream.Null, CompressionMode.Compress);
+        Assert.IsFalse(gz.CanRead);
+        Assert.IsFalse(gz.CanSeek);
+        Assert.ThrowsException<NotSupportedException>(() => gz.Length);
+        Assert.ThrowsException<NotSupportedException>(() => gz.Position);
+        Assert.ThrowsException<NotSupportedException>(() => gz.Position = 0);
+        Assert.ThrowsException<NotSupportedException>(() => gz.Seek(0, SeekOrigin.Begin));
+        Assert.ThrowsException<NotSupportedException>(() => gz.SetLength(0));
     }
 
     [TestMethod]

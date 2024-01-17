@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Arg.CompareToNotSameTypedObject" xml:space="preserve">
+    <value>obj is not the same type as this instance.</value>
+  </data>
   <data name="Arg.InvalidCodonSymbol" xml:space="preserve">
     <value>The specified value ({0}) contains an unknown character in a certain position.</value>
   </data>

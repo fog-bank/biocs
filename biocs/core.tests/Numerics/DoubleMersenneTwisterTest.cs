@@ -94,6 +94,14 @@ public class DoubleMersenneTwisterTest
         }
     }
 
+    [TestMethod]
+    public void Constructor_Test()
+    {
+        var dfmt = new DoubleMersenneTwister();
+        double value = dfmt.Next();
+        Assert.IsTrue(value >= 0 && value < 1);
+    }
+
     // Resolves the difference C# Format("f15") and C++ prinf(".15f")
     private static Tuple<string, string, string> Round(double value)
     {

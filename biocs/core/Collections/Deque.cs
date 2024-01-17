@@ -348,7 +348,7 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
     public void Insert(int index, T item)
     {
         if (index < 0 || index > Count)
-            throw new ArgumentOutOfRangeException(nameof(index));
+            ThrowHelper.ThrowArgumentOutOfRange(nameof(index));
 
         if (index == 0)
         {
@@ -404,7 +404,7 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
     public void InsertRange(int index, IEnumerable<T> collection)
     {
         if (index < 0 || index > Count)
-            throw new ArgumentOutOfRangeException(nameof(index));
+            ThrowHelper.ThrowArgumentOutOfRange(nameof(index));
 
         ArgumentNullException.ThrowIfNull(collection);
 
@@ -756,7 +756,7 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
         items = dest;
         Count = dest.Length;
         head = 0;
-        tail = Count == 0 ? 0 : Count - 1;
+        tail = dest.Length - 1;
         version++;
     }
 

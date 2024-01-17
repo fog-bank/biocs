@@ -91,6 +91,7 @@ public class DnaBaseTest
         Assert.IsTrue(dna.Equals(dna2));
         Assert.IsTrue(dna.EqualsCaseInsensitive(dna2));
         Assert.IsTrue(dna.Equals((object)dna2));
+        Assert.IsFalse(dna.Equals(null));
         Assert.AreEqual(dna.GetHashCode(), dna2.GetHashCode());
         Assert.IsTrue(dna == dna2);
         Assert.IsFalse(dna != dna2);

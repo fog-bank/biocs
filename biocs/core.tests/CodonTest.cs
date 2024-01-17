@@ -47,7 +47,38 @@ public class CodonTest
                 }
             }
         }
+    }
+
+    [TestMethod]
+    public void Compare_Test()
+    {
         Assert.AreEqual(Codon.Gap, new Codon());
         Assert.AreEqual("NNN", Codon.Any.Symbols);
+
+        Assert.AreNotEqual(
+            new Codon(DnaBase.Adenine, DnaBase.Thymine, DnaBase.Guanine),
+            new Codon(DnaBase.Cytosine, DnaBase.Thymine, DnaBase.Guanine));
+        Assert.AreNotEqual(
+            new Codon(DnaBase.Adenine, DnaBase.Thymine, DnaBase.Guanine),
+            new Codon(DnaBase.Adenine, DnaBase.Cytosine, DnaBase.Guanine));
+        Assert.AreNotEqual(
+            new Codon(DnaBase.Adenine, DnaBase.Thymine, DnaBase.Guanine),
+            new Codon(DnaBase.Adenine, DnaBase.Thymine, DnaBase.Cytosine));
+
+        Assert.IsTrue(Codon.Gap.Equals((object)new Codon()));
+        Assert.IsFalse(Codon.Any.Equals(null));
+    }
+
+    [TestMethod]
+    public void Parse_Test()
+    {
+        Assert.IsFalse(Codon.TryParse("ATGC", out var result));
+        Assert.AreEqual(default, result);
+        Assert.IsFalse(Codon.TryParse("XXX", out _));
+        Assert.IsFalse(Codon.TryParse("AXX", out _));
+        Assert.IsFalse(Codon.TryParse("ATX", out _));
+
+        Assert.AreEqual(new Codon(DnaBase.Adenine, DnaBase.Thymine, DnaBase.Guanine), Codon.Parse("ATG"));
+        Assert.ThrowsException<ArgumentException>(() => Codon.Parse(""));
     }
 }

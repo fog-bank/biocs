@@ -514,7 +514,12 @@ public class DequeTest
         InsertRange(target, compare, 3, new[] { 5 });
 
         // [1, +, +, 5, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4]
-        InsertRange(target, compare, 3, Enumerable.Range(6, 2));
+        static IEnumerable<int> Range()
+        {
+            yield return 6;
+            yield return 7;
+        }
+        InsertRange(target, compare, 3, Range());
 
         // [+, 6, 7, 5, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 1, +]
         InsertRange(target, compare, 3, new[] { 8, 9 });
