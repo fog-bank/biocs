@@ -39,8 +39,6 @@ public class CodonTest
 
                     // Equality
                     Assert.AreEqual(codon1, codon2);
-                    Assert.IsTrue(codon1.Equals(codon2));
-                    Assert.IsTrue(codon1.Equals((object)codon2));
                     Assert.AreEqual(codon1.GetHashCode(), codon2.GetHashCode());
                     Assert.IsTrue(codon1 == codon2);
                     Assert.IsFalse(codon1 != codon2);
@@ -50,7 +48,7 @@ public class CodonTest
     }
 
     [TestMethod]
-    public void Compare_Test()
+    public void Equals_Test()
     {
         Assert.AreEqual(Codon.Gap, new Codon());
         Assert.AreEqual("NNN", Codon.Any.Symbols);
@@ -72,13 +70,14 @@ public class CodonTest
     [TestMethod]
     public void Parse_Test()
     {
-        Assert.IsFalse(Codon.TryParse("ATGC", out var result));
+        var result = Codon.Any;
+        Assert.IsFalse(Codon.TryParse("ATGC", out result));
         Assert.AreEqual(default, result);
         Assert.IsFalse(Codon.TryParse("XXX", out _));
         Assert.IsFalse(Codon.TryParse("AXX", out _));
         Assert.IsFalse(Codon.TryParse("ATX", out _));
 
         Assert.AreEqual(new Codon(DnaBase.Adenine, DnaBase.Thymine, DnaBase.Guanine), Codon.Parse("ATG"));
-        Assert.ThrowsException<ArgumentException>(() => Codon.Parse(""));
+        Assert.ThrowsException<OverflowException>(() => Codon.Parse(string.Empty));
     }
 }

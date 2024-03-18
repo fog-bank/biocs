@@ -137,14 +137,14 @@ public readonly struct DnaBase : IEquatable<DnaBase>
     /// </summary>
     /// <param name="value">A character to convert.</param>
     /// <returns>A <see cref="DnaBase"/> instance whose symbol is represented by <paramref name="value"/>.</returns>
-    /// <exception cref="ArgumentException">
+    /// <exception cref="OverflowException">
     /// <paramref name="value"/> is not one of the symbols defined for <see cref="DnaBase"/>.
     /// </exception>
-    [StringResourceUsage("Arg.InvalidDnaBaseSymbol", 1)]
+    [StringResourceUsage("Overflow.InvalidDnaBaseSymbol", 1)]
     public static DnaBase Parse(char value)
     {
         if (!DnaBaseParser.Instance.SymbolToCode(value, out var result))
-            throw new ArgumentException(Res.GetString("Arg.InvalidDnaBaseSymbol", value), nameof(value));
+            throw new OverflowException(Res.GetString("Overflow.InvalidDnaBaseSymbol", value));
 
         return result;
     }
@@ -236,6 +236,9 @@ internal sealed class DnaBaseParser
 
     public bool SymbolToCode(char symbol, out DnaBase result) => symbolToCode.TryGetValue(symbol, out result);
 
+#if !DEBUG
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+#endif
     public static bool IsDefined(DnaBases value) => value >= DnaBases.Gap && value <= (DnaBases.Any | DnaBases.Lowercase);
 
     private void AddDnaBase(DnaBases code, char upperSymbol)

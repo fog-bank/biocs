@@ -57,7 +57,7 @@ public class CounterTest
         counter.Add("C", 3);
 
         var clone = new Counter<string?>(counter);
-        TestProperties(clone, 3, 6, set, new[] { "A", "B", "B", "C", "C", "C" }, comparer);
+        TestProperties(clone, 3, 6, set, ["A", "B", "B", "C", "C", "C"], comparer);
         TestItem(clone, "A", 1);
         TestItem(clone, "B", 2);
         TestItem(clone, "C", 3);
@@ -66,7 +66,7 @@ public class CounterTest
         set.Add(null);
 
         clone = new Counter<string?>(counter);
-        TestProperties(clone, 4, 7, set, new[] { null, "A", "B", "B", "C", "C", "C" }, comparer);
+        TestProperties(clone, 4, 7, set, [null, "A", "B", "B", "C", "C", "C"], comparer);
         TestItem(clone, "A", 1);
         TestItem(clone, "B", 2);
         TestItem(clone, "C", 3);
@@ -168,14 +168,14 @@ public class CounterTest
 
         counter.Add("A");
         set.Add("A");
-        TestProperties(counter, 1, 1, set, new[] { "A" }, comparer);
+        TestProperties(counter, 1, 1, set, ["A"], comparer);
         TestItem(counter, null, null);
         TestItem(counter, "A", 1);
         TestItem(counter, "B", null);
         TestItem(counter, "C", null);
 
         counter.Add("a", 3);
-        TestProperties(counter, 1, 4, set, new[] { "A", "A", "A", "A" }, comparer);
+        TestProperties(counter, 1, 4, set, ["A", "A", "A", "A"], comparer);
         TestItem(counter, null, null);
         TestItem(counter, "A", 4);
         TestItem(counter, "B", null);
@@ -183,7 +183,7 @@ public class CounterTest
 
         counter.Add("B", 2);
         set.Add("B");
-        TestProperties(counter, 2, 6, set, new[] { "A", "A", "A", "A", "B", "B" }, comparer);
+        TestProperties(counter, 2, 6, set, ["A", "A", "A", "A", "B", "B"], comparer);
         TestItem(counter, null, null);
         TestItem(counter, "A", 4);
         TestItem(counter, "B", 2);
@@ -191,7 +191,7 @@ public class CounterTest
 
         counter.Add("C", 0);
         set.Add("C");
-        TestProperties(counter, 3, 6, set, new[] { "A", "A", "A", "A", "B", "B" }, comparer);
+        TestProperties(counter, 3, 6, set, ["A", "A", "A", "A", "B", "B"], comparer);
         TestItem(counter, null, null);
         TestItem(counter, "A", 4);
         TestItem(counter, "B", 2);
@@ -199,7 +199,7 @@ public class CounterTest
 
         counter.Add(null);
         set.Add(null);
-        TestProperties(counter, 4, 7, set, new[] { null, "A", "A", "A", "A", "B", "B" }, comparer);
+        TestProperties(counter, 4, 7, set, [null, "A", "A", "A", "A", "B", "B"], comparer);
         TestItem(counter, null, 1);
         TestItem(counter, "A", 4);
         TestItem(counter, "B", 2);

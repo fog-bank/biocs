@@ -13,7 +13,7 @@ public class CollectionToolsTest
         Assert.IsFalse(src.AllItemsAreEqual(null, out int value));
         Assert.AreEqual(0, value);
 
-        src = new[] { 1 };
+        src = [1];
         Assert.IsTrue(src.AllItemsAreEqual());
         Assert.IsTrue(src.AllItemsAreEqual(null, out value));
         Assert.AreEqual(1, value);
@@ -28,7 +28,7 @@ public class CollectionToolsTest
         Assert.IsFalse(src.AllItemsAreEqual(null, out value));
         Assert.AreEqual(0, value);
 
-        src = Enumerable.Repeat(1, 10).Concat(new[] { 2 });
+        src = Enumerable.Repeat(1, 10).Concat([2]);
         Assert.IsFalse(src.AllItemsAreEqual());
         Assert.IsFalse(src.AllItemsAreEqual(null, out value));
         Assert.AreEqual(0, value);

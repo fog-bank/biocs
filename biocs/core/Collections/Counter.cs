@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Biocs.Collections;
 
@@ -300,6 +301,7 @@ public class Counter<T>
     }
 }
 
+[ExcludeFromCodeCoverage]
 internal sealed class CounterDebugView<T>(Counter<T>? counter)
 {
     [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]

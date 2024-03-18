@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 
 namespace Biocs.Numerics;
 
@@ -288,6 +289,7 @@ public class DoubleMersenneTwister
 }
 
 [StructLayout(LayoutKind.Explicit)]
+[ExcludeFromCodeCoverage]
 internal struct Union128
 {
     [FieldOffset(0)]

@@ -79,15 +79,15 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
     {
         get
         {
-            if (index < 0 || index >= Count)
-                ThrowHelper.ThrowArgumentOutOfRange(nameof(index));
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
             return items[GetArrayIndex(index)];
         }
         set
         {
-            if (index < 0 || index >= Count)
-                ThrowHelper.ThrowArgumentOutOfRange(nameof(index));
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
             items[GetArrayIndex(index)] = value;
             version++;
@@ -347,8 +347,8 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
     /// </exception>
     public void Insert(int index, T item)
     {
-        if (index < 0 || index > Count)
-            ThrowHelper.ThrowArgumentOutOfRange(nameof(index));
+        ArgumentOutOfRangeException.ThrowIfNegative(index);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(index, Count);
 
         if (index == 0)
         {
@@ -403,9 +403,8 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
     /// </exception>
     public void InsertRange(int index, IEnumerable<T> collection)
     {
-        if (index < 0 || index > Count)
-            ThrowHelper.ThrowArgumentOutOfRange(nameof(index));
-
+        ArgumentOutOfRangeException.ThrowIfNegative(index);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(index, Count);
         ArgumentNullException.ThrowIfNull(collection);
 
         if (collection is ICollection<T> coll)
@@ -563,8 +562,8 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
     /// </exception>
     public void RemoveAt(int index)
     {
-        if (index < 0 || index >= Count)
-            ThrowHelper.ThrowArgumentOutOfRange(nameof(index));
+        ArgumentOutOfRangeException.ThrowIfNegative(index);
+        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
         if (index == 0)
         {

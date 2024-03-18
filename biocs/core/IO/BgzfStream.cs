@@ -39,11 +39,12 @@ public class BgzfStream : Stream
     [StringResourceUsage("Arg.InvalidEnumValue", 1)]
     public BgzfStream(Stream stream, CompressionMode mode, bool leaveOpen = false)
     {
-        this.stream = stream ?? throw new ArgumentNullException(nameof(stream));
+        ArgumentNullException.ThrowIfNull(stream);
 
         if (mode != CompressionMode.Decompress && mode != CompressionMode.Compress)
             throw new ArgumentException(Res.GetString("Arg.InvalidEnumValue", nameof(CompressionMode)), nameof(mode));
 
+        this.stream = stream;
         this.mode = mode;
         this.leaveOpen = leaveOpen;
     }

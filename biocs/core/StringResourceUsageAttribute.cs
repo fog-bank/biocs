@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Biocs;
 
@@ -8,6 +9,7 @@ namespace Biocs;
 /// <remarks>This API is not intended to be used directly from your code.</remarks>
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Constructor, AllowMultiple = true, Inherited = false)]
 [Conditional("DEBUG")]
+[ExcludeFromCodeCoverage]
 public sealed class StringResourceUsageAttribute : Attribute
 {
     /// <summary>

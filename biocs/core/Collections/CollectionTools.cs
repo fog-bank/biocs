@@ -49,7 +49,7 @@ public static class CollectionTools
         ArgumentNullException.ThrowIfNull(collection);
 
         comparer ??= EqualityComparer<T>.Default;
-        value = default!;
+        value = default;
         bool isFirst = true;
 
         foreach (var item in collection)

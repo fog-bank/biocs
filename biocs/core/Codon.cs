@@ -79,14 +79,14 @@ public readonly struct Codon(DnaBase first, DnaBase second, DnaBase third) : IEq
     /// </summary>
     /// <param name="value">A string to convert.</param>
     /// <returns>A <see cref="Codon"/> instance whose symbol is represented by <paramref name="value"/>.</returns>
-    /// <exception cref="ArgumentException">
+    /// <exception cref="OverflowException">
     /// <paramref name="value"/> contains an unknown character in a certain position.
     /// </exception>
-    [StringResourceUsage("Arg.InvalidCodonSymbol", 1)]
+    [StringResourceUsage("Overflow.InvalidCodonSymbol", 1)]
     public static Codon Parse(ReadOnlySpan<char> value)
     {
         if (!TryParse(value, out var result))
-            throw new ArgumentException(Res.GetString("Arg.InvalidCodonSymbol", value.ToString()), nameof(value));
+            throw new OverflowException(Res.GetString("Overflow.InvalidCodonSymbol", value.ToString()));
 
         return result;
     }

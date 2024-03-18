@@ -1,6 +1,9 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+
 namespace Biocs.Collections;
 
+[ExcludeFromCodeCoverage]
 internal sealed class CollectionDebugView<T>(ICollection<T>? collection)
 {
     [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
