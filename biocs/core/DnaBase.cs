@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Biocs;
 
@@ -109,11 +110,7 @@ public readonly struct DnaBase : IEquatable<DnaBase>
         return new DnaBase((DnaBases)complement);
     }
 
-    /// <summary>
-    /// Determines whether the current <see cref="DnaBase"/> instance is equal to a specified <see cref="DnaBase"/> instance.
-    /// </summary>
-    /// <param name="other">The nucleotide to compare to this instance.</param>
-    /// <returns><see langword="true"/> if the two instances are equal; otherwise, <see langword="false"/>.</returns>
+    /// <inheritdoc/>
     public bool Equals(DnaBase other) => Code == other.Code;
 
     /// <summary>
@@ -124,7 +121,7 @@ public readonly struct DnaBase : IEquatable<DnaBase>
     public bool EqualsCaseInsensitive(DnaBase other) => ToUpper(Code) == ToUpper(other.Code);
 
     /// <inheritdoc/>
-    public override bool Equals(object? obj) => obj is DnaBase other && Equals(other);
+    public override bool Equals([NotNullWhen(true)] object? obj) => obj is DnaBase other && Equals(other);
 
     /// <inheritdoc/>
     public override int GetHashCode() => (int)Code;

@@ -56,6 +56,7 @@ public class Location : IEquatable<Location?>, IComparable<Location?>, ISpanPars
 
     private string DebuggerDisplay => Elements.Count > 3 ? $"{typeof(Location).Name}[{Elements.Count}]" : ToString();
 
+    /// <inheritdoc/>
     public bool Equals([NotNullWhen(true)] Location? other)
     {
         if (ReferenceEquals(this, other))
@@ -67,10 +68,10 @@ public class Location : IEquatable<Location?>, IComparable<Location?>, ISpanPars
         throw new NotImplementedException();
     }
 
-
     /// <inheritdoc/>
     public override bool Equals([NotNullWhen(true)] object? obj) => Equals(obj as Location);
 
+    /// <inheritdoc/>
     public int CompareTo(Location? other)
     {
         if (ReferenceEquals(this, other))
@@ -82,19 +83,13 @@ public class Location : IEquatable<Location?>, IComparable<Location?>, ISpanPars
         throw new NotImplementedException();
     }
 
-    /// <summary>
-    /// Returns the hash code for this instance.
-    /// </summary>
-    /// <returns>A 32-bit signed integer hash code.</returns>
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         return HashCode.Combine(Start, End, IsComplement);
     }
 
-    /// <summary>
-    /// Converts the current <see cref="Location"/> object to its equivalent <see cref="string"/> representation.
-    /// </summary>
-    /// <returns>The <see cref="string"/> representation of the current <see cref="Location"/> object.</returns>
+    /// <inheritdoc/>
     public override string ToString()
     {
         var sb = new StringBuilder();

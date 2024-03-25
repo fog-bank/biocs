@@ -1,4 +1,6 @@
-﻿namespace Biocs;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Biocs;
 
 /// <summary>
 /// Represents a nucleotide triplet.
@@ -58,15 +60,11 @@ public readonly struct Codon(DnaBase first, DnaBase second, DnaBase third) : IEq
     /// <returns>The lowercase equivalent of this instance.</returns>
     public Codon ToLower() => new(First.ToLower(), Second.ToLower(), Third.ToLower());
 
-    /// <summary>
-    /// Determines whether the current <see cref="Codon"/> instance is equal to a specified <see cref="Codon"/> instance.
-    /// </summary>
-    /// <param name="other">The codon to compare to this instance.</param>
-    /// <returns><see langword="true"/> if the two instances are equal; otherwise, <see langword="false"/>.</returns>
+    /// <inheritdoc/>
     public bool Equals(Codon other) => First == other.First && Second == other.Second && Third == other.Third;
 
     /// <inheritdoc/>
-    public override bool Equals(object? obj) => obj is Codon other && Equals(other);
+    public override bool Equals([NotNullWhen(true)] object? obj) => obj is Codon other && Equals(other);
 
     /// <inheritdoc/>
     public override int GetHashCode() => (First.GetHashCode() << 16) + (Second.GetHashCode() << 8) + Third.GetHashCode();

@@ -3,7 +3,7 @@
 namespace Biocs;
 
 /// <summary>
-/// Represents a continuous range of the presented sequence.
+/// Represents a continuous range of the presented biological sequence.
 /// </summary>
 public readonly struct SequenceRange : IEquatable<SequenceRange>, IComparable, IComparable<SequenceRange>
 {
@@ -12,6 +12,7 @@ public readonly struct SequenceRange : IEquatable<SequenceRange>, IComparable, I
     /// </summary>
     public SequenceRange(int start, int end)
     {
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(start, end);
         Start = start;
         End = end;
     }
