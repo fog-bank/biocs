@@ -166,10 +166,8 @@ public class Counter<T>
         ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
 
         if (arrayIndex + NumberOfItems > array.Length)
-        {
-            throw new ArgumentException(
-                Res.GetString("Arg.InvalidCopyDestRange", NumberOfItems, array.Length - arrayIndex));
-        }
+            ThrowHelper.ThrowArgument(Res.GetString("Arg.InvalidCopyDestRange", NumberOfItems, array.Length - arrayIndex));
+
         map.Keys.CopyTo(array, arrayIndex);
 
         if (nullCount.HasValue)

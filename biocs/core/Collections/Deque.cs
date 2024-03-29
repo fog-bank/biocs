@@ -94,9 +94,7 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
         }
     }
 
-    /// <summary>
-    /// Gets the number of elements actually contained in the <see cref="Deque{T}"/>.
-    /// </summary>
+    /// <inheritdoc cref="IReadOnlyCollection{T}.Count"/>
     public int Count { get; private set; }
 
     /// <summary>
@@ -123,19 +121,15 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
     /// <exception cref="InvalidOperationException">The <see cref="Deque{T}"/> is empty.</exception>
     public T First
     {
-        [StringResourceUsage("InvalOp.EmptyCollection")]
         get
         {
-            if (Count == 0)
-                ThrowHelper.ThrowInvalidOperation(Res.GetString("InvalOp.EmptyCollection"));
+            ThrowIfEmpty();
 
             return items[head];
         }
-        [StringResourceUsage("InvalOp.EmptyCollection")]
         set
         {
-            if (Count == 0)
-                ThrowHelper.ThrowInvalidOperation(Res.GetString("InvalOp.EmptyCollection"));
+            ThrowIfEmpty();
 
             items[head] = value;
             version++;
@@ -148,26 +142,20 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
     /// <exception cref="InvalidOperationException">The <see cref="Deque{T}"/> is empty.</exception>
     public T Last
     {
-        [StringResourceUsage("InvalOp.EmptyCollection")]
         get
         {
-            if (Count == 0)
-                ThrowHelper.ThrowInvalidOperation(Res.GetString("InvalOp.EmptyCollection"));
+            ThrowIfEmpty();
 
             return items[tail];
         }
-        [StringResourceUsage("InvalOp.EmptyCollection")]
         set
         {
-            if (Count == 0)
-                ThrowHelper.ThrowInvalidOperation(Res.GetString("InvalOp.EmptyCollection"));
+            ThrowIfEmpty();
 
             items[tail] = value;
             version++;
         }
     }
-
-    bool ICollection<T>.IsReadOnly => false;
 
     /// <summary>
     /// Returns an enumerator that iterates through the <see cref="Deque{T}"/>.
@@ -205,40 +193,41 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
     /// The number of elements in the <see cref="Deque{T}"/> is greater than the available space from
     /// <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.
     /// </exception>
-    public void CopyTo(T[] array, int arrayIndex) => CopyTo(0, array, arrayIndex, Count);
+    [StringResourceUsage("Arg.InvalidCopyDestRange", 2)]
+    public void CopyTo(T[] array, int arrayIndex)
+    {
+        ArgumentNullException.ThrowIfNull(array);
+        ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
+
+        if (arrayIndex + Count > array.Length)
+            ThrowHelper.ThrowArgument(Res.GetString("Arg.InvalidCopyDestRange", Count, array.Length - arrayIndex));
+
+        CopyTo(0, array.AsSpan(arrayIndex), Count);
+    }
 
     /// <summary>
-    /// Copies a range of elements from the <see cref="Deque{T}"/> to an existing one-dimensional <see cref="Array"/>.
+    /// Copies a range of elements from the <see cref="Deque{T}"/> to a <see cref="Span{T}"/>.
     /// </summary>
     /// <param name="index">The zero-based index in the <see cref="Deque{T}"/> at which copying begins.</param>
-    /// <param name="array">
-    /// The one-dimensional <see cref="Array"/> that is the destination of the elements copied from <see cref="Deque{T}"/>.
-    /// </param>
-    /// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
     /// <param name="count">The number of elements to copy.</param>
-    /// <exception cref="ArgumentNullException"><paramref name="array"/> is <see langword="null"/>.</exception>
-    /// <exception cref="ArgumentOutOfRangeException">
-    /// <paramref name="index"/>, <paramref name="arrayIndex"/> or <paramref name="count"/> is less than 0.
-    /// </exception>
+    /// <param name="destination">The span that is the destination of the elements copied from <see cref="Deque{T}"/>.</param>
     /// <exception cref="ArgumentException">
     /// <para><paramref name="count"/> is greater than the number of elements from <paramref name="index"/> to the end of 
-    /// the <see cref="Deque{T}"/>.</para> -or- <para><paramref name="count"/> is greater than the available space from 
-    /// <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.</para>
+    /// the <see cref="Deque{T}"/>.</para> -or- <para>The number of elements to copy is greater than the number of elements
+    /// that the <paramref name="destination"/> can contain.</para>
     /// </exception>
     [StringResourceUsage("Arg.InvalidCopySrcRange", 2)]
     [StringResourceUsage("Arg.InvalidCopyDestRange", 2)]
-    public void CopyTo(int index, T[] array, int arrayIndex, int count)
+    public void CopyTo(int index, Span<T> destination, int count)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(index);
-        ArgumentNullException.ThrowIfNull(array);
-        ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
         ArgumentOutOfRangeException.ThrowIfNegative(count);
 
         if (index + count > Count)
-            throw new ArgumentException(Res.GetString("Arg.InvalidCopySrcRange", count, Count - index));
+            ThrowHelper.ThrowArgument(Res.GetString("Arg.InvalidCopySrcRange", count, Count - index));
 
-        if (arrayIndex + count > array.Length)
-            throw new ArgumentException(Res.GetString("Arg.InvalidCopyDestRange", count, array.Length - arrayIndex));
+        if (count > destination.Length)
+            ThrowHelper.ThrowArgument(Res.GetString("Arg.InvalidCopyDestRange", count, destination.Length));
 
         if (count > 0)
         {
@@ -247,13 +236,11 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
             int count2 = items.Length - start;
 
             if (count <= count2)
-            {
-                Array.Copy(items, start, array, arrayIndex, count);
-            }
+                items.AsSpan(start, count).CopyTo(destination);
             else
             {
-                Array.Copy(items, start, array, arrayIndex, count2);
-                Array.Copy(items, 0, array, arrayIndex + count2, count - count2);
+                items.AsSpan(start).CopyTo(destination);
+                items.AsSpan(0, count - count2).CopyTo(destination[count2..]);
             }
         }
     }
@@ -417,12 +404,10 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
             if (Count + collCount > items.Length)
             {
                 EnsureCapacityAndInsertRange(index, coll);
-                return;
             }
-
-            // Self assignment
-            if (this == collection)
+            else if (this == collection)
             {
+                // Self assignment
                 int splitIndex = GetArrayIndex(index);
 
                 if (index < Count)
@@ -441,58 +426,59 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
                 }
                 Count *= 2;
                 version++;
-                return;
-            }
-
-            int insert;
-
-            if (Count == 0)
-            {
-                insert = 0;
-                head = 0;
-                tail = collCount - 1;
-            }
-            else if (index == 0)
-            {
-                Decrement(ref head, collCount);
-                insert = head;
-            }
-            else if (index == Count)
-            {
-                insert = tail;
-                Increment(ref insert);
-                Increment(ref tail, collCount);
-            }
-            else if (index <= Count / 2)
-            {
-                insert = GetArrayIndex(index);
-                Decrement(ref insert, collCount);
-
-                CopyBlockStartward(head, GetArrayIndex(index - 1), collCount);
-                Decrement(ref head, collCount);
             }
             else
             {
-                insert = GetArrayIndex(index);
+                int insert;
 
-                CopyBlockEndward(insert, tail, collCount);
-                Increment(ref tail, collCount);
-            }
-
-            if (insert + collCount <= items.Length)
-            {
-                coll.CopyTo(items, insert);
-            }
-            else
-            {
-                foreach (var item in collection)
+                if (Count == 0)
                 {
-                    items[insert] = item;
-                    Increment(ref insert);
+                    insert = 0;
+                    head = 0;
+                    tail = collCount - 1;
                 }
+                else if (index == 0)
+                {
+                    Decrement(ref head, collCount);
+                    insert = head;
+                }
+                else if (index == Count)
+                {
+                    insert = tail;
+                    Increment(ref insert);
+                    Increment(ref tail, collCount);
+                }
+                else if (index <= Count / 2)
+                {
+                    insert = GetArrayIndex(index);
+                    Decrement(ref insert, collCount);
+
+                    CopyBlockStartward(head, GetArrayIndex(index - 1), collCount);
+                    Decrement(ref head, collCount);
+                }
+                else
+                {
+                    insert = GetArrayIndex(index);
+
+                    CopyBlockEndward(insert, tail, collCount);
+                    Increment(ref tail, collCount);
+                }
+
+                if (insert + collCount <= items.Length)
+                {
+                    coll.CopyTo(items, insert);
+                }
+                else
+                {
+                    foreach (var item in collection)
+                    {
+                        items[insert] = item;
+                        Increment(ref insert);
+                    }
+                }
+                Count += collCount;
+                version++;
             }
-            Count += collCount;
-            version++;
         }
         else
         {
@@ -505,11 +491,9 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
     /// Removes the element at the start of the <see cref="Deque{T}"/>.
     /// </summary>
     /// <exception cref="InvalidOperationException">The <see cref="Deque{T}"/> is empty.</exception>
-    [StringResourceUsage("InvalOp.EmptyCollection")]
     public void RemoveFirst()
     {
-        if (Count == 0)
-            ThrowHelper.ThrowInvalidOperation(Res.GetString("InvalOp.EmptyCollection"));
+        ThrowIfEmpty();
 
         items[head] = default!;
         Count--;
@@ -521,11 +505,9 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
     /// Removes the element at the end of the <see cref="Deque{T}"/>.
     /// </summary>
     /// <exception cref="InvalidOperationException">The <see cref="Deque{T}"/> is empty.</exception>
-    [StringResourceUsage("InvalOp.EmptyCollection")]
     public void RemoveLast()
     {
-        if (Count == 0)
-            ThrowHelper.ThrowInvalidOperation(Res.GetString("InvalOp.EmptyCollection"));
+        ThrowIfEmpty();
 
         items[tail] = default!;
         Count--;
@@ -565,34 +547,20 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
         ArgumentOutOfRangeException.ThrowIfNegative(index);
         ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
 
-        if (index == 0)
-        {
-            RemoveFirst();
-            return;
-        }
-
-        if (index == Count - 1)
-        {
-            RemoveLast();
-            return;
-        }
-
         if (index <= Count / 2)
         {
-            CopyBlockEndward(head, GetArrayIndex(index - 1), 1);
+            if (index > 0)
+                CopyBlockEndward(head, GetArrayIndex(index - 1), 1);
 
-            items[head] = default!;
-            Increment(ref head);
+            RemoveFirst();
         }
         else
         {
-            CopyBlockStartward(GetArrayIndex(index + 1), tail, 1);
+            if (index + 1 < Count)
+                CopyBlockStartward(GetArrayIndex(index + 1), tail, 1);
 
-            items[tail] = default!;
-            Decrement(ref tail);
+            RemoveLast();
         }
-        Count--;
-        version++;
     }
 
     /// <summary>
@@ -614,7 +582,7 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
         ArgumentOutOfRangeException.ThrowIfNegative(count);
 
         if (index + count > Count)
-            throw new ArgumentException(Res.GetString("Arg.InvalidRemoveRange", index, count, Count));
+            ThrowHelper.ThrowArgument(Res.GetString("Arg.InvalidRemoveRange", index, count, Count));
 
         if (count == 0)
             return;
@@ -644,13 +612,11 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
         }
 
         if (start <= end)
-        {
-            Array.Clear(items, start, end - start + 1);
-        }
+            items.AsSpan(start..(end + 1)).Clear();
         else
         {
-            Array.Clear(items, start, items.Length - start);
-            Array.Clear(items, 0, end + 1);
+            items.AsSpan(start).Clear();
+            items.AsSpan(0, end + 1).Clear();
         }
         Count -= count;
         version++;
@@ -664,13 +630,11 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
         if (Count > 0)
         {
             if (head <= tail)
-            {
-                Array.Clear(items, head, Count);
-            }
+                items.AsSpan(head, Count).Clear();
             else
             {
-                Array.Clear(items, head, items.Length - head);
-                Array.Clear(items, 0, tail + 1);
+                items.AsSpan(head).Clear();
+                items.AsSpan(0, tail + 1).Clear();
             }
             Count = 0;
         }
@@ -686,18 +650,14 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
         return (dequeIndex + head) % items.Length;
     }
 
-    private void Increment(ref int arrayIndex) => Increment(ref arrayIndex, 1);
-
-    private void Increment(ref int arrayIndex, int value)
+    private void Increment(ref int arrayIndex, int value = 1)
     {
         Debug.Assert(arrayIndex >= 0 && arrayIndex < items.Length);
 
         arrayIndex = (arrayIndex + value) % items.Length;
     }
 
-    private void Decrement(ref int arrayIndex) => Decrement(ref arrayIndex, 1);
-
-    private void Decrement(ref int arrayIndex, int value)
+    private void Decrement(ref int arrayIndex, int value = 1)
     {
         Debug.Assert(arrayIndex >= 0 && arrayIndex < items.Length);
 
@@ -730,9 +690,9 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
 
         var dest = new T[items.Length * 2];
 
-        CopyTo(0, dest, 0, index);
+        CopyTo(0, dest.AsSpan(), index);
         dest[index] = item;
-        CopyTo(index, dest, index + 1, Count - index);
+        CopyTo(index, dest.AsSpan(index + 1), Count - index);
 
         items = dest;
         Count++;
@@ -748,9 +708,9 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
 
         var dest = new T[Count + collection.Count];
 
-        CopyTo(0, dest, 0, index);
+        CopyTo(0, dest.AsSpan(), index);
         collection.CopyTo(dest, index);
-        CopyTo(index, dest, index + collection.Count, Count - index);
+        CopyTo(index, dest.AsSpan(index + collection.Count), Count - index);
 
         items = dest;
         Count = dest.Length;
@@ -771,26 +731,26 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
             if (start >= distance)
             {
                 // Copy [start, end] toward the head of array
-                Array.Copy(items, start, items, start - distance, end - start + 1);
+                items.AsSpan(start..(end + 1)).CopyTo(items.AsSpan(start - distance));
             }
             else if (end < distance)
             {
                 // Copy [start, end] toward the tail of array
-                Array.Copy(items, start, items, start - distance + items.Length, end - start + 1);
+                items.AsSpan(start..(end + 1)).CopyTo(items.AsSpan(start - distance + items.Length));
             }
             else
             {
                 // Copy [start, distance) to [*, array.Length)
-                Array.Copy(items, start, items, start - distance + items.Length, distance - start);
+                items.AsSpan(start..distance).CopyTo(items.AsSpan(start - distance + items.Length));
 
                 // Copy [distance, end] to [0, *]
-                Array.Copy(items, distance, items, 0, end - distance + 1);
+                items.AsSpan(distance..(end + 1)).CopyTo(items);
             }
         }
         else
         {
             // Copy [start, array.Length)
-            Array.Copy(items, start, items, start - distance, items.Length - start);
+            items.AsSpan(start).CopyTo(items.AsSpan(start - distance));
 
             // Copy [0, end]
             CopyBlockStartward(0, end, distance);
@@ -809,33 +769,46 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
             if (end + distance < items.Length)
             {
                 // Copy [start, end] toward the tail of array
-                Array.Copy(items, start, items, start + distance, end - start + 1);
+                items.AsSpan(start..(end + 1)).CopyTo(items.AsSpan(start + distance));
             }
             else if (start + distance >= items.Length)
             {
                 // Copy [start, end] toward the head of array
-                Array.Copy(items, start, items, start + distance - items.Length, end - start + 1);
+                items.AsSpan(start..(end + 1)).CopyTo(items.AsSpan(start + distance - items.Length));
             }
             else
             {
                 // Copy [array.Length - distance, end] to [0, *]
-                Array.Copy(items, items.Length - distance, items, 0, end + distance - items.Length + 1);
+                items.AsSpan((items.Length - distance)..(end + 1)).CopyTo(items.AsSpan());
 
                 // Copy [start, array.Length - distance) to [*, array.Lentgh)
-                Array.Copy(items, start, items, start + distance, items.Length - start - distance);
+                items.AsSpan(start..(items.Length - distance)).CopyTo(items.AsSpan(start + distance));
             }
         }
         else
         {
             // Copy [0, end]
-            Array.Copy(items, 0, items, distance, end + 1);
+            items.AsSpan(0, end + 1).CopyTo(items.AsSpan(distance));
 
             // Copy [start, array.Length)
             CopyBlockEndward(start, items.Length - 1, distance);
         }
     }
 
+    [StringResourceUsage("InvalOp.EmptyCollection")]
+    private void ThrowIfEmpty()
+    {
+        if (Count == 0)
+            ThrowHelper.ThrowInvalidOperation(Res.GetString("InvalOp.EmptyCollection"));
+    }
+
+    #region Explicit Interface Implementations
+
+    bool ICollection<T>.IsReadOnly => false;
+
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     void ICollection<T>.Add(T item) => AddLast(item);
+
+    #endregion
 }

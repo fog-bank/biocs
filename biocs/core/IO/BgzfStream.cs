@@ -42,7 +42,7 @@ public class BgzfStream : Stream
         ArgumentNullException.ThrowIfNull(stream);
 
         if (mode != CompressionMode.Decompress && mode != CompressionMode.Compress)
-            throw new ArgumentException(Res.GetString("Arg.InvalidEnumValue", nameof(CompressionMode)), nameof(mode));
+            ThrowHelper.ThrowArgument(Res.GetString("Arg.InvalidEnumValue", nameof(CompressionMode)), nameof(mode));
 
         this.stream = stream;
         this.mode = mode;
@@ -67,7 +67,7 @@ public class BgzfStream : Stream
         : this(stream, CompressionMode.Compress, leaveOpen)
     {
         if (level != CompressionLevel.Optimal && level != CompressionLevel.Fastest && level != CompressionLevel.NoCompression)
-            throw new ArgumentException(Res.GetString("Arg.InvalidEnumValue", nameof(CompressionLevel)), nameof(level));
+            ThrowHelper.ThrowArgument(Res.GetString("Arg.InvalidEnumValue", nameof(CompressionLevel)), nameof(level));
 
         this.level = level;
     }

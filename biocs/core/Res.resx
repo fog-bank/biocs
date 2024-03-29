@@ -121,7 +121,7 @@
     <value>obj is not the same type as this instance.</value>
   </data>
   <data name="Arg.InvalidCopyDestRange" xml:space="preserve">
-    <value>The number of elements to copy ({0} items) is greater than the available space of the destination array ({1} items).</value>
+    <value>The number of elements to copy ({0} items) is greater than the available space of the destination ({1} items).</value>
   </data>
   <data name="Arg.InvalidCopySrcRange" xml:space="preserve">
     <value>The number of elements to copy ({0} items) is greater than the available space of the source collection ({1} items).</value>

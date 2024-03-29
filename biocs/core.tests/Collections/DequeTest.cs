@@ -24,7 +24,8 @@ public class DequeTest
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Deque<object>(-4));
 
         // ICollection<T>
-        var target2 = new Deque<object>(Array.Empty<object>());
+        object[] emptyArray = [];
+        var target2 = new Deque<object>(emptyArray);
         Assert.AreEqual(0, target2.Count);
         Assert.AreEqual(0, target2.Capacity);
 
@@ -33,10 +34,16 @@ public class DequeTest
         Assert.AreEqual(count, target3.Capacity);
 
         // IEnumerable<T>
-        Assert.AreEqual(0, new Deque<int>(Enumerable.Empty<int>()).Count);
-        Assert.AreEqual(count, new Deque<int>(Enumerable.Range(0, count)).Count);
+        Assert.AreEqual(0, new Deque<int>(Range(0)).Count);
+        Assert.AreEqual(count, new Deque<int>(Range(count)).Count);
 
         Assert.ThrowsException<ArgumentNullException>(() => new Deque<object>(null!));
+
+        static IEnumerable<int> Range(int count)
+        {
+            for (int i = 0; i < count; i++)
+                yield return i;
+        }
     }
 
     [TestMethod]
@@ -71,10 +78,10 @@ public class DequeTest
         Assert.AreEqual(4, target.Capacity);
         Assert.AreEqual(0, target.Count);
 
-        InsertRange(target, compare, 0, new[] { 1, 2 });
+        InsertRange(target, compare, 0, [1, 2]);
         Assert.AreEqual(4, target.Capacity);
 
-        InsertRange(target, compare, 1, new[] { 3, 4 });
+        InsertRange(target, compare, 1, [3, 4]);
         Assert.AreEqual(4, target.Capacity);
 
         // No change
@@ -93,7 +100,7 @@ public class DequeTest
         Assert.AreEqual(compare.First(), target.First);
         Assert.AreEqual(compare.Last(), target.Last);
 
-        InsertRange(target, compare, 1, new[] { 5, 6 });
+        InsertRange(target, compare, 1, [5, 6]);
         Assert.AreEqual(8, target.Capacity);
 
         // TrimExcess
@@ -192,7 +199,7 @@ public class DequeTest
             var target = new Deque<int>(query);
 
             foreach (int item in target)
-                target.InsertRange(0, new[] { item });
+                target.InsertRange(0, [item]);
         });
 
         Assert.ThrowsException<InvalidOperationException>(() =>
@@ -271,19 +278,16 @@ public class DequeTest
         }
         {
             var array2 = new int[count2 + 2];
-            target.CopyTo(index, array2, 1, count2);
+            target.CopyTo(index, array2.AsSpan(1), count2);
 
             Assert.AreEqual(0, array2.First());
             Assert.IsTrue(Enumerable.Range(start + index, count2).SequenceEqual(array2.Skip(1).Take(count2)));
             Assert.AreEqual(0, array2.Last());
 
-            Assert.ThrowsException<ArgumentNullException>(() => target.CopyTo(0, null!, 0, 0));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.CopyTo(-1, array2, 0, 0));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.CopyTo(0, array2, -1, 0));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.CopyTo(0, array2, 0, -1));
-            Assert.ThrowsException<ArgumentException>(() => target.CopyTo(count - 1, array2, 0, 2));
-            Assert.ThrowsException<ArgumentException>(() => target.CopyTo(0, array2, array2.Length - 1, 2));
-            Assert.ThrowsException<ArgumentException>(() => target.CopyTo(0, new int[count + 2], 0, count + 1));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.CopyTo(-1, array2.AsSpan(), 0));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.CopyTo(0, array2.AsSpan(), -1));
+            Assert.ThrowsException<ArgumentException>(() => target.CopyTo(count - 1, array2.AsSpan(), 2));
+            Assert.ThrowsException<ArgumentException>(() => target.CopyTo(0, default, 2));
         }
     }
 
@@ -303,7 +307,7 @@ public class DequeTest
 
         {
             var array = new[] { -1, -1 };
-            target.CopyTo(0, array, 0, 0);
+            target.CopyTo(0, array.AsSpan(), 0);
 
             Assert.IsTrue(array.All(x => x == -1));
         }
@@ -317,7 +321,7 @@ public class DequeTest
         }
         {
             var array2 = new int[count2 + 2];
-            target.CopyTo(index, array2, 1, count2);    // [0, 9, 10, 0]
+            target.CopyTo(index, array2.AsSpan(1), count2);    // [0, 9, 10, 0]
 
             Assert.AreEqual(0, array2.First());
             Assert.IsTrue(Enumerable.Range(start + index, count2).SequenceEqual(array2.Skip(1).Take(count2)));
@@ -329,13 +333,13 @@ public class DequeTest
     public void IndexOf_Test()
     {
         object value = new();
-        var target = new Deque<object?>(new[] { new object(), value, new object(), null });
+        var target = new Deque<object?>([new object(), value, new object(), null]);
 
         Assert.AreEqual(1, target.IndexOf(value));
         Assert.AreEqual(3, target.IndexOf(null));
         Assert.AreEqual(-1, target.IndexOf(new object()));
 
-        var target2 = new Deque<int>(new[] { 1, 3, 4, 0, 9 });
+        var target2 = new Deque<int>([1, 3, 4, 0, 9]);
 
         Assert.AreEqual(1, target2.IndexOf(3));
         Assert.AreEqual(3, target2.IndexOf(0));
@@ -499,19 +503,19 @@ public class DequeTest
         var compare = new List<int>(capacity);
 
         // [+, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        InsertRange(target, compare, 0, new[] { 1 });
+        InsertRange(target, compare, 0, [1]);
 
         // [1, +, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        InsertRange(target, compare, 1, new[] { 2 });
+        InsertRange(target, compare, 1, [2]);
 
         // [1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, +]
-        InsertRange(target, compare, 0, new[] { 3 });
+        InsertRange(target, compare, 0, [3]);
 
         // [1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, +]
-        InsertRange(target, compare, 1, new[] { 4 });
+        InsertRange(target, compare, 1, [4]);
 
         // [1, +, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4]
-        InsertRange(target, compare, 3, new[] { 5 });
+        InsertRange(target, compare, 3, [5]);
 
         // [1, +, +, 5, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4]
         static IEnumerable<int> Range()
@@ -522,7 +526,7 @@ public class DequeTest
         InsertRange(target, compare, 3, Range());
 
         // [+, 6, 7, 5, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 1, +]
-        InsertRange(target, compare, 3, new[] { 8, 9 });
+        InsertRange(target, compare, 3, [8, 9]);
 
         // [+, +, +, +, +, 8, 9, 6, 7, 5, 2, 3, 4, 1, +, +, +, +]
         target.InsertRange(3, target);
@@ -534,9 +538,9 @@ public class DequeTest
         Assert.AreEqual(compare.Last(), target.Last);
 
         // Call EnsureCapacityAndInsertRange
-        InsertRange(target, compare, 2, new[] { 10, 11 });
-        InsertRange(target, compare, 0, new[] { 12, 13 });
-        InsertRange(target, compare, target.Count, new[] { 14, 15, 16 });
+        InsertRange(target, compare, 2, [10, 11]);
+        InsertRange(target, compare, 0, [12, 13]);
+        InsertRange(target, compare, target.Count, [14, 15, 16]);
 
         target.InsertRange(12, target);
         compare.InsertRange(12, compare);
@@ -545,10 +549,10 @@ public class DequeTest
         Assert.AreEqual(compare.First(), target.First);
         Assert.AreEqual(compare.Last(), target.Last);
 
-        InsertRange(target, compare, 0, Array.Empty<int>());
+        InsertRange(target, compare, 0, []);
 
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.InsertRange(-1, Array.Empty<int>()));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.InsertRange(target.Count + 1, Array.Empty<int>()));
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.InsertRange(-1, []));
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.InsertRange(target.Count + 1, []));
         Assert.ThrowsException<ArgumentNullException>(() => target.InsertRange(0, null!));
     }
 
