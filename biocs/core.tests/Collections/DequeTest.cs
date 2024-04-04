@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Globalization;
 
 namespace Biocs.Collections;
 
@@ -374,7 +373,7 @@ public class DequeTest
 
         for (int i = 1; i <= 10; i++)
         {
-            string item = i.ToString(CultureInfo.InvariantCulture);
+            string item = $"{i}";
             target.AddFirst(item);
             Assert.AreEqual(item, target.First);
             Assert.AreEqual(i + 1, target.Count);
@@ -392,7 +391,7 @@ public class DequeTest
 
         for (int i = 0; i < 10; i++)
         {
-            string item = i.ToString(CultureInfo.InvariantCulture);
+            string item = $"{i}";
             target.AddLast(item);
             Assert.AreEqual(item, target.Last);
             Assert.AreEqual(i + 2, target.Count);
@@ -639,10 +638,10 @@ public class DequeTest
         var target = new Deque<string>(count);
 
         for (int i = 1; i <= count / 2; i++)
-            target.AddFirst(i.ToString(CultureInfo.InvariantCulture));
+            target.AddFirst($"{i}");
 
         for (int i = count / 2 + 1; i <= count; i++)
-            target.AddLast(i.ToString(CultureInfo.InvariantCulture));
+            target.AddLast($"{i}");
 
         foreach (int i in new[] { 2, 1, 6, 3, 4, 8, 9, 7, 10, 5 })
         {
@@ -651,7 +650,7 @@ public class DequeTest
             Assert.IsFalse(target.Remove(string.Empty));
             Assert.IsFalse(target.Remove("Biology"));
 
-            string item = i.ToString(CultureInfo.InvariantCulture);
+            string item = $"{i}";
             Assert.IsTrue(target.Remove(item));
             Assert.IsFalse(target.Contains(item));
         }
@@ -713,6 +712,78 @@ public class DequeTest
         target.Clear();
         Assert.AreEqual(0, target.Count);
         Assert.ThrowsException<InvalidOperationException>(() => target.First);
+    }
+
+    [TestMethod]
+    public void NonGenericTest()
+    {
+        var target = new Deque<string?>(10);
+        IList list = target;
+
+        Assert.AreEqual(0, list.Add("A"));
+        Assert.AreEqual(1, list.Add(null));
+        Assert.AreEqual(-1, list.Add(1));
+        Assert.AreEqual(2, target.Count);
+        Assert.IsTrue(target.SequenceEqual(["A", null]));
+
+        int i = 0;
+        foreach (object obj in list)
+        {
+            switch (i++)
+            {
+                case 0:
+                    Assert.AreEqual("A", obj);
+                    break;
+
+                case 1:
+                    Assert.AreEqual(null, obj);
+                    break;
+            }
+        }
+
+        var array = new[] { null, null, new object(), null };
+        Assert.ThrowsException<ArgumentNullException>(() => list.CopyTo(null!, 0));
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.CopyTo(array, -1));
+        Assert.ThrowsException<ArgumentException>(() => list.CopyTo(array, 3));
+        list.CopyTo(array, 1);
+        Assert.IsTrue(array.SequenceEqual([null, "A", null, null]));
+
+        Assert.AreEqual("A", list[0]);
+        list[1] = "B";
+        Assert.AreEqual(2, target.Count);
+        Assert.IsTrue(target.SequenceEqual(["A", "B"]));
+        list[1] = null;
+        Assert.AreEqual(null, target[1]);
+        Assert.ThrowsException<ArgumentException>(() => list[0] = new object());
+
+        list.Insert(1, "C");
+        list.Insert(1, null);
+        list.Insert(2, "D");
+        Assert.AreEqual(5, target.Count);
+        Assert.IsTrue(target.SequenceEqual(["A", null, "D", "C", null]));
+        Assert.ThrowsException<ArgumentException>(() => list.Insert(0, new object()));
+
+        list.Remove("D");
+        list.Remove(null);
+        list.Remove(new object());
+        Assert.AreEqual(3, target.Count);
+        Assert.IsTrue(target.SequenceEqual(["A", "C", null]));
+
+        Assert.AreEqual(1, list.IndexOf("C"));
+        Assert.AreEqual(2, list.IndexOf(null));
+        Assert.AreEqual(-1, list.IndexOf(new object()));
+
+        Assert.IsTrue(list.Contains("A"));
+        Assert.IsTrue(list.Contains(null));
+        Assert.IsFalse(list.Contains(new object()));
+
+        list.CopyTo(array, 0);
+        Assert.IsTrue(array.SequenceEqual(["A", "C", null, null]));
+
+        Assert.IsFalse(list.IsFixedSize);
+        Assert.IsFalse(list.IsReadOnly);
+        Assert.IsFalse(list.IsSynchronized);
+        Assert.IsNotNull(list.SyncRoot);
     }
 
     private static void Insert(Deque<int> target, List<int> compare, int index, int value)

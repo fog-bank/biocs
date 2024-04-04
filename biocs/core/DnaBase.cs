@@ -134,14 +134,14 @@ public readonly struct DnaBase : IEquatable<DnaBase>
     /// </summary>
     /// <param name="value">A character to convert.</param>
     /// <returns>A <see cref="DnaBase"/> instance whose symbol is represented by <paramref name="value"/>.</returns>
-    /// <exception cref="OverflowException">
+    /// <exception cref="FormatException">
     /// <paramref name="value"/> is not one of the symbols defined for <see cref="DnaBase"/>.
     /// </exception>
-    [StringResourceUsage("Overflow.InvalidDnaBaseSymbol", 1)]
+    [StringResourceUsage("Format.InvalidDnaBaseSymbol", 1)]
     public static DnaBase Parse(char value)
     {
         if (!DnaBaseParser.Instance.SymbolToCode(value, out var result))
-            throw new OverflowException(Res.GetString("Overflow.InvalidDnaBaseSymbol", value));
+            throw new FormatException(Res.GetString("Format.InvalidDnaBaseSymbol", value));
 
         return result;
     }

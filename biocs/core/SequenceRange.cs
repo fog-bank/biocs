@@ -5,7 +5,7 @@ namespace Biocs;
 /// <summary>
 /// Represents a continuous range of the presented biological sequence.
 /// </summary>
-public readonly struct SequenceRange : IEquatable<SequenceRange>, IComparable, IComparable<SequenceRange>
+public readonly struct SequenceRange : IEquatable<SequenceRange>, IComparable<SequenceRange>, IComparable
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="SequenceRange"/> structure.
@@ -42,14 +42,11 @@ public readonly struct SequenceRange : IEquatable<SequenceRange>, IComparable, I
     public override int GetHashCode() => HashCode.Combine(Start, End);
 
     /// <inheritdoc/>
-    public int CompareTo(SequenceRange other)
+    public int CompareTo(SequenceRange other) => (Start - other.Start) switch
     {
-        return (Start - other.Start) switch
-        {
-            0 => End - other.End,
-            int startComp => startComp
-        };
-    }
+        0 => End - other.End,
+        int startComp => startComp
+    };
 
     /// <summary>
     /// Converts the current <see cref="SequenceRange"/> instance to its equivalent string representation.
@@ -129,15 +126,12 @@ public readonly struct SequenceRange : IEquatable<SequenceRange>, IComparable, I
     #region Explicit Interface Implementations
 
     [StringResourceUsage("Arg.CompareToNotSameTypedObject")]
-    int IComparable.CompareTo(object? obj)
+    int IComparable.CompareTo(object? obj) => obj switch
     {
-        return obj switch
-        {
-            null => 1,
-            SequenceRange other => CompareTo(other),
-            _ => throw new ArgumentException(Res.GetString("Arg.CompareToNotSameTypedObject"), nameof(obj))
-        };
-    }
+        null => 1,
+        SequenceRange other => CompareTo(other),
+        _ => throw new ArgumentException(Res.GetString("Arg.CompareToNotSameTypedObject"), nameof(obj))
+    };
 
     #endregion
 }

@@ -78,6 +78,6 @@ public class CodonTest
         Assert.IsFalse(Codon.TryParse("ATX", out _));
 
         Assert.AreEqual(new Codon(DnaBase.Adenine, DnaBase.Thymine, DnaBase.Guanine), Codon.Parse("ATG"));
-        Assert.ThrowsException<OverflowException>(() => Codon.Parse(string.Empty));
+        Assert.ThrowsException<FormatException>(() => Codon.Parse(string.Empty));
     }
 }

@@ -23,7 +23,7 @@ public class DnaBaseTest
         Test('D', "NotC", false, false, 'H');
         Test('N', "Any", false, false, 'N');
 
-        Assert.ThrowsException<OverflowException>(() => DnaBase.Parse('%'));
+        Assert.ThrowsException<FormatException>(() => DnaBase.Parse('%'));
 
         var result = DnaBase.Any;
         Assert.IsFalse(DnaBase.TryParse('%', out result));

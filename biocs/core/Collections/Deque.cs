@@ -10,7 +10,7 @@ namespace Biocs.Collections;
 /// <seealso cref="LinkedList{T}"/>
 /// <seealso cref="Queue{T}"/>
 [DebuggerDisplay("Count = {Count}"), DebuggerTypeProxy(typeof(CollectionDebugView<>))]
-public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
+public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, IList
 {
     private T[] items;
     private int head;
@@ -31,7 +31,7 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Deque{T}"/> class that contains elements copied from the specified
-    /// <see cref="IEnumerable{T}"/>.
+    /// collection.
     /// </summary>
     /// <param name="collection">
     /// The <see cref="IEnumerable{T}"/> whose elements are copied to the new <see cref="Deque{T}"/>.
@@ -100,9 +100,7 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
     /// <summary>
     /// Gets or sets the total number of elements the internal data structure can hold without resizing.
     /// </summary>
-    /// <exception cref="ArgumentOutOfRangeException">
-    /// The value in a set operation is less than <see cref="Count"/>.
-    /// </exception>
+    /// <exception cref="ArgumentOutOfRangeException">The value in a set operation is less than <see cref="Count"/>.</exception>
     public int Capacity
     {
         get => items.Length;
@@ -804,11 +802,135 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>
 
     #region Explicit Interface Implementations
 
+    object? IList.this[int index]
+    {
+        get => this[index];
+        [StringResourceUsage("Arg.IncompatibleObjectForCollection")]
+        set
+        {
+            switch (value)
+            {
+                case T item:
+                    this[index] = item;
+                    break;
+
+                case null when default(T) is null:
+                    this[index] = default!;
+                    break;
+
+                default:
+                    ThrowHelper.ThrowArgument(Res.GetString("Arg.IncompatibleObjectForCollection"));
+                    break;
+            }
+        }
+    }
+
+    bool IList.IsFixedSize => false;
+
     bool ICollection<T>.IsReadOnly => false;
+
+    bool IList.IsReadOnly => false;
+
+    bool ICollection.IsSynchronized => false;
+
+    object ICollection.SyncRoot => this;
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
+    [StringResourceUsage("Arg.InvalidCopyDestRange", 2)]
+    void ICollection.CopyTo(Array array, int index)
+    {
+        ArgumentNullException.ThrowIfNull(array);
+        ArgumentOutOfRangeException.ThrowIfNegative(index);
+
+        if (index + Count > array.Length)
+            ThrowHelper.ThrowArgument(Res.GetString("Arg.InvalidCopyDestRange", Count, array.Length - index));
+
+        if (Count > 0)
+        {
+            try
+            {
+                if (head <= tail)
+                    Array.Copy(items, head, array, index, Count);
+                else
+                {
+                    int count2 = items.Length - head;
+                    Array.Copy(items, head, array, index, count2);
+                    Array.Copy(items, 0, array, index + count2, Count - count2);
+                }
+            }
+            catch (Exception ex) when (ex is ArrayTypeMismatchException or RankException or InvalidCastException)
+            {
+                throw new ArgumentException(null, nameof(array), ex);
+            }
+        }
+    }
+
+    bool IList.Contains(object? value) => value switch
+    {
+        T item => Contains(item),
+        null when default(T) is null => Contains(default!),
+        _ => false
+    };
+
+    int IList.IndexOf(object? value) => value switch
+    {
+        T item => IndexOf(item),
+        null when default(T) is null => IndexOf(default!),
+        _ => -1
+    };
+
     void ICollection<T>.Add(T item) => AddLast(item);
+
+    int IList.Add(object? value)
+    {
+        switch (value)
+        {
+            case T item:
+                AddLast(item);
+                return Count - 1;
+
+            case null when default(T) is null:
+                AddLast(default!);
+                return Count - 1;
+
+            default:
+                return -1;
+        }
+    }
+
+    [StringResourceUsage("Arg.IncompatibleObjectForCollection")]
+    void IList.Insert(int index, object? value)
+    {
+        switch (value)
+        {
+            case T item:
+                Insert(index, item);
+                break;
+
+            case null when default(T) is null:
+                Insert(index, default!);
+                break;
+
+            default:
+                ThrowHelper.ThrowArgument(Res.GetString("Arg.IncompatibleObjectForCollection"));
+                break;
+        }
+    }
+
+    void IList.Remove(object? value)
+    {
+        switch (value)
+        {
+            case T item:
+                Remove(item);
+                break;
+
+            case null when default(T) is null:
+                Remove(default!);
+                break;
+        }
+    }
 
     #endregion
 }

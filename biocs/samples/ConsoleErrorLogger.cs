@@ -23,19 +23,16 @@ public class ConsoleErrorLogger : ILogger
 
     public IDisposable BeginScope<TState>(TState state) => NullScope.Instance;
 
-    protected static string LogLevelToString(LogLevel logLevel)
+    protected static string LogLevelToString(LogLevel logLevel) => logLevel switch
     {
-        return logLevel switch
-        {
-            LogLevel.Trace => "Trace",
-            LogLevel.Debug => "DEBUG",
-            LogLevel.Information => "INFO",
-            LogLevel.Warning => "WARN",
-            LogLevel.Error => "ERROR",
-            LogLevel.Critical => "CRITICAL",
-            _ => logLevel.ToString()
-        };
-    }
+        LogLevel.Trace => "Trace",
+        LogLevel.Debug => "DEBUG",
+        LogLevel.Information => "INFO",
+        LogLevel.Warning => "WARN",
+        LogLevel.Error => "ERROR",
+        LogLevel.Critical => "CRITICAL",
+        _ => logLevel.ToString()
+    };
 }
 
 /// <summary>

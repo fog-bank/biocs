@@ -39,19 +39,16 @@ public class ConsoleErrorColorLogger : ConsoleErrorLogger
         stderr.Flush();
     }
 
-    private static (ConsoleColor, ConsoleColor) GetColors(LogLevel logLevel)
+    private static (ConsoleColor, ConsoleColor) GetColors(LogLevel logLevel) => logLevel switch
     {
-        return logLevel switch
-        {
-            LogLevel.Trace => (ConsoleColor.Gray, ConsoleColor.Black),
-            LogLevel.Debug => (ConsoleColor.Gray, ConsoleColor.Black),
-            LogLevel.Information => (ConsoleColor.DarkGreen, ConsoleColor.Black),
-            LogLevel.Warning => (ConsoleColor.Yellow, ConsoleColor.Black),
-            LogLevel.Error => (ConsoleColor.Black, ConsoleColor.Red),
-            LogLevel.Critical => (ConsoleColor.White, ConsoleColor.Red),
-            _ => (ConsoleColor.White, ConsoleColor.Black),
-        };
-    }
+        LogLevel.Trace => (ConsoleColor.Gray, ConsoleColor.Black),
+        LogLevel.Debug => (ConsoleColor.Gray, ConsoleColor.Black),
+        LogLevel.Information => (ConsoleColor.DarkGreen, ConsoleColor.Black),
+        LogLevel.Warning => (ConsoleColor.Yellow, ConsoleColor.Black),
+        LogLevel.Error => (ConsoleColor.Black, ConsoleColor.Red),
+        LogLevel.Critical => (ConsoleColor.White, ConsoleColor.Red),
+        _ => (ConsoleColor.White, ConsoleColor.Black),
+    };
 
     private static void Write(TextWriter writer, string message, (ConsoleColor, ConsoleColor) colors)
     {
