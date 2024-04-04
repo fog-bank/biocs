@@ -745,6 +745,7 @@ public class DequeTest
         Assert.ThrowsException<ArgumentNullException>(() => list.CopyTo(null!, 0));
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.CopyTo(array, -1));
         Assert.ThrowsException<ArgumentException>(() => list.CopyTo(array, 3));
+        Assert.ThrowsException<ArgumentException>(() => list.CopyTo(new int[2], 0));
         list.CopyTo(array, 1);
         Assert.IsTrue(array.SequenceEqual([null, "A", null, null]));
 

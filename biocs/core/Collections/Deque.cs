@@ -812,16 +812,13 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, IList
             {
                 case T item:
                     this[index] = item;
-                    break;
+                    return;
 
                 case null when default(T) is null:
                     this[index] = default!;
-                    break;
-
-                default:
-                    ThrowHelper.ThrowArgument(Res.GetString("Arg.IncompatibleObjectForCollection"));
-                    break;
+                    return;
             }
+            throw new ArgumentException(Res.GetString("Arg.IncompatibleObjectForCollection"));
         }
     }
 
@@ -906,16 +903,13 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, IList
         {
             case T item:
                 Insert(index, item);
-                break;
+                return;
 
             case null when default(T) is null:
                 Insert(index, default!);
-                break;
-
-            default:
-                ThrowHelper.ThrowArgument(Res.GetString("Arg.IncompatibleObjectForCollection"));
-                break;
+                return;
         }
+        throw new ArgumentException(Res.GetString("Arg.IncompatibleObjectForCollection"));
     }
 
     void IList.Remove(object? value)

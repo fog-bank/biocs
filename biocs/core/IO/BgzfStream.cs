@@ -600,8 +600,7 @@ public class BgzfStream : Stream
 
     private static bool IsBgzfHeader(ReadOnlySpan<byte> header)
     {
-        if (header.Length < 16)
-            return false;
+        Debug.Assert(header.Length >= 16);
 
         // Identification in gzip format
         if (header[0] != 0x1f || header[1] != 0x8b)
