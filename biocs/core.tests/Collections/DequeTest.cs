@@ -338,10 +338,14 @@ public class DequeTest
         Assert.AreEqual(3, target.IndexOf(null));
         Assert.AreEqual(-1, target.IndexOf(new object()));
 
-        var target2 = new Deque<int>([1, 3, 4, 0, 9]);
+        var target2 = new Deque<int>(9);
+        target2.InsertRange(0, [1, 3, 4, 0, 9]);
+        target2.AddFirst(-1);
+        target2.AddFirst(-2);
 
-        Assert.AreEqual(1, target2.IndexOf(3));
-        Assert.AreEqual(3, target2.IndexOf(0));
+        Assert.AreEqual(3, target2.IndexOf(3));
+        Assert.AreEqual(5, target2.IndexOf(0));
+        Assert.AreEqual(1, target2.IndexOf(-1));
         Assert.AreEqual(-1, target2.IndexOf(120));
 
         Assert.AreEqual(-1, new Deque<object>().IndexOf(null!));

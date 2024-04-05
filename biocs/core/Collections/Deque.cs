@@ -254,7 +254,7 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, IList
     public bool Contains(T item) => IndexOf(item) >= 0;
 
     /// <summary>
-    /// Searches for the specified value and returns the zero-based index of the first occurrence within 
+    /// Searches for the specified value and returns the zero-based index of the first occurrence within
     /// the <see cref="Deque{T}"/>.
     /// </summary>
     /// <param name="item">The value to locate in the <see cref="Deque{T}"/>.</param>
@@ -262,19 +262,22 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, IList
     /// The zero-based index of the first occurrence of <paramref name="item"/> within the <see cref="Deque{T}"/>, if found;
     /// otherwise, -1.
     /// </returns>
-    /// <remarks>
-    /// This method determines equality using the default equality comparer <see cref="EqualityComparer{T}.Default"/>.
-    /// </remarks>
     public int IndexOf(T item)
     {
-        var comparer = EqualityComparer<T>.Default;
+        if (Count == 0)
+            return -1;
 
-        for (int i = 0; i < Count; i++)
-        {
-            if (comparer.Equals(items[GetArrayIndex(i)], item))
-                return i;
-        }
-        return -1;
+        int count = head <= tail ? Count : items.Length - head;
+        int arrayIndex = Array.IndexOf(items, item, head, count);
+
+        if (arrayIndex >= 0)
+            return arrayIndex - head;
+
+        if (head <= tail)
+            return -1;
+
+        arrayIndex = Array.IndexOf(items, item, 0, tail + 1);
+        return arrayIndex >= 0 ? arrayIndex + count : -1;
     }
 
     /// <summary>
@@ -814,7 +817,7 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, IList
                     this[index] = item;
                     return;
 
-                case null when default(T) is null:
+                case null when default(T) == null:
                     this[index] = default!;
                     return;
             }
@@ -866,14 +869,14 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, IList
     bool IList.Contains(object? value) => value switch
     {
         T item => Contains(item),
-        null when default(T) is null => Contains(default!),
+        null when default(T) == null => Contains(default!),
         _ => false
     };
 
     int IList.IndexOf(object? value) => value switch
     {
         T item => IndexOf(item),
-        null when default(T) is null => IndexOf(default!),
+        null when default(T) == null => IndexOf(default!),
         _ => -1
     };
 
@@ -887,7 +890,7 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, IList
                 AddLast(item);
                 return Count - 1;
 
-            case null when default(T) is null:
+            case null when default(T) == null:
                 AddLast(default!);
                 return Count - 1;
 
@@ -905,7 +908,7 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, IList
                 Insert(index, item);
                 return;
 
-            case null when default(T) is null:
+            case null when default(T) == null:
                 Insert(index, default!);
                 return;
         }
@@ -920,7 +923,7 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, IList
                 Remove(item);
                 break;
 
-            case null when default(T) is null:
+            case null when default(T) == null:
                 Remove(default!);
                 break;
         }
