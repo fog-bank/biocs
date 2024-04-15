@@ -12,8 +12,8 @@ namespace Biocs.Collections;
 [DebuggerDisplay("Count = {Count}"), DebuggerTypeProxy(typeof(CollectionDebugView<>))]
 public class IndexedValueCollection<TKey, TValue> : IList<TValue?>, IReadOnlyList<TValue?>, IList where TKey : notnull
 {
-    private readonly IDictionary<TKey, TValue> dictionary;
-    private readonly IList<TKey> keyList;
+    private readonly IReadOnlyDictionary<TKey, TValue> dictionary;
+    private readonly IReadOnlyList<TKey> keyList;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="IndexedValueCollection{TKey, TValue}"/> class.
@@ -21,7 +21,7 @@ public class IndexedValueCollection<TKey, TValue> : IList<TValue?>, IReadOnlyLis
     /// <param name="dictionary">The dictionary to wrap.</param>
     /// <param name="keyList">The list of keys in order to associate values in <paramref name="dictionary"/> with index.</param>
     /// <exception cref="ArgumentNullException"><paramref name="dictionary"/> or <paramref name="keyList"/> is <see langword="null"/>.</exception>
-    public IndexedValueCollection(IDictionary<TKey, TValue> dictionary, IList<TKey> keyList)
+    public IndexedValueCollection(IReadOnlyDictionary<TKey, TValue> dictionary, IReadOnlyList<TKey> keyList)
     {
         ArgumentNullException.ThrowIfNull(dictionary);
         ArgumentNullException.ThrowIfNull(keyList);
@@ -34,7 +34,10 @@ public class IndexedValueCollection<TKey, TValue> : IList<TValue?>, IReadOnlyLis
     /// Gets the value corresponding to the specified index.
     /// </summary>
     /// <param name="index">The zero-based index of the value to get.</param>
-    /// <returns>The value corresponding to the specified index.</returns>
+    /// <returns>
+    /// The value corresponding to the specified index. If the wrapped dictionary does not contain the key corresponding to the specified index,
+    /// the method returns the <see langword="default"/> value for <typeparamref name="TValue"/>.
+    /// </returns>
     /// <exception cref="ArgumentOutOfRangeException">
     /// <para><paramref name="index"/> is negative.</para> -or- <para><paramref name="index"/> is greater than <see cref="Count"/>.</para>
     /// </exception>
@@ -59,7 +62,17 @@ public class IndexedValueCollection<TKey, TValue> : IList<TValue?>, IReadOnlyLis
             yield return this[i];
     }
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Copies the entire collection to an existing one-dimensional <see cref="Array"/>.
+    /// </summary>
+    /// <param name="array">The one-dimensional <see cref="Array"/> that is the destination of the values.</param>
+    /// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="array"/> is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is less than 0.</exception>
+    /// <exception cref="ArgumentException">
+    /// The number of values in the collection is greater than the available space from <paramref name="arrayIndex"/>
+    /// to the end of <paramref name="array"/>.
+    /// </exception>
     [StringResourceUsage("Arg.InvalidCopyDestRange", 2)]
     public void CopyTo(TValue?[] array, int arrayIndex)
     {
@@ -69,14 +82,24 @@ public class IndexedValueCollection<TKey, TValue> : IList<TValue?>, IReadOnlyLis
         if (arrayIndex + Count > array.Length)
             ThrowHelper.ThrowArgument(Res.GetString("Arg.InvalidCopyDestRange", Count, array.Length - arrayIndex));
 
-        for (int i = 0; i < Count; i++)
-            array[arrayIndex + i] = this[i];
+        var span = array.AsSpan(arrayIndex, Count);
+
+        for (int i = 0; i < span.Length; i++)
+            span[i] = this[i];
     }
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Determines whether the collection contains the specified value.
+    /// </summary>
+    /// <param name="item">The object to locate in the collection.</param>
+    /// <returns><see langword="true"/> if <paramref name="item"/> is found in the collection; otherwise, <see langword="false"/>.</returns>
     public bool Contains(TValue? item) => IndexOf(item) >= 0;
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Determines the index of the specified value in the collection.
+    /// </summary>
+    /// <param name="item">The object to locate in the collection.</param>
+    /// <returns>The index of <paramref name="item"/> if found in the collection; otherwise, -1.</returns>
     public int IndexOf(TValue? item)
     {
         var comparer = EqualityComparer<TValue>.Default;
@@ -89,7 +112,18 @@ public class IndexedValueCollection<TKey, TValue> : IList<TValue?>, IReadOnlyLis
         return -1;
     }
 
-    public bool TryGetItem(int index, [MaybeNullWhen(false)] out TValue item)
+    /// <summary>
+    /// Tries to get the value corresponding to the specified index.
+    /// </summary>
+    /// <param name="index">The zero-based index of the value to get.</param>
+    /// <param name="item">
+    /// When this method returns, the value corresponding to the specified index, if the wrapped dictionary contains the key corresponding to
+    /// the specified index; otherwise, the <see langword="default"/> value for <typeparamref name="TValue"/>.</param>
+    /// <returns><see langword="true"/> if the wrapped dictionary contains the key corresponding to the specified index; otherwise, false.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// <para><paramref name="index"/> is negative.</para> -or- <para><paramref name="index"/> is greater than <see cref="Count"/>.</para>
+    /// </exception>
+    public bool TryGetValue(int index, [MaybeNullWhen(false)] out TValue item)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(index);
         ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Count);
