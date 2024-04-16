@@ -2,12 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Class DoubleMersenneTwister
- | BioC# Documents </title>
+      <title>Class DoubleMersenneTwister | BioC# Documents </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class DoubleMersenneTwister
- | BioC# Documents ">
+      <meta name="title" content="Class DoubleMersenneTwister | BioC# Documents ">
       
+      <meta name="description" content="Represents double-precision Mersenne Twister pseudorandom number generator based on IEEE 754 format.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -30,15 +29,15 @@
       <meta name="loc:changeTheme" content="Change theme">
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
   </head>
-
-  <script type="module" src="./../public/docfx.min.js"></script>
-
-  <script>
-    const theme = localStorage.getItem('theme') || 'auto'
-    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
-  </script>
-
 
   <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
     <header class="bg-body border-bottom">
@@ -90,8 +89,7 @@
 
 
   <h1 id="Biocs_Numerics_DoubleMersenneTwister" data-uid="Biocs.Numerics.DoubleMersenneTwister" class="text-break">
-    Class DoubleMersenneTwister
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L14"><i class="bi bi-code-slash"></i></a>
+Class DoubleMersenneTwister  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L15"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -120,7 +118,7 @@
 
 
 
-  <dl class="typelist derived">
+  <dl class="typelist inheritedMembers">
     <dt>Inherited Members</dt>
     <dd>
     <div>
@@ -165,7 +163,7 @@ For details about Mersenne Twister, see http://www.math.sci.hiroshima-u.ac.jp/~m
 
   <h3 id="Biocs_Numerics_DoubleMersenneTwister__ctor" data-uid="Biocs.Numerics.DoubleMersenneTwister.#ctor">
   DoubleMersenneTwister()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L29"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Numerics.DoubleMersenneTwister.html">DoubleMersenneTwister</a> class,
@@ -193,7 +191,7 @@ using a time-dependent default seed value.</p>
 
   <h3 id="Biocs_Numerics_DoubleMersenneTwister__ctor_System_Int32_" data-uid="Biocs.Numerics.DoubleMersenneTwister.#ctor(System.Int32)">
   DoubleMersenneTwister(int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L37"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Numerics.DoubleMersenneTwister.html">DoubleMersenneTwister</a> class, using the specified seed value.</p>
@@ -226,7 +224,7 @@ using a time-dependent default seed value.</p>
 
   <h3 id="Biocs_Numerics_DoubleMersenneTwister__ctor_System_Int32___" data-uid="Biocs.Numerics.DoubleMersenneTwister.#ctor(System.Int32[])">
   DoubleMersenneTwister(int[])
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L63"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Numerics.DoubleMersenneTwister.html">DoubleMersenneTwister</a> class, using the specified seed array.</p>
@@ -269,7 +267,7 @@ using a time-dependent default seed value.</p>
 
   <h3 id="Biocs_Numerics_DoubleMersenneTwister_Next" data-uid="Biocs.Numerics.DoubleMersenneTwister.Next">
   Next()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L138"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L139"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns a double-precision pseudorandom number that distributes uniformly in the range [0, 1).</p>
@@ -302,7 +300,7 @@ using a time-dependent default seed value.</p>
 
   <h3 id="Biocs_Numerics_DoubleMersenneTwister_NextOpen" data-uid="Biocs.Numerics.DoubleMersenneTwister.NextOpen">
   NextOpen()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L144"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L145"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns a double-precision pseudorandom number that distributes uniformly in the range (0, 1).</p>
@@ -335,7 +333,7 @@ using a time-dependent default seed value.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L14" class="edit-link">Edit this page</a>
+          <a href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Numerics/DoubleMersenneTwister.cs/#L15" class="edit-link">Edit this page</a>
         </div>
 
 

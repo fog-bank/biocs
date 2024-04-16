@@ -44,6 +44,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Biocs.Collections.IndexedValueCollection-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Biocs.Collections.IndexedValueCollection-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Biocs.Collections.yml",
       "output": {
         ".html": {
@@ -108,6 +118,16 @@
       "output": {
         ".html": {
           "relative_path": "api/Biocs.Numerics.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Biocs.SequenceRange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Biocs.SequenceRange.html"
         }
       },
       "version": ""

@@ -103,7 +103,7 @@ public class DoubleMersenneTwisterTest
     }
 
     // Resolves the difference C# Format("f15") and C++ prinf(".15f")
-    private static Tuple<string, string, string> Round(double value)
+    private static (string, string, string) Round(double value)
     {
         Assert.IsTrue(value >= 0 && value <= 2);
 
@@ -117,7 +117,7 @@ public class DoubleMersenneTwisterTest
             string exp = value.ToString("e15");
             string expToEven = Math.Round(value, 15, MidpointRounding.ToEven).ToString("e15");
 
-            return Tuple.Create(roundTrip, exp[..17], expToEven[..17]);
+            return (roundTrip, exp[..17], expToEven[..17]);
         }
         else
         {
@@ -126,7 +126,7 @@ public class DoubleMersenneTwisterTest
 
             int pow = int.Parse(exp[18..]);
 
-            return Tuple.Create(roundTrip,
+            return (roundTrip,
                 "0." + new string('0', pow - 1) + exp[0] + exp.Substring(2, 15 - pow),
                 "0." + new string('0', pow - 1) + expToEven[0] + expToEven.Substring(2, 15 - pow));
         }

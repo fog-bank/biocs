@@ -35,4 +35,5 @@ dotnet test -c Release -v n biocs/core.tests | tee test.log
 
 ## docfx project
 # cd docfx_project
-# docfx build --serve
+# docfx --serve
+## docfx build --serve

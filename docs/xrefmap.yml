@@ -730,15 +730,15 @@ references:
   fullName.vb: Biocs.Collections.Deque(Of T).Contains
   nameWithType: Deque<T>.Contains
   nameWithType.vb: Deque(Of T).Contains
-- uid: Biocs.Collections.Deque`1.CopyTo(System.Int32,`0[],System.Int32,System.Int32)
-  name: CopyTo(int, T[], int, int)
-  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_CopyTo_System_Int32__0___System_Int32_System_Int32_
-  commentId: M:Biocs.Collections.Deque`1.CopyTo(System.Int32,`0[],System.Int32,System.Int32)
-  name.vb: CopyTo(Integer, T(), Integer, Integer)
-  fullName: Biocs.Collections.Deque<T>.CopyTo(int, T[], int, int)
-  fullName.vb: Biocs.Collections.Deque(Of T).CopyTo(Integer, T(), Integer, Integer)
-  nameWithType: Deque<T>.CopyTo(int, T[], int, int)
-  nameWithType.vb: Deque(Of T).CopyTo(Integer, T(), Integer, Integer)
+- uid: Biocs.Collections.Deque`1.CopyTo(System.Int32,System.Span{`0},System.Int32)
+  name: CopyTo(int, Span<T>, int)
+  href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_CopyTo_System_Int32_System_Span__0__System_Int32_
+  commentId: M:Biocs.Collections.Deque`1.CopyTo(System.Int32,System.Span{`0},System.Int32)
+  name.vb: CopyTo(Integer, Span(Of T), Integer)
+  fullName: Biocs.Collections.Deque<T>.CopyTo(int, System.Span<T>, int)
+  fullName.vb: Biocs.Collections.Deque(Of T).CopyTo(Integer, System.Span(Of T), Integer)
+  nameWithType: Deque<T>.CopyTo(int, Span<T>, int)
+  nameWithType.vb: Deque(Of T).CopyTo(Integer, Span(Of T), Integer)
 - uid: Biocs.Collections.Deque`1.CopyTo(`0[],System.Int32)
   name: CopyTo(T[], int)
   href: api/Biocs.Collections.Deque-1.html#Biocs_Collections_Deque_1_CopyTo__0___System_Int32_
@@ -984,6 +984,159 @@ references:
   fullName.vb: Biocs.Collections.Deque(Of T).RemoveRange
   nameWithType: Deque<T>.RemoveRange
   nameWithType.vb: Deque(Of T).RemoveRange
+- uid: Biocs.Collections.IndexedValueCollection`2
+  name: IndexedValueCollection<TKey, TValue>
+  href: api/Biocs.Collections.IndexedValueCollection-2.html
+  commentId: T:Biocs.Collections.IndexedValueCollection`2
+  name.vb: IndexedValueCollection(Of TKey, TValue)
+  fullName: Biocs.Collections.IndexedValueCollection<TKey, TValue>
+  fullName.vb: Biocs.Collections.IndexedValueCollection(Of TKey, TValue)
+  nameWithType: IndexedValueCollection<TKey, TValue>
+  nameWithType.vb: IndexedValueCollection(Of TKey, TValue)
+- uid: Biocs.Collections.IndexedValueCollection`2.#ctor(System.Collections.Generic.IReadOnlyDictionary{`0,`1},System.Collections.Generic.IReadOnlyList{`0})
+  name: IndexedValueCollection(IReadOnlyDictionary<TKey, TValue>, IReadOnlyList<TKey>)
+  href: api/Biocs.Collections.IndexedValueCollection-2.html#Biocs_Collections_IndexedValueCollection_2__ctor_System_Collections_Generic_IReadOnlyDictionary__0__1__System_Collections_Generic_IReadOnlyList__0__
+  commentId: M:Biocs.Collections.IndexedValueCollection`2.#ctor(System.Collections.Generic.IReadOnlyDictionary{`0,`1},System.Collections.Generic.IReadOnlyList{`0})
+  name.vb: New(IReadOnlyDictionary(Of TKey, TValue), IReadOnlyList(Of TKey))
+  fullName: Biocs.Collections.IndexedValueCollection<TKey, TValue>.IndexedValueCollection(System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, System.Collections.Generic.IReadOnlyList<TKey>)
+  fullName.vb: Biocs.Collections.IndexedValueCollection(Of TKey, TValue).New(System.Collections.Generic.IReadOnlyDictionary(Of TKey, TValue), System.Collections.Generic.IReadOnlyList(Of TKey))
+  nameWithType: IndexedValueCollection<TKey, TValue>.IndexedValueCollection(IReadOnlyDictionary<TKey, TValue>, IReadOnlyList<TKey>)
+  nameWithType.vb: IndexedValueCollection(Of TKey, TValue).New(IReadOnlyDictionary(Of TKey, TValue), IReadOnlyList(Of TKey))
+- uid: Biocs.Collections.IndexedValueCollection`2.#ctor*
+  name: IndexedValueCollection
+  href: api/Biocs.Collections.IndexedValueCollection-2.html#Biocs_Collections_IndexedValueCollection_2__ctor_
+  commentId: Overload:Biocs.Collections.IndexedValueCollection`2.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Biocs.Collections.IndexedValueCollection<TKey, TValue>.IndexedValueCollection
+  fullName.vb: Biocs.Collections.IndexedValueCollection(Of TKey, TValue).New
+  nameWithType: IndexedValueCollection<TKey, TValue>.IndexedValueCollection
+  nameWithType.vb: IndexedValueCollection(Of TKey, TValue).New
+- uid: Biocs.Collections.IndexedValueCollection`2.Contains(`1)
+  name: Contains(TValue?)
+  href: api/Biocs.Collections.IndexedValueCollection-2.html#Biocs_Collections_IndexedValueCollection_2_Contains__1_
+  commentId: M:Biocs.Collections.IndexedValueCollection`2.Contains(`1)
+  name.vb: Contains(TValue)
+  fullName: Biocs.Collections.IndexedValueCollection<TKey, TValue>.Contains(TValue?)
+  fullName.vb: Biocs.Collections.IndexedValueCollection(Of TKey, TValue).Contains(TValue)
+  nameWithType: IndexedValueCollection<TKey, TValue>.Contains(TValue?)
+  nameWithType.vb: IndexedValueCollection(Of TKey, TValue).Contains(TValue)
+- uid: Biocs.Collections.IndexedValueCollection`2.Contains*
+  name: Contains
+  href: api/Biocs.Collections.IndexedValueCollection-2.html#Biocs_Collections_IndexedValueCollection_2_Contains_
+  commentId: Overload:Biocs.Collections.IndexedValueCollection`2.Contains
+  isSpec: "True"
+  fullName: Biocs.Collections.IndexedValueCollection<TKey, TValue>.Contains
+  fullName.vb: Biocs.Collections.IndexedValueCollection(Of TKey, TValue).Contains
+  nameWithType: IndexedValueCollection<TKey, TValue>.Contains
+  nameWithType.vb: IndexedValueCollection(Of TKey, TValue).Contains
+- uid: Biocs.Collections.IndexedValueCollection`2.CopyTo(`1[],System.Int32)
+  name: CopyTo(TValue?[], int)
+  href: api/Biocs.Collections.IndexedValueCollection-2.html#Biocs_Collections_IndexedValueCollection_2_CopyTo__1___System_Int32_
+  commentId: M:Biocs.Collections.IndexedValueCollection`2.CopyTo(`1[],System.Int32)
+  name.vb: CopyTo(TValue(), Integer)
+  fullName: Biocs.Collections.IndexedValueCollection<TKey, TValue>.CopyTo(TValue?[], int)
+  fullName.vb: Biocs.Collections.IndexedValueCollection(Of TKey, TValue).CopyTo(TValue(), Integer)
+  nameWithType: IndexedValueCollection<TKey, TValue>.CopyTo(TValue?[], int)
+  nameWithType.vb: IndexedValueCollection(Of TKey, TValue).CopyTo(TValue(), Integer)
+- uid: Biocs.Collections.IndexedValueCollection`2.CopyTo*
+  name: CopyTo
+  href: api/Biocs.Collections.IndexedValueCollection-2.html#Biocs_Collections_IndexedValueCollection_2_CopyTo_
+  commentId: Overload:Biocs.Collections.IndexedValueCollection`2.CopyTo
+  isSpec: "True"
+  fullName: Biocs.Collections.IndexedValueCollection<TKey, TValue>.CopyTo
+  fullName.vb: Biocs.Collections.IndexedValueCollection(Of TKey, TValue).CopyTo
+  nameWithType: IndexedValueCollection<TKey, TValue>.CopyTo
+  nameWithType.vb: IndexedValueCollection(Of TKey, TValue).CopyTo
+- uid: Biocs.Collections.IndexedValueCollection`2.Count
+  name: Count
+  href: api/Biocs.Collections.IndexedValueCollection-2.html#Biocs_Collections_IndexedValueCollection_2_Count
+  commentId: P:Biocs.Collections.IndexedValueCollection`2.Count
+  fullName: Biocs.Collections.IndexedValueCollection<TKey, TValue>.Count
+  fullName.vb: Biocs.Collections.IndexedValueCollection(Of TKey, TValue).Count
+  nameWithType: IndexedValueCollection<TKey, TValue>.Count
+  nameWithType.vb: IndexedValueCollection(Of TKey, TValue).Count
+- uid: Biocs.Collections.IndexedValueCollection`2.Count*
+  name: Count
+  href: api/Biocs.Collections.IndexedValueCollection-2.html#Biocs_Collections_IndexedValueCollection_2_Count_
+  commentId: Overload:Biocs.Collections.IndexedValueCollection`2.Count
+  isSpec: "True"
+  fullName: Biocs.Collections.IndexedValueCollection<TKey, TValue>.Count
+  fullName.vb: Biocs.Collections.IndexedValueCollection(Of TKey, TValue).Count
+  nameWithType: IndexedValueCollection<TKey, TValue>.Count
+  nameWithType.vb: IndexedValueCollection(Of TKey, TValue).Count
+- uid: Biocs.Collections.IndexedValueCollection`2.GetEnumerator
+  name: GetEnumerator()
+  href: api/Biocs.Collections.IndexedValueCollection-2.html#Biocs_Collections_IndexedValueCollection_2_GetEnumerator
+  commentId: M:Biocs.Collections.IndexedValueCollection`2.GetEnumerator
+  fullName: Biocs.Collections.IndexedValueCollection<TKey, TValue>.GetEnumerator()
+  fullName.vb: Biocs.Collections.IndexedValueCollection(Of TKey, TValue).GetEnumerator()
+  nameWithType: IndexedValueCollection<TKey, TValue>.GetEnumerator()
+  nameWithType.vb: IndexedValueCollection(Of TKey, TValue).GetEnumerator()
+- uid: Biocs.Collections.IndexedValueCollection`2.GetEnumerator*
+  name: GetEnumerator
+  href: api/Biocs.Collections.IndexedValueCollection-2.html#Biocs_Collections_IndexedValueCollection_2_GetEnumerator_
+  commentId: Overload:Biocs.Collections.IndexedValueCollection`2.GetEnumerator
+  isSpec: "True"
+  fullName: Biocs.Collections.IndexedValueCollection<TKey, TValue>.GetEnumerator
+  fullName.vb: Biocs.Collections.IndexedValueCollection(Of TKey, TValue).GetEnumerator
+  nameWithType: IndexedValueCollection<TKey, TValue>.GetEnumerator
+  nameWithType.vb: IndexedValueCollection(Of TKey, TValue).GetEnumerator
+- uid: Biocs.Collections.IndexedValueCollection`2.IndexOf(`1)
+  name: IndexOf(TValue?)
+  href: api/Biocs.Collections.IndexedValueCollection-2.html#Biocs_Collections_IndexedValueCollection_2_IndexOf__1_
+  commentId: M:Biocs.Collections.IndexedValueCollection`2.IndexOf(`1)
+  name.vb: IndexOf(TValue)
+  fullName: Biocs.Collections.IndexedValueCollection<TKey, TValue>.IndexOf(TValue?)
+  fullName.vb: Biocs.Collections.IndexedValueCollection(Of TKey, TValue).IndexOf(TValue)
+  nameWithType: IndexedValueCollection<TKey, TValue>.IndexOf(TValue?)
+  nameWithType.vb: IndexedValueCollection(Of TKey, TValue).IndexOf(TValue)
+- uid: Biocs.Collections.IndexedValueCollection`2.IndexOf*
+  name: IndexOf
+  href: api/Biocs.Collections.IndexedValueCollection-2.html#Biocs_Collections_IndexedValueCollection_2_IndexOf_
+  commentId: Overload:Biocs.Collections.IndexedValueCollection`2.IndexOf
+  isSpec: "True"
+  fullName: Biocs.Collections.IndexedValueCollection<TKey, TValue>.IndexOf
+  fullName.vb: Biocs.Collections.IndexedValueCollection(Of TKey, TValue).IndexOf
+  nameWithType: IndexedValueCollection<TKey, TValue>.IndexOf
+  nameWithType.vb: IndexedValueCollection(Of TKey, TValue).IndexOf
+- uid: Biocs.Collections.IndexedValueCollection`2.Item(System.Int32)
+  name: this[int]
+  href: api/Biocs.Collections.IndexedValueCollection-2.html#Biocs_Collections_IndexedValueCollection_2_Item_System_Int32_
+  commentId: P:Biocs.Collections.IndexedValueCollection`2.Item(System.Int32)
+  name.vb: this[](Integer)
+  fullName: Biocs.Collections.IndexedValueCollection<TKey, TValue>.this[int]
+  fullName.vb: Biocs.Collections.IndexedValueCollection(Of TKey, TValue).this[](Integer)
+  nameWithType: IndexedValueCollection<TKey, TValue>.this[int]
+  nameWithType.vb: IndexedValueCollection(Of TKey, TValue).this[](Integer)
+- uid: Biocs.Collections.IndexedValueCollection`2.Item*
+  name: this
+  href: api/Biocs.Collections.IndexedValueCollection-2.html#Biocs_Collections_IndexedValueCollection_2_Item_
+  commentId: Overload:Biocs.Collections.IndexedValueCollection`2.Item
+  isSpec: "True"
+  name.vb: this[]
+  fullName: Biocs.Collections.IndexedValueCollection<TKey, TValue>.this
+  fullName.vb: Biocs.Collections.IndexedValueCollection(Of TKey, TValue).this[]
+  nameWithType: IndexedValueCollection<TKey, TValue>.this
+  nameWithType.vb: IndexedValueCollection(Of TKey, TValue).this[]
+- uid: Biocs.Collections.IndexedValueCollection`2.TryGetValue(System.Int32,`1@)
+  name: TryGetValue(int, out TValue)
+  href: api/Biocs.Collections.IndexedValueCollection-2.html#Biocs_Collections_IndexedValueCollection_2_TryGetValue_System_Int32__1__
+  commentId: M:Biocs.Collections.IndexedValueCollection`2.TryGetValue(System.Int32,`1@)
+  name.vb: TryGetValue(Integer, TValue)
+  fullName: Biocs.Collections.IndexedValueCollection<TKey, TValue>.TryGetValue(int, out TValue)
+  fullName.vb: Biocs.Collections.IndexedValueCollection(Of TKey, TValue).TryGetValue(Integer, TValue)
+  nameWithType: IndexedValueCollection<TKey, TValue>.TryGetValue(int, out TValue)
+  nameWithType.vb: IndexedValueCollection(Of TKey, TValue).TryGetValue(Integer, TValue)
+- uid: Biocs.Collections.IndexedValueCollection`2.TryGetValue*
+  name: TryGetValue
+  href: api/Biocs.Collections.IndexedValueCollection-2.html#Biocs_Collections_IndexedValueCollection_2_TryGetValue_
+  commentId: Overload:Biocs.Collections.IndexedValueCollection`2.TryGetValue
+  isSpec: "True"
+  fullName: Biocs.Collections.IndexedValueCollection<TKey, TValue>.TryGetValue
+  fullName.vb: Biocs.Collections.IndexedValueCollection(Of TKey, TValue).TryGetValue
+  nameWithType: IndexedValueCollection<TKey, TValue>.TryGetValue
+  nameWithType.vb: IndexedValueCollection(Of TKey, TValue).TryGetValue
 - uid: Biocs.DnaBase
   name: DnaBase
   href: api/Biocs.DnaBase.html
@@ -1977,6 +2130,245 @@ references:
   isSpec: "True"
   fullName: Biocs.Numerics.DoubleMersenneTwister.NextOpen
   nameWithType: DoubleMersenneTwister.NextOpen
+- uid: Biocs.SequenceRange
+  name: SequenceRange
+  href: api/Biocs.SequenceRange.html
+  commentId: T:Biocs.SequenceRange
+  fullName: Biocs.SequenceRange
+  nameWithType: SequenceRange
+- uid: Biocs.SequenceRange.#ctor(System.Int32,System.Int32)
+  name: SequenceRange(int, int)
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange__ctor_System_Int32_System_Int32_
+  commentId: M:Biocs.SequenceRange.#ctor(System.Int32,System.Int32)
+  name.vb: New(Integer, Integer)
+  fullName: Biocs.SequenceRange.SequenceRange(int, int)
+  fullName.vb: Biocs.SequenceRange.New(Integer, Integer)
+  nameWithType: SequenceRange.SequenceRange(int, int)
+  nameWithType.vb: SequenceRange.New(Integer, Integer)
+- uid: Biocs.SequenceRange.#ctor*
+  name: SequenceRange
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange__ctor_
+  commentId: Overload:Biocs.SequenceRange.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Biocs.SequenceRange.SequenceRange
+  fullName.vb: Biocs.SequenceRange.New
+  nameWithType: SequenceRange.SequenceRange
+  nameWithType.vb: SequenceRange.New
+- uid: Biocs.SequenceRange.CompareTo(Biocs.SequenceRange)
+  name: CompareTo(SequenceRange)
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_CompareTo_Biocs_SequenceRange_
+  commentId: M:Biocs.SequenceRange.CompareTo(Biocs.SequenceRange)
+  fullName: Biocs.SequenceRange.CompareTo(Biocs.SequenceRange)
+  nameWithType: SequenceRange.CompareTo(SequenceRange)
+- uid: Biocs.SequenceRange.CompareTo*
+  name: CompareTo
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_CompareTo_
+  commentId: Overload:Biocs.SequenceRange.CompareTo
+  isSpec: "True"
+  fullName: Biocs.SequenceRange.CompareTo
+  nameWithType: SequenceRange.CompareTo
+- uid: Biocs.SequenceRange.End
+  name: End
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_End
+  commentId: P:Biocs.SequenceRange.End
+  fullName: Biocs.SequenceRange.End
+  nameWithType: SequenceRange.End
+- uid: Biocs.SequenceRange.End*
+  name: End
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_End_
+  commentId: Overload:Biocs.SequenceRange.End
+  isSpec: "True"
+  fullName: Biocs.SequenceRange.End
+  nameWithType: SequenceRange.End
+- uid: Biocs.SequenceRange.Equals(Biocs.SequenceRange)
+  name: Equals(SequenceRange)
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_Equals_Biocs_SequenceRange_
+  commentId: M:Biocs.SequenceRange.Equals(Biocs.SequenceRange)
+  fullName: Biocs.SequenceRange.Equals(Biocs.SequenceRange)
+  nameWithType: SequenceRange.Equals(SequenceRange)
+- uid: Biocs.SequenceRange.Equals(System.Object)
+  name: Equals(object?)
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_Equals_System_Object_
+  commentId: M:Biocs.SequenceRange.Equals(System.Object)
+  name.vb: Equals(Object)
+  fullName: Biocs.SequenceRange.Equals(object?)
+  fullName.vb: Biocs.SequenceRange.Equals(Object)
+  nameWithType: SequenceRange.Equals(object?)
+  nameWithType.vb: SequenceRange.Equals(Object)
+- uid: Biocs.SequenceRange.Equals*
+  name: Equals
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_Equals_
+  commentId: Overload:Biocs.SequenceRange.Equals
+  isSpec: "True"
+  fullName: Biocs.SequenceRange.Equals
+  nameWithType: SequenceRange.Equals
+- uid: Biocs.SequenceRange.GetHashCode
+  name: GetHashCode()
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_GetHashCode
+  commentId: M:Biocs.SequenceRange.GetHashCode
+  fullName: Biocs.SequenceRange.GetHashCode()
+  nameWithType: SequenceRange.GetHashCode()
+- uid: Biocs.SequenceRange.GetHashCode*
+  name: GetHashCode
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_GetHashCode_
+  commentId: Overload:Biocs.SequenceRange.GetHashCode
+  isSpec: "True"
+  fullName: Biocs.SequenceRange.GetHashCode
+  nameWithType: SequenceRange.GetHashCode
+- uid: Biocs.SequenceRange.Length
+  name: Length
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_Length
+  commentId: P:Biocs.SequenceRange.Length
+  fullName: Biocs.SequenceRange.Length
+  nameWithType: SequenceRange.Length
+- uid: Biocs.SequenceRange.Length*
+  name: Length
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_Length_
+  commentId: Overload:Biocs.SequenceRange.Length
+  isSpec: "True"
+  fullName: Biocs.SequenceRange.Length
+  nameWithType: SequenceRange.Length
+- uid: Biocs.SequenceRange.Start
+  name: Start
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_Start
+  commentId: P:Biocs.SequenceRange.Start
+  fullName: Biocs.SequenceRange.Start
+  nameWithType: SequenceRange.Start
+- uid: Biocs.SequenceRange.Start*
+  name: Start
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_Start_
+  commentId: Overload:Biocs.SequenceRange.Start
+  isSpec: "True"
+  fullName: Biocs.SequenceRange.Start
+  nameWithType: SequenceRange.Start
+- uid: Biocs.SequenceRange.ToString
+  name: ToString()
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_ToString
+  commentId: M:Biocs.SequenceRange.ToString
+  fullName: Biocs.SequenceRange.ToString()
+  nameWithType: SequenceRange.ToString()
+- uid: Biocs.SequenceRange.ToString*
+  name: ToString
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_ToString_
+  commentId: Overload:Biocs.SequenceRange.ToString
+  isSpec: "True"
+  fullName: Biocs.SequenceRange.ToString
+  nameWithType: SequenceRange.ToString
+- uid: Biocs.SequenceRange.op_Equality(Biocs.SequenceRange,Biocs.SequenceRange)
+  name: operator ==(SequenceRange, SequenceRange)
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_op_Equality_Biocs_SequenceRange_Biocs_SequenceRange_
+  commentId: M:Biocs.SequenceRange.op_Equality(Biocs.SequenceRange,Biocs.SequenceRange)
+  name.vb: =(SequenceRange, SequenceRange)
+  fullName: Biocs.SequenceRange.operator ==(Biocs.SequenceRange, Biocs.SequenceRange)
+  fullName.vb: Biocs.SequenceRange.=(Biocs.SequenceRange, Biocs.SequenceRange)
+  nameWithType: SequenceRange.operator ==(SequenceRange, SequenceRange)
+  nameWithType.vb: SequenceRange.=(SequenceRange, SequenceRange)
+- uid: Biocs.SequenceRange.op_Equality*
+  name: operator ==
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_op_Equality_
+  commentId: Overload:Biocs.SequenceRange.op_Equality
+  isSpec: "True"
+  name.vb: =
+  fullName: Biocs.SequenceRange.operator ==
+  fullName.vb: Biocs.SequenceRange.=
+  nameWithType: SequenceRange.operator ==
+  nameWithType.vb: SequenceRange.=
+- uid: Biocs.SequenceRange.op_GreaterThan(Biocs.SequenceRange,Biocs.SequenceRange)
+  name: operator >(SequenceRange, SequenceRange)
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_op_GreaterThan_Biocs_SequenceRange_Biocs_SequenceRange_
+  commentId: M:Biocs.SequenceRange.op_GreaterThan(Biocs.SequenceRange,Biocs.SequenceRange)
+  name.vb: '>(SequenceRange, SequenceRange)'
+  fullName: Biocs.SequenceRange.operator >(Biocs.SequenceRange, Biocs.SequenceRange)
+  fullName.vb: Biocs.SequenceRange.>(Biocs.SequenceRange, Biocs.SequenceRange)
+  nameWithType: SequenceRange.operator >(SequenceRange, SequenceRange)
+  nameWithType.vb: SequenceRange.>(SequenceRange, SequenceRange)
+- uid: Biocs.SequenceRange.op_GreaterThan*
+  name: operator >
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_op_GreaterThan_
+  commentId: Overload:Biocs.SequenceRange.op_GreaterThan
+  isSpec: "True"
+  name.vb: '>'
+  fullName: Biocs.SequenceRange.operator >
+  fullName.vb: Biocs.SequenceRange.>
+  nameWithType: SequenceRange.operator >
+  nameWithType.vb: SequenceRange.>
+- uid: Biocs.SequenceRange.op_GreaterThanOrEqual(Biocs.SequenceRange,Biocs.SequenceRange)
+  name: operator >=(SequenceRange, SequenceRange)
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_op_GreaterThanOrEqual_Biocs_SequenceRange_Biocs_SequenceRange_
+  commentId: M:Biocs.SequenceRange.op_GreaterThanOrEqual(Biocs.SequenceRange,Biocs.SequenceRange)
+  name.vb: '>=(SequenceRange, SequenceRange)'
+  fullName: Biocs.SequenceRange.operator >=(Biocs.SequenceRange, Biocs.SequenceRange)
+  fullName.vb: Biocs.SequenceRange.>=(Biocs.SequenceRange, Biocs.SequenceRange)
+  nameWithType: SequenceRange.operator >=(SequenceRange, SequenceRange)
+  nameWithType.vb: SequenceRange.>=(SequenceRange, SequenceRange)
+- uid: Biocs.SequenceRange.op_GreaterThanOrEqual*
+  name: operator >=
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_op_GreaterThanOrEqual_
+  commentId: Overload:Biocs.SequenceRange.op_GreaterThanOrEqual
+  isSpec: "True"
+  name.vb: '>='
+  fullName: Biocs.SequenceRange.operator >=
+  fullName.vb: Biocs.SequenceRange.>=
+  nameWithType: SequenceRange.operator >=
+  nameWithType.vb: SequenceRange.>=
+- uid: Biocs.SequenceRange.op_Inequality(Biocs.SequenceRange,Biocs.SequenceRange)
+  name: operator !=(SequenceRange, SequenceRange)
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_op_Inequality_Biocs_SequenceRange_Biocs_SequenceRange_
+  commentId: M:Biocs.SequenceRange.op_Inequality(Biocs.SequenceRange,Biocs.SequenceRange)
+  name.vb: <>(SequenceRange, SequenceRange)
+  fullName: Biocs.SequenceRange.operator !=(Biocs.SequenceRange, Biocs.SequenceRange)
+  fullName.vb: Biocs.SequenceRange.<>(Biocs.SequenceRange, Biocs.SequenceRange)
+  nameWithType: SequenceRange.operator !=(SequenceRange, SequenceRange)
+  nameWithType.vb: SequenceRange.<>(SequenceRange, SequenceRange)
+- uid: Biocs.SequenceRange.op_Inequality*
+  name: operator !=
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_op_Inequality_
+  commentId: Overload:Biocs.SequenceRange.op_Inequality
+  isSpec: "True"
+  name.vb: <>
+  fullName: Biocs.SequenceRange.operator !=
+  fullName.vb: Biocs.SequenceRange.<>
+  nameWithType: SequenceRange.operator !=
+  nameWithType.vb: SequenceRange.<>
+- uid: Biocs.SequenceRange.op_LessThan(Biocs.SequenceRange,Biocs.SequenceRange)
+  name: operator <(SequenceRange, SequenceRange)
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_op_LessThan_Biocs_SequenceRange_Biocs_SequenceRange_
+  commentId: M:Biocs.SequenceRange.op_LessThan(Biocs.SequenceRange,Biocs.SequenceRange)
+  name.vb: <(SequenceRange, SequenceRange)
+  fullName: Biocs.SequenceRange.operator <(Biocs.SequenceRange, Biocs.SequenceRange)
+  fullName.vb: Biocs.SequenceRange.<(Biocs.SequenceRange, Biocs.SequenceRange)
+  nameWithType: SequenceRange.operator <(SequenceRange, SequenceRange)
+  nameWithType.vb: SequenceRange.<(SequenceRange, SequenceRange)
+- uid: Biocs.SequenceRange.op_LessThan*
+  name: operator <
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_op_LessThan_
+  commentId: Overload:Biocs.SequenceRange.op_LessThan
+  isSpec: "True"
+  name.vb: <
+  fullName: Biocs.SequenceRange.operator <
+  fullName.vb: Biocs.SequenceRange.<
+  nameWithType: SequenceRange.operator <
+  nameWithType.vb: SequenceRange.<
+- uid: Biocs.SequenceRange.op_LessThanOrEqual(Biocs.SequenceRange,Biocs.SequenceRange)
+  name: operator <=(SequenceRange, SequenceRange)
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_op_LessThanOrEqual_Biocs_SequenceRange_Biocs_SequenceRange_
+  commentId: M:Biocs.SequenceRange.op_LessThanOrEqual(Biocs.SequenceRange,Biocs.SequenceRange)
+  name.vb: <=(SequenceRange, SequenceRange)
+  fullName: Biocs.SequenceRange.operator <=(Biocs.SequenceRange, Biocs.SequenceRange)
+  fullName.vb: Biocs.SequenceRange.<=(Biocs.SequenceRange, Biocs.SequenceRange)
+  nameWithType: SequenceRange.operator <=(SequenceRange, SequenceRange)
+  nameWithType.vb: SequenceRange.<=(SequenceRange, SequenceRange)
+- uid: Biocs.SequenceRange.op_LessThanOrEqual*
+  name: operator <=
+  href: api/Biocs.SequenceRange.html#Biocs_SequenceRange_op_LessThanOrEqual_
+  commentId: Overload:Biocs.SequenceRange.op_LessThanOrEqual
+  isSpec: "True"
+  name.vb: <=
+  fullName: Biocs.SequenceRange.operator <=
+  fullName.vb: Biocs.SequenceRange.<=
+  nameWithType: SequenceRange.operator <=
+  nameWithType.vb: SequenceRange.<=
 - uid: Biocs.StringResourceUsageAttribute
   name: StringResourceUsageAttribute
   href: api/Biocs.StringResourceUsageAttribute.html

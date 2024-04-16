@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics;
 
 namespace Biocs.Numerics;
 
@@ -10,7 +11,7 @@ namespace Biocs.Numerics;
 /// <para>
 /// For details about Mersenne Twister, see http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/.
 /// </para>
-/// <para>Currently, the environment where the architecture is big-endian is not supported.</para>
+/// <para>Currently, a big-endian architecture is not supported.</para>
 /// </remarks>
 public class DoubleMersenneTwister
 {
@@ -38,18 +39,24 @@ public class DoubleMersenneTwister
     {
         unchecked
         {
-            status[0].u0 = (uint)seed;
-            uint pos = 1;
+            var span = MemoryMarshal.Cast<Union128, uint>(status.AsSpan());
+            span[0] = (uint)seed;
 
-            for (int i = 0; i < status.Length; i++)
-            {
-                if (i != 0)
-                    status[i].u0 = 1812433253u * (status[i - 1].u3 ^ (status[i - 1].u3 >> 30)) + pos++;
+            for (int i = 1; i < span.Length; i++)
+                span[i] = 1812433253u * (span[i - 1] ^ (span[i - 1] >> 30)) + (uint)i;
 
-                status[i].u1 = 1812433253u * (status[i].u0 ^ (status[i].u0 >> 30)) + pos++;
-                status[i].u2 = 1812433253u * (status[i].u1 ^ (status[i].u1 >> 30)) + pos++;
-                status[i].u3 = 1812433253u * (status[i].u2 ^ (status[i].u2 >> 30)) + pos++;
-            }
+            //status[0].u0 = (uint)seed;
+            //uint pos = 1;
+
+            //for (int i = 0; i < status.Length; i++)
+            //{
+            //    if (i != 0)
+            //        status[i].u0 = 1812433253u * (status[i - 1].u3 ^ (status[i - 1].u3 >> 30)) + pos++;
+
+            //    status[i].u1 = 1812433253u * (status[i].u0 ^ (status[i].u0 >> 30)) + pos++;
+            //    status[i].u2 = 1812433253u * (status[i].u1 ^ (status[i].u1 >> 30)) + pos++;
+            //    status[i].u3 = 1812433253u * (status[i].u2 ^ (status[i].u2 >> 30)) + pos++;
+            //}
         }
         InitialMask();
         CertificatePeriod();
@@ -156,11 +163,16 @@ public class DoubleMersenneTwister
         const ulong LowMask = 0x000fffffffffffff;
         const ulong HighConst = 0x3ff0000000000000;
 
-        for (int i = 0; i < status.Length - 1; i++)
-        {
-            status[i].ul0 = (status[i].ul0 & LowMask) | HighConst;
-            status[i].ul1 = (status[i].ul1 & LowMask) | HighConst;
-        }
+        var span = MemoryMarshal.Cast<Union128, ulong>(status.AsSpan(0..^1));
+
+        for (int i = 0; i < span.Length; i++)
+            span[i] = (span[i] & LowMask) | HighConst;
+
+        //for (int i = 0; i < status.Length - 1; i++)
+        //{
+        //    status[i].ul0 = (status[i].ul0 & LowMask) | HighConst;
+        //    status[i].ul1 = (status[i].ul1 & LowMask) | HighConst;
+        //}
     }
 
     // Certifacates the period of 2 ^ Exp - 1.
@@ -249,21 +261,23 @@ public class DoubleMersenneTwister
 
     private ref uint RefToUInt32(int indexOfUInt32)
     {
-        switch (indexOfUInt32 % 4)
-        {
-            case 0:
-                return ref status[indexOfUInt32 / 4].u0;
+        return ref MemoryMarshal.Cast<Union128, uint>(status.AsSpan())[indexOfUInt32];
 
-            case 1:
-                return ref status[indexOfUInt32 / 4].u1;
+        //switch (indexOfUInt32 % 4)
+        //{
+        //    case 0:
+        //        return ref status[indexOfUInt32 / 4].u0;
 
-            case 2:
-                return ref status[indexOfUInt32 / 4].u2;
+        //    case 1:
+        //        return ref status[indexOfUInt32 / 4].u1;
 
-            //case 3:
-            default:
-                return ref status[indexOfUInt32 / 4].u3;
-        }
+        //    case 2:
+        //        return ref status[indexOfUInt32 / 4].u2;
+
+        //    //case 3:
+        //    default:
+        //        return ref status[indexOfUInt32 / 4].u3;
+        //}
     }
 
     // Represents the recursion formula.
@@ -276,20 +290,37 @@ public class DoubleMersenneTwister
         const ulong Msk1 = 0x000ffafffffffb3f;
         const ulong Msk2 = 0x000ffdfffc90fffd;
 
-        ulong t0 = a.ul0;
-        ulong t1 = a.ul1;
-        ulong l0 = lung.ul0;
-        ulong l1 = lung.ul1;
+        if (Vector128.IsHardwareAccelerated)
+        {
+            var x = a.si;
+            var z = x << SL1;
+            var y = Vector128.Shuffle(lung.si.AsUInt32(), Vector128.Create(3u, 2u, 1u, 0u)).AsUInt64();
+            z ^= b.si;
+            y ^= z;
 
-        lung.ul0 = (t0 << SL1) ^ (l1 >> 32) ^ (l1 << 32) ^ b.ul0;
-        lung.ul1 = (t1 << SL1) ^ (l0 >> 32) ^ (l0 << 32) ^ b.ul1;
-        r.ul0 = (lung.ul0 >> SR) ^ (lung.ul0 & Msk1) ^ t0;
-        r.ul1 = (lung.ul1 >> SR) ^ (lung.ul1 & Msk2) ^ t1;
+            var v = y >>> SR;
+            var w = y & Vector128.Create(Msk1, Msk2);
+            v ^= x;
+            v ^= w;
+            r.si = v;
+            lung.si = y;
+        }
+        else
+        {
+            ulong t0 = a.ul0;
+            ulong t1 = a.ul1;
+            ulong l0 = lung.ul0;
+            ulong l1 = lung.ul1;
+
+            lung.ul0 = (t0 << SL1) ^ (l1 >> 32) ^ (l1 << 32) ^ b.ul0;
+            lung.ul1 = (t1 << SL1) ^ (l0 >> 32) ^ (l0 << 32) ^ b.ul1;
+            r.ul0 = (lung.ul0 >> SR) ^ (lung.ul0 & Msk1) ^ t0;
+            r.ul1 = (lung.ul1 >> SR) ^ (lung.ul1 & Msk2) ^ t1;
+        }
     }
 }
 
 [StructLayout(LayoutKind.Explicit)]
-[ExcludeFromCodeCoverage]
 internal struct Union128
 {
     [FieldOffset(0)]
@@ -316,5 +347,9 @@ internal struct Union128
     [FieldOffset(8)]
     public ulong ul1;
 
+    [FieldOffset(0)]
+    public Vector128<ulong> si;
+
+    [ExcludeFromCodeCoverage]
     public override readonly string ToString() => $"0x{ul1:x}{ul0:x}";
 }

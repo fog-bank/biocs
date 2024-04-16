@@ -2,12 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Class Counter&lt;T&gt;
- | BioC# Documents </title>
+      <title>Class Counter&lt;T&gt; | BioC# Documents </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class Counter&lt;T&gt;
- | BioC# Documents ">
+      <meta name="title" content="Class Counter&lt;T&gt; | BioC# Documents ">
       
+      <meta name="description" content="Represents a tally counter to count the frequency of items.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -30,15 +29,15 @@
       <meta name="loc:changeTheme" content="Change theme">
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
   </head>
-
-  <script type="module" src="./../public/docfx.min.js"></script>
-
-  <script>
-    const theme = localStorage.getItem('theme') || 'auto'
-    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
-  </script>
-
 
   <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
     <header class="bg-body border-bottom">
@@ -90,8 +89,7 @@
 
 
   <h1 id="Biocs_Collections_Counter_1" data-uid="Biocs.Collections.Counter`1" class="text-break">
-    Class Counter&lt;T&gt;
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L10"><i class="bi bi-code-slash"></i></a>
+Class Counter&lt;T&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L11"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -126,7 +124,7 @@
 
 
 
-  <dl class="typelist derived">
+  <dl class="typelist inheritedMembers">
     <dt>Inherited Members</dt>
     <dd>
     <div>
@@ -168,7 +166,7 @@
 
   <h3 id="Biocs_Collections_Counter_1__ctor_Biocs_Collections_Counter__0__" data-uid="Biocs.Collections.Counter`1.#ctor(Biocs.Collections.Counter{`0})">
   Counter(Counter&lt;T&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L57"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> class that contains unique items and counts copied from
@@ -208,7 +206,7 @@ the specified <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt
 
   <h3 id="Biocs_Collections_Counter_1__ctor_System_Collections_Generic_IEqualityComparer__0__" data-uid="Biocs.Collections.Counter`1.#ctor(System.Collections.Generic.IEqualityComparer{`0})">
   Counter(IEqualityComparer&lt;T&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L27"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> class that is empty, has zero capacity, and uses
@@ -243,7 +241,7 @@ use the default <a class="xref" href="https://learn.microsoft.com/dotnet/api/sys
 
   <h3 id="Biocs_Collections_Counter_1__ctor_System_Int32_System_Collections_Generic_IEqualityComparer__0__" data-uid="Biocs.Collections.Counter`1.#ctor(System.Int32,System.Collections.Generic.IEqualityComparer{`0})">
   Counter(int, IEqualityComparer&lt;T&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L40"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> class that is empty, has the specified initial capacity,
@@ -291,7 +289,7 @@ and uses the specified equality comparer.</p>
 
   <h3 id="Biocs_Collections_Counter_1_Comparer" data-uid="Biocs.Collections.Counter`1.Comparer">
   Comparer
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L129"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L119"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer&lt;T&gt;</a> that is used to determine equality of items for
@@ -324,7 +322,7 @@ the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>
 
   <h3 id="Biocs_Collections_Counter_1_NumberOfItems" data-uid="Biocs.Collections.Counter`1.NumberOfItems">
   NumberOfItems
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L76"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the number of the kinds of items that the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> contains.</p>
@@ -356,7 +354,7 @@ the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>
 
   <h3 id="Biocs_Collections_Counter_1_RepeatedItems" data-uid="Biocs.Collections.Counter`1.RepeatedItems">
   RepeatedItems
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L107"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L97"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets an enumerable collection that contains items repeated by each count.</p>
@@ -388,7 +386,7 @@ the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>
 
   <h3 id="Biocs_Collections_Counter_1_TotalCount" data-uid="Biocs.Collections.Counter`1.TotalCount">
   TotalCount
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L71"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the total count of items.</p>
@@ -420,7 +418,7 @@ the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>
 
   <h3 id="Biocs_Collections_Counter_1_UniqueItems" data-uid="Biocs.Collections.Counter`1.UniqueItems">
   UniqueItems
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L102"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L92"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets an enumerable collection of unique items that the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> has counted before now.</p>
@@ -446,23 +444,12 @@ the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>
 
   <h4 class="section" id="Biocs_Collections_Counter_1_UniqueItems_remarks">Remarks</h4>
   <div class="markdown level1 remarks"><p>This enumerable collection also contains items whose the count is 0.</p>
-<p>Enumerators retured by this enumerable collection cannot be used to modify the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.
+<p>The enumerator retured by this enumerable collection cannot be used to modify the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.
 For example, the following enumeration raises an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a>.</p>
 <pre><code class="lang-csharp">var counter = new Counter&lt;int&gt;();
 counter.AddRange([1, 2, 3]);
 foreach (int item in counter.UniqueItems)
   counter.Reset(item);</code></pre>
-<div class="WARNING">
-<h5>Warning</h5>
-<p>&lt;para&gt;Enumerators retured by this enumerable collection cannot be used to modify the &lt;see cref=&quot;Counter{T}&quot;/&gt;.
-For example, the following enumeration raises an &lt;see cref=&quot;InvalidOperationException&quot;/&gt;.&lt;/para&gt;
-&lt;code&gt;
-var counter = new Counter&amp;lt;int&amp;gt;();
-counter.AddRange([1, 2, 3]);
-foreach (int item in counter.UniqueItems)
-counter.Reset(item);
-&lt;/code&gt;</p>
-</div>
 </div>
 
 
@@ -476,7 +463,7 @@ counter.Reset(item);
 
   <h3 id="Biocs_Collections_Counter_1_Add__0_" data-uid="Biocs.Collections.Counter`1.Add(`0)">
   Add(T)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L203"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L191"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Counts an object once.</p>
@@ -509,7 +496,7 @@ counter.Reset(item);
 
   <h3 id="Biocs_Collections_Counter_1_Add__0_System_Int32_" data-uid="Biocs.Collections.Counter`1.Add(`0,System.Int32)">
   Add(T, int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L211"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L199"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Counts an object a specified number of times.</p>
@@ -551,7 +538,7 @@ counter.Reset(item);
 
   <h3 id="Biocs_Collections_Counter_1_AddRange_System_Collections_Generic_IEnumerable__0__" data-uid="Biocs.Collections.Counter`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
   AddRange(IEnumerable&lt;T&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L228"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L216"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Counts the items of the specified collection.</p>
@@ -590,7 +577,7 @@ counter.Reset(item);
 
   <h3 id="Biocs_Collections_Counter_1_Clear" data-uid="Biocs.Collections.Counter`1.Clear">
   Clear()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L306"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L294"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Removes all items from the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.</p>
@@ -617,7 +604,7 @@ counter.Reset(item);
 
   <h3 id="Biocs_Collections_Counter_1_Contains__0_" data-uid="Biocs.Collections.Counter`1.Contains(`0)">
   Contains(T)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L197"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L185"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Determines whether the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> contains the specified object.</p>
@@ -657,7 +644,7 @@ otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference
 
   <h3 id="Biocs_Collections_Counter_1_CopyTo__0___System_Int32_" data-uid="Biocs.Collections.Counter`1.CopyTo(`0[],System.Int32)">
   CopyTo(T[], int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L172"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L162"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Copies the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> unique items to an existing one-dimensional <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.array">Array</a>,
@@ -708,7 +695,7 @@ from <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a
 
   <h3 id="Biocs_Collections_Counter_1_GetCount__0_" data-uid="Biocs.Collections.Counter`1.GetCount(`0)">
   GetCount(T)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L148"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L138"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the number of times that the item occurs in the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a>.</p>
@@ -750,7 +737,7 @@ from <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a
 
   <h3 id="Biocs_Collections_Counter_1_Remove__0_" data-uid="Biocs.Collections.Counter`1.Remove(`0)">
   Remove(T)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L244"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L232"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Decreases the count of the specified item by one.</p>
@@ -790,7 +777,7 @@ otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference
 
   <h3 id="Biocs_Collections_Counter_1_Remove__0_System_Int32_" data-uid="Biocs.Collections.Counter`1.Remove(`0,System.Int32)">
   Remove(T, int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L252"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L240"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Decreases the count of the specified item by the specified amount.</p>
@@ -832,7 +819,7 @@ otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference
 
   <h3 id="Biocs_Collections_Counter_1_ResetCount__0_" data-uid="Biocs.Collections.Counter`1.ResetCount(`0)">
   ResetCount(T)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L293"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L281"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the number of times that the specified item occurs in the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> to zero.</p>
@@ -865,7 +852,7 @@ otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference
 
   <h3 id="Biocs_Collections_Counter_1_ResetCounts" data-uid="Biocs.Collections.Counter`1.ResetCounts">
   ResetCounts()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L275"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L263"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the number of times that each item occurs in the <a class="xref" href="Biocs.Collections.Counter-1.html">Counter&lt;T&gt;</a> to zero.
@@ -893,7 +880,7 @@ The collection of items is preserved.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L10" class="edit-link">Edit this page</a>
+          <a href="https://github.com/fog-bank/biocs/blob/feature/location/biocs/core/Collections/Counter.cs/#L11" class="edit-link">Edit this page</a>
         </div>
 
 
