@@ -8,9 +8,7 @@ namespace Biocs.Numerics;
 /// Represents double-precision Mersenne Twister pseudorandom number generator based on IEEE 754 format.
 /// </summary>
 /// <remarks>
-/// <para>
-/// For details about Mersenne Twister, see http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/.
-/// </para>
+/// <para>For details about Mersenne Twister, see http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/.</para>
 /// <para>Currently, a big-endian architecture is not supported.</para>
 /// </remarks>
 public class DoubleMersenneTwister

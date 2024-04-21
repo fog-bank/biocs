@@ -9,12 +9,19 @@ public class SequenceRangeTest
         int start = 1;
         int end = 20;
         var range = new SequenceRange(start, end);
+
         Assert.AreEqual(start, range.Start);
         Assert.AreEqual(end, range.End);
         Assert.AreEqual(end - start + 1, range.Length);
         Assert.AreEqual($"{start}..{end}", range.ToString());
 
-        Assert.AreEqual($"{start}", new SequenceRange(start, start).ToString());
+        range = new(start);
+        Assert.AreEqual(start, range.Start);
+        Assert.AreEqual(start, range.End);
+        Assert.AreEqual(1, range.Length);
+        Assert.AreEqual($"{start}", range.ToString());
+
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => new SequenceRange(10, 1));
     }
 
     [TestMethod]

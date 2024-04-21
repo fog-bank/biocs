@@ -8,8 +8,8 @@ namespace Biocs;
 /// Represents the region of the biological sequence.
 /// </summary>
 /// <remarks>
-/// <para>Each base numbering is one-based indexing.</para>
-/// <para>Compliant with [The DDBJ/ENA/GenBank Feature Table Definition](http://www.insdc.org/files/feature_table.html)</para>
+/// <para>This is a subset of location descriptors in
+/// [The DDBJ/ENA/GenBank Feature Table Definition](https://www.insdc.org/submitting-standards/feature-table/).</para>
 /// </remarks>
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 public class Location : IEquatable<Location?>, IComparable<Location?>, ISpanParsable<Location>

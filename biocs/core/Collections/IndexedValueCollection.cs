@@ -9,6 +9,8 @@ namespace Biocs.Collections;
 /// </summary>
 /// <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
 /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
+/// <seealso cref="SortedList{TKey, TValue}"/>
+/// <seealso cref="System.Collections.ObjectModel.KeyedCollection{TKey, TItem}"/>
 [DebuggerDisplay("Count = {Count}"), DebuggerTypeProxy(typeof(CollectionDebugView<>))]
 public class IndexedValueCollection<TKey, TValue> : IList<TValue?>, IReadOnlyList<TValue?>, IList where TKey : notnull
 {

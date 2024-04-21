@@ -5,16 +5,35 @@ namespace Biocs;
 /// <summary>
 /// Represents a continuous range of the presented biological sequence.
 /// </summary>
-public readonly struct SequenceRange : IEquatable<SequenceRange>, IComparable<SequenceRange>, IComparable
+/// <remarks>
+/// <para>.NET provides <see cref="Range"/> to represent a range of arrays. In addition, C# language supports the range operator
+/// (..). This syntax is similar to the biological descriptor. However, indices of <see cref="Range"/> are zero-based and
+/// <see cref="Range.End"/> is exclusive, whereas biological descriptors are one-based and the ending index is inclusive. Due to
+/// these difference, this library provides the dedicated structure to represent a range of biological sequences.</para>
+/// </remarks>
+public readonly struct SequenceRange : IEquatable<SequenceRange>, IComparable<SequenceRange>, IComparable, ISpanParsable<SequenceRange>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="SequenceRange"/> structure.
     /// </summary>
+    /// <param name="start">The starting site index.</param>
+    /// <param name="end">The ending site index.</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="start"/> is greater than <paramref name="end"/>.</exception>
     public SequenceRange(int start, int end)
     {
         ArgumentOutOfRangeException.ThrowIfGreaterThan(start, end);
         Start = start;
         End = end;
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SequenceRange"/> structure to the specified single site index.
+    /// </summary>
+    /// <param name="point">A single site index.</param>
+    public SequenceRange(int point)
+    {
+        Start = point;
+        End = point;
     }
 
     /// <summary>
@@ -52,10 +71,19 @@ public readonly struct SequenceRange : IEquatable<SequenceRange>, IComparable<Se
     /// Converts the current <see cref="SequenceRange"/> instance to its equivalent string representation.
     /// </summary>
     /// <returns>The string representation of the current instance.</returns>
-    public override string ToString()
-    {
-        return Start == End ? $"{Start}" : $"{Start}..{End}";
-    }
+    public override string ToString() => Start == End ? $"{Start}" : $"{Start}..{End}";
+
+    /// <inheritdoc/>
+    public static SequenceRange Parse(string s, IFormatProvider? provider) => throw new NotImplementedException();
+
+    /// <inheritdoc/>
+    public static SequenceRange Parse(ReadOnlySpan<char> s, IFormatProvider? provider) => throw new NotImplementedException();
+
+    /// <inheritdoc/>
+    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out SequenceRange result) => throw new NotImplementedException();
+
+    /// <inheritdoc/>
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out SequenceRange result) => throw new NotImplementedException();
 
     /// <summary>
     /// Determines whether two specified instances of <see cref="SequenceRange"/> equal.
