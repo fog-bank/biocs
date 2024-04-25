@@ -141,14 +141,13 @@ public readonly struct DnaBase : IEquatable<DnaBase>
     public static DnaBase Parse(char value)
     {
         if (!DnaBaseParser.Instance.SymbolToCode(value, out var result))
-            throw new FormatException(Res.GetString("Format.InvalidDnaBaseSymbol", value));
+            ThrowHelper.ThrowFormat(Res.GetString("Format.InvalidDnaBaseSymbol", value));
 
         return result;
     }
 
     /// <summary>
-    /// Tries to convert the character representation of a nucleotide to an equivalent <see cref="DnaBase"/> instance,
-    /// and returns a value that indicates whether the conversion succeeded.
+    /// Tries to convert the character representation of a nucleotide to an equivalent <see cref="DnaBase"/> instance.
     /// </summary>
     /// <param name="value">A character to convert.</param>
     /// <param name="result">

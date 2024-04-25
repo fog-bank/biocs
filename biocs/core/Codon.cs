@@ -75,16 +75,16 @@ public readonly struct Codon(DnaBase first, DnaBase second, DnaBase third) : IEq
     /// <summary>
     /// Converts the string representation of a codon to an equivalent <see cref="Codon"/> instance.
     /// </summary>
-    /// <param name="value">A string to convert.</param>
-    /// <returns>A <see cref="Codon"/> instance whose symbol is represented by <paramref name="value"/>.</returns>
+    /// <param name="span">A read-only span of three characters to convert.</param>
+    /// <returns>A <see cref="Codon"/> instance whose symbol is represented by <paramref name="span"/>.</returns>
     /// <exception cref="FormatException">
-    /// <paramref name="value"/> contains an unknown character in a certain position.
+    /// <paramref name="span"/> contains an unknown character or is not of length three.
     /// </exception>
     [StringResourceUsage("Format.InvalidCodonSymbol", 1)]
-    public static Codon Parse(ReadOnlySpan<char> value)
+    public static Codon Parse(ReadOnlySpan<char> span)
     {
-        if (!TryParse(value, out var result))
-            throw new FormatException(Res.GetString("Format.InvalidCodonSymbol", value.ToString()));
+        if (!TryParse(span, out var result))
+            ThrowHelper.ThrowFormat(Res.GetString("Format.InvalidCodonSymbol", span.ToString()));
 
         return result;
     }
@@ -93,28 +93,28 @@ public readonly struct Codon(DnaBase first, DnaBase second, DnaBase third) : IEq
     /// Tries to convert the string representation of a codon to an equivalent <see cref="Codon"/> instance,
     /// and returns a value that indicates whether the conversion succeeded.
     /// </summary>
-    /// <param name="value">A string with a length of 3 characters to convert.</param>
+    /// <param name="span">Three characters to convert.</param>
     /// <param name="result">
     /// When this method returns, <paramref name="result"/> contains a <see cref="Codon"/> instance that is represented by
-    /// <paramref name="value"/> if the conversion succeeded, or <see cref="Gap"/> if the conversion failed.
+    /// <paramref name="span"/> if the conversion succeeded, or <see cref="Gap"/> if the conversion failed.
     /// </param>
     /// <returns>
-    /// <see langword="true"/> if <paramref name="value"/> was converted successfully; otherwise, <see langword="false"/>.
+    /// <see langword="true"/> if <paramref name="span"/> was converted successfully; otherwise, <see langword="false"/>.
     /// </returns>
-    public static bool TryParse(ReadOnlySpan<char> value, out Codon result)
+    public static bool TryParse(ReadOnlySpan<char> span, out Codon result)
     {
         result = Gap;
 
-        if (value.Length != 3)
+        if (span.Length != 3)
             return false;
 
-        if (!DnaBase.TryParse(value[0], out var first))
+        if (!DnaBase.TryParse(span[0], out var first))
             return false;
 
-        if (!DnaBase.TryParse(value[1], out var second))
+        if (!DnaBase.TryParse(span[1], out var second))
             return false;
 
-        if (!DnaBase.TryParse(value[2], out var third))
+        if (!DnaBase.TryParse(span[2], out var third))
             return false;
 
         result = new(first, second, third);

@@ -141,6 +141,9 @@
   <data name="Format.InvalidDnaBaseSymbol" xml:space="preserve">
     <value>The specified value ({0}) is not one of the symbols defined for Biocs.DnaBase struct.</value>
   </data>
+  <data name="Format.UnparsableValue" xml:space="preserve">
+    <value>The specified {0} ({1}) is not in the correct format.</value>
+  </data>
   <data name="InvalData.BadHeader" xml:space="preserve">
     <value>The header of a BGZF block has invalid structure or incorrect values.</value>
   </data>

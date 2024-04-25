@@ -18,10 +18,16 @@ public readonly struct SequenceRange : IEquatable<SequenceRange>, IComparable<Se
     /// </summary>
     /// <param name="start">The starting site index.</param>
     /// <param name="end">The ending site index.</param>
-    /// <exception cref="ArgumentOutOfRangeException"><paramref name="start"/> is greater than <paramref name="end"/>.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// <para><paramref name="start"/> or <paramref name="end"/> is equal to or less than zero.</para> -or-
+    /// <para><paramref name="start"/> is greater than <paramref name="end"/>.</para>
+    /// </exception>
     public SequenceRange(int start, int end)
     {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(start);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(end);
         ArgumentOutOfRangeException.ThrowIfGreaterThan(start, end);
+
         Start = start;
         End = end;
     }
@@ -73,17 +79,68 @@ public readonly struct SequenceRange : IEquatable<SequenceRange>, IComparable<Se
     /// <returns>The string representation of the current instance.</returns>
     public override string ToString() => Start == End ? $"{Start}" : $"{Start}..{End}";
 
-    /// <inheritdoc/>
-    public static SequenceRange Parse(string s, IFormatProvider? provider) => throw new NotImplementedException();
+    /// <summary>
+    /// Parses the string representation of a range to the equivalent <see cref="SequenceRange"/> instance.
+    /// </summary>
+    /// <param name="span">The read-only span of characters to parse.</param>
+    /// <returns>The result of parsing <paramref name="span"/>.</returns>
+    /// <exception cref="FormatException"><paramref name="span"/> is not in the correct format.</exception>
+    [StringResourceUsage("Format.UnparsableValue", 2)]
+    public static SequenceRange Parse(ReadOnlySpan<char> span)
+    {
+        if (!TryParse(span, out var result))
+            ThrowHelper.ThrowFormat(Res.GetString("Format.UnparsableValue", nameof(span), span.ToString()));
 
-    /// <inheritdoc/>
-    public static SequenceRange Parse(ReadOnlySpan<char> s, IFormatProvider? provider) => throw new NotImplementedException();
+        return result;
+    }
 
-    /// <inheritdoc/>
-    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out SequenceRange result) => throw new NotImplementedException();
+    /// <summary>
+    /// Tries to parse the string representation of a range to the equivalent <see cref="SequenceRange"/> instance.
+    /// </summary>
+    /// <param name="span">The read-only span of characters to parse.</param>
+    /// <param name="result">
+    /// When this method returns, contains the result of successfully parsing <paramref name="span"/>, or a default value on
+    /// failure.
+    /// </param>
+    /// <returns>
+    /// <see langword="true"/> if <paramref name="span"/> was successfully parsed; otherwise, <see langword="false"/>.
+    /// </returns>
+    public static bool TryParse(ReadOnlySpan<char> span, out SequenceRange result)
+    {
+        var ranges = (stackalloc Range[3]);
+        int nrange = span.SplitAny(ranges, ".^(),", StringSplitOptions.RemoveEmptyEntries);
+        ranges = ranges[..nrange];
+        
+        switch (ranges.Length)
+        {
+            case 1:
+                if (TryParseSiteIndex(span[ranges[0]], out int point))
+                {
+                    result = new(point);
+                    return true;
+                }
+                break;
 
-    /// <inheritdoc/>
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out SequenceRange result) => throw new NotImplementedException();
+            case 2:
+                if (TryParseSiteIndex(span[ranges[0]], out int start) &&
+                    TryParseSiteIndex(span[ranges[1]], out int end) && start <= end)
+                {
+                    result = new(start, end);
+                    return true;
+                }
+                break;
+        }
+        result = default;
+        return false;
+    }
+
+    private static bool TryParseSiteIndex(ReadOnlySpan<char> span, out int siteIndex)
+    {
+        span = span.TrimStart("<>");
+        return int.TryParse(span, out siteIndex) && siteIndex > 0;
+    }
+
+    #region Comparison Operators
 
     /// <summary>
     /// Determines whether two specified instances of <see cref="SequenceRange"/> equal.
@@ -151,6 +208,8 @@ public readonly struct SequenceRange : IEquatable<SequenceRange>, IComparable<Se
     /// </returns>
     public static bool operator >=(SequenceRange left, SequenceRange right) => left.CompareTo(right) >= 0;
 
+    #endregion
+
     #region Explicit Interface Implementations
 
     [StringResourceUsage("Arg.CompareToNotSameTypedObject")]
@@ -160,6 +219,16 @@ public readonly struct SequenceRange : IEquatable<SequenceRange>, IComparable<Se
         SequenceRange other => CompareTo(other),
         _ => throw new ArgumentException(Res.GetString("Arg.CompareToNotSameTypedObject"), nameof(obj))
     };
+
+    static SequenceRange IParsable<SequenceRange>.Parse(string s, IFormatProvider? provider) => Parse(s);
+
+    static SequenceRange ISpanParsable<SequenceRange>.Parse(ReadOnlySpan<char> s, IFormatProvider? provider) => Parse(s);
+
+    static bool IParsable<SequenceRange>.TryParse(string? s, IFormatProvider? provider, out SequenceRange result)
+        => TryParse(s, out result);
+
+    static bool ISpanParsable<SequenceRange>.TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out SequenceRange result)
+        => TryParse(s, out result);
 
     #endregion
 }

@@ -9,5 +9,8 @@ internal static class ThrowHelper
     public static void ThrowArgument(string? message, string? paramName = null) => throw new ArgumentException(message, paramName);
 
     [DoesNotReturn]
+    public static void ThrowFormat(string? message) => throw new FormatException(message);
+
+    [DoesNotReturn]
     public static void ThrowInvalidOperation(string? message) => throw new InvalidOperationException(message);
 }
