@@ -36,11 +36,9 @@ public readonly struct SequenceRange : IEquatable<SequenceRange>, IComparable<Se
     /// Initializes a new instance of the <see cref="SequenceRange"/> structure to the specified single site index.
     /// </summary>
     /// <param name="point">A single site index.</param>
-    public SequenceRange(int point)
-    {
-        Start = point;
-        End = point;
-    }
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="point"/> is equal to or less than zero.</exception>
+    public SequenceRange(int point) : this(point, point)
+    { }
 
     /// <summary>
     /// Gets the starting site index. The range includes this site.
@@ -108,9 +106,9 @@ public readonly struct SequenceRange : IEquatable<SequenceRange>, IComparable<Se
     public static bool TryParse(ReadOnlySpan<char> span, out SequenceRange result)
     {
         var ranges = (stackalloc Range[3]);
-        int nrange = span.SplitAny(ranges, ".^(),", StringSplitOptions.RemoveEmptyEntries);
+        int nrange = span.SplitAny(ranges, ".^", StringSplitOptions.RemoveEmptyEntries);
         ranges = ranges[..nrange];
-        
+
         switch (ranges.Length)
         {
             case 1:

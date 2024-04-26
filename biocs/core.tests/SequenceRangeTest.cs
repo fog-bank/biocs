@@ -1,4 +1,6 @@
-﻿namespace Biocs;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Biocs;
 
 [TestClass]
 public class SequenceRangeTest
@@ -68,5 +70,36 @@ public class SequenceRangeTest
             Assert.IsTrue(range1 < range5);
             Assert.IsFalse(range1 >= range5);
         }
+    }
+
+    [TestMethod]
+    public void ParseTest()
+    {
+        // Single base number
+        ParseTestCore("467", new(467));
+
+        // Base numbers delimiting a sequence span
+        ParseTestCore("340..565", new(340, 565));
+
+        // Unknown exact lower boundary
+        ParseTestCore("<345..500", new(345, 500));
+
+        // Unknown exact upper boundary
+        ParseTestCore("1..>888", new(1, 888));
+
+        // Single base chosen from within a specified range
+        ParseTestCore("102.110", new(102, 110));
+
+        // Site between two indicated adjoining bases
+        ParseTestCore("123^124", new(123, 124));
+
+        // Wrong format
+    }
+
+    private static void ParseTestCore(ReadOnlySpan<char> span, SequenceRange expected)
+    {
+        Assert.IsTrue(SequenceRange.TryParse(span, out var result));
+        Assert.AreEqual(expected, result);
+        Assert.AreEqual(expected, SequenceRange.Parse(span));
     }
 }
