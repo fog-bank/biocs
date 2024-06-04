@@ -1,19 +1,19 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Diagnostics;
 
 namespace Biocs;
 
-public class LogRunningTimeFilter : ConsoleAppFilter
+internal class LogRunningTimeFilter(ConsoleAppFilter next) : ConsoleAppFilter(next)
 {
-    public override async ValueTask Invoke(ConsoleAppContext context, Func<ConsoleAppContext, ValueTask> next)
+    public override async Task InvokeAsync(ConsoleAppContext context, CancellationToken cancellationToken)
     {
+        long timestamp = Stopwatch.GetTimestamp();
         try
         {
-            await next(context);
+            await Next.InvokeAsync(context, cancellationToken);
         }
         finally
         {
-            context.Logger.LogInformation("Elapsed time: {time}, Command: {command}",
-                DateTimeOffset.UtcNow - context.Timestamp, string.Join(" ", context.Arguments));
+            ConsoleApp.Log($"Elapsed time: {Stopwatch.GetElapsedTime(timestamp)}, Command: {string.Join(" ", context.Arguments)}");
         }
     }
 }

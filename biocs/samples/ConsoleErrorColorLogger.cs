@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace Biocs;
+﻿namespace Biocs;
 
 /// <summary>
 /// Sends log output to <see cref="Console.Error"/> with changing console color.

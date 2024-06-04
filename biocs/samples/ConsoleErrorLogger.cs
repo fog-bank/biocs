@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace Biocs;
+﻿namespace Biocs;
 
 /// <summary>
 /// Sends log output to <see cref="Console.Error"/>.
@@ -10,6 +8,9 @@ public class ConsoleErrorLogger : ILogger
     public virtual void Log<TState>(
         LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
     {
+        if (!IsEnabled(logLevel))
+            return;
+
         string message = formatter(state, exception);
 
         if (!string.IsNullOrEmpty(message))
@@ -21,7 +22,7 @@ public class ConsoleErrorLogger : ILogger
 
     public bool IsEnabled(LogLevel logLevel) => logLevel != LogLevel.None;
 
-    public IDisposable BeginScope<TState>(TState state) => NullScope.Instance;
+    public IDisposable BeginScope<TState>(TState state) where TState : notnull => NullScope.Instance;
 
     protected static string LogLevelToString(LogLevel logLevel) => logLevel switch
     {

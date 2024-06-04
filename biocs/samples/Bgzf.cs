@@ -1,25 +1,27 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.IO.Compression;
+﻿using System.IO.Compression;
 using Biocs.IO;
-using Microsoft.Extensions.Logging;
 
 namespace Biocs;
 
-partial class Bgzf : ConsoleAppBase
+partial class Bgzf(ILogger<Bgzf> logger)
 {
-    [Command("bgzf", "Compress or decompress a file in the BGZF format.")]
-    public async Task<int> Compress(
-        [Option("i", "Input file name. By default, read from standard input.")] string? input = null,
-        [Option("o", "Output file name. By default, generate from input file name.")] string? output = null,
-        [Option("c", "Write to standard output instead of file.")] bool stdout = false,
-        [Option("d", "Decompress mode.")] bool decompress = false,
-        [Option("f", "Overwrite a file without asking.")] bool force = false,
-        [Option("l", "Compression level; -1 (optimal), 0 (no compression), 1 (fast)."), Range(-1, 1)] int level = -1)
+    /// <summary>
+    /// Compress or decompress a file in the BGZF format.
+    /// </summary>
+    /// <param name="input">-i, Input file name. By default, read from standard input.</param>
+    /// <param name="output">-o, Output file name. By default, generate from input file name.</param>
+    /// <param name="stdout">-c, Write to standard output instead of file.</param>
+    /// <param name="decompress">-d, Decompress mode.</param>
+    /// <param name="force">-f, Overwrite a file without asking.</param>
+    /// <param name="level">-l, Compression level; -1 (optimal), 0 (no compression), 1 (fast).</param>
+    [Command("bgzf")]
+    public async Task<int> Compress(string? input = null, string? output = null, bool stdout = false, bool decompress = false,
+        bool force = false, /*[Range(-1, 1)]*/ int level = -1, CancellationToken cancellationToken = default)
     {
         if (input == null && output == null && !Console.IsInputRedirected && !Console.IsOutputRedirected)
         {
             // No option
-            Context.Logger.LogError("For help, specify -help option.");
+            logger.LogError("For help, specify -help option.");
             return 1;
         }
 
@@ -29,7 +31,7 @@ partial class Bgzf : ConsoleAppBase
         {
             if (decompress && !Console.IsInputRedirected)
             {
-                Context.Logger.LogError("Compressed input should be read from a file or redirected from standard input.");
+                logger.LogError("Compressed input should be read from a file or redirected from standard input.");
                 return 1;
             }
             // Regards dash "-" as stdin
@@ -46,13 +48,13 @@ partial class Bgzf : ConsoleAppBase
 
             if (!File.Exists(input))
             {
-                Context.Logger.LogError("The input ({input}) doesn't exist.", input);
+                logger.LogError("The input ({input}) doesn't exist.", input);
                 return 1;
             }
 
             if (decompress && !BgzfStream.IsBgzfFile(input))
             {
-                Context.Logger.LogError("The input ({input}) isn't the BGZF format.", input);
+                logger.LogError("The input ({input}) isn't the BGZF format.", input);
                 return 1;
             }
         }
@@ -62,14 +64,14 @@ partial class Bgzf : ConsoleAppBase
         {
             if (stdout && output != null)
             {
-                Context.Logger.LogWarning(
+                logger.LogWarning(
                     "Because -c options is specified, the output file name ({output}) is ignored.", output);
             }
 
             if (!decompress && !Console.IsOutputRedirected)
             {
                 // For Linux environment, writing binary data to console may occur IOException.
-                Context.Logger.LogError("Compressed output should be written to a file or redirected from standard output.");
+                logger.LogError("Compressed output should be written to a file or redirected from standard output.");
                 return 1;
             }
             // Regards dash "-" as stdout
@@ -77,7 +79,7 @@ partial class Bgzf : ConsoleAppBase
             output = "stdout";
 
             if (force)
-                Context.Logger.LogWarning("Because the output is written to stdout, -f option is ignored.");
+                logger.LogWarning("Because the output is written to stdout, -f option is ignored.");
         }
         else
         {
@@ -91,7 +93,7 @@ partial class Bgzf : ConsoleAppBase
 
             if (!force && File.Exists(output))
             {
-                Context.Logger.LogError(
+                logger.LogError(
                     "The output file exists already: '{output}'. To force overwriting, please specify -f option.", output);
                 return 1;
             }
@@ -106,7 +108,7 @@ partial class Bgzf : ConsoleAppBase
         };
 
         if (decompress && level != -1)
-            Context.Logger.LogWarning("When decompressing, -l option is ignored.");
+            logger.LogWarning("When decompressing, -l option is ignored.");
 
         // Main
         using var ifs = stdin ? Console.OpenStandardInput() : File.OpenRead(input);
@@ -114,17 +116,17 @@ partial class Bgzf : ConsoleAppBase
 
         if (decompress)
         {
-            Context.Logger.LogInformation("Start to decompress '{input}' to '{output}'.", input, output);
+            logger.LogInformation("Start to decompress '{input}' to '{output}'.", input, output);
 
             using var gz = new BgzfStream(ifs, CompressionMode.Decompress);
-            await gz.CopyToAsync(ofs, Context.CancellationToken);
+            await gz.CopyToAsync(ofs, cancellationToken);
         }
         else
         {
-            Context.Logger.LogInformation("Start to compress '{input}' to '{output}'.", input, output);
+            logger.LogInformation("Start to compress '{input}' to '{output}'.", input, output);
 
             using var gz = new BgzfStream(ofs, compLevel);
-            await ifs.CopyToAsync(gz, Context.CancellationToken);
+            await ifs.CopyToAsync(gz, cancellationToken);
         }
         return 0;
     }

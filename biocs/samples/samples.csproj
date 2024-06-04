@@ -7,6 +7,12 @@
     <TargetFramework>net8.0</TargetFramework>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
+  
+  <!-- Global Usings -->
+  <ItemGroup>
+    <Using Include="ConsoleAppFramework" />
+    <Using Include="Microsoft.Extensions.Logging"/>
+  </ItemGroup>
 
   <!-- Build -->
   <PropertyGroup>
@@ -17,7 +23,11 @@
 
   <!-- Dependencies -->
   <ItemGroup>
-    <PackageReference Include="ConsoleAppFramework" Version="4.2.4" />
+    <PackageReference Include="ConsoleAppFramework" Version="5.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
     <ProjectReference Include="..\core\core.csproj" />
   </ItemGroup>
 
