@@ -26,13 +26,14 @@
   
   <!-- Dependencies -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="3.2.2" />
-    <PackageReference Include="MSTest.TestFramework" Version="3.2.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.6.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.6.0" />
     <PackageReference Include="coverlet.msbuild" Version="6.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="ReportGenerator" Version="5.3.9" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\core\core.csproj" />
@@ -46,4 +47,15 @@
     <None Remove="TestResults\**" />
   </ItemGroup>
 
+  <!-- Coverage -->
+  <PropertyGroup>
+    <CollectCoverage>true</CollectCoverage>
+    <CoverletOutputFormat>opencover</CoverletOutputFormat>
+    <CoverletOutput>$([System.IO.Path]::Combine($(MSBuildProjectDirectory), 'TestResults', 'coverage'))</CoverletOutput>
+    <ExcludeByAttribute></ExcludeByAttribute>
+  </PropertyGroup>
+  <Target Name="GenerateHtmlCoverageReport" AfterTargets="GenerateCoverageResultAfterTest">
+    <ReportGenerator ReportFiles="@(CoverletReport)" TargetDirectory="$([System.IO.Path]::Combine($(MSBuildProjectDirectory), 'TestResults', 'report'))" />
+  </Target>
+  
 </Project>

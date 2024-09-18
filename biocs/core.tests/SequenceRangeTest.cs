@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Biocs;
+﻿namespace Biocs;
 
 [TestClass]
 public class SequenceRangeTest
@@ -24,6 +22,7 @@ public class SequenceRangeTest
         Assert.AreEqual($"{start}", range.ToString());
 
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => new SequenceRange(10, 1));
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => new SequenceRange(0));
     }
 
     [TestMethod]
@@ -94,6 +93,12 @@ public class SequenceRangeTest
         ParseTestCore("123^124", new(123, 124));
 
         // Wrong format
+        Assert.ThrowsException<FormatException>(() => SequenceRange.Parse(string.Empty));
+        Assert.ThrowsException<FormatException>(() => SequenceRange.Parse("-3"));
+        Assert.ThrowsException<FormatException>(() => SequenceRange.Parse("x..5"));
+        Assert.ThrowsException<FormatException>(() => SequenceRange.Parse("10..y"));
+        Assert.ThrowsException<FormatException>(() => SequenceRange.Parse("20..2"));
+        Assert.ThrowsException<FormatException>(() => SequenceRange.Parse("1..3..5"));
     }
 
     private static void ParseTestCore(ReadOnlySpan<char> span, SequenceRange expected)
@@ -101,5 +106,24 @@ public class SequenceRangeTest
         Assert.IsTrue(SequenceRange.TryParse(span, out var result));
         Assert.AreEqual(expected, result);
         Assert.AreEqual(expected, SequenceRange.Parse(span));
+
+        ExplicitParse(span, expected);
+        ExplicitSpanParse(span, expected);
+    }
+
+    private static void ExplicitParse<T>(ReadOnlySpan<char> span, T expected) where T : IParsable<SequenceRange>, IEquatable<SequenceRange>
+    {
+        string str = span.ToString();
+
+        Assert.AreEqual(expected, T.Parse(str, null));
+        Assert.IsTrue(T.TryParse(str, null, out var result));
+        Assert.AreEqual(expected, result);
+    }
+
+    private static void ExplicitSpanParse<T>(ReadOnlySpan<char> span, T expected) where T : ISpanParsable<SequenceRange>, IEquatable<SequenceRange>
+    {
+        Assert.AreEqual(expected, T.Parse(span, null));
+        Assert.IsTrue(T.TryParse(span, null, out var result));
+        Assert.AreEqual(expected, result);
     }
 }
