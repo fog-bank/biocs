@@ -6,7 +6,8 @@ namespace Biocs;
 internal static class ThrowHelper
 {
     [DoesNotReturn]
-    public static void ThrowArgument(string? message, string? paramName = null) => throw new ArgumentException(message, paramName);
+    public static void ThrowArgument(string? message, string? paramName = null)
+        => throw new ArgumentException(message, paramName);
 
     [DoesNotReturn]
     public static void ThrowFormat(string? message) => throw new FormatException(message);

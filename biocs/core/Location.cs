@@ -12,7 +12,7 @@ namespace Biocs;
 /// [The DDBJ/ENA/GenBank Feature Table Definition](https://www.insdc.org/submitting-standards/feature-table/).</para>
 /// </remarks>
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
-public class Location : IEquatable<Location?>, IComparable<Location?>, ISpanParsable<Location>
+public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsable<Location>, IComparable
 {
     private int start;
     private int end;
@@ -35,7 +35,10 @@ public class Location : IEquatable<Location?>, IComparable<Location?>, ISpanPars
     /// </summary>
     public bool IsExactEnd { get; private set; } = true;
 
-    public string? SequenceID { get; private set; }
+    /// <summary>
+    /// Gets the name of the sequence to which this <see cref="Location"/> object belongs.
+    /// </summary>
+    public string? SequenceName { get; set; }
 
     public IReadOnlyList<Location> Elements
     {
@@ -84,26 +87,53 @@ public class Location : IEquatable<Location?>, IComparable<Location?>, ISpanPars
     }
 
     /// <inheritdoc/>
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(Start, End, IsComplement);
-    }
+    public override int GetHashCode() => HashCode.Combine(Start, End, IsComplement);
 
     /// <inheritdoc/>
     public override string ToString()
     {
         var sb = new StringBuilder();
 
-        if (!string.IsNullOrEmpty(SequenceID))
-            sb.Append(SequenceID).Append(':');
+        if (!string.IsNullOrEmpty(SequenceName))
+            sb.Append(SequenceName).Append(':');
 
-        ElementsToString(sb, SequenceID);
+        ElementsToString(sb, SequenceName);
         return sb.ToString();
+    }
+
+    /// <summary>
+    /// Parses the string representation of a range to the equivalent <see cref="Location"/> instance.
+    /// </summary>
+    /// <param name="span">The read-only span of characters to parse.</param>
+    /// <returns>The result of parsing <paramref name="span"/>.</returns>
+    /// <exception cref="FormatException"><paramref name="span"/> is not in the correct format.</exception>
+    [StringResourceUsage("Format.UnparsableValue", 2)]
+    public static Location Parse(ReadOnlySpan<char> span)
+    {
+        if (!TryParse(span, out var result))
+            ThrowHelper.ThrowFormat(Res.GetString("Format.UnparsableValue", nameof(span), span.ToString()));
+
+        return result;
+    }
+
+    /// <summary>
+    /// Tries to parse the string representation of a range to the equivalent <see cref="Location"/> instance.
+    /// </summary>
+    /// <param name="span">The read-only span of characters to parse.</param>
+    /// <param name="result">
+    /// When this method returns, contains the result of successfully parsing <paramref name="span"/>, or <see langword="null"/>.
+    /// </param>
+    /// <returns>
+    /// <see langword="true"/> if <paramref name="span"/> was successfully parsed; otherwise, <see langword="false"/>.
+    /// </returns>
+    public static bool TryParse(ReadOnlySpan<char> span, [MaybeNullWhen(false)] out Location result)
+    {
+        throw new NotImplementedException();
     }
 
     internal string ToString2()
     {
-        string id = string.IsNullOrEmpty(SequenceID) ? string.Empty : SequenceID + ":";
+        string id = string.IsNullOrEmpty(SequenceName) ? string.Empty : SequenceName + ":";
 
         return locOperator switch
         {
@@ -135,8 +165,8 @@ public class Location : IEquatable<Location?>, IComparable<Location?>, ISpanPars
         if (Length == 0)
             return;
 
-        if (SequenceID != parentID && !string.IsNullOrEmpty(SequenceID))
-            builder.Append(SequenceID).Append(':');
+        if (SequenceName != parentID && !string.IsNullOrEmpty(SequenceName))
+            builder.Append(SequenceName).Append(':');
 
         switch (locOperator)
         {
@@ -198,29 +228,7 @@ public class Location : IEquatable<Location?>, IComparable<Location?>, ISpanPars
         }
     }
 
-    /// <inheritdoc/>
-    public static Location Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public static Location Parse(string s, IFormatProvider? provider)
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out Location result)
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out Location result)
-    {
-        throw new NotImplementedException();
-    }
+    #region Comparison Operators
 
     public static bool operator ==(Location? left, Location? right)
     {
@@ -229,16 +237,46 @@ public class Location : IEquatable<Location?>, IComparable<Location?>, ISpanPars
 
     public static bool operator !=(Location? left, Location? right) => !(left == right);
 
+    /// <summary>
+    /// Determines whether the first specified <see cref="Location"/> object is less than the second specified
+    /// <see cref="Location"/> object.
+    /// </summary>
+    /// <param name="left">The first <see cref="Location"/> object.</param>
+    /// <param name="right">The second <see cref="Location"/> object.</param>
+    /// <returns>
+    /// <see langword="true"/> if <paramref name="left"/> is less than <paramref name="right"/>;
+    /// otherwise, <see langword="false"/>.
+    /// </returns>
     public static bool operator <(Location? left, Location? right)
     {
         return left is null ? right is not null : left.CompareTo(right) < 0;
     }
 
+    /// <summary>
+    /// Determines whether the first specified <see cref="Location"/> object is less than or equal to the second specified
+    /// <see cref="Location"/> object.
+    /// </summary>
+    /// <param name="left">The first <see cref="Location"/> object.</param>
+    /// <param name="right">The second <see cref="Location"/> object.</param>
+    /// <returns>
+    /// <see langword="true"/> if <paramref name="left"/> is less than or equal to <paramref name="right"/>;
+    /// otherwise, <see langword="false"/>.
+    /// </returns>
     public static bool operator <=(Location? left, Location? right)
     {
         return left is null || left.CompareTo(right) <= 0;
     }
 
+    /// <summary>
+    /// Determines whether the first specified <see cref="Location"/> object is greater than the second specified
+    /// <see cref="Location"/> object.
+    /// </summary>
+    /// <param name="left">The first <see cref="Location"/> object.</param>
+    /// <param name="right">The second <see cref="Location"/> object.</param>
+    /// <returns>
+    /// <see langword="true"/> if <paramref name="left"/> is greater than <paramref name="right"/>;
+    /// otherwise, <see langword="false"/>.
+    /// </returns>
     public static bool operator >(Location? left, Location? right) => right < left;
 
     /// <summary>
@@ -252,6 +290,30 @@ public class Location : IEquatable<Location?>, IComparable<Location?>, ISpanPars
     /// otherwise, <see langword="false"/>.
     /// </returns>
     public static bool operator >=(Location? left, Location? right) => right <= left;
+
+    #endregion
+
+    #region Explicit Interface Implementations
+
+    [StringResourceUsage("Arg.CompareToNotSameTypedObject")]
+    int IComparable.CompareTo(object? obj) => obj switch
+    {
+        null => 1,
+        Location other => CompareTo(other),
+        _ => throw new ArgumentException(Res.GetString("Arg.CompareToNotSameTypedObject"), nameof(obj))
+    };
+
+    static Location IParsable<Location>.Parse(string s, IFormatProvider? provider) => Parse(s);
+
+    static Location ISpanParsable<Location>.Parse(ReadOnlySpan<char> s, IFormatProvider? provider) => Parse(s);
+
+    static bool IParsable<Location>.TryParse(string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out Location result)
+        => TryParse(s, out result);
+
+    static bool ISpanParsable<Location>.TryParse(
+        ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out Location result) => TryParse(s, out result);
+
+    #endregion
 }
 
 internal enum LocationOperator

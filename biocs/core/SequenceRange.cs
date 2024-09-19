@@ -6,12 +6,15 @@ namespace Biocs;
 /// Represents a continuous range of the presented biological sequence.
 /// </summary>
 /// <remarks>
+/// <para><see cref="Start"/> and <see cref="End"/> must be positive. <see cref="End"/> must be greater than or equal to
+/// <see cref="Start"/>.</para>
 /// <para>.NET provides <see cref="Range"/> to represent a range of arrays. In addition, C# language supports the range operator
-/// (..). This syntax is similar to the biological descriptor. However, indices of <see cref="Range"/> are zero-based and
+/// (e.g. ..). This syntax is similar to the biological descriptor. However, indices of <see cref="Range"/> are zero-based and
 /// <see cref="Range.End"/> is exclusive, whereas biological descriptors are one-based and the ending index is inclusive. Due to
 /// these difference, this library provides the dedicated structure to represent a range of biological sequences.</para>
 /// </remarks>
-public readonly struct SequenceRange : IEquatable<SequenceRange>, IComparable<SequenceRange>, IComparable, ISpanParsable<SequenceRange>
+public readonly struct SequenceRange :
+    IEquatable<SequenceRange>, IComparable<SequenceRange>, ISpanParsable<SequenceRange>, IComparable
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="SequenceRange"/> structure.
@@ -97,8 +100,8 @@ public readonly struct SequenceRange : IEquatable<SequenceRange>, IComparable<Se
     /// </summary>
     /// <param name="span">The read-only span of characters to parse.</param>
     /// <param name="result">
-    /// When this method returns, contains the result of successfully parsing <paramref name="span"/>, or a default value on
-    /// failure.
+    /// When this method returns, contains the result of successfully parsing <paramref name="span"/>,
+    /// or a default value on failure.
     /// </param>
     /// <returns>
     /// <see langword="true"/> if <paramref name="span"/> was successfully parsed; otherwise, <see langword="false"/>.
