@@ -8,20 +8,18 @@ namespace Biocs;
 /// Represents the region of the biological sequence.
 /// </summary>
 /// <remarks>
-/// <para>This is a subset of location descriptors in
+/// <para>This is a subset of location descriptors and operators in
 /// [The DDBJ/ENA/GenBank Feature Table Definition](https://www.insdc.org/submitting-standards/feature-table/).</para>
 /// </remarks>
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsable<Location>, IComparable
 {
-    private int start;
-    private int end;
-    private LocationOperator locOperator;
-    private IReadOnlyList<Location>? elements;
+    private LocationOperator locOperator = LocationOperator.Span;
+    private IReadOnlyList<SequenceRange>? elements;
 
-    public int Start => IsSpan ? start : Elements[0].Start;
+    public int Start => Ranges.Count == 0 ? 0 : Ranges[0].Start;
 
-    public int End => IsSpan ? end : Elements[^1].End;
+    public int End => Ranges.Count == 0 ? 0 : Ranges[^1].End;
 
     public int Length { get; private set; }
 
@@ -40,7 +38,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     /// </summary>
     public string? SequenceName { get; set; }
 
-    public IReadOnlyList<Location> Elements
+    public IReadOnlyList<SequenceRange> Ranges
     {
         get => elements ?? [];
         private set => elements = value;
@@ -49,15 +47,35 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     /// <summary>
     /// Gets a value that indicates whether the current <see cref="Location"/> object represents a continuous range.
     /// </summary>
-    public bool IsSpan => locOperator == LocationOperator.Span;
+    public bool IsSpan => Ranges.Count <= 1 && locOperator != LocationOperator.Site;
 
     /// <summary>
     /// Gets a value that indicates whether the current <see cref="Location"/> object represents the complementary strand of
     /// the specified sequence.
     /// </summary>
-    public bool IsComplement => locOperator == LocationOperator.Complement || locOperator == LocationOperator.ComplementJoin;
+    public bool IsComplement
+    {
+        get => locOperator is LocationOperator.Complement or LocationOperator.ComplementJoin or LocationOperator.ComplementOrder;
+        set
+        {
+            if (IsComplement != value)
+            {
+                if (value)
+                {
+                    locOperator = locOperator == LocationOperator.Join ?
+                        LocationOperator.ComplementJoin : LocationOperator.Complement;
+                }
+                else
+                {
+                    locOperator = locOperator == LocationOperator.ComplementJoin ?
+                        LocationOperator.Join : LocationOperator.Span;
+                }
+            }
+        }
+    }
 
-    private string DebuggerDisplay => Elements.Count > 3 ? $"{typeof(Location).Name}[{Elements.Count}]" : ToString();
+    private string DebuggerDisplay =>
+        Ranges.Count > 3 ? $"{nameof(Ranges)}.{nameof(Ranges.Count)} = {Ranges.Count}" : ToString();
 
     /// <inheritdoc/>
     public bool Equals([NotNullWhen(true)] Location? other)
@@ -92,12 +110,15 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     /// <inheritdoc/>
     public override string ToString()
     {
+        if (Length == 0)
+            return string.Empty;
+
         var sb = new StringBuilder();
 
         if (!string.IsNullOrEmpty(SequenceName))
             sb.Append(SequenceName).Append(':');
 
-        ElementsToString(sb, SequenceName);
+        ElementsToString(sb);
         return sb.ToString();
     }
 
@@ -131,54 +152,19 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
         throw new NotImplementedException();
     }
 
-    internal string ToString2()
+    private void ElementsToString(StringBuilder builder)
     {
-        string id = string.IsNullOrEmpty(SequenceName) ? string.Empty : SequenceName + ":";
-
-        return locOperator switch
-        {
-            LocationOperator.Span => Length switch
-            {
-                0 => GetType().ToString(),
-                1 => id + start,
-                // Continuous range
-                _ when IsExactStart && IsExactEnd => id + start + ".." + end,
-                _ => id + (IsExactStart ? string.Empty : "<") + start + ".." + end + (IsExactEnd ? string.Empty : ">")
-            },
-            LocationOperator.Site => Length switch
-            {
-                // Site between bases
-                2 => id + start + "^" + end,
-                // One of the bases between bases
-                _ => id + start + "." + end
-            },
-            LocationOperator.Join => id + "join(" + string.Join(",", Elements) + ")",
-            LocationOperator.Complement => id + "complement(" + string.Join(",", Elements) + ")",
-            LocationOperator.Order => id + "order(" + string.Join(",", Elements) + ")",
-            LocationOperator.ComplementJoin => id + "complement(join(" + string.Join(",", Elements) + "))",
-            _ => GetType().ToString()
-        };
-    }
-
-    private void ElementsToString(StringBuilder builder, string? parentID)
-    {
-        if (Length == 0)
-            return;
-
-        if (SequenceName != parentID && !string.IsNullOrEmpty(SequenceName))
-            builder.Append(SequenceName).Append(':');
-
         switch (locOperator)
         {
             case LocationOperator.Span:
                 if (Length == 1)
-                    builder.Append(start);
+                    builder.Append(Start);
                 else
                 {
                     if (!IsExactStart)
                         builder.Append('<');
 
-                    builder.Append(start).Append("..").Append(end);
+                    builder.Append(Start).Append("..").Append(End);
 
                     if (!IsExactEnd)
                         builder.Append('>');
@@ -186,55 +172,81 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
                 break;
 
             case LocationOperator.Site:
-                builder.Append(start).Append(Length == 2 ? '^' : '.').Append(end);
+                builder.Append(Start).Append(Length == 2 ? '^' : '.').Append(End);
                 break;
 
             case LocationOperator.Join:
                 builder.Append("join(");
-                AppendElements(builder, parentID);
-                builder.Append(')');
-                break;
-
-            case LocationOperator.Complement:
-                builder.Append("complement(");
-                AppendElements(builder, parentID);
+                AppendRanges(builder);
                 builder.Append(')');
                 break;
 
             case LocationOperator.Order:
                 builder.Append("order(");
-                AppendElements(builder, parentID);
+                AppendRanges(builder);
+                builder.Append(')');
+                break;
+
+            case LocationOperator.Complement:
+                builder.Append("complement(");
+                AppendRanges(builder);
                 builder.Append(')');
                 break;
 
             case LocationOperator.ComplementJoin:
                 builder.Append("complement(join(");
-                AppendElements(builder, parentID);
+                AppendRanges(builder);
+                builder.Append("))");
+                break;
+
+            case LocationOperator.ComplementOrder:
+                builder.Append("complement(order(");
+                AppendRanges(builder);
                 builder.Append("))");
                 break;
         }
 
-        void AppendElements(StringBuilder builder, string? parentID)
+        void AppendRanges(StringBuilder builder)
         {
-            if (Elements.Count == 0)
-                return;
-
-            foreach (var element in Elements)
+            if (IsExactStart && IsExactEnd)
             {
-                element.ElementsToString(builder, parentID);
-                builder.Append(',');
+                builder.AppendJoin(',', Ranges);
             }
-            builder.Length--;
+            else
+            {
+                foreach (var range in Ranges)
+                    builder.Append(range.ToString()).Append(',');
+
+                builder.Length--;
+            }
         }
     }
 
     #region Comparison Operators
 
+    /// <summary>
+    /// Determines whether two specified instances of <see cref="Location"/> equal.
+    /// </summary>
+    /// <param name="left">The first object to compare.</param>
+    /// <param name="right">The second object to compare.</param>
+    /// <returns>
+    /// <see langword="true"/> if <paramref name="left"/> and <paramref name="right"/> represent the identical region;
+    /// otherwise, <see langword="false"/>.
+    /// </returns>
     public static bool operator ==(Location? left, Location? right)
     {
         return left is null ? right is null : left.Equals(right);
     }
 
+    /// <summary>
+    /// Determines whether two specified instances of <see cref="Location"/> are not equal.
+    /// </summary>
+    /// <param name="left">The first object to compare.</param>
+    /// <param name="right">The second object to compare.</param>
+    /// <returns>
+    /// <see langword="true"/> if <paramref name="left"/> and <paramref name="right"/> do not represent the identical region;
+    /// otherwise, <see langword="false"/>.
+    /// </returns>
     public static bool operator !=(Location? left, Location? right) => !(left == right);
 
     /// <summary>
@@ -321,7 +333,8 @@ internal enum LocationOperator
     Span,
     Site,
     Join,
-    Complement,
     Order,
-    ComplementJoin
+    Complement,
+    ComplementJoin,
+    ComplementOrder
 }
