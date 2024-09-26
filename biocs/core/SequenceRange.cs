@@ -19,8 +19,8 @@ public readonly struct SequenceRange :
     /// <summary>
     /// Initializes a new instance of the <see cref="SequenceRange"/> structure.
     /// </summary>
-    /// <param name="start">The starting site index.</param>
-    /// <param name="end">The ending site index.</param>
+    /// <param name="start">The starting site index (inclusive).</param>
+    /// <param name="end">The ending site index (inclusive).</param>
     /// <exception cref="ArgumentOutOfRangeException">
     /// <para><paramref name="start"/> or <paramref name="end"/> is equal to or less than zero.</para> -or-
     /// <para><paramref name="start"/> is greater than <paramref name="end"/>.</para>

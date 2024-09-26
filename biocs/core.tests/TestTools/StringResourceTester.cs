@@ -78,14 +78,14 @@ internal static class StringResourceTester
             }
             else if (inst.IsCallMethod && getStringMethods.TryGetValue(inst.Operand, out int formatItemCount))
             {
-                Assert.AreNotEqual(0, loadedName.Count, "The name of the string resource is not found in " + 
+                Assert.AreNotEqual(0, loadedName.Count, "The name of the string resource is not found in " +
                     method.DeclaringType?.FullName + "." + method.Name + ".");
 
                 foreach (string name in loadedName)
                 {
                     if (declaredUsages[name].ResourceCheckOnly)
                     {
-                        Console.WriteLine("The usage of '" + name + "' in " + method.DeclaringType?.FullName + "." + 
+                        Console.WriteLine("The usage of '" + name + "' in " + method.DeclaringType?.FullName + "." +
                             method.Name + " is not checked.");
                         continue;
                     }
@@ -106,7 +106,7 @@ internal static class StringResourceTester
                 if (usage.Value.ResourceCheckOnly)
                 {
                     escaped++;
-                    Console.WriteLine("The usage of '" + usage.Key + "' in " + method.DeclaringType?.FullName + "." + 
+                    Console.WriteLine("The usage of '" + usage.Key + "' in " + method.DeclaringType?.FullName + "." +
                         method.Name + " is not checked.");
                 }
             }
@@ -136,7 +136,7 @@ internal static class StringResourceTester
             catch (FormatException)
             {
                 // #{format item} > #{arg}
-                Assert.Fail("The number of format items in resource '" + 
+                Assert.Fail("The number of format items in resource '" +
                     usage.Name + "' is more than " + usage.FormatItemCount + ".");
             }
 
@@ -145,7 +145,7 @@ internal static class StringResourceTester
                 if (!str.Contains("{" + i))
                 {
                     // #{format item} < #{arg}
-                    Console.WriteLine("The resource '" + usage.Name + 
+                    Console.WriteLine("The resource '" + usage.Name +
                         "' doesn't contains the format item whose index is " + i + ".");
                 }
             }

@@ -10,7 +10,7 @@ public class DoubleMersenneTwisterTest
     {
         var data = new List<string>(1000);
         var sep = new[] { ' ' };
-        
+
         foreach (string line in File.ReadLines(PathTestData).Skip(2).Take(250))
             data.AddRange(line.Split(sep, StringSplitOptions.RemoveEmptyEntries));
 
@@ -36,7 +36,7 @@ public class DoubleMersenneTwisterTest
         foreach (string line in File.ReadLines(PathTestData).Skip(252).Take(80))
         {
             if (lines++ % 4 != 0)
-               data.AddRange(line.Split(sep, StringSplitOptions.RemoveEmptyEntries));
+                data.AddRange(line.Split(sep, StringSplitOptions.RemoveEmptyEntries));
         }
 
         for (int seed = 0, n = 0; seed < 20; seed++)

@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using Biocs.Collections;
 
 namespace Biocs;
 
@@ -14,14 +15,38 @@ namespace Biocs;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsable<Location>, IComparable
 {
+    private Deque<SequenceRange> ranges;
+    private IReadOnlyList<SequenceRange>? view;
     private LocationOperator locOperator = LocationOperator.Span;
-    private IReadOnlyList<SequenceRange>? elements;
 
-    public int Start => Ranges.Count == 0 ? 0 : Ranges[0].Start;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Location"/> class.
+    /// </summary>
+    public Location()
+    {
+        ranges = new();
+    }
 
-    public int End => Ranges.Count == 0 ? 0 : Ranges[^1].End;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Location"/> class that represents the specified continuous range.
+    /// </summary>
+    /// <param name="range">The <see cref="SequenceRange"/> object that represents a continuous range.</param>
+    public Location(SequenceRange range)
+    {
+        ranges = new(1);
+        ranges.AddLast(range);
+    }
 
+    /// <summary>
+    /// Gets the total length of the region that the current <see cref="Location"/> object represents.
+    /// </summary>
     public int Length { get; private set; }
+
+    /// <summary>
+    /// Gets or sets a value that indicates whether the current <see cref="Location"/> object represents the complementary strand
+    /// of the specified sequence.
+    /// </summary>
+    public bool IsComplement { get; set; }
 
     /// <summary>
     /// Gets a value that indicates whether the exact starting base number is known.
@@ -34,45 +59,36 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     public bool IsExactEnd { get; private set; } = true;
 
     /// <summary>
-    /// Gets the name of the sequence to which this <see cref="Location"/> object belongs.
+    /// Gets or sets the name of the sequence to which this <see cref="Location"/> object belongs.
     /// </summary>
     public string? SequenceName { get; set; }
 
+    /// <summary>
+    /// Gets the read-only collection that contains each continuous range.
+    /// </summary>
     public IReadOnlyList<SequenceRange> Ranges
     {
-        get => elements ?? [];
-        private set => elements = value;
-    }
-
-    /// <summary>
-    /// Gets a value that indicates whether the current <see cref="Location"/> object represents a continuous range.
-    /// </summary>
-    public bool IsSpan => Ranges.Count <= 1 && locOperator != LocationOperator.Site;
-
-    /// <summary>
-    /// Gets a value that indicates whether the current <see cref="Location"/> object represents the complementary strand of
-    /// the specified sequence.
-    /// </summary>
-    public bool IsComplement
-    {
-        get => locOperator is LocationOperator.Complement or LocationOperator.ComplementJoin or LocationOperator.ComplementOrder;
-        set
+        get
         {
-            if (IsComplement != value)
-            {
-                if (value)
-                {
-                    locOperator = locOperator == LocationOperator.Join ?
-                        LocationOperator.ComplementJoin : LocationOperator.Complement;
-                }
-                else
-                {
-                    locOperator = locOperator == LocationOperator.ComplementJoin ?
-                        LocationOperator.Join : LocationOperator.Span;
-                }
-            }
+            view ??= ranges.AsReadOnly();
+            return view;
         }
     }
+
+    /// <summary>
+    /// Gets the starting site index. The location includes this site.
+    /// </summary>
+    public int Start => ranges.Count == 0 ? 0 : ranges[0].Start;
+
+    /// <summary>
+    /// Gets the ending site index. The range includes this site.
+    /// </summary>
+    public int End => ranges.Count == 0 ? 0 : ranges[^1].End;
+
+    /// <summary>
+    /// Gets a value that indicates whether the current <see cref="Location"/> object represents single continuous range.
+    /// </summary>
+    public bool IsSpan => Ranges.Count <= 1 && locOperator != LocationOperator.Site;
 
     private string DebuggerDisplay =>
         Ranges.Count > 3 ? $"{nameof(Ranges)}.{nameof(Ranges.Count)} = {Ranges.Count}" : ToString();
@@ -105,7 +121,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     }
 
     /// <inheritdoc/>
-    public override int GetHashCode() => HashCode.Combine(Start, End, IsComplement);
+    public override int GetHashCode() => HashCode.Combine(Start, End, ranges.Count, IsComplement);
 
     /// <inheritdoc/>
     public override string ToString()
@@ -123,7 +139,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     }
 
     /// <summary>
-    /// Parses the string representation of a range to the equivalent <see cref="Location"/> instance.
+    /// Parses the string representation of a range to the equivalent <see cref="Location"/> object.
     /// </summary>
     /// <param name="span">The read-only span of characters to parse.</param>
     /// <returns>The result of parsing <paramref name="span"/>.</returns>
@@ -138,7 +154,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     }
 
     /// <summary>
-    /// Tries to parse the string representation of a range to the equivalent <see cref="Location"/> instance.
+    /// Tries to parse the string representation of a range to the equivalent <see cref="Location"/> object.
     /// </summary>
     /// <param name="span">The read-only span of characters to parse.</param>
     /// <param name="result">
@@ -156,6 +172,24 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     {
         switch (locOperator)
         {
+            case LocationOperator.Span when IsComplement:
+                builder.Append("complement(");
+                AppendRanges(builder);
+                builder.Append(')');
+                break;
+
+            case LocationOperator.Join when IsComplement:
+                builder.Append("complement(join(");
+                AppendRanges(builder);
+                builder.Append("))");
+                break;
+
+            case LocationOperator.Order when IsComplement:
+                builder.Append("complement(order(");
+                AppendRanges(builder);
+                builder.Append("))");
+                break;
+
             case LocationOperator.Span:
                 if (Length == 1)
                     builder.Append(Start);
@@ -164,10 +198,12 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
                     if (!IsExactStart)
                         builder.Append('<');
 
-                    builder.Append(Start).Append("..").Append(End);
+                    builder.Append(Start).Append("..");
 
                     if (!IsExactEnd)
                         builder.Append('>');
+
+                    builder.Append(End);
                 }
                 break;
 
@@ -186,24 +222,6 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
                 AppendRanges(builder);
                 builder.Append(')');
                 break;
-
-            case LocationOperator.Complement:
-                builder.Append("complement(");
-                AppendRanges(builder);
-                builder.Append(')');
-                break;
-
-            case LocationOperator.ComplementJoin:
-                builder.Append("complement(join(");
-                AppendRanges(builder);
-                builder.Append("))");
-                break;
-
-            case LocationOperator.ComplementOrder:
-                builder.Append("complement(order(");
-                AppendRanges(builder);
-                builder.Append("))");
-                break;
         }
 
         void AppendRanges(StringBuilder builder)
@@ -214,6 +232,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
             }
             else
             {
+                // TODO:
                 foreach (var range in Ranges)
                     builder.Append(range.ToString()).Append(',');
 
@@ -239,7 +258,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     }
 
     /// <summary>
-    /// Determines whether two specified instances of <see cref="Location"/> are not equal.
+    /// Determines whether two specified <see cref="Location"/> objects are not equal.
     /// </summary>
     /// <param name="left">The first object to compare.</param>
     /// <param name="right">The second object to compare.</param>
@@ -333,8 +352,5 @@ internal enum LocationOperator
     Span,
     Site,
     Join,
-    Order,
-    Complement,
-    ComplementJoin,
-    ComplementOrder
+    Order
 }
