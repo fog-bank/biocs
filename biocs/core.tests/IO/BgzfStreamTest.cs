@@ -5,8 +5,9 @@ namespace Biocs.IO;
 [TestClass]
 public class BgzfStreamTest
 {
-    private readonly string PathRawFile = Path.Combine("Deployments", "ce.sam");
-    private readonly string PathGzFile = Path.Combine("Deployments", "ce.sam.gz");
+    private string PathRawFile { get; } = Path.Combine("Deployments", "ce.sam");
+
+    private string PathGzFile { get; } = Path.Combine("Deployments", "ce.sam.gz");
 
     [TestMethod]
     public void IsBgzfFile_Test()
@@ -129,25 +130,25 @@ public class BgzfStreamTest
     [TestMethod]
     public void Write_TestWithSingleBlock()
     {
-        byte[] Data = "122333444455555".Select(x => (byte)x).ToArray();
+        byte[] data = "122333444455555".Select(x => (byte)x).ToArray();
 
         using var ms = new MemoryStream();
 
         using (var gz = new BgzfStream(ms, CompressionMode.Compress, true))
         {
-            gz.Write(Data, 0, Data.Length);
+            gz.Write(data, 0, data.Length);
         }
 
         ms.Position = 0;
 
         using (var gz = new GZipStream(ms, CompressionMode.Decompress))
         {
-            var actual = new byte[Data.Length];
+            var actual = new byte[data.Length];
             int bytes = gz.Read(actual, 0, actual.Length);
 
-            Assert.AreEqual(Data.Length, bytes);
+            Assert.AreEqual(data.Length, bytes);
             Assert.AreEqual(-1, gz.ReadByte());
-            CollectionAssert.AreEqual(Data, actual);
+            CollectionAssert.AreEqual(data, actual);
         }
     }
 

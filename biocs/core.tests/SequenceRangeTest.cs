@@ -1,4 +1,6 @@
-﻿namespace Biocs;
+﻿using Biocs.TestTools;
+
+namespace Biocs;
 
 [TestClass]
 public class SequenceRangeTest
@@ -107,23 +109,7 @@ public class SequenceRangeTest
         Assert.AreEqual(expected, result);
         Assert.AreEqual(expected, SequenceRange.Parse(span));
 
-        ExplicitParse(span, expected);
-        ExplicitSpanParse(span, expected);
-    }
-
-    private static void ExplicitParse<T>(ReadOnlySpan<char> span, T expected) where T : IParsable<SequenceRange>, IEquatable<SequenceRange>
-    {
-        string str = span.ToString();
-
-        Assert.AreEqual(expected, T.Parse(str, null));
-        Assert.IsTrue(T.TryParse(str, null, out var result));
-        Assert.AreEqual(expected, result);
-    }
-
-    private static void ExplicitSpanParse<T>(ReadOnlySpan<char> span, T expected) where T : ISpanParsable<SequenceRange>, IEquatable<SequenceRange>
-    {
-        Assert.AreEqual(expected, T.Parse(span, null));
-        Assert.IsTrue(T.TryParse(span, null, out var result));
-        Assert.AreEqual(expected, result);
+        AssertUtils.TestParse(expected, span);
+        AssertUtils.TestSpanParse(expected, span);
     }
 }

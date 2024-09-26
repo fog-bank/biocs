@@ -3,7 +3,7 @@
 [TestClass]
 public class DoubleMersenneTwisterTest
 {
-    private readonly string PathTestData = Path.Combine("Deployments", "dSFMT.19937.out.txt");
+    private string PathTestData { get; } = Path.Combine("Deployments", "dSFMT.19937.out.txt");
 
     [TestMethod]
     public void Test()

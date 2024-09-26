@@ -9,7 +9,7 @@ namespace Biocs.TestTools;
 /// <summary>
 /// Provides some utilitary functions for unit tests of <see cref="string"/> resources.
 /// </summary>
-public static class StringResourceTester
+internal static class StringResourceTester
 {
     /// <summary>
     /// Tests whether string resources is expectedly used using <see cref="StringResourceUsageAttribute"/> data.

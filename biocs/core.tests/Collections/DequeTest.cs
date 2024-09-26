@@ -8,16 +8,16 @@ public class DequeTest
     [TestMethod]
     public void Constructor_Test()
     {
-        const int count = 3;
-        const int capacity = 10;
+        const int Count = 3;
+        const int Capacity = 10;
 
         // Default constructor
         Assert.AreEqual(0, new Deque<string>().Count);
 
         // Specify capacity
-        var target = new Deque<string>(capacity);
+        var target = new Deque<string>(Capacity);
         Assert.AreEqual(0, target.Count);
-        Assert.AreEqual(capacity, target.Capacity);
+        Assert.AreEqual(Capacity, target.Capacity);
         Assert.IsFalse((target as ICollection<string>).IsReadOnly);
 
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Deque<object>(-4));
@@ -28,13 +28,13 @@ public class DequeTest
         Assert.AreEqual(0, target2.Count);
         Assert.AreEqual(0, target2.Capacity);
 
-        var target3 = new Deque<object>(new object[count]);
-        Assert.AreEqual(count, target3.Count);
-        Assert.AreEqual(count, target3.Capacity);
+        var target3 = new Deque<object>(new object[Count]);
+        Assert.AreEqual(Count, target3.Count);
+        Assert.AreEqual(Count, target3.Capacity);
 
         // IEnumerable<T>
         Assert.AreEqual(0, new Deque<int>(Range(0)).Count);
-        Assert.AreEqual(count, new Deque<int>(Range(count)).Count);
+        Assert.AreEqual(Count, new Deque<int>(Range(Count)).Count);
 
         Assert.ThrowsException<ArgumentNullException>(() => new Deque<object>(null!));
 
@@ -48,10 +48,10 @@ public class DequeTest
     [TestMethod]
     public void Item_Test()
     {
-        const int count = 6;
-        var target = new Deque<int>(Enumerable.Range(0, count));
+        const int Count = 6;
+        var target = new Deque<int>(Enumerable.Range(0, Count));
 
-        Assert.AreEqual(count, target.Count);
+        Assert.AreEqual(Count, target.Count);
 
         for (int i = 0; i < target.Count; i++)
         {
@@ -62,9 +62,9 @@ public class DequeTest
         }
 
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => target[-1]);
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target[count]);
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target[Count]);
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => target[-1] = 0);
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target[count] = 0);
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target[Count] = 0);
     }
 
     [TestMethod]
@@ -116,10 +116,10 @@ public class DequeTest
     [TestMethod]
     public void First_Test()
     {
-        const int value = 4;
-        var target = new Deque<int>(Enumerable.Range(value, 2));
+        const int Value = 4;
+        var target = new Deque<int>(Enumerable.Range(Value, 2));
 
-        Assert.AreEqual(value, target.First);
+        Assert.AreEqual(Value, target.First);
 
         target.First = 8;
         Assert.AreEqual(8, target.First);
@@ -131,10 +131,10 @@ public class DequeTest
     [TestMethod]
     public void Last_Test()
     {
-        const int value = 4;
-        var target = new Deque<int>(Enumerable.Range(value, 2).Reverse());
+        const int Value = 4;
+        var target = new Deque<int>(Enumerable.Range(Value, 2).Reverse());
 
-        Assert.AreEqual(value, target.Last);
+        Assert.AreEqual(Value, target.Last);
 
         target.Last = 8;
         Assert.AreEqual(8, target.Last);
@@ -256,36 +256,36 @@ public class DequeTest
     [TestMethod]
     public void CopyTo_Test1()
     {
-        const int start = 1;
-        const int count = 5;
-        const int index = 1;
-        const int count2 = 2;
+        const int Start = 1;
+        const int Count = 5;
+        const int Index = 1;
+        const int Count2 = 2;
 
-        var query = Enumerable.Range(start, count).ToArray();
+        var query = Enumerable.Range(Start, Count).ToArray();
         var target = new Deque<int>(query);
         {
-            var array = new int[count + 2];
+            var array = new int[Count + 2];
             target.CopyTo(array, 1);
 
             Assert.AreEqual(0, array.First());
-            Assert.IsTrue(query.SequenceEqual(array.Skip(1).Take(count)));
+            Assert.IsTrue(query.SequenceEqual(array.Skip(1).Take(Count)));
             Assert.AreEqual(0, array.Last());
 
             Assert.ThrowsException<ArgumentNullException>(() => target.CopyTo(null!, 0));
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.CopyTo(array, -1));
-            Assert.ThrowsException<ArgumentException>(() => target.CopyTo(array, array.Length - count + 1));
+            Assert.ThrowsException<ArgumentException>(() => target.CopyTo(array, array.Length - Count + 1));
         }
         {
-            var array2 = new int[count2 + 2];
-            target.CopyTo(index, array2.AsSpan(1), count2);
+            var array2 = new int[Count2 + 2];
+            target.CopyTo(Index, array2.AsSpan(1), Count2);
 
             Assert.AreEqual(0, array2.First());
-            Assert.IsTrue(Enumerable.Range(start + index, count2).SequenceEqual(array2.Skip(1).Take(count2)));
+            Assert.IsTrue(Enumerable.Range(Start + Index, Count2).SequenceEqual(array2.Skip(1).Take(Count2)));
             Assert.AreEqual(0, array2.Last());
 
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.CopyTo(-1, array2.AsSpan(), 0));
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.CopyTo(0, array2.AsSpan(), -1));
-            Assert.ThrowsException<ArgumentException>(() => target.CopyTo(count - 1, array2.AsSpan(), 2));
+            Assert.ThrowsException<ArgumentException>(() => target.CopyTo(Count - 1, array2.AsSpan(), 2));
             Assert.ThrowsException<ArgumentException>(() => target.CopyTo(0, default, 2));
         }
     }
@@ -294,15 +294,15 @@ public class DequeTest
     [TestMethod]
     public void CopyTo_Test2()
     {
-        const int start = 6;
-        const int count = 5;
-        const int index = count - 2;
-        const int count2 = 2;
+        const int Start = 6;
+        const int Count = 5;
+        const int Index = Count - 2;
+        const int Count2 = 2;
 
-        var target = new Deque<int>(count);     // [6, 7, 8, 9, 10] (internal array: [10, 6, 7, 8, 9])
+        var target = new Deque<int>(Count);     // [6, 7, 8, 9, 10] (internal array: [10, 6, 7, 8, 9])
 
-        for (int i = count - 1; i >= 0; i--)
-            target.AddFirst(start + i);
+        for (int i = Count - 1; i >= 0; i--)
+            target.AddFirst(Start + i);
 
         {
             var array = new[] { -1, -1 };
@@ -311,19 +311,19 @@ public class DequeTest
             Assert.IsTrue(array.All(x => x == -1));
         }
         {
-            var array = new int[count + 2];     // [0, 6, 7, 8, 9, 10, 0]
+            var array = new int[Count + 2];     // [0, 6, 7, 8, 9, 10, 0]
             target.CopyTo(array, 1);
 
             Assert.AreEqual(0, array.First());
-            Assert.IsTrue(Enumerable.Range(start, count).SequenceEqual(array.Skip(1).Take(count)));
+            Assert.IsTrue(Enumerable.Range(Start, Count).SequenceEqual(array.Skip(1).Take(Count)));
             Assert.AreEqual(0, array.Last());
         }
         {
-            var array2 = new int[count2 + 2];
-            target.CopyTo(index, array2.AsSpan(1), count2);    // [0, 9, 10, 0]
+            var array2 = new int[Count2 + 2];
+            target.CopyTo(Index, array2.AsSpan(1), Count2);    // [0, 9, 10, 0]
 
             Assert.AreEqual(0, array2.First());
-            Assert.IsTrue(Enumerable.Range(start + index, count2).SequenceEqual(array2.Skip(1).Take(count2)));
+            Assert.IsTrue(Enumerable.Range(Start + Index, Count2).SequenceEqual(array2.Skip(1).Take(Count2)));
             Assert.AreEqual(0, array2.Last());
         }
     }

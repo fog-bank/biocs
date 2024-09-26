@@ -3,7 +3,7 @@
 // Ref: https://tools.ietf.org/html/rfc1952#section-8
 internal static class Crc32
 {
-    private static readonly uint[] CrcTable = MakeCrcTable();
+    private static uint[] CrcTable { get; } = MakeCrcTable();
 
     // Updates a running crc with the bytes and returns the updated CRC32 value.
     public static uint UpdateCrc(uint crc, ReadOnlySpan<byte> buffer)

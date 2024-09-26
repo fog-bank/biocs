@@ -7,18 +7,18 @@ public class CounterTest
     public void Constructor_Test()
     {
         var c1 = new Counter<object>();
-        TestProperties(c1, 0, 0, [], Array.Empty<object>(), EqualityComparer<object>.Default);
+        TestProperties(c1, 0, 0, [], [], EqualityComparer<object>.Default);
 
         var c2 = new Counter<int>(10);
         TestProperties(c2, 0, 0, [], [], EqualityComparer<int>.Default);
 
         var comparer3 = StringComparer.Ordinal;
         var c3 = new Counter<string>(comparer3);
-        TestProperties(c3, 0, 0, new HashSet<string>(comparer3), Array.Empty<string>(), comparer3);
+        TestProperties(c3, 0, 0, new HashSet<string>(comparer3), [], comparer3);
 
         var comparer4 = StringComparer.OrdinalIgnoreCase;
         var c4 = new Counter<string>(10, comparer4);
-        TestProperties(c4, 0, 0, new HashSet<string>(comparer4), Array.Empty<string>(), comparer4);
+        TestProperties(c4, 0, 0, new HashSet<string>(comparer4), [], comparer4);
 
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Counter<object>(-1));
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Counter<object>(-1, null));
@@ -76,38 +76,38 @@ public class CounterTest
     [TestMethod]
     public void CopyTo_ValTest()
     {
-        const int count = 5;
-        const int startIndex = 2;
-        const int defaultValue = -1;
+        const int Count = 5;
+        const int StartIndex = 2;
+        const int DefaultValue = -1;
 
-        var query = Enumerable.Range(0, count);
+        var query = Enumerable.Range(0, Count);
         var counter = new Counter<int>();
 
         foreach (int num in query)
             counter.Add(num);
 
-        TestProperties(counter, count, count, new HashSet<int>(query), query.ToArray(), EqualityComparer<int>.Default);
+        TestProperties(counter, Count, Count, new HashSet<int>(query), query.ToArray(), EqualityComparer<int>.Default);
 
         var array = new int[10];
 
         for (int i = 0; i < array.Length; i++)
-            array[i] = defaultValue;
+            array[i] = DefaultValue;
 
-        counter.CopyTo(array, startIndex);
+        counter.CopyTo(array, StartIndex);
 
-        for (int i = 0; i < startIndex; i++)
-            Assert.AreEqual(defaultValue, array[i]);
+        for (int i = 0; i < StartIndex; i++)
+            Assert.AreEqual(DefaultValue, array[i]);
 
-        Assert.IsTrue(counter.UniqueItems.SequenceEqual(array.Skip(startIndex).Take(count)));
+        Assert.IsTrue(counter.UniqueItems.SequenceEqual(array.Skip(StartIndex).Take(Count)));
 
-        for (int i = startIndex + count; i < array.Length; i++)
-            Assert.AreEqual(defaultValue, array[i]);
+        for (int i = StartIndex + Count; i < array.Length; i++)
+            Assert.AreEqual(DefaultValue, array[i]);
 
-        TestProperties(counter, count, count, new HashSet<int>(query), query.ToArray(), EqualityComparer<int>.Default);
+        TestProperties(counter, Count, Count, new HashSet<int>(query), query.ToArray(), EqualityComparer<int>.Default);
 
         Assert.ThrowsException<ArgumentNullException>(() => counter.CopyTo(null!, 0));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => counter.CopyTo(new int[count], -1));
-        Assert.ThrowsException<ArgumentException>(() => counter.CopyTo(new int[count], 3));
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => counter.CopyTo(new int[Count], -1));
+        Assert.ThrowsException<ArgumentException>(() => counter.CopyTo(new int[Count], 3));
     }
 
     [TestMethod]

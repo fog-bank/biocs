@@ -319,6 +319,7 @@ public class DoubleMersenneTwister
 }
 
 [StructLayout(LayoutKind.Explicit)]
+[SuppressMessage("Style", "IDE1006:Naming Styles")]
 internal struct Union128
 {
     [FieldOffset(0)]
