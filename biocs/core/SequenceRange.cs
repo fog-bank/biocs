@@ -19,8 +19,8 @@ public readonly struct SequenceRange :
     /// <summary>
     /// Initializes a new instance of the <see cref="SequenceRange"/> structure.
     /// </summary>
-    /// <param name="start">The starting site index (inclusive).</param>
-    /// <param name="end">The ending site index (inclusive).</param>
+    /// <param name="start">The starting site index (one-based, inclusive).</param>
+    /// <param name="end">The ending site index (one-based, inclusive).</param>
     /// <exception cref="ArgumentOutOfRangeException">
     /// <para><paramref name="start"/> or <paramref name="end"/> is equal to or less than zero.</para> -or-
     /// <para><paramref name="start"/> is greater than <paramref name="end"/>.</para>
@@ -38,9 +38,9 @@ public readonly struct SequenceRange :
     /// <summary>
     /// Initializes a new instance of the <see cref="SequenceRange"/> structure to the specified single site index.
     /// </summary>
-    /// <param name="point">A single site index.</param>
-    /// <exception cref="ArgumentOutOfRangeException"><paramref name="point"/> is equal to or less than zero.</exception>
-    public SequenceRange(int point) : this(point, point)
+    /// <param name="siteIndex">A single site index (one-based).</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="siteIndex"/> is equal to or less than zero.</exception>
+    public SequenceRange(int siteIndex) : this(siteIndex, siteIndex)
     { }
 
     /// <summary>
@@ -73,6 +73,23 @@ public readonly struct SequenceRange :
         0 => End - other.End,
         int startComp => startComp
     };
+
+    /// <summary>
+    /// Determines if this range contains a specific site.
+    /// </summary>
+    /// <param name="siteIndex">A site index (one-based).</param>
+    /// <returns><see langword="true"/> if contained; otherwise <see langword="false"/>.</returns>
+    public bool Contains(int siteIndex) => Start <= siteIndex && siteIndex <= End;
+
+    /// <summary>
+    /// Determines whether this range overlaps with the specified range.
+    /// </summary>
+    /// <param name="other">The range to compare to this range.</param>
+    /// <returns>
+    /// <see langword="true"/> if this range and <paramref name="other"/> share at least one common site; otherwise,
+    /// <see langword="false"/>.
+    /// </returns>
+    public bool Overlaps(SequenceRange other) => Start <= other.End && other.Start <= End;
 
     /// <summary>
     /// Converts the current <see cref="SequenceRange"/> instance to its equivalent string representation.

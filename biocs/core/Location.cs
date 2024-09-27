@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
-using Biocs.Collections;
 
 namespace Biocs;
 
@@ -15,17 +14,15 @@ namespace Biocs;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsable<Location>, IComparable
 {
-    private Deque<SequenceRange> ranges;
+    private readonly LinkedList<SequenceRange> ranges = new();
     private IReadOnlyList<SequenceRange>? view;
-    private LocationOperator locOperator = LocationOperator.Span;
+    private LocationOperator locOperator = LocationOperator.SpanOrJoin;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Location"/> class.
     /// </summary>
     public Location()
-    {
-        ranges = new();
-    }
+    { }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Location"/> class that represents the specified continuous range.
@@ -33,8 +30,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     /// <param name="range">The <see cref="SequenceRange"/> object that represents a continuous range.</param>
     public Location(SequenceRange range)
     {
-        ranges = new(1);
-        ranges.AddLast(range);
+        ranges.AddFirst(range);
     }
 
     /// <summary>
@@ -66,11 +62,11 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     /// <summary>
     /// Gets the read-only collection that contains each continuous range.
     /// </summary>
-    public IReadOnlyList<SequenceRange> Ranges
+    public IReadOnlyCollection<SequenceRange> Ranges
     {
         get
         {
-            view ??= ranges.AsReadOnly();
+            //view ??= ranges.AsReadOnly();
             return view;
         }
     }
@@ -78,20 +74,28 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     /// <summary>
     /// Gets the starting site index. The location includes this site.
     /// </summary>
-    public int Start => ranges.Count == 0 ? 0 : ranges[0].Start;
+    public int Start => IsEmpty ? 0 : FirstNode.Value.Start;
 
     /// <summary>
     /// Gets the ending site index. The range includes this site.
     /// </summary>
-    public int End => ranges.Count == 0 ? 0 : ranges[^1].End;
+    public int End => IsEmpty ? 0 : LastNode.Value.End;
 
     /// <summary>
     /// Gets a value that indicates whether the current location represents single continuous range.
     /// </summary>
     public bool IsSpan => Ranges.Count <= 1 && locOperator != LocationOperator.Site;
 
+    [MemberNotNullWhen(false, nameof(FirstNode))]
+    [MemberNotNullWhen(false, nameof(LastNode))]
+    private bool IsEmpty => ranges.Count == 0;
+
+    private LinkedListNode<SequenceRange>? FirstNode => ranges.First;
+
+    private LinkedListNode<SequenceRange>? LastNode => ranges.Last;
+
     private string DebuggerDisplay =>
-        Ranges.Count > 3 ? $"{nameof(Ranges)}.{nameof(Ranges.Count)} = {Ranges.Count}" : ToString();
+        ranges.Count > 3 ? $"{nameof(Ranges)}.{nameof(Ranges.Count)} = {ranges.Count}" : ToString();
 
     /// <inheritdoc/>
     public bool Equals([NotNullWhen(true)] Location? other)
@@ -99,7 +103,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
         if (ReferenceEquals(this, other))
             return true;
 
-        if (other is null || End != other.End || IsComplement != other.IsComplement || SequenceName != other.SequenceName
+        if (other is null || End != other.End || SequenceName != other.SequenceName || IsComplement != other.IsComplement
             || IsExactStart != other.IsExactStart || IsExactEnd != other.IsExactEnd || locOperator != other.locOperator)
             return false;
 
@@ -154,10 +158,89 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     //    throw new NotImplementedException();
     //}
 
-    //public void SymmetricExceptWith(SequenceRange range)
-    //{
-    //    throw new NotImplementedException();
-    //}
+    /// <summary>
+    /// Modifies the current location so that it contains only regions that are present either in the current location or in the
+    /// specified range, but not both.
+    /// </summary>
+    /// <param name="range">The continuoug range to compare to the current location.</param>
+    public void SymmetricExceptWith(SequenceRange range)
+    {
+        if (IsEmpty || range.End < Start)
+        {
+            ranges.AddFirst(range);
+            Length += range.Length;
+            return;
+        }
+
+        if (End < range.Start)
+        {
+            ranges.AddLast(range);
+            Length += range.Length;
+            return;
+        }
+
+        for (var node = FirstNode; node != null; )
+        {
+            var current = node.Value;
+
+            if (range.End + 1 == current.Start)
+            {
+                node.Value = new(range.Start, current.End);
+                Length += range.Length;
+                break;
+            }
+            else if (current.End + 1 == range.Start)
+            {
+                if (node.Next != null && node.Next.Value.Start <= range.End + 1)
+                {
+                    range = new(current.Start, range.End);
+
+                    var next = node.Next;
+                    ranges.Remove(node);
+                    Length -= current.Length;
+                    node = next;
+                    continue;
+                }
+                else
+                {
+                    node.Value = new(current.Start, range.End);
+                    Length += range.Length;
+                    break;
+                }
+            }
+            else if (range.Overlaps(current))
+            {
+                if (range.Start < current.Start)
+                {
+                    var before = new SequenceRange(range.Start, current.Start - 1);
+
+                    if (current.End <= range.End)
+                    {
+                        range = new(current.End + 1, range.End);
+
+                        node.Value = before;
+                        Length += before.Length - current.Length;
+
+                        if (current.End < range.End)
+                            range = new(current.End + 1, range.End);
+                        else
+                            break;
+                    }
+                    else
+                    {
+
+                    }
+                    ranges.AddBefore(node, before);
+                    Length += before.Length;
+                }
+                else
+                {
+
+                }
+            }
+            node = node.Next;
+        }
+    }
 
     /// <summary>
     /// Modifies the current location so that it contains only regions that are present either in the current location or in the
@@ -168,12 +251,38 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     public void SymmetricExceptWith(Location other)
     {
         ArgumentNullException.ThrowIfNull(other);
+
+        if (ReferenceEquals(this, other))
+        {
+            ranges.Clear();
+            Length = 0;
+            return;
+        }
+
+        foreach (var range in other.ranges)
+        {
+            // TODO:
+        }
+    }
+
+    /// <summary>
+    /// Removes all regions from this location and resets the information for the region.
+    /// </summary>
+    public void Clear()
+    {
+        ranges.Clear();
+        locOperator = LocationOperator.SpanOrJoin;
+        Length = 0;
+        IsComplement = false;
+        IsExactStart = true;
+        IsExactEnd = true;
+        SequenceName = null;
     }
 
     /// <inheritdoc/>
     public override string ToString()
     {
-        if (Length == 0)
+        if (IsEmpty)
             return string.Empty;
 
         var sb = new StringBuilder();
@@ -217,29 +326,22 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
 
     private void ElementsToString(StringBuilder builder)
     {
+        if (IsComplement)
+            builder.Append("complement(");
+
         switch (locOperator)
         {
-            case LocationOperator.Span when IsComplement:
-                builder.Append("complement(");
-                AppendRanges(builder);
-                builder.Append(')');
-                break;
-
-            case LocationOperator.Join when IsComplement:
-                builder.Append("complement(join(");
-                AppendRanges(builder);
-                builder.Append("))");
-                break;
-
-            case LocationOperator.Order when IsComplement:
-                builder.Append("complement(order(");
-                AppendRanges(builder);
-                builder.Append("))");
-                break;
-
-            case LocationOperator.Span:
-                if (Length == 1)
+            case LocationOperator.SpanOrJoin:
+                if (ranges.Count > 1)
+                {
+                    builder.Append("join(");
+                    AppendRanges(builder);
+                    builder.Append(')');
+                }
+                else if (Length == 1)
+                {
                     builder.Append(Start);
+                }
                 else
                 {
                     if (!IsExactStart)
@@ -258,12 +360,6 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
                 builder.Append(Start).Append(Length == 2 ? '^' : '.').Append(End);
                 break;
 
-            case LocationOperator.Join:
-                builder.Append("join(");
-                AppendRanges(builder);
-                builder.Append(')');
-                break;
-
             case LocationOperator.Order:
                 builder.Append("order(");
                 AppendRanges(builder);
@@ -271,16 +367,19 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
                 break;
         }
 
+        if (IsComplement)
+            builder.Append(')');
+
         void AppendRanges(StringBuilder builder)
         {
             if (IsExactStart && IsExactEnd)
             {
-                builder.AppendJoin(',', Ranges);
+                builder.AppendJoin(',', ranges);
             }
             else
             {
                 // TODO:
-                foreach (var range in Ranges)
+                foreach (var range in ranges)
                     builder.Append(range.ToString()).Append(',');
 
                 builder.Length--;
@@ -396,8 +495,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
 
 internal enum LocationOperator
 {
-    Span,
+    SpanOrJoin,
     Site,
-    Join,
     Order
 }

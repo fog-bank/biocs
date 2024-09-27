@@ -1,4 +1,5 @@
 ﻿using Biocs.TestTools;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Biocs;
 
@@ -71,6 +72,35 @@ public class SequenceRangeTest
             Assert.IsTrue(range1 < range5);
             Assert.IsFalse(range1 >= range5);
         }
+    }
+
+    [TestMethod]
+    public void ContainsTest()
+    {
+        var range = new SequenceRange(2, 3);
+        Assert.IsFalse(range.Contains(1));
+        Assert.IsTrue(range.Contains(2));
+        Assert.IsTrue(range.Contains(3));
+        Assert.IsFalse(range.Contains(4));
+    }
+
+    [TestMethod]
+    public void OverlapsTest()
+    {
+        var target = new SequenceRange(10, 20);
+        var before = new SequenceRange(1, 5);
+        var startOverlaps = new SequenceRange(1, 10);
+        var superset = new SequenceRange(1, 30);
+        var subset = new SequenceRange(15);
+        var endOverlaps = new SequenceRange(20, 30);
+        var after = new SequenceRange(30, 40);
+
+        Assert.IsFalse(target.Overlaps(before));
+        Assert.IsTrue(target.Overlaps(startOverlaps));
+        Assert.IsTrue(target.Overlaps(superset));
+        Assert.IsTrue(target.Overlaps(subset));
+        Assert.IsTrue(target.Overlaps(endOverlaps));
+        Assert.IsFalse(target.Overlaps(after));
     }
 
     [TestMethod]
