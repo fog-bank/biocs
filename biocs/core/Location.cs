@@ -38,13 +38,13 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     }
 
     /// <summary>
-    /// Gets the total length of the region that the current <see cref="Location"/> object represents.
+    /// Gets the total length of the region that the current location represents.
     /// </summary>
     public int Length { get; private set; }
 
     /// <summary>
-    /// Gets or sets a value that indicates whether the current <see cref="Location"/> object represents the complementary strand
-    /// of the specified sequence.
+    /// Gets or sets a value that indicates whether the current location represents the complementary strand of the specified
+    /// sequence.
     /// </summary>
     public bool IsComplement { get; set; }
 
@@ -59,7 +59,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     public bool IsExactEnd { get; private set; } = true;
 
     /// <summary>
-    /// Gets or sets the name of the sequence to which this <see cref="Location"/> object belongs.
+    /// Gets or sets the name of the sequence to which this location belongs.
     /// </summary>
     public string? SequenceName { get; set; }
 
@@ -86,7 +86,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     public int End => ranges.Count == 0 ? 0 : ranges[^1].End;
 
     /// <summary>
-    /// Gets a value that indicates whether the current <see cref="Location"/> object represents single continuous range.
+    /// Gets a value that indicates whether the current location represents single continuous range.
     /// </summary>
     public bool IsSpan => Ranges.Count <= 1 && locOperator != LocationOperator.Site;
 
@@ -99,10 +99,11 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
         if (ReferenceEquals(this, other))
             return true;
 
-        if (other is null)
+        if (other is null || End != other.End || IsComplement != other.IsComplement || SequenceName != other.SequenceName
+            || IsExactStart != other.IsExactStart || IsExactEnd != other.IsExactEnd || locOperator != other.locOperator)
             return false;
 
-        throw new NotImplementedException();
+        return ranges.SequenceEqual(other.ranges);
     }
 
     /// <inheritdoc/>
@@ -122,6 +123,52 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Start, End, ranges.Count, IsComplement);
+
+    //public void UnionWith(SequenceRange range)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //public void UnionWith(Location other)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //public void IntersectWith(SequenceRange range)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //public void IntersectWith(Location other)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //public void ExceptWith(SequenceRange range)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //public void ExceptWith(Location other)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //public void SymmetricExceptWith(SequenceRange range)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    /// <summary>
+    /// Modifies the current location so that it contains only regions that are present either in the current location or in the
+    /// specified location, but not both.
+    /// </summary>
+    /// <param name="other">The location to compare to the current location.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
+    public void SymmetricExceptWith(Location other)
+    {
+        ArgumentNullException.ThrowIfNull(other);
+    }
 
     /// <inheritdoc/>
     public override string ToString()
