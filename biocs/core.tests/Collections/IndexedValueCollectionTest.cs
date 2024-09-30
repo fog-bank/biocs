@@ -102,7 +102,8 @@ public class IndexedValueCollectionTest
         Assert.ThrowsException<ArgumentException>(() => list.CopyTo(new string[1], 0));
     }
 
-    private static (IndexedValueCollection<T, T>, T?[]) Test<T>(Dictionary<T, T> map, T[] keys, T notContainedValue) where T : notnull
+    private static (IndexedValueCollection<T, T>, T?[]) Test<T>(Dictionary<T, T> map, T[] keys, T notContainedValue)
+        where T : notnull
     {
         var expected = new T?[keys.Length];
 

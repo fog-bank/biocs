@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using Biocs.Collections;
 
 namespace Biocs;
 
@@ -15,7 +16,7 @@ namespace Biocs;
 public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsable<Location>, IComparable
 {
     private readonly LinkedList<SequenceRange> ranges = new();
-    private IReadOnlyList<SequenceRange>? view;
+    private IReadOnlyCollection<SequenceRange>? view;
     private LocationOperator locOperator = LocationOperator.SpanOrJoin;
 
     /// <summary>
@@ -66,7 +67,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     {
         get
         {
-            //view ??= ranges.AsReadOnly();
+            view ??= CollectionTools.AsReadOnly(ranges);
             return view;
         }
     }

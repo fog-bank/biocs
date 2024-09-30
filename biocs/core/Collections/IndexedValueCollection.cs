@@ -169,7 +169,8 @@ public class IndexedValueCollection<TKey, TValue> : IList<TValue?>, IReadOnlyLis
             for (int i = 0; i < Count; i++)
                 array.SetValue(this[i], index + i);
         }
-        catch (Exception ex) when (ex is ArgumentException or ArrayTypeMismatchException or IndexOutOfRangeException or InvalidCastException)
+        catch (Exception ex)
+            when (ex is ArgumentException or ArrayTypeMismatchException or IndexOutOfRangeException or InvalidCastException)
         {
             throw new ArgumentException(null, nameof(array), ex);
         }

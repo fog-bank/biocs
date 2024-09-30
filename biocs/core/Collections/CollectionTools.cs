@@ -67,4 +67,17 @@ public static class CollectionTools
         }
         return !isFirst;
     }
+
+    /// <summary>
+    /// Returns a read-only <see cref="IReadOnlyCollection{T}"/> wrapper for the specified collection.
+    /// </summary>
+    /// <typeparam name="T">The type of items of <paramref name="collection"/>.</typeparam>
+    /// <param name="collection">The collection to wrap.</param>
+    /// <returns>A read-only <see cref="IReadOnlyCollection{T}"/> wrapper for the specified collection.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
+    public static IReadOnlyCollection<T> AsReadOnly<T>(ICollection<T> collection)
+    {
+        ArgumentNullException.ThrowIfNull(collection);
+        return new ReadOnlyCollection<T>(collection);
+    }
 }
