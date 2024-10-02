@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Security;
 using System.Text;
 using Biocs.Collections;
 
@@ -96,7 +97,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     private LinkedListNode<SequenceRange>? LastNode => ranges.Last;
 
     private string DebuggerDisplay =>
-        ranges.Count > 3 ? $"{nameof(Ranges)}.{nameof(Ranges.Count)} = {ranges.Count}" : ToString();
+        ranges.Count > 3 ? $"{nameof(Ranges)}.{nameof(Ranges.Count)} = {ranges.Count}, {nameof(Length)} = {Length}" : ToString();
 
     /// <inheritdoc/>
     public bool Equals([NotNullWhen(true)] Location? other)
@@ -136,7 +137,61 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     /// <param name="range">The continuoug range to compare to the current location.</param>
     public void UnionWith(SequenceRange range)
     {
-        throw new NotImplementedException();
+        if (range == default)
+            return;
+
+        if (IsEmpty)
+        {
+            ranges.AddFirst(range);
+            Length += range.Length;
+            return;
+        }
+
+        if (IsFarBehind(LastNode.Value, range))
+        {
+            // |← location →|  |← range →|
+            ranges.AddLast(range);
+            Length += range.Length;
+            return;
+        }
+
+        var currentNode = ranges.Count > 1 && IsFarBehind(LastNode.Previous!.Value, range) ? LastNode : FirstNode;
+        do
+        {
+            var current = currentNode.Value;
+
+            if (IsFarBehind(range, current))
+            {
+                // |← (prev) →|  |← range →|  |← current →|
+                ranges.AddBefore(currentNode, range);
+                Length += range.Length;
+                return;
+            }
+
+            if (IsFarBehind(current, range))
+            {
+                // |← current →|  |← range →|
+                currentNode = currentNode.Next;
+                continue;
+            }
+
+            // Enable to merge current and range
+            range = new(Math.Min(current.Start, range.Start), Math.Max(current.End, range.End));
+            var nextNode = currentNode.Next;
+
+            if (nextNode == null || IsFarBehind(range, nextNode.Value))
+            {
+                // |← merge →|  |← (next) →|
+                currentNode.Value = range;
+                Length += range.Length - current.Length;
+                return;
+            }
+            // Need to merge new range and next
+            ranges.Remove(currentNode);
+            Length -= current.Length;
+            currentNode = nextNode;
+        }
+        while (currentNode != null);
     }
 
     //public void UnionWith(Location other)
@@ -171,17 +226,19 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     /// <param name="range">The continuoug range to compare to the current location.</param>
     public void SymmetricExceptWith(SequenceRange range)
     {
-        if (IsEmpty || range.End < Start)
+        if (range == default)
+            return;
+
+        if (IsEmpty)
         {
-            // |← location →|  |← range →|
             ranges.AddFirst(range);
             Length += range.Length;
             return;
         }
-
-        if (End < range.Start)
+        
+        if (IsFarBehind(LastNode.Value, range))
         {
-            // |← range →|  |← location →|
+            // |← location →|  |← range →|
             ranges.AddLast(range);
             Length += range.Length;
             return;
@@ -205,7 +262,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
                 var nextNode = currentNode.Next;
                 var next = nextNode == null ? default : nextNode.Value;
 
-                if (nextNode == null || range.End + 1 < next.Start)
+                if (nextNode == null || IsFarBehind(range, next))
                 {
                     // |← current →|← range →|  |← next →|
                     currentNode.Value = new(current.Start, range.End);
@@ -214,9 +271,9 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
                 else if (range.End + 1 == next.Start)
                 {
                     // |← current →|← range →|← next →|
-                    nextNode.Value = new(current.Start, next.End);
+                    currentNode.Value = new(current.Start, next.End);
                     Length += range.Length;
-                    ranges.Remove(currentNode);
+                    ranges.Remove(nextNode);
                 }
                 else if (range.End < next.End)
                 {
@@ -229,9 +286,9 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
                 }
                 else
                 {
-                    // |← current →|←    range   →|
-                    // (1)             |← next →|
-                    // (2)             |← next   →|
+                    // (1) |← current →|←  range     →|
+                    // (2) |← current →|←  range  →|
+                    //                    |← next →|
                     currentNode.Value = new(current.Start, next.Start - 1);
                     ranges.Remove(nextNode);
                     //Length += (next.Start - 1 - range.Start + 1) - next.Length;
@@ -248,13 +305,6 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
 
             if (range.Overlaps(current))
             {
-                if (range.Equals(current))
-                {
-                    ranges.Remove(currentNode);
-                    Length -= range.Length;
-                    return;
-                }
-
                 if (range.Start < current.Start)
                 {
                     var before = new SequenceRange(range.Start, current.Start - 1);
@@ -270,11 +320,12 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
                     }
                     else
                     {
-                        // |←        range     →|
-                        // (1)   |← current →|
-                        // (2)   |← current    →|
+                        // (1) |←    range      →|
+                        // (2) |←    range   →|
+                        //        |← current →|
                         currentNode.Value = before;
-                        Length += before.Length - current.Length;
+                        //Length += before.Length - current.Length;
+                        Length += 2 * current.Start - range.Start - current.End - 1;
 
                         if (current.End < range.End)
                         {
@@ -284,13 +335,81 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
                     }
                     return;
                 }
-                else if (range.End < current.End)
+                else if (range.Start == current.Start)
                 {
+                    if (range.End < current.End)
+                    {
+                        // |← range →|
+                        // |← current  →|
+                        currentNode.Value = new(range.End + 1, current.End);
+                        Length -= range.Length;
+                        return;
+                    }
+                    else if (range.End == current.End)
+                    {
+                        // |←  range  →|
+                        // |← current →|
+                        ranges.Remove(currentNode);
+                        Length -= range.Length;
+                        return;
+                    }
+                    else
+                    {
+                        var nextNode = currentNode.Next;
+                        var next = nextNode == null ? default : nextNode.Value;
 
+                        if (nextNode == null || IsFarBehind(range, next))
+                        {
+                            // |←    range   →|
+                            // |← current →|     |← next →|
+                            currentNode.Value = new(current.End + 1, range.End);
+                            //Length += range.End - current.End - current.Length;
+                            Length += range.End + current.Start - 2 * current.End - 1;
+                            return;
+                        }
+                        else if (range.End + 1 == next.Start)
+                        {
+                            // |←    range   →|
+                            // |← current →|  |← next →|
+                            currentNode.Value = new(current.End + 1, next.End);
+                            ranges.Remove(nextNode);
+                            //Length += range.Length - 2 * current.Length;
+                            Length += range.End + current.Start - 2 * current.End - 1;
+                            return;
+                        }
+                        else
+                        {
+                            // |←    range      →|
+                            // |← current →|  |← next →|
+                            currentNode.Value = new(current.End + 1, next.Start - 1);
+                            //Length += next.Start - 1 - current.End - current.Length;
+                            Length += next.Start + current.Start - 2 * current.End - 2;
+                            range = new(next.Start, range.End);
+                            continue;
+                        }
+                    }
+                }
+                else if (range.End <= current.End)
+                {
+                    // (1)    |←  range →|
+                    // (2)    |←  range    →|
+                    //     |←    current   →|
+                    currentNode.Value = new(current.Start, range.Start - 1);
+
+                    if (range.End < current.End)
+                        ranges.AddAfter(currentNode, new SequenceRange(range.End + 1, current.End));
+
+                    Length -= range.Length;
+                    return;
                 }
                 else
                 {
-
+                    //      |← range →|
+                    // |← current →|
+                    currentNode.Value = new(current.Start, range.Start - 1);
+                    Length -= current.End - range.Start + 1;
+                    range = new(current.End + 1, range.End);
+                    continue;
                 }
             }
             else if (range.End < current.Start)
@@ -447,6 +566,8 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
             }
         }
     }
+
+    private static bool IsFarBehind(SequenceRange preceding, SequenceRange succeeding) => preceding.End + 1 < succeeding.Start;
 
     #region Comparison Operators
 
