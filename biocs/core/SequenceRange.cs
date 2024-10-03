@@ -58,6 +58,11 @@ public readonly struct SequenceRange :
     /// </summary>
     public int Length => End - Start + 1;
 
+    /// <summary>
+    /// Gets a value indicating whether this instance is the default value.
+    /// </summary>
+    public bool IsDefault => Start == 0;
+
     /// <inheritdoc/>
     public override bool Equals([NotNullWhen(true)] object? obj) => obj is SequenceRange other && Equals(other);
 

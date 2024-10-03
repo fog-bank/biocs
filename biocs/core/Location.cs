@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Security;
 using System.Text;
 using Biocs.Collections;
 
@@ -86,7 +85,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     /// <summary>
     /// Gets a value that indicates whether the current location represents single continuous range.
     /// </summary>
-    public bool IsSpan => Ranges.Count <= 1 && locOperator != LocationOperator.Site;
+    public bool IsSpan => ranges.Count <= 1 && locOperator != LocationOperator.Site;
 
     [MemberNotNullWhen(false, nameof(FirstNode))]
     [MemberNotNullWhen(false, nameof(LastNode))]
@@ -137,7 +136,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     /// <param name="range">The continuoug range to compare to the current location.</param>
     public void UnionWith(SequenceRange range)
     {
-        if (range == default)
+        if (range.IsDefault)
             return;
 
         if (IsEmpty)
@@ -156,7 +155,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
         }
 
         var currentNode = ranges.Count > 1 && IsFarBehind(LastNode.Previous!.Value, range) ? LastNode : FirstNode;
-        do
+        while (true)
         {
             var current = currentNode.Value;
 
@@ -171,7 +170,8 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
             if (IsFarBehind(current, range))
             {
                 // |← current →|  |← range →|
-                currentNode = currentNode.Next;
+                // When currentNode.Next is null (i.e. currentNode is LastNode), the condition is already covered.
+                currentNode = currentNode.Next!;
                 continue;
             }
 
@@ -191,7 +191,6 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
             Length -= current.Length;
             currentNode = nextNode;
         }
-        while (currentNode != null);
     }
 
     //public void UnionWith(Location other)

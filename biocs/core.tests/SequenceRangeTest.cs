@@ -15,13 +15,18 @@ public class SequenceRangeTest
         Assert.AreEqual(start, range.Start);
         Assert.AreEqual(end, range.End);
         Assert.AreEqual(end - start + 1, range.Length);
+        Assert.IsFalse(range.IsDefault);
         Assert.AreEqual($"{start}..{end}", range.ToString());
 
         range = new(start);
         Assert.AreEqual(start, range.Start);
         Assert.AreEqual(start, range.End);
         Assert.AreEqual(1, range.Length);
+        Assert.IsFalse(range.IsDefault);
         Assert.AreEqual($"{start}", range.ToString());
+
+        range = new();
+        Assert.IsTrue(range.IsDefault);
 
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => new SequenceRange(10, 1));
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => new SequenceRange(0));
