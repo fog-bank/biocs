@@ -146,7 +146,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
             return;
         }
 
-        if (IsFarBehind(LastNode.Value, range))
+        if (AheadOfDistantly(LastNode.Value, range))
         {
             // |← location →|  |← range →|
             ranges.AddLast(range);
@@ -154,12 +154,12 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
             return;
         }
 
-        var currentNode = ranges.Count > 1 && IsFarBehind(LastNode.Previous!.Value, range) ? LastNode : FirstNode;
+        var currentNode = ranges.Count > 1 && AheadOfDistantly(LastNode.Previous!.Value, range) ? LastNode : FirstNode;
         while (true)
         {
             var current = currentNode.Value;
 
-            if (IsFarBehind(range, current))
+            if (AheadOfDistantly(range, current))
             {
                 // |← (prev) →|  |← range →|  |← current →|
                 ranges.AddBefore(currentNode, range);
@@ -167,7 +167,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
                 return;
             }
 
-            if (IsFarBehind(current, range))
+            if (AheadOfDistantly(current, range))
             {
                 // |← current →|  |← range →|
                 // When currentNode.Next is null (i.e. currentNode is LastNode), the condition is already covered.
@@ -179,7 +179,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
             range = new(Math.Min(current.Start, range.Start), Math.Max(current.End, range.End));
             var nextNode = currentNode.Next;
 
-            if (nextNode == null || IsFarBehind(range, nextNode.Value))
+            if (nextNode == null || AheadOfDistantly(range, nextNode.Value))
             {
                 // |← merge →|  |← (next) →|
                 currentNode.Value = range;
@@ -234,18 +234,23 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
             Length += range.Length;
             return;
         }
-        
-        if (IsFarBehind(LastNode.Value, range))
-        {
-            // |← location →|  |← range →|
-            ranges.AddLast(range);
-            Length += range.Length;
-            return;
-        }
 
-        for (var currentNode = FirstNode; currentNode != null; currentNode = currentNode.Next)
+        var currentNode = ranges.Count > 1 && AheadOfDistantly(LastNode.Previous!.Value, range) ? LastNode : FirstNode;
+
+        for (; currentNode != null; currentNode = currentNode.Next)
         {
             var current = currentNode.Value;
+
+            if (AheadOfDistantly(range, current))
+            {
+                // |← (prev) →|  |← range →|  |← current →|
+                ranges.AddBefore(currentNode, range);
+                Length += range.Length;
+                return;
+            }
+
+            if (AheadOfDistantly(current, range))
+                continue;
 
             if (range.End + 1 == current.Start)
             {
@@ -261,11 +266,12 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
                 var nextNode = currentNode.Next;
                 var next = nextNode == null ? default : nextNode.Value;
 
-                if (nextNode == null || IsFarBehind(range, next))
+                if (nextNode == null || AheadOfDistantly(range, next))
                 {
                     // |← current →|← range →|  |← next →|
                     currentNode.Value = new(current.Start, range.End);
                     Length += range.Length;
+                    return;
                 }
                 else if (range.End + 1 == next.Start)
                 {
@@ -273,152 +279,131 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
                     currentNode.Value = new(current.Start, next.End);
                     Length += range.Length;
                     ranges.Remove(nextNode);
-                }
-                else if (range.End < next.End)
-                {
-                    // |← current →|← range →|
-                    //                    |← next →|
-                    currentNode.Value = new(current.Start, next.Start - 1);
-                    nextNode.Value = new(range.End + 1, next.End);
-                    //Length += (next.Start - 1 - range.Start + 1) - (range.End - next.Start + 1);
-                    Length += 2 * next.Start - range.Start - range.End - 1;
+                    return;
                 }
                 else
                 {
-                    // (1) |← current →|←  range     →|
-                    // (2) |← current →|←  range  →|
-                    //                    |← next →|
+                    // |← current →|← range  →|
+                    //                |← next ~
                     currentNode.Value = new(current.Start, next.Start - 1);
-                    ranges.Remove(nextNode);
-                    //Length += (next.Start - 1 - range.Start + 1) - next.Length;
-                    Length += 2 * next.Start - range.Start - next.End - 1;
-
-                    if (next.End < range.End)
-                    {
-                        range = new(next.End + 1, range.End);
-                        continue;
-                    }
+                    Length += next.Start - range.Start;
+                    range = new(next.Start, range.End);
+                    continue;
                 }
-                return;
             }
 
-            if (range.Overlaps(current))
+            if (range.Start < current.Start)
             {
-                if (range.Start < current.Start)
+                var before = new SequenceRange(range.Start, current.Start - 1);
+
+                if (range.End < current.End)
                 {
-                    var before = new SequenceRange(range.Start, current.Start - 1);
+                    // |←  range →|
+                    //    |← current →|
+                    ranges.AddBefore(currentNode, before);
+                    currentNode.Value = new(range.End + 1, current.End);
+                    //Length += before.Length - (range.End - current.Start + 1);
+                    Length += 2 * current.Start - range.Start - range.End - 1;
+                    return;
+                }
+                else
+                {
+                    // (1) |←    range      →|
+                    // (2) |←    range   →|
+                    //        |← current →|
+                    currentNode.Value = before;
+                    //Length += before.Length - current.Length;
+                    Length += 2 * current.Start - range.Start - current.End - 1;
 
-                    if (range.End < current.End)
+                    if (current.End < range.End)
                     {
-                        // |←  range →|
-                        //    |← current →|
-                        ranges.AddBefore(currentNode, before);
-                        currentNode.Value = new(range.End + 1, current.End);
-                        //Length += before.Length - (range.End - current.Start + 1);
-                        Length += 2 * current.Start - range.Start - range.End - 1;
-                    }
-                    else
-                    {
-                        // (1) |←    range      →|
-                        // (2) |←    range   →|
-                        //        |← current →|
-                        currentNode.Value = before;
-                        //Length += before.Length - current.Length;
-                        Length += 2 * current.Start - range.Start - current.End - 1;
-
-                        if (current.End < range.End)
-                        {
-                            range = new(current.End + 1, range.End);
-                            continue;
-                        }
+                        range = new(current.End + 1, range.End);
+                        continue;
                     }
                     return;
                 }
-                else if (range.Start == current.Start)
+            }
+            else if (range.Start == current.Start)
+            {
+                if (range.End < current.End)
                 {
-                    if (range.End < current.End)
-                    {
-                        // |← range →|
-                        // |← current  →|
-                        currentNode.Value = new(range.End + 1, current.End);
-                        Length -= range.Length;
-                        return;
-                    }
-                    else if (range.End == current.End)
-                    {
-                        // |←  range  →|
-                        // |← current →|
-                        ranges.Remove(currentNode);
-                        Length -= range.Length;
-                        return;
-                    }
-                    else
-                    {
-                        var nextNode = currentNode.Next;
-                        var next = nextNode == null ? default : nextNode.Value;
-
-                        if (nextNode == null || IsFarBehind(range, next))
-                        {
-                            // |←    range   →|
-                            // |← current →|     |← next →|
-                            currentNode.Value = new(current.End + 1, range.End);
-                            //Length += range.End - current.End - current.Length;
-                            Length += range.End + current.Start - 2 * current.End - 1;
-                            return;
-                        }
-                        else if (range.End + 1 == next.Start)
-                        {
-                            // |←    range   →|
-                            // |← current →|  |← next →|
-                            currentNode.Value = new(current.End + 1, next.End);
-                            ranges.Remove(nextNode);
-                            //Length += range.Length - 2 * current.Length;
-                            Length += range.End + current.Start - 2 * current.End - 1;
-                            return;
-                        }
-                        else
-                        {
-                            // |←    range      →|
-                            // |← current →|  |← next →|
-                            currentNode.Value = new(current.End + 1, next.Start - 1);
-                            //Length += next.Start - 1 - current.End - current.Length;
-                            Length += next.Start + current.Start - 2 * current.End - 2;
-                            range = new(next.Start, range.End);
-                            continue;
-                        }
-                    }
+                    // |← range →|
+                    // |← current  →|
+                    currentNode.Value = new(range.End + 1, current.End);
+                    Length -= range.Length;
+                    return;
                 }
-                else if (range.End <= current.End)
+                else if (range.End == current.End)
                 {
-                    // (1)    |←  range →|
-                    // (2)    |←  range    →|
-                    //     |←    current   →|
-                    currentNode.Value = new(current.Start, range.Start - 1);
-
-                    if (range.End < current.End)
-                        ranges.AddAfter(currentNode, new SequenceRange(range.End + 1, current.End));
-
+                    // |←  range  →|
+                    // |← current →|
+                    ranges.Remove(currentNode);
                     Length -= range.Length;
                     return;
                 }
                 else
                 {
-                    //      |← range →|
-                    // |← current →|
-                    currentNode.Value = new(current.Start, range.Start - 1);
-                    Length -= current.End - range.Start + 1;
-                    range = new(current.End + 1, range.End);
-                    continue;
+                    var nextNode = currentNode.Next;
+                    var next = nextNode == null ? default : nextNode.Value;
+
+                    if (nextNode == null || AheadOfDistantly(range, next))
+                    {
+                        // |←    range   →|
+                        // |← current →|     |← next →|
+                        currentNode.Value = new(current.End + 1, range.End);
+                        //Length += range.End - current.End - current.Length;
+                        Length += range.End + current.Start - 2 * current.End - 1;
+                        return;
+                    }
+                    else if (range.End + 1 == next.Start)
+                    {
+                        // |←    range   →|
+                        // |← current →|  |← next →|
+                        currentNode.Value = new(current.End + 1, next.End);
+                        ranges.Remove(nextNode);
+                        //Length += range.Length - 2 * current.Length;
+                        Length += range.End + current.Start - 2 * current.End - 1;
+                        return;
+                    }
+                    else
+                    {
+                        // |←    range      →|
+                        // |← current →|  |← next ~
+                        currentNode.Value = new(current.End + 1, next.Start - 1);
+                        //Length += next.Start - 1 - current.End - current.Length;
+                        Length += next.Start + current.Start - 2 * current.End - 2;
+                        range = new(next.Start, range.End);
+                        continue;
+                    }
                 }
             }
-            else if (range.End < current.Start)
+            else if (range.End <= current.End)
             {
-                // |← prev →|  |← range →|  |← current →|
-                ranges.AddBefore(currentNode, range);
-                Length += range.Length;
+                // (1)    |←  range →|
+                // (2)    |←  range    →|
+                //     |←    current   →|
+                currentNode.Value = new(current.Start, range.Start - 1);
+
+                if (range.End < current.End)
+                    ranges.AddAfter(currentNode, new SequenceRange(range.End + 1, current.End));
+
+                Length -= range.Length;
                 return;
             }
+            else
+            {
+                //      |← range →|
+                // |← current →|
+                currentNode.Value = new(current.Start, range.Start - 1);
+                Length -= current.End - range.Start + 1;
+                range = new(current.End + 1, range.End);
+                continue;
+            }
         }
+
+        // |← location →|  |← range →|
+        ranges.AddLast(range);
+        Length += range.Length;
     }
 
     /// <summary>
@@ -566,7 +551,8 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
         }
     }
 
-    private static bool IsFarBehind(SequenceRange preceding, SequenceRange succeeding) => preceding.End + 1 < succeeding.Start;
+    private static bool AheadOfDistantly(SequenceRange preceding, SequenceRange succeeding)
+        => preceding.End + 1 < succeeding.Start;
 
     #region Comparison Operators
 
