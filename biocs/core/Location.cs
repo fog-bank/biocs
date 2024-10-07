@@ -35,12 +35,12 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     }
 
     /// <summary>
-    /// Gets the total length of the region that the current location represents.
+    /// Gets the total length of regions that this location represents.
     /// </summary>
     public int Length { get; private set; }
 
     /// <summary>
-    /// Gets or sets a value that indicates whether the current location represents the complementary strand of the specified
+    /// Gets or sets a value that indicates whether this location represents the complementary strand of the specified
     /// sequence.
     /// </summary>
     public bool IsComplement { get; set; }
@@ -83,7 +83,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     public int End => IsEmpty ? 0 : LastNode.Value.End;
 
     /// <summary>
-    /// Gets a value that indicates whether the current location represents single continuous range.
+    /// Gets a value that indicates whether this location represents single continuous range.
     /// </summary>
     public bool IsSpan => ranges.Count <= 1 && locOperator != LocationOperator.Site;
 
@@ -95,8 +95,8 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
 
     private LinkedListNode<SequenceRange>? LastNode => ranges.Last;
 
-    private string DebuggerDisplay =>
-        ranges.Count > 3 ? $"{nameof(Ranges)}.{nameof(Ranges.Count)} = {ranges.Count}, {nameof(Length)} = {Length}" : ToString();
+    private string DebuggerDisplay
+        => ranges.Count > 3 ? $"{nameof(Ranges)}.Count = {ranges.Count}, {nameof(Length)} = {Length}" : ToString();
 
     /// <inheritdoc/>
     public bool Equals([NotNullWhen(true)] Location? other)
@@ -130,10 +130,31 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     public override int GetHashCode() => HashCode.Combine(Start, End, ranges.Count, IsComplement);
 
     /// <summary>
+    /// Determines whether this location is a subset of a specified range.
+    /// </summary>
+    /// <param name="range">The continuoug range to compare to this location.</param>
+    /// <returns>
+    /// <see langword="true"/> if this location is empty or a subset of <paramref name="range"/>;
+    /// otherwise, <see langword="false"/>.
+    /// </returns>
+    public bool IsSubsetOf(SequenceRange range) => IsEmpty || (range.Start <= Start && End <= range.End);
+
+    /// <summary>
+    /// Determines whether this location overlaps with the specified range.
+    /// </summary>
+    /// <param name="range">The range to compare to this location.</param>
+    /// <returns>
+    /// <see langword="true"/> if this location and <paramref name="range"/> share at least one common site;
+    /// otherwise, <see langword="false"/>.
+    /// </returns>
+    public bool Overlaps(SequenceRange range) => !IsEmpty && Start <= range.End && range.Start <= End;
+
+    /// <summary>
     /// Modifies the current location so that it contains all regions that are present in the current location, in the specified
     /// range, or in both.
     /// </summary>
     /// <param name="range">The continuoug range to compare to the current location.</param>
+    /// <remarks>When <paramref name="range"/> is the default value, this method does nothing.</remarks>
     public void UnionWith(SequenceRange range)
     {
         if (range.IsDefault)
@@ -198,10 +219,42 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     //    throw new NotImplementedException();
     //}
 
-    //public void IntersectWith(SequenceRange range)
-    //{
-    //    throw new NotImplementedException();
-    //}
+    /// <summary>
+    /// Modifies the current location so that it contains only regions that are also in a specified range.
+    /// </summary>
+    /// <param name="range">The continuoug range to compare to the current location.</param>
+    /// <remarks>When <paramref name="range"/> is the default value, this method removes all regions.</remarks>
+    public void IntersectWith(SequenceRange range)
+    {
+        if (IsSubsetOf(range))
+            return;
+
+        if (!Overlaps(range))
+        {
+            ranges.Clear();
+            Length = 0;
+            return;
+        }
+
+        for (var currentNode = FirstNode; currentNode != null; )
+        {
+            var current = currentNode.Value;
+            var nextNode = currentNode.Next;
+
+            if (current.Overlaps(range))
+            {
+                var intersect = new SequenceRange(Math.Max(current.Start, range.Start), Math.Min(current.End, range.End));
+                currentNode.Value = intersect;
+                Length += intersect.Length - current.Length;
+            }
+            else
+            {
+                ranges.Remove(currentNode);
+                Length -= current.Length;
+            }
+            currentNode = nextNode;
+        }
+    }
 
     //public void IntersectWith(Location other)
     //{
@@ -223,9 +276,10 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     /// specified range, but not both.
     /// </summary>
     /// <param name="range">The continuoug range to compare to the current location.</param>
+    /// <remarks>When <paramref name="range"/> is the default value, this method does nothing.</remarks>
     public void SymmetricExceptWith(SequenceRange range)
     {
-        if (range == default)
+        if (range.IsDefault)
             return;
 
         if (IsEmpty)
@@ -435,8 +489,8 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     public void Clear()
     {
         ranges.Clear();
-        locOperator = LocationOperator.SpanOrJoin;
         Length = 0;
+        locOperator = LocationOperator.SpanOrJoin;
         IsComplement = false;
         IsExactStart = true;
         IsExactEnd = true;
