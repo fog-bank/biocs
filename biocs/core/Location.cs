@@ -32,6 +32,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     public Location(SequenceRange range)
     {
         ranges.AddFirst(range);
+        Length = range.Length;
     }
 
     /// <summary>
@@ -95,6 +96,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
 
     private LinkedListNode<SequenceRange>? LastNode => ranges.Last;
 
+    [ExcludeFromCodeCoverage]
     private string DebuggerDisplay
         => ranges.Count > 3 ? $"{nameof(Ranges)}.Count = {ranges.Count}, {nameof(Length)} = {Length}" : ToString();
 
@@ -147,6 +149,8 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     /// <see langword="true"/> if this location and <paramref name="range"/> share at least one common site;
     /// otherwise, <see langword="false"/>.
     /// </returns>
+    [MemberNotNullWhen(true, nameof(FirstNode))]
+    [MemberNotNullWhen(true, nameof(LastNode))]
     public bool Overlaps(SequenceRange range) => !IsEmpty && Start <= range.End && range.Start <= End;
 
     /// <summary>
@@ -154,7 +158,6 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     /// range, or in both.
     /// </summary>
     /// <param name="range">The continuoug range to compare to the current location.</param>
-    /// <remarks>When <paramref name="range"/> is the default value, this method does nothing.</remarks>
     public void UnionWith(SequenceRange range)
     {
         if (range.IsDefault)
@@ -261,10 +264,69 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     //    throw new NotImplementedException();
     //}
 
-    //public void ExceptWith(SequenceRange range)
-    //{
-    //    throw new NotImplementedException();
-    //}
+    /// <summary>
+    /// Removes the specified region from the current location.
+    /// </summary>
+    /// <param name="range">The continuoug range to remove from the current location.</param>
+    public void ExceptWith(SequenceRange range)
+    {
+        if (!Overlaps(range))
+            return;
+
+        var currentNode = ranges.Count > 1 && LastNode.Previous!.Value.End < range.Start ? LastNode : FirstNode;
+        do
+        {
+            var current = currentNode.Value;
+
+            // |← range →| |← current →|
+            if (range.End < current.Start)
+                return;
+
+            // |← current →| |← range →|
+            if (current.End < range.Start)
+                continue;
+
+            // Here, current.Overlaps(range) == true
+            if (range.End < current.End)
+            {
+                if (current.Start < range.Start)
+                {
+                    //   |← range →|
+                    // |←  current  →|
+                    currentNode.Value = new(current.Start, range.Start - 1);
+                    ranges.AddAfter(currentNode, new SequenceRange(range.End + 1, current.End));
+                    Length -= range.Length;
+                }
+                else
+                {
+                    // |←  range  →|
+                    //   |← current →|
+                    currentNode.Value = new(range.End + 1, current.End);
+                    Length -= range.End - current.Start + 1;
+                }
+                return;
+            }
+
+            var nextNode = currentNode.Next;
+
+            if (current.Start < range.Start)
+            {
+                //   |←  range  →|
+                // |← current →|
+                currentNode.Value = new(current.Start, range.Start - 1);
+                Length -= current.End - range.Start + 1;
+            }
+            else
+            {
+                // |←    range    →|
+                //   |← current →|
+                ranges.Remove(currentNode);
+                Length -= current.Length;
+            }
+            currentNode = nextNode;
+        }
+        while (currentNode != null);
+    }
 
     //public void ExceptWith(Location other)
     //{
@@ -276,7 +338,6 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     /// specified range, but not both.
     /// </summary>
     /// <param name="range">The continuoug range to compare to the current location.</param>
-    /// <remarks>When <paramref name="range"/> is the default value, this method does nothing.</remarks>
     public void SymmetricExceptWith(SequenceRange range)
     {
         if (range.IsDefault)
@@ -480,6 +541,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
         foreach (var range in other.ranges)
         {
             // TODO:
+            SymmetricExceptWith(range);
         }
     }
 

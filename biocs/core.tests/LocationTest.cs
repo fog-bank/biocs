@@ -19,7 +19,7 @@ public class LocationTest
         loc.UnionWith(range2);
         AssertRanges(loc, [range1, range2]);
 
-        var range3 = new SequenceRange(220, 240);
+        var range3 = new SequenceRange(202, 240);
         loc.UnionWith(range3);
         AssertRanges(loc, [range1, range3, range2]);
 
@@ -29,14 +29,39 @@ public class LocationTest
         AssertRanges(loc, [range1, range3, merge1]);
 
         var range5 = new SequenceRange(230, 290);
-        var merge2 = new SequenceRange(220, 290);
+        var merge2 = new SequenceRange(202, 290);
         loc.UnionWith(range5);
         AssertRanges(loc, [range1, merge2, merge1]);
 
-        var range6 = new SequenceRange(1, 270);
+        var range7 = new SequenceRange(1, 270);
         var merge3 = new SequenceRange(1, 290);
-        loc.UnionWith(range6);
+        loc.UnionWith(range7);
         AssertRanges(loc, [merge3, merge1]);
+    }
+
+    [TestMethod]
+    public void IntersectWithRangeTest()
+    {
+        var range1 = new SequenceRange(1, 100);
+        var range2 = new SequenceRange(200, 300);
+        var range3 = new SequenceRange(400, 500);
+        var range4 = new SequenceRange(600, 700);
+        var range5 = new SequenceRange(800, 900);
+
+        var loc = new Location(range1);
+        loc.UnionWith(range2);
+        loc.UnionWith(range3);
+        loc.UnionWith(range4);
+        loc.UnionWith(range5);
+
+        loc.IntersectWith(new SequenceRange(1, 900));
+        AssertRanges(loc, [range1, range2, range3, range4, range5]);
+
+        loc.IntersectWith(new SequenceRange(300, 600));
+        AssertRanges(loc, [new(300), range3, new(600)]);
+
+        loc.IntersectWith(new SequenceRange(1000, 2000));
+        AssertRanges(loc, []);
     }
 
     [TestMethod]
