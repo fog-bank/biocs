@@ -1,4 +1,6 @@
-﻿namespace Biocs;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Biocs;
 
 [TestClass]
 public class LocationTest
@@ -62,6 +64,30 @@ public class LocationTest
 
         loc.IntersectWith(new SequenceRange(1000, 2000));
         AssertRanges(loc, []);
+    }
+
+    [TestMethod]
+    public void ExceptWithRangeTest()
+    {
+        var loc = new Location(new(1, 100));
+
+        loc.ExceptWith(new SequenceRange(50));
+        AssertRanges(loc, [new(1, 49), new(51, 100)]);
+
+        var range1 = new SequenceRange(49, 51);
+        var except1 = new SequenceRange(1, 48);
+        var except2 = new SequenceRange(52, 100);
+        loc.ExceptWith(range1);
+        AssertRanges(loc, [except1, except2]);
+
+        loc.ExceptWith(range1);
+        AssertRanges(loc, [except1, except2]);
+
+        loc.ExceptWith(new SequenceRange(49, 100));
+        AssertRanges(loc, [except1]);
+
+        loc.ExceptWith(new SequenceRange(200, 300));
+        AssertRanges(loc, [except1]);
     }
 
     [TestMethod]
