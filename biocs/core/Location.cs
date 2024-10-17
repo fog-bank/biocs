@@ -96,7 +96,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
 
     private LinkedListNode<SequenceRange>? LastNode => ranges.Last;
 
-    [ExcludeFromCodeCoverage]
+    [DebuggerBrowsable(DebuggerBrowsableState.Never), ExcludeFromCodeCoverage]
     private string DebuggerDisplay
         => ranges.Count > 3 ? $"{nameof(Ranges)}.Count = {ranges.Count}, {nameof(Length)} = {Length}" : ToString();
 

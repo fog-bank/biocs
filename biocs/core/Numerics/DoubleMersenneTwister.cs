@@ -69,7 +69,7 @@ public class DoubleMersenneTwister
     {
         ArgumentNullException.ThrowIfNull(seeds);
 
-        const int size = (N + 1) * 4;
+        const int Size = (N + 1) * 4;
         //int lag = 0;
 
         //if (size >= 623)
@@ -83,54 +83,54 @@ public class DoubleMersenneTwister
 
         //int mid = (size - lag) / 2;
 
-        const int lag = 11;
-        const int mid = ((N + 1) * 4 - lag) / 2;
+        const int Lag = 11;
+        const int Mid = ((N + 1) * 4 - Lag) / 2;
 
         for (int i = 0; i < status.Length; i++)
         {
             status[i].ul0 = 0x8b8b8b8b8b8b8b8bu;
             status[i].ul1 = 0x8b8b8b8b8b8b8b8bu;
         }
-        int count = Math.Max(seeds.Length + 1, size);
-        uint r = InitValue1(RefToUInt32(0) ^ RefToUInt32(mid % size) ^ RefToUInt32((size - 1) % size));
+        int count = Math.Max(seeds.Length + 1, Size);
+        uint r = InitValue1(RefToUInt32(0) ^ RefToUInt32(Mid % Size) ^ RefToUInt32((Size - 1) % Size));
 
         unchecked
         {
-            RefToUInt32(mid % size) += r;
+            RefToUInt32(Mid % Size) += r;
             r += (uint)seeds.Length;
-            RefToUInt32((mid + lag) % size) += r;
+            RefToUInt32((Mid + Lag) % Size) += r;
             RefToUInt32(0) = r;
             count--;
 
             int i = 1, j = 0;
             for (; j < count && j < seeds.Length; j++)
             {
-                r = InitValue1(RefToUInt32(i) ^ RefToUInt32((i + mid) % size) ^ RefToUInt32((i + size - 1) % size));
-                RefToUInt32((i + mid) % size) += r;
+                r = InitValue1(RefToUInt32(i) ^ RefToUInt32((i + Mid) % Size) ^ RefToUInt32((i + Size - 1) % Size));
+                RefToUInt32((i + Mid) % Size) += r;
                 r += (uint)seeds[j] + (uint)i;
-                RefToUInt32((i + mid + lag) % size) += r;
+                RefToUInt32((i + Mid + Lag) % Size) += r;
                 RefToUInt32(i) = r;
-                i = (i + 1) % size;
+                i = (i + 1) % Size;
             }
 
             for (; j < count; j++)
             {
-                r = InitValue1(RefToUInt32(i) ^ RefToUInt32((i + mid) % size) ^ RefToUInt32((i + size - 1) % size));
-                RefToUInt32((i + mid) % size) += r;
+                r = InitValue1(RefToUInt32(i) ^ RefToUInt32((i + Mid) % Size) ^ RefToUInt32((i + Size - 1) % Size));
+                RefToUInt32((i + Mid) % Size) += r;
                 r += (uint)i;
-                RefToUInt32((i + mid + lag) % size) += r;
+                RefToUInt32((i + Mid + Lag) % Size) += r;
                 RefToUInt32(i) = r;
-                i = (i + 1) % size;
+                i = (i + 1) % Size;
             }
 
-            for (j = 0; j < size; j++)
+            for (j = 0; j < Size; j++)
             {
-                r = InitValue2(RefToUInt32(i) + RefToUInt32((i + mid) % size) + RefToUInt32((i + size - 1) % size));
-                RefToUInt32((i + mid) % size) ^= r;
+                r = InitValue2(RefToUInt32(i) + RefToUInt32((i + Mid) % Size) + RefToUInt32((i + Size - 1) % Size));
+                RefToUInt32((i + Mid) % Size) ^= r;
                 r -= (uint)i;
-                RefToUInt32((i + mid + lag) % size) ^= r;
+                RefToUInt32((i + Mid + Lag) % Size) ^= r;
                 RefToUInt32(i) = r;
-                i = (i + 1) % size;
+                i = (i + 1) % Size;
             }
         }
         InitialMask();

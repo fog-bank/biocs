@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Biocs.Collections;
 
@@ -496,7 +497,9 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, IList
     {
         ThrowIfEmpty();
 
-        items[head] = default!;
+        if (RuntimeHelpers.IsReferenceOrContainsReferences<T>())
+            items[head] = default!;
+
         Count--;
         Increment(ref head);
         version++;
@@ -510,7 +513,9 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, IList
     {
         ThrowIfEmpty();
 
-        items[tail] = default!;
+        if (RuntimeHelpers.IsReferenceOrContainsReferences<T>())
+            items[tail] = default!;
+
         Count--;
         Decrement(ref tail);
         version++;
@@ -612,12 +617,15 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, IList
             Decrement(ref tail, count);
         }
 
-        if (start <= end)
-            items.AsSpan(start..(end + 1)).Clear();
-        else
+        if (RuntimeHelpers.IsReferenceOrContainsReferences<T>())
         {
-            items.AsSpan(start).Clear();
-            items.AsSpan(0, end + 1).Clear();
+            if (start <= end)
+                items.AsSpan(start..(end + 1)).Clear();
+            else
+            {
+                items.AsSpan(start).Clear();
+                items.AsSpan(0, end + 1).Clear();
+            }
         }
         Count -= count;
         version++;
@@ -630,12 +638,15 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, IList
     {
         if (Count > 0)
         {
-            if (head <= tail)
-                items.AsSpan(head, Count).Clear();
-            else
+            if (RuntimeHelpers.IsReferenceOrContainsReferences<T>())
             {
-                items.AsSpan(head).Clear();
-                items.AsSpan(0, tail + 1).Clear();
+                if (head <= tail)
+                    items.AsSpan(head, Count).Clear();
+                else
+                {
+                    items.AsSpan(head).Clear();
+                    items.AsSpan(0, tail + 1).Clear();
+                }
             }
             Count = 0;
         }

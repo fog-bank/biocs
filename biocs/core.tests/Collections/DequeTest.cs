@@ -609,6 +609,15 @@ public class DequeTest
 
         target.Clear();
         Assert.ThrowsException<InvalidOperationException>(target.RemoveLast);
+
+        var target2 = new Deque<string>();
+        target2.AddLast("1");
+        target2.AddLast("2");
+        target2.AddLast("3");
+        Assert.AreEqual(3, target2.Count);
+
+        target2.RemoveLast();
+        Assert.AreEqual(2, target2.Count);
     }
 
     [TestMethod]
@@ -689,6 +698,19 @@ public class DequeTest
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.RemoveRange(-1, 0));
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.RemoveRange(0, -1));
         Assert.ThrowsException<ArgumentException>(() => new Deque<int>(Enumerable.Range(0, 10)).RemoveRange(8, 10));
+
+        var target2 = new Deque<string>(6);
+        target2.AddLast("3");
+        target2.AddLast("4");
+        target2.AddFirst("2");
+        target2.AddFirst("1");
+        CollectionAssert.AreEqual(new[] { "1", "2", "3", "4" }, target2);
+
+        target2.RemoveRange(0, 3);
+        CollectionAssert.AreEqual(new[] { "4" }, target2);
+
+        target2.RemoveRange(0, 1);
+        Assert.AreEqual(0, target2.Count);
     }
 
     [TestMethod]
@@ -716,6 +738,18 @@ public class DequeTest
         target.Clear();
         Assert.AreEqual(0, target.Count);
         Assert.ThrowsException<InvalidOperationException>(() => target.First);
+
+        var target2 = new Deque<string>(4);
+        target2.AddLast("2");
+        target2.AddFirst("1");
+        CollectionAssert.AreEqual(new[] { "1", "2" }, target2);
+        target2.Clear();
+        Assert.AreEqual(0, target2.Count);
+
+        target2.AddLast("3");
+        CollectionAssert.AreEqual(new[] { "3" }, target2);
+        target2.Clear();
+        Assert.AreEqual(0, target2.Count);
     }
 
     [TestMethod]
@@ -791,7 +825,7 @@ public class DequeTest
         Assert.IsNotNull(list.SyncRoot);
     }
 
-    private static void Insert(Deque<int> target, List<int> compare, int index, int value)
+    private static void Insert<T>(Deque<T> target, List<T> compare, int index, T value)
     {
         target.Insert(index, value);
         compare.Insert(index, value);
@@ -803,7 +837,7 @@ public class DequeTest
         Assert.AreEqual(compare.Last(), target.Last);
     }
 
-    private static void InsertRange(Deque<int> target, List<int> compare, int index, IEnumerable<int> coll)
+    private static void InsertRange<T>(Deque<T> target, List<T> compare, int index, IEnumerable<T> coll)
     {
         target.InsertRange(index, coll);
         compare.InsertRange(index, coll);
@@ -814,7 +848,7 @@ public class DequeTest
         Assert.AreEqual(compare.Last(), target.Last);
     }
 
-    private static void RemoveAt(Deque<int> target, List<int> compare, int index)
+    private static void RemoveAt<T>(Deque<T> target, List<T> compare, int index)
     {
         target.RemoveAt(index);
         compare.RemoveAt(index);
@@ -828,7 +862,7 @@ public class DequeTest
         }
     }
 
-    private static void RemoveRange(Deque<int> target, List<int> compare, int index, int count)
+    private static void RemoveRange<T>(Deque<T> target, List<T> compare, int index, int count)
     {
         target.RemoveRange(index, count);
         compare.RemoveRange(index, count);
