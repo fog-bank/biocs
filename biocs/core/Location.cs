@@ -106,8 +106,10 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
         if (ReferenceEquals(this, other))
             return true;
 
-        if (other is null || End != other.End || SequenceName != other.SequenceName || IsComplement != other.IsComplement
-            || IsExactStart != other.IsExactStart || IsExactEnd != other.IsExactEnd || locOperator != other.locOperator)
+        if (other is null)
+            return false;
+
+        if (Length != other.Length || End != other.End)
             return false;
 
         return ranges.SequenceEqual(other.ranges);
@@ -163,64 +165,45 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
         if (range.IsDefault)
             return;
 
-        if (IsEmpty)
+        if (IsEmpty || AheadOfDistantly(LastNode.Value, range))
         {
-            ranges.AddFirst(range);
-            Length += range.Length;
-            return;
-        }
-
-        if (AheadOfDistantly(LastNode.Value, range))
-        {
-            // |← location →|  |← range →|
+            // |← (location) →|  |← range →|
             ranges.AddLast(range);
             Length += range.Length;
             return;
         }
-
-        var currentNode = ranges.Count > 1 && AheadOfDistantly(LastNode.Previous!.Value, range) ? LastNode : FirstNode;
-        while (true)
-        {
-            var current = currentNode.Value;
-
-            if (AheadOfDistantly(range, current))
-            {
-                // |← (prev) →|  |← range →|  |← current →|
-                ranges.AddBefore(currentNode, range);
-                Length += range.Length;
-                return;
-            }
-
-            if (AheadOfDistantly(current, range))
-            {
-                // |← current →|  |← range →|
-                // When currentNode.Next is null (i.e. currentNode is LastNode), the condition is already covered.
-                currentNode = currentNode.Next!;
-                continue;
-            }
-
-            // Enable to merge current and range
-            range = new(Math.Min(current.Start, range.Start), Math.Max(current.End, range.End));
-            var nextNode = currentNode.Next;
-
-            if (nextNode == null || AheadOfDistantly(range, nextNode.Value))
-            {
-                // |← merge →|  |← (next) →|
-                currentNode.Value = range;
-                Length += range.Length - current.Length;
-                return;
-            }
-            // Need to merge new range and next
-            ranges.Remove(currentNode);
-            Length -= current.Length;
-            currentNode = nextNode;
-        }
+        UnionWithCore(ranges.Count > 1 && AheadOfDistantly(LastNode.Previous!.Value, range) ? LastNode : FirstNode, range);
     }
 
-    //public void UnionWith(Location other)
-    //{
-    //    throw new NotImplementedException();
-    //}
+    /// <summary>
+    /// Modifies the current location so that it contains all regions that are present in the current location, in the specified
+    /// location, or in both.
+    /// </summary>
+    /// <param name="other">The location to compare to the current location.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
+    public void UnionWith(Location other)
+    {
+        ArgumentNullException.ThrowIfNull(other);
+
+        if (ReferenceEquals(this, other) || other.IsEmpty)
+            return;
+
+        if (IsEmpty || AheadOfDistantly(LastNode.Value, other.FirstNode.Value))
+        {
+            // |← (location) →|  |← other →|
+            foreach (var range in other.ranges)
+            {
+                ranges.AddLast(range);
+                Length += range.Length;
+            }
+        }
+
+        var currentNode =
+            ranges.Count > 1 && AheadOfDistantly(LastNode!.Previous!.Value, other.FirstNode.Value) ? LastNode : FirstNode;
+
+        foreach (var range in other.ranges)
+            currentNode = UnionWithCore(currentNode, range);
+    }
 
     /// <summary>
     /// Modifies the current location so that it contains only regions that are also in a specified range.
@@ -289,19 +272,21 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
             // Here, current.Overlaps(range) == true
             if (range.End < current.End)
             {
+                var after = new SequenceRange(range.End + 1, current.End);
+
                 if (current.Start < range.Start)
                 {
                     //   |← range →|
                     // |←  current  →|
                     currentNode.Value = new(current.Start, range.Start - 1);
-                    ranges.AddAfter(currentNode, new SequenceRange(range.End + 1, current.End));
+                    ranges.AddAfter(currentNode, after);
                     Length -= range.Length;
                 }
                 else
                 {
                     // |←  range  →|
                     //   |← current →|
-                    currentNode.Value = new(range.End + 1, current.End);
+                    currentNode.Value = after;
                     Length -= range.End - current.Start + 1;
                 }
                 return;
@@ -602,6 +587,46 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     public static bool TryParse(ReadOnlySpan<char> span, [MaybeNullWhen(false)] out Location result)
     {
         throw new NotImplementedException();
+    }
+
+    private LinkedListNode<SequenceRange>? UnionWithCore(LinkedListNode<SequenceRange>? currentNode, SequenceRange range)
+    {
+        while (currentNode != null)
+        {
+            var current = currentNode.Value;
+            if (AheadOfDistantly(range, current))
+            {
+                // |← (prev) →|  |← range →|  |← current →|
+                ranges.AddBefore(currentNode, range);
+                Length += range.Length;
+                return currentNode;
+            }
+            var nextNode = currentNode.Next;
+
+            if (AheadOfDistantly(current, range))
+            {
+                // |← current →|  |← range →|
+                currentNode = nextNode;
+                continue;
+            }
+            // range can be merged with current
+            range = new(Math.Min(current.Start, range.Start), Math.Max(current.End, range.End));
+
+            if (nextNode == null || AheadOfDistantly(range, nextNode.Value))
+            {
+                // |← merge →|  |← (next) →|
+                currentNode.Value = range;
+                Length += range.Length - current.Length;
+                return range.End < current.End ? currentNode : nextNode;
+            }
+            // Need to merge new range and next
+            ranges.Remove(currentNode);
+            Length -= current.Length;
+            currentNode = nextNode;
+        }
+        ranges.AddLast(range);
+        Length += range.Length;
+        return null;
     }
 
     private void ElementsToString(StringBuilder builder)
