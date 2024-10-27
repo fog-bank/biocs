@@ -13,7 +13,7 @@ namespace Biocs;
 /// [The DDBJ/ENA/GenBank Feature Table Definition](https://www.insdc.org/submitting-standards/feature-table/).</para>
 /// </remarks>
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
-public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsable<Location>, IComparable
+public class Location : IEquatable<Location>, ISpanParsable<Location>
 {
     private readonly LinkedList<SequenceRange> ranges = new();
     private IReadOnlyCollection<SequenceRange>? view;
@@ -119,18 +119,6 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     public override bool Equals([NotNullWhen(true)] object? obj) => Equals(obj as Location);
 
     /// <inheritdoc/>
-    public int CompareTo(Location? other)
-    {
-        if (ReferenceEquals(this, other))
-            return 0;
-
-        if (other is null)
-            return 1;
-
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Start, End, ranges.Count, IsComplement);
 
     /// <summary>
@@ -188,7 +176,9 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
         if (ReferenceEquals(this, other) || other.IsEmpty)
             return;
 
-        if (IsEmpty || AheadOfDistantly(LastNode.Value, other.FirstNode.Value))
+        var otherFirst = other.FirstNode.Value;
+
+        if (IsEmpty || AheadOfDistantly(LastNode.Value, otherFirst))
         {
             // |← (location) →|  |← other →|
             foreach (var range in other.ranges)
@@ -196,10 +186,11 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
                 ranges.AddLast(range);
                 Length += range.Length;
             }
+            return;
         }
 
         var currentNode =
-            ranges.Count > 1 && AheadOfDistantly(LastNode!.Previous!.Value, other.FirstNode.Value) ? LastNode : FirstNode;
+            ranges.Count > 1 && AheadOfDistantly(LastNode.Previous!.Value, otherFirst) ? LastNode : FirstNode;
 
         foreach (var range in other.ranges)
             currentNode = UnionWithCore(currentNode, range);
@@ -695,98 +686,7 @@ public class Location : IEquatable<Location>, IComparable<Location>, ISpanParsab
     private static bool AheadOfDistantly(SequenceRange preceding, SequenceRange succeeding)
         => preceding.End + 1 < succeeding.Start;
 
-    #region Comparison Operators
-
-    /// <summary>
-    /// Determines whether two specified instances of <see cref="Location"/> equal.
-    /// </summary>
-    /// <param name="left">The first object to compare.</param>
-    /// <param name="right">The second object to compare.</param>
-    /// <returns>
-    /// <see langword="true"/> if <paramref name="left"/> and <paramref name="right"/> represent the identical region;
-    /// otherwise, <see langword="false"/>.
-    /// </returns>
-    public static bool operator ==(Location? left, Location? right)
-    {
-        return left is null ? right is null : left.Equals(right);
-    }
-
-    /// <summary>
-    /// Determines whether two specified <see cref="Location"/> objects are not equal.
-    /// </summary>
-    /// <param name="left">The first object to compare.</param>
-    /// <param name="right">The second object to compare.</param>
-    /// <returns>
-    /// <see langword="true"/> if <paramref name="left"/> and <paramref name="right"/> do not represent the identical region;
-    /// otherwise, <see langword="false"/>.
-    /// </returns>
-    public static bool operator !=(Location? left, Location? right) => !(left == right);
-
-    /// <summary>
-    /// Determines whether the first specified <see cref="Location"/> object is less than the second specified
-    /// <see cref="Location"/> object.
-    /// </summary>
-    /// <param name="left">The first <see cref="Location"/> object.</param>
-    /// <param name="right">The second <see cref="Location"/> object.</param>
-    /// <returns>
-    /// <see langword="true"/> if <paramref name="left"/> is less than <paramref name="right"/>;
-    /// otherwise, <see langword="false"/>.
-    /// </returns>
-    public static bool operator <(Location? left, Location? right)
-    {
-        return left is null ? right is not null : left.CompareTo(right) < 0;
-    }
-
-    /// <summary>
-    /// Determines whether the first specified <see cref="Location"/> object is less than or equal to the second specified
-    /// <see cref="Location"/> object.
-    /// </summary>
-    /// <param name="left">The first <see cref="Location"/> object.</param>
-    /// <param name="right">The second <see cref="Location"/> object.</param>
-    /// <returns>
-    /// <see langword="true"/> if <paramref name="left"/> is less than or equal to <paramref name="right"/>;
-    /// otherwise, <see langword="false"/>.
-    /// </returns>
-    public static bool operator <=(Location? left, Location? right)
-    {
-        return left is null || left.CompareTo(right) <= 0;
-    }
-
-    /// <summary>
-    /// Determines whether the first specified <see cref="Location"/> object is greater than the second specified
-    /// <see cref="Location"/> object.
-    /// </summary>
-    /// <param name="left">The first <see cref="Location"/> object.</param>
-    /// <param name="right">The second <see cref="Location"/> object.</param>
-    /// <returns>
-    /// <see langword="true"/> if <paramref name="left"/> is greater than <paramref name="right"/>;
-    /// otherwise, <see langword="false"/>.
-    /// </returns>
-    public static bool operator >(Location? left, Location? right) => right < left;
-
-    /// <summary>
-    /// Determines whether the first specified <see cref="Location"/> object is greater than or equal to the second specified
-    /// <see cref="Location"/> object.
-    /// </summary>
-    /// <param name="left">The first <see cref="Location"/> object.</param>
-    /// <param name="right">The second <see cref="Location"/> object.</param>
-    /// <returns>
-    /// <see langword="true"/> if <paramref name="left"/> is greater than or equal to <paramref name="right"/>;
-    /// otherwise, <see langword="false"/>.
-    /// </returns>
-    public static bool operator >=(Location? left, Location? right) => right <= left;
-
-    #endregion
-
     #region Explicit Interface Implementations
-
-    [StringResourceUsage("Arg.CompareToNotSameTypedObject")]
-    int IComparable.CompareTo(object? obj) => obj switch
-    {
-        null => 1,
-        Location other => CompareTo(other),
-        _ => throw new ArgumentException(Res.GetString("Arg.CompareToNotSameTypedObject"), nameof(obj))
-    };
 
     static Location IParsable<Location>.Parse(string s, IFormatProvider? provider) => Parse(s);
 
