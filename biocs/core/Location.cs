@@ -150,17 +150,8 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
     /// <param name="range">The continuoug range to compare to the current location.</param>
     public void UnionWith(SequenceRange range)
     {
-        if (range.IsDefault)
-            return;
-
-        if (IsEmpty || AheadOfDistantly(LastNode.Value, range))
-        {
-            // |← (location) →|  |← range →|
-            ranges.AddLast(range);
-            Length += range.Length;
-            return;
-        }
-        UnionWithCore(ranges.Count > 1 && AheadOfDistantly(LastNode.Previous!.Value, range) ? LastNode : FirstNode, range);
+        if (!range.IsDefault)
+            UnionWithCore(FirstOrSkipNodes(range), range);
     }
 
     /// <summary>
@@ -176,21 +167,7 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
         if (ReferenceEquals(this, other) || other.IsEmpty)
             return;
 
-        var otherFirst = other.FirstNode.Value;
-
-        if (IsEmpty || AheadOfDistantly(LastNode.Value, otherFirst))
-        {
-            // |← (location) →|  |← other →|
-            foreach (var range in other.ranges)
-            {
-                ranges.AddLast(range);
-                Length += range.Length;
-            }
-            return;
-        }
-
-        var currentNode =
-            ranges.Count > 1 && AheadOfDistantly(LastNode.Previous!.Value, otherFirst) ? LastNode : FirstNode;
+        var currentNode = FirstOrSkipNodes(other.FirstNode.Value);
 
         foreach (var range in other.ranges)
             currentNode = UnionWithCore(currentNode, range);
@@ -319,16 +296,7 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
         if (range.IsDefault)
             return;
 
-        if (IsEmpty)
-        {
-            ranges.AddFirst(range);
-            Length += range.Length;
-            return;
-        }
-
-        var currentNode = ranges.Count > 1 && AheadOfDistantly(LastNode.Previous!.Value, range) ? LastNode : FirstNode;
-
-        for (; currentNode != null; currentNode = currentNode.Next)
+        for (var currentNode = FirstOrSkipNodes(range); currentNode != null; currentNode = currentNode.Next)
         {
             var current = currentNode.Value;
 
@@ -608,7 +576,7 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
                 // |← merge →|  |← (next) →|
                 currentNode.Value = range;
                 Length += range.Length - current.Length;
-                return range.End < current.End ? currentNode : nextNode;
+                return current.End == range.End ? currentNode : nextNode;
             }
             // Need to merge new range and next
             ranges.Remove(currentNode);
@@ -685,6 +653,14 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
 
     private static bool AheadOfDistantly(SequenceRange preceding, SequenceRange succeeding)
         => preceding.End + 1 < succeeding.Start;
+
+    private LinkedListNode<SequenceRange>? FirstOrSkipNodes(SequenceRange range)
+    {
+        if (IsEmpty || AheadOfDistantly(LastNode.Value, range))
+            return null;
+
+        return ranges.Count > 1 && AheadOfDistantly(LastNode.Previous!.Value, range) ? LastNode : FirstNode;
+    }
 
     #region Explicit Interface Implementations
 

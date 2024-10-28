@@ -1,44 +1,63 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Biocs;
+﻿namespace Biocs;
 
 [TestClass]
 public class LocationTest
 {
     [TestMethod]
-    public void UnionWithRangeTest()
+    public void UnionWithTest()
     {
-        var loc = new Location();
+        var loc1 = new Location();
+        var loc2 = new Location();
 
-        loc.UnionWith(new SequenceRange());
-        AssertRanges(loc, []);
+        loc1.UnionWith(default(SequenceRange));
+        AssertRanges(loc1, []);
 
-        var range1 = new SequenceRange(100, 200);
-        loc.UnionWith(range1);
-        AssertRanges(loc, [range1]);
+        var range1 = new SequenceRange(10, 20);
+        var range2 = new SequenceRange(40, 50);
+        loc1.UnionWith(range1);
+        loc1.UnionWith(range2);
+        loc1.UnionWith(loc2);
+        AssertRanges(loc1, [range1, range2]);
 
-        var range2 = new SequenceRange(300, 400);
-        loc.UnionWith(range2);
-        AssertRanges(loc, [range1, range2]);
+        loc1.UnionWith(loc1);
+        AssertRanges(loc1, [range1, range2]);
 
-        var range3 = new SequenceRange(202, 240);
-        loc.UnionWith(range3);
-        AssertRanges(loc, [range1, range3, range2]);
+        var range3 = new SequenceRange(90, 100);
+        loc2.UnionWith(range3);
+        AssertRanges(loc2, [range3]); // 90..100
+        loc1.UnionWith(loc2);
+        AssertRanges(loc1, [range1, range2, range3]); // 10..20, 40..50, 90..100
 
-        var range4 = new SequenceRange(401, 500);
-        var merge1 = new SequenceRange(300, 500);
-        loc.UnionWith(range4);
-        AssertRanges(loc, [range1, range3, merge1]);
+        var range4 = new SequenceRange(60, 70);
+        loc2.UnionWith(range4);
+        AssertRanges(loc2, [range4, range3]); // 60..70, 90..100
+        loc1.UnionWith(loc2);
+        AssertRanges(loc1, [range1, range2, range4, range3]); // 10..20, 40..50, 60..70, 90..100
 
-        var range5 = new SequenceRange(230, 290);
-        var merge2 = new SequenceRange(202, 290);
-        loc.UnionWith(range5);
-        AssertRanges(loc, [range1, merge2, merge1]);
+        var range5 = new SequenceRange(101, 110);
+        var range6 = new SequenceRange(21, 39);
+        var range7 = new SequenceRange(130, 150);
+        var range8 = new SequenceRange(1, 9);
+        var merge1 = new SequenceRange(1, 50);
+        var merge2 = new SequenceRange(90, 110);
+        loc2.Clear();
+        loc2.UnionWith(range5);
+        loc2.UnionWith(range6);
+        loc2.UnionWith(range7);
+        loc2.UnionWith(range8);
+        AssertRanges(loc2, [range8, range6, range5, range7]); // 1..9, 21..39, 101..110, 130..150
+        loc1.UnionWith(loc2);
+        AssertRanges(loc1, [merge1, range4, merge2, range7]); // 1..50, 60..70, 90..110, 130..150
 
-        var range7 = new SequenceRange(1, 270);
-        var merge3 = new SequenceRange(1, 290);
-        loc.UnionWith(range7);
-        AssertRanges(loc, [merge3, merge1]);
+        loc1.UnionWith(loc1);
+        AssertRanges(loc1, [merge1, range4, merge2, range7]);
+
+        var range9 = new SequenceRange(30, 140);
+        var merge3 = new SequenceRange(1, 150);
+        loc1.UnionWith(range9);
+        AssertRanges(loc1, [merge3]);
+
+        Assert.ThrowsException<ArgumentNullException>(() => loc1.UnionWith(default(Location)!));
     }
 
     [TestMethod]
@@ -184,7 +203,7 @@ public class LocationTest
 
     private static void AssertRanges(Location loc, IReadOnlyCollection<SequenceRange> ranges)
     {
-        Assert.AreEqual(ranges.Sum(range => range.Length), loc.Length);
+        Assert.AreEqual(ranges.Sum(range => range.IsDefault ? 0 : range.Length), loc.Length);
         Assert.IsTrue(ranges.SequenceEqual(loc.Ranges));
     }
 }
