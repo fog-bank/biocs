@@ -31,8 +31,11 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
     /// <param name="range">The <see cref="SequenceRange"/> object that represents a continuous range.</param>
     public Location(SequenceRange range)
     {
-        ranges.AddFirst(range);
-        Length = range.Length;
+        if (!range.IsDefault)
+        {
+            ranges.AddFirst(range);
+            Length = range.Length;
+        }
     }
 
     /// <summary>
@@ -98,7 +101,7 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never), ExcludeFromCodeCoverage]
     private string DebuggerDisplay
-        => ranges.Count > 3 ? $"{nameof(Ranges)}.Count = {ranges.Count}, {nameof(Length)} = {Length}" : ToString();
+        => IsEmpty || ranges.Count > 3 ? $"{nameof(Length)} = {Length}, {nameof(Ranges)}.Count = {ranges.Count}" : ToString();
 
     /// <inheritdoc/>
     public bool Equals([NotNullWhen(true)] Location? other)
@@ -180,40 +183,27 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
     /// <remarks>When <paramref name="range"/> is the default value, this method removes all regions.</remarks>
     public void IntersectWith(SequenceRange range)
     {
-        if (IsSubsetOf(range))
-            return;
-
-        if (!Overlaps(range))
-        {
-            ranges.Clear();
-            Length = 0;
-            return;
-        }
-
-        for (var currentNode = FirstNode; currentNode != null; )
-        {
-            var current = currentNode.Value;
-            var nextNode = currentNode.Next;
-
-            if (current.Overlaps(range))
-            {
-                var intersect = new SequenceRange(Math.Max(current.Start, range.Start), Math.Min(current.End, range.End));
-                currentNode.Value = intersect;
-                Length += intersect.Length - current.Length;
-            }
-            else
-            {
-                ranges.Remove(currentNode);
-                Length -= current.Length;
-            }
-            currentNode = nextNode;
-        }
+        if (!IsSubsetOf(range))
+            IntersectWithCore(range, null);
     }
 
-    //public void IntersectWith(Location other)
-    //{
-    //    throw new NotImplementedException();
-    //}
+    /// <summary>
+    /// Modifies the current location so that it contains only regions that are also in a specified location.
+    /// </summary>
+    /// <param name="other">The location to compare to the current location.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
+    public void IntersectWith(Location other)
+    {
+        ArgumentNullException.ThrowIfNull(other);
+
+        if (ReferenceEquals(this, other))
+            return;
+
+        if (other.IsEmpty)
+            IntersectWithCore(default, null);
+        else
+            IntersectWithCore(other.FirstNode.Value, other.FirstNode.Next);
+    }
 
     /// <summary>
     /// Removes the specified region from the current location.
@@ -586,6 +576,53 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
         ranges.AddLast(range);
         Length += range.Length;
         return null;
+    }
+
+    private void IntersectWithCore(SequenceRange range, LinkedListNode<SequenceRange>? otherNextNode)
+    {
+        var currentNode = FirstNode;
+
+        while (currentNode != null)
+        {
+            var current = currentNode.Value;
+
+            if (range.IsDefault || current.End < range.Start)
+            {
+                var nextNode = currentNode.Next;
+                ranges.Remove(currentNode);
+                Length -= current.Length;
+                currentNode = nextNode;
+                continue;
+            }
+
+            if (range.End < current.Start)
+            {
+                if (otherNextNode != null)
+                {
+                    range = otherNextNode.Value;
+                    otherNextNode = otherNextNode.Next;
+                }
+                else
+                    range = default;
+
+                continue;
+            }
+
+            // Here, current.Overlaps(range) == true
+            var intersect = new SequenceRange(Math.Max(current.Start, range.Start), Math.Min(current.End, range.End));
+            currentNode.Value = intersect;
+            Length += intersect.Length - current.Length;
+
+            if (range.End < current.End && otherNextNode != null && otherNextNode.Value.Start <= current.End)
+            {
+                // this        current ->|
+                // other   current ->| |<- next
+                currentNode = ranges.AddAfter(currentNode, new SequenceRange(range.End + 1, current.End));
+                Length += currentNode.Value.Length;
+            }
+            else
+                currentNode = currentNode.Next;
+        }
     }
 
     private void ElementsToString(StringBuilder builder)
