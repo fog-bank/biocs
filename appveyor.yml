@@ -42,7 +42,8 @@ build:
 # to run tests against only selected assemblies and/or categories
 test:
   assemblies:
-    - '**\*.Tests.dll'
+    only:
+      - '**\*.Tests.dll'
 
 #---------------------------------#
 #      artifacts configuration    #

@@ -41,9 +41,7 @@ public class Counter<T>
     {
         ArgumentOutOfRangeException.ThrowIfNegative(capacity);
 
-#nullable disable warnings
-        map = new Dictionary<T, int>(capacity, comparer);
-#nullable restore warnings
+        map = new(capacity, comparer);
     }
 
     /// <summary>
@@ -58,9 +56,7 @@ public class Counter<T>
     {
         ArgumentNullException.ThrowIfNull(other);
 
-#nullable disable warnings
-        map = new Dictionary<T, int>(other.map, other.map.Comparer);
-#nullable restore warnings
+        map = new(other.map, other.map.Comparer);
         nullCount = other.nullCount;
         TotalCount = other.TotalCount;
     }
