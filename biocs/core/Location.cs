@@ -200,7 +200,7 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
             return;
 
         if (other.IsEmpty)
-            IntersectWithCore(default, null);
+            ClearRanges();
         else
             IntersectWithCore(other.FirstNode.Value, other.FirstNode.Next);
     }
@@ -271,10 +271,26 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
         while (currentNode != null);
     }
 
-    //public void ExceptWith(Location other)
-    //{
-    //    throw new NotImplementedException();
-    //}
+    /// <summary>
+    /// Removes all regions in the specified location from the current location.
+    /// </summary>
+    /// <param name="other">The location to compare to the current location.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
+    public void ExceptWith(Location other)
+    {
+        ArgumentNullException.ThrowIfNull(other);
+
+        if (ReferenceEquals(this, other))
+        {
+            ClearRanges();
+            return;
+        }
+
+        if (other.IsEmpty)
+            return;
+
+        throw new NotImplementedException();
+    }
 
     /// <summary>
     /// Modifies the current location so that it contains only regions that are present either in the current location or in the
@@ -467,8 +483,7 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
 
         if (ReferenceEquals(this, other))
         {
-            ranges.Clear();
-            Length = 0;
+            ClearRanges();
             return;
         }
 
@@ -484,8 +499,8 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
     /// </summary>
     public void Clear()
     {
-        ranges.Clear();
-        Length = 0;
+        ClearRanges();
+
         locOperator = LocationOperator.SpanOrJoin;
         IsComplement = false;
         IsExactStart = true;
@@ -688,8 +703,11 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
         }
     }
 
-    private static bool AheadOfDistantly(SequenceRange preceding, SequenceRange succeeding)
-        => preceding.End + 1 < succeeding.Start;
+    private void ClearRanges()
+    {
+        ranges.Clear();
+        Length = 0;
+    }
 
     private LinkedListNode<SequenceRange>? FirstOrSkipNodes(SequenceRange range)
     {
@@ -698,6 +716,9 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
 
         return ranges.Count > 1 && AheadOfDistantly(LastNode.Previous!.Value, range) ? LastNode : FirstNode;
     }
+
+    private static bool AheadOfDistantly(SequenceRange preceding, SequenceRange succeeding)
+        => preceding.End + 1 < succeeding.Start;
 
     #region Explicit Interface Implementations
 

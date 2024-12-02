@@ -116,6 +116,7 @@ csharp_style_prefer_readonly_struct_member = true
 # Code-block preferences
 csharp_prefer_braces = when_multiline:none # true:silent
 csharp_prefer_simple_using_statement = true # false:none
+csharp_prefer_system_threading_lock = true
 csharp_style_namespace_declarations = file_scoped
 csharp_style_prefer_method_group_conversion = true
 csharp_style_prefer_primary_constructors = true
@@ -211,11 +212,11 @@ dotnet_naming_rule.constant_should_be_pascal_case.style = pascal_case
 
 dotnet_naming_rule.private_field_should_be_camel_case.severity = suggestion
 dotnet_naming_rule.private_field_should_be_camel_case.symbols = private_field
-dotnet_naming_rule.private_field_should_be_camel_case.style = field_style
+dotnet_naming_rule.private_field_should_be_camel_case.style = camel_case # field_style
 
 dotnet_naming_rule.private_static_field_should_be_camel_case.severity = suggestion
 dotnet_naming_rule.private_static_field_should_be_camel_case.symbols = private_static_field
-dotnet_naming_rule.private_static_field_should_be_camel_case.style = static_field_style
+dotnet_naming_rule.private_static_field_should_be_camel_case.style = camel_case # static_field_style
 
 dotnet_naming_rule.local_should_be_camel_case.severity = suggestion
 dotnet_naming_rule.local_should_be_camel_case.symbols = local
@@ -252,10 +253,10 @@ dotnet_naming_style.camel_case.capitalization = camel_case
 dotnet_naming_style.interface_style.required_prefix = I
 dotnet_naming_style.interface_style.capitalization = pascal_case
 
-# dotnet_naming_style.field_style.required_prefix = _
+dotnet_naming_style.field_style.required_prefix = _
 dotnet_naming_style.field_style.capitalization = camel_case
 
-# dotnet_naming_style.static_field_style.required_prefix = s_
+dotnet_naming_style.static_field_style.required_prefix = s_
 dotnet_naming_style.static_field_style.capitalization = camel_case
 
 # Xml files

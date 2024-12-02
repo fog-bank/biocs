@@ -62,7 +62,7 @@ public class LocationTest
     }
 
     [TestMethod]
-    public void IntersectWithRangeTest()
+    public void IntersectWithTest()
     {
         var range1 = new SequenceRange(1, 100);
         var range2 = new SequenceRange(200, 290);

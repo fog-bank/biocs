@@ -1,4 +1,5 @@
-﻿using System.IO.Compression;
+﻿using System.ComponentModel.DataAnnotations;
+using System.IO.Compression;
 using Biocs.IO;
 
 namespace Biocs;
@@ -16,7 +17,7 @@ partial class Bgzf(ILogger<Bgzf> logger)
     /// <param name="level">-l, Compression level; -1 (optimal), 0 (no compression), 1 (fast).</param>
     [Command("bgzf")]
     public async Task<int> Compress(string? input = null, string? output = null, bool stdout = false, bool decompress = false,
-        bool force = false, /*[Range(-1, 1)]*/ int level = -1, CancellationToken cancellationToken = default)
+        bool force = false, [Range(-1, 1)] int level = -1, CancellationToken cancellationToken = default)
     {
         if (input == null && output == null && !Console.IsInputRedirected && !Console.IsOutputRedirected)
         {

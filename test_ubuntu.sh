@@ -30,8 +30,8 @@ dotnet test -c Release -v n biocs/core.tests | tee test.log
 
 
 ## code coverage
-# dotnet test biocs /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=TestResults/ -c Release --verbosity normal biocs
-# reportgenerator -reports:.\biocs\core.tests\TestResults\coverage.opencover.xml -targetdir:.\biocs\core.tests\TestResults\report\
+# cd biocs
+# dotnet test -c Release
 
 ## docfx project
 # cd docfx_project
