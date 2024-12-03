@@ -211,64 +211,8 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
     /// <param name="range">The continuoug range to remove from the current location.</param>
     public void ExceptWith(SequenceRange range)
     {
-        if (!Overlaps(range))
-            return;
-
-        var currentNode = ranges.Count > 1 && LastNode.Previous!.Value.End < range.Start ? LastNode : FirstNode;
-        do
-        {
-            var current = currentNode.Value;
-
-            // |← range →| |← current →|
-            if (range.End < current.Start)
-                return;
-
-            // |← current →| |← range →|
-            if (current.End < range.Start)
-                continue;
-
-            // Here, current.Overlaps(range) == true
-            if (range.End < current.End)
-            {
-                var after = new SequenceRange(range.End + 1, current.End);
-
-                if (current.Start < range.Start)
-                {
-                    //   |← range →|
-                    // |←  current  →|
-                    currentNode.Value = new(current.Start, range.Start - 1);
-                    ranges.AddAfter(currentNode, after);
-                    Length -= range.Length;
-                }
-                else
-                {
-                    // |←  range  →|
-                    //   |← current →|
-                    currentNode.Value = after;
-                    Length -= range.End - current.Start + 1;
-                }
-                return;
-            }
-
-            var nextNode = currentNode.Next;
-
-            if (current.Start < range.Start)
-            {
-                //   |←  range  →|
-                // |← current →|
-                currentNode.Value = new(current.Start, range.Start - 1);
-                Length -= current.End - range.Start + 1;
-            }
-            else
-            {
-                // |←    range    →|
-                //   |← current →|
-                ranges.Remove(currentNode);
-                Length -= current.Length;
-            }
-            currentNode = nextNode;
-        }
-        while (currentNode != null);
+        if (Overlaps(range))
+            ExceptWithCore(range, null);
     }
 
     /// <summary>
@@ -286,10 +230,8 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
             return;
         }
 
-        if (other.IsEmpty)
-            return;
-
-        throw new NotImplementedException();
+        if (!other.IsEmpty)
+            ExceptWithCore(other.FirstNode.Value, other.FirstNode.Next);
     }
 
     /// <summary>
@@ -553,11 +495,15 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
         throw new NotImplementedException();
     }
 
+    // @param currentNode this.CurrentNode
+    // @param range other.CurrentNode.Value
+    // @return this.CurrentNode
     private LinkedListNode<SequenceRange>? UnionWithCore(LinkedListNode<SequenceRange>? currentNode, SequenceRange range)
     {
         while (currentNode != null)
         {
             var current = currentNode.Value;
+
             if (AheadOfDistantly(range, current))
             {
                 // |← (prev) →|  |← range →|  |← current →|
@@ -573,6 +519,7 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
                 currentNode = nextNode;
                 continue;
             }
+
             // range can be merged with current
             range = new(Math.Min(current.Start, range.Start), Math.Max(current.End, range.End));
 
@@ -581,8 +528,9 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
                 // |← merge →|  |← (next) →|
                 currentNode.Value = range;
                 Length += range.Length - current.Length;
-                return current.End == range.End ? currentNode : nextNode;
+                return currentNode;
             }
+
             // Need to merge new range and next
             ranges.Remove(currentNode);
             Length -= current.Length;
@@ -593,6 +541,8 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
         return null;
     }
 
+    // @param range other.CurrentNode.Value
+    // @param otherNextNode other.CurrentNode.Next
     private void IntersectWithCore(SequenceRange range, LinkedListNode<SequenceRange>? otherNextNode)
     {
         var currentNode = FirstNode;
@@ -638,6 +588,83 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
             else
                 currentNode = currentNode.Next;
         }
+    }
+
+    // @param range other.CurrentNode.Value
+    // @param otherNextNode other.CurrentNode.Next
+    private void ExceptWithCore(SequenceRange range, LinkedListNode<SequenceRange>? otherNextNode)
+    {
+        var currentNode = ranges.Count > 1 && LastNode!.Previous!.Value.End < range.Start ? LastNode : FirstNode;
+
+        while (currentNode != null)
+        {
+            var current = currentNode.Value;
+
+            if (range.End < current.Start)
+            {
+                // |← range →| |← current →|
+                if (otherNextNode != null)
+                {
+                    range = otherNextNode.Value;
+                    otherNextNode = otherNextNode.Next;
+                    continue;
+                }
+                else
+                    return;
+            }
+            var nextNode = currentNode.Next;
+
+            if (current.End < range.Start)
+            {
+                // |← current →| |← range →|
+                currentNode = nextNode;
+                continue;
+            }
+
+            // Here, current.Overlaps(range) == true
+            if (range.End < current.End)
+            {
+                var after = new SequenceRange(range.End + 1, current.End);
+
+                if (current.Start < range.Start)
+                {
+                    //   |← range →|
+                    // |←  current  →|
+                    ranges.AddBefore(currentNode, new SequenceRange(current.Start, range.Start - 1));
+                    Length -= range.Length;
+                }
+                else
+                {
+                    // |←  range  →|
+                    //   |← current →|
+                    Length -= range.End - current.Start + 1;
+                }
+                currentNode.Value = after;
+                continue;
+            }
+
+            if (current.Start < range.Start)
+            {
+                //   |←  range  →|
+                // |← current →|
+                currentNode.Value = new(current.Start, range.Start - 1);
+                Length -= current.End - range.Start + 1;
+            }
+            else
+            {
+                // |←    range    →|
+                //   |← current →|
+                ranges.Remove(currentNode);
+                Length -= current.Length;
+            }
+            currentNode = nextNode;
+        }
+    }
+
+    private void ClearRanges()
+    {
+        ranges.Clear();
+        Length = 0;
     }
 
     private void ElementsToString(StringBuilder builder)
@@ -701,12 +728,6 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
                 builder.Length--;
             }
         }
-    }
-
-    private void ClearRanges()
-    {
-        ranges.Clear();
-        Length = 0;
     }
 
     private LinkedListNode<SequenceRange>? FirstOrSkipNodes(SequenceRange range)

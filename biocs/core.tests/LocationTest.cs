@@ -39,6 +39,7 @@ public class LocationTest
         var range6 = new SequenceRange(21, 39);
         var range7 = new SequenceRange(130, 150);
         var range8 = new SequenceRange(1, 9);
+        var range9 = new SequenceRange(200, 300);
         var merge1 = new SequenceRange(1, 50);
         var merge2 = new SequenceRange(90, 110);
         loc2.Clear();
@@ -46,16 +47,17 @@ public class LocationTest
         loc2.UnionWith(range6);
         loc2.UnionWith(range7);
         loc2.UnionWith(range8);
+        loc2.UnionWith(range9);
         loc1.UnionWith(loc2);
-        AssertRanges(loc2, [range8, range6, range5, range7]); // 1..9, 21..39, 101..110, 130..150
-        AssertRanges(loc1, [merge1, range4, merge2, range7]); // 1..50, 60..70, 90..110, 130..150
+        AssertRanges(loc2, [range8, range6, range5, range7, range9]); // 1..9, 21..39, 101..110, 130..150, 200..300
+        AssertRanges(loc1, [merge1, range4, merge2, range7, range9]); // 1..50, 60..70, 90..110, 130..150, 200..300
 
         loc1.UnionWith(loc1);
-        AssertRanges(loc1, [merge1, range4, merge2, range7]);
+        AssertRanges(loc1, [merge1, range4, merge2, range7, range9]);
 
-        var range9 = new SequenceRange(30, 140);
-        var merge3 = new SequenceRange(1, 150);
-        loc1.UnionWith(range9);
+        var range10 = new SequenceRange(30, 240);
+        var merge3 = new SequenceRange(1, 300);
+        loc1.UnionWith(range10);
         AssertRanges(loc1, [merge3]);
 
         Assert.ThrowsException<ArgumentNullException>(() => loc1.UnionWith(default(Location)!));
