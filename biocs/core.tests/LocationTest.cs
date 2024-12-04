@@ -81,6 +81,9 @@ public class LocationTest
         loc1.UnionWith(range3);
         loc1.UnionWith(range4);
         loc1.UnionWith(range5);
+        loc1.IntersectWith(new SequenceRange(1, 860));
+        AssertRanges(loc1, [range1, range2, range3, range4, range5]);
+
         loc1.IntersectWith(new SequenceRange(101, 799));
         AssertRanges(loc1, [range2, range3, range4]);
 

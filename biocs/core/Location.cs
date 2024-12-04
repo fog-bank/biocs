@@ -127,15 +127,16 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
     /// <summary>
     /// Determines whether this location is a subset of a specified range.
     /// </summary>
-    /// <param name="range">The continuoug range to compare to this location.</param>
+    /// <param name="range">The continuous range to compare to this location.</param>
     /// <returns>
     /// <see langword="true"/> if this location is empty or a subset of <paramref name="range"/>;
     /// otherwise, <see langword="false"/>.
     /// </returns>
-    public bool IsSubsetOf(SequenceRange range) => IsEmpty || (range.Start <= Start && End <= range.End);
+    public bool IsSubsetOf(SequenceRange range)
+        => IsEmpty || (range.Start <= FirstNode.Value.Start && LastNode.Value.End <= range.End);
 
     /// <summary>
-    /// Determines whether this location overlaps with the specified range.
+    /// Determines whether any region in the current location overlaps with the specified range.
     /// </summary>
     /// <param name="range">The range to compare to this location.</param>
     /// <returns>
@@ -144,17 +145,28 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
     /// </returns>
     [MemberNotNullWhen(true, nameof(FirstNode))]
     [MemberNotNullWhen(true, nameof(LastNode))]
-    public bool Overlaps(SequenceRange range) => !IsEmpty && Start <= range.End && range.Start <= End;
+    public bool Overlaps(SequenceRange range)
+    {
+        if (IsEmpty || range.End < FirstNode.Value.Start || LastNode.Value.End < range.Start)
+            return false;
+
+        foreach (var region in ranges)
+        {
+            if (region.Overlaps(range))
+                return true;
+        }
+        return false;
+    }
 
     /// <summary>
     /// Modifies the current location so that it contains all regions that are present in the current location, in the specified
     /// range, or in both.
     /// </summary>
-    /// <param name="range">The continuoug range to compare to the current location.</param>
+    /// <param name="range">The continuous range to compare to the current location.</param>
     public void UnionWith(SequenceRange range)
     {
         if (!range.IsDefault)
-            UnionWithCore(FirstOrSkipNodes(range), range);
+            UnionWithCore(FirstOrSkipNodesForUnion(range), range);
     }
 
     /// <summary>
@@ -170,7 +182,7 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
         if (ReferenceEquals(this, other) || other.IsEmpty)
             return;
 
-        var currentNode = FirstOrSkipNodes(other.FirstNode.Value);
+        var currentNode = FirstOrSkipNodesForUnion(other.FirstNode.Value);
 
         foreach (var range in other.ranges)
             currentNode = UnionWithCore(currentNode, range);
@@ -179,7 +191,7 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
     /// <summary>
     /// Modifies the current location so that it contains only regions that are also in a specified range.
     /// </summary>
-    /// <param name="range">The continuoug range to compare to the current location.</param>
+    /// <param name="range">The continuous range to compare to the current location.</param>
     /// <remarks>When <paramref name="range"/> is the default value, this method removes all regions.</remarks>
     public void IntersectWith(SequenceRange range)
     {
@@ -208,12 +220,8 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
     /// <summary>
     /// Removes the specified region from the current location.
     /// </summary>
-    /// <param name="range">The continuoug range to remove from the current location.</param>
-    public void ExceptWith(SequenceRange range)
-    {
-        if (Overlaps(range))
-            ExceptWithCore(range, null);
-    }
+    /// <param name="range">The continuous range to remove from the current location.</param>
+    public void ExceptWith(SequenceRange range) => ExceptWithCore(FirstOrSkipNodesForExcept(range), range);
 
     /// <summary>
     /// Removes all regions in the specified location from the current location.
@@ -230,21 +238,31 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
             return;
         }
 
-        if (!other.IsEmpty)
-            ExceptWithCore(other.FirstNode.Value, other.FirstNode.Next);
+        if (other.IsEmpty)
+            return;
+
+        var currentNode = FirstOrSkipNodesForExcept(other.FirstNode.Value);
+
+        foreach (var range in other.ranges)
+        {
+            currentNode = ExceptWithCore(currentNode, range);
+
+            if (currentNode == null)
+                break;
+        }
     }
 
     /// <summary>
     /// Modifies the current location so that it contains only regions that are present either in the current location or in the
     /// specified range, but not both.
     /// </summary>
-    /// <param name="range">The continuoug range to compare to the current location.</param>
+    /// <param name="range">The continuous range to compare to the current location.</param>
     public void SymmetricExceptWith(SequenceRange range)
     {
         if (range.IsDefault)
             return;
 
-        for (var currentNode = FirstOrSkipNodes(range); currentNode != null; currentNode = currentNode.Next)
+        for (var currentNode = FirstOrSkipNodesForUnion(range); currentNode != null; currentNode = currentNode.Next)
         {
             var current = currentNode.Value;
 
@@ -590,12 +608,11 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
         }
     }
 
+    // @param currentNode this.CurrentNode
     // @param range other.CurrentNode.Value
-    // @param otherNextNode other.CurrentNode.Next
-    private void ExceptWithCore(SequenceRange range, LinkedListNode<SequenceRange>? otherNextNode)
+    // @return this.CurrentNode
+    private LinkedListNode<SequenceRange>? ExceptWithCore(LinkedListNode<SequenceRange>? currentNode, SequenceRange range)
     {
-        var currentNode = ranges.Count > 1 && LastNode!.Previous!.Value.End < range.Start ? LastNode : FirstNode;
-
         while (currentNode != null)
         {
             var current = currentNode.Value;
@@ -603,14 +620,7 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
             if (range.End < current.Start)
             {
                 // |← range →| |← current →|
-                if (otherNextNode != null)
-                {
-                    range = otherNextNode.Value;
-                    otherNextNode = otherNextNode.Next;
-                    continue;
-                }
-                else
-                    return;
+                return currentNode;
             }
             var nextNode = currentNode.Next;
 
@@ -640,7 +650,7 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
                     Length -= range.End - current.Start + 1;
                 }
                 currentNode.Value = after;
-                continue;
+                return currentNode;
             }
 
             if (current.Start < range.Start)
@@ -659,6 +669,7 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
             }
             currentNode = nextNode;
         }
+        return null;
     }
 
     private void ClearRanges()
@@ -730,12 +741,20 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
         }
     }
 
-    private LinkedListNode<SequenceRange>? FirstOrSkipNodes(SequenceRange range)
+    private LinkedListNode<SequenceRange>? FirstOrSkipNodesForUnion(SequenceRange range)
     {
         if (IsEmpty || AheadOfDistantly(LastNode.Value, range))
             return null;
 
         return ranges.Count > 1 && AheadOfDistantly(LastNode.Previous!.Value, range) ? LastNode : FirstNode;
+    }
+
+    private LinkedListNode<SequenceRange>? FirstOrSkipNodesForExcept(SequenceRange range)
+    {
+        if (IsEmpty || range.End < FirstNode.Value.Start || LastNode.Value.End < range.Start)
+            return null;
+
+        return ranges.Count > 1 && LastNode.Previous!.Value.End < range.Start ? LastNode : FirstNode;
     }
 
     private static bool AheadOfDistantly(SequenceRange preceding, SequenceRange succeeding)
