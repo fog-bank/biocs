@@ -60,7 +60,7 @@ public class LocationTest
         loc1.UnionWith(range10);
         AssertRanges(loc1, [merge3]);
 
-        Assert.ThrowsException<ArgumentNullException>(() => loc1.UnionWith(default(Location)!));
+        Assert.ThrowsException<ArgumentNullException>(() => loc1.UnionWith(null!));
     }
 
     [TestMethod]
@@ -113,13 +113,13 @@ public class LocationTest
         loc3.IntersectWith(default(SequenceRange));
         AssertRanges(loc3, []);
 
-        Assert.ThrowsException<ArgumentNullException>(() => loc1.IntersectWith(default(Location)!));
+        Assert.ThrowsException<ArgumentNullException>(() => loc1.IntersectWith(null!));
     }
 
     [TestMethod]
-    public void ExceptWithRangeTest()
+    public void ExceptWithTest()
     {
-        var loc = new Location(new(1, 100));
+        var loc = new Location(new SequenceRange(1, 100));
 
         loc.ExceptWith(new SequenceRange(50));
         AssertRanges(loc, [new(1, 49), new(51, 100)]);
@@ -136,8 +136,51 @@ public class LocationTest
         loc.ExceptWith(new SequenceRange(49, 100));
         AssertRanges(loc, [except1]);
 
-        loc.ExceptWith(new SequenceRange(200, 300));
+        var range2 = new SequenceRange(200, 300);
+        loc.ExceptWith(range2);
         AssertRanges(loc, [except1]);
+
+        var loc2 = new Location();
+        loc.ExceptWith(loc2);
+        AssertRanges(loc, [except1]);
+
+        loc2.UnionWith(range2);
+        loc.ExceptWith(loc2);
+        AssertRanges(loc, [except1]);
+
+        loc2.UnionWith(new SequenceRange(10, 20));
+        loc2.UnionWith(new SequenceRange(30, 40));
+        var except3 = new SequenceRange(1, 9);
+        var except4 = new SequenceRange(21, 29);
+        var except5 = new SequenceRange(41, 48);
+        loc.ExceptWith(loc2);
+        AssertRanges(loc, [except3, except4, except5]);
+
+        loc2.ExceptWith(loc2);
+        AssertRanges(loc2, []);
+
+        loc2.UnionWith(new SequenceRange(1));
+        loc2.UnionWith(new SequenceRange(21));
+        loc2.UnionWith(new SequenceRange(29));
+        var except6 = new SequenceRange(2, 9);
+        var except7 = new SequenceRange(22, 28);
+        loc.ExceptWith(loc2);
+        AssertRanges(loc, [except6, except7, except5]);
+
+        var loc3 = new Location();
+        loc3.UnionWith(new SequenceRange(1));
+        loc3.UnionWith(new SequenceRange(10, 21));
+        loc3.UnionWith(new SequenceRange(29, 40));
+        loc3.UnionWith(new SequenceRange(49));
+        loc.ExceptWith(loc3);
+        AssertRanges(loc, [except6, except7, except5]);
+
+        var loc4 = new Location();
+        loc4.UnionWith(loc);
+        loc.ExceptWith(loc4);
+        AssertRanges(loc, []);
+
+        Assert.ThrowsException<ArgumentNullException>(() => loc.ExceptWith(null!));
     }
 
     [TestMethod]

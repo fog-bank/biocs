@@ -143,16 +143,17 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
     /// <see langword="true"/> if this location and <paramref name="range"/> share at least one common site;
     /// otherwise, <see langword="false"/>.
     /// </returns>
-    [MemberNotNullWhen(true, nameof(FirstNode))]
-    [MemberNotNullWhen(true, nameof(LastNode))]
     public bool Overlaps(SequenceRange range)
     {
-        if (IsEmpty || range.End < FirstNode.Value.Start || LastNode.Value.End < range.Start)
+        if (IsEmpty)
             return false;
 
         foreach (var region in ranges)
         {
-            if (region.Overlaps(range))
+            if (range.End < region.Start)
+                return false;
+
+            if (range.Start <= region.End)
                 return true;
         }
         return false;
