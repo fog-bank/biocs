@@ -122,7 +122,7 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
     public override bool Equals([NotNullWhen(true)] object? obj) => Equals(obj as Location);
 
     /// <inheritdoc/>
-    public override int GetHashCode() => HashCode.Combine(Start, End, ranges.Count, IsComplement);
+    public override int GetHashCode() => HashCode.Combine(Start, End, Length, ranges.Count);
 
     /// <summary>
     /// Determines whether this location is a subset of a specified range.
@@ -511,7 +511,56 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
     /// </returns>
     public static bool TryParse(ReadOnlySpan<char> span, [MaybeNullWhen(false)] out Location result)
     {
-        throw new NotImplementedException();
+        result = new Location();
+        span = span.Trim();
+        int nameColonIndex = span.IndexOf(':');
+
+        if (nameColonIndex > 0)
+        {
+            result.SequenceName = span[..nameColonIndex].ToString();
+            span = span[(nameColonIndex + 1)..];
+        }
+
+        if (span.StartsWith("complement(", StringComparison.Ordinal) && span.EndsWith(')'))
+        {
+            result.IsComplement = true;
+            span = span[11..^1];
+        }
+
+        if (span.StartsWith("join(", StringComparison.Ordinal) && span.EndsWith(')'))
+            span = span[5..^1];
+
+        bool isFirst = true;
+        bool maybeNotExactLast = false;
+
+        foreach (var range in span.Split(','))
+        {
+            var rangeSpan = span[range].Trim();
+
+            if (isFirst)
+            {
+                if (rangeSpan.StartsWith('<'))
+                    result.IsExactStart = false;
+
+                isFirst = false;
+            }
+            maybeNotExactLast = false;
+
+            if (rangeSpan.Contains('>'))
+                maybeNotExactLast = true;
+
+            if (!SequenceRange.TryParse(rangeSpan, out var rangeResult))
+            {
+                result = null;
+                return false;
+            }
+            result.UnionWith(rangeResult);
+        }
+
+        if (maybeNotExactLast)
+            result.IsExactEnd = false;
+
+        return true;
     }
 
     // @param currentNode this.CurrentNode

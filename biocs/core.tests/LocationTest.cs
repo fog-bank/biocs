@@ -1,4 +1,6 @@
-﻿namespace Biocs;
+﻿using Biocs.TestTools;
+
+namespace Biocs;
 
 [TestClass]
 public class LocationTest
@@ -273,6 +275,42 @@ public class LocationTest
         var split15 = new SequenceRange(351, 400);
         loc.SymmetricExceptWith(range16);
         AssertRanges(loc, [split9, split13, split15]);
+    }
+
+    [TestMethod]
+    public void ParseTest()
+    {
+        var result = Location.Parse("340..565");
+        AssertRanges(result, [new(340, 565)]);
+
+        Assert.IsTrue(Location.TryParse("467", out result));
+        AssertRanges(result, [new(467)]);
+
+        Assert.IsTrue(Location.TryParse("join(12..78,134..202)", out result));
+        AssertRanges(result, [new(12, 78), new(134, 202)]);
+
+        Assert.IsTrue(Location.TryParse("join(<1..1144,1469..>2072)", out result));
+        AssertRanges(result, [new(1, 1144), new(1469, 2072)]);
+        Assert.IsFalse(result.IsExactStart);
+        Assert.IsFalse(result.IsExactEnd);
+
+        Assert.IsTrue(Location.TryParse("complement(34..126)", out result));
+        AssertRanges(result, [new(34, 126)]);
+        Assert.IsTrue(result.IsComplement);
+
+        string input = "complement(join(2691..4571,4918..5163))";
+        Assert.IsTrue(Location.TryParse(input, out result));
+        AssertRanges(result, [new(2691, 4571), new(4918, 5163)]);
+        Assert.IsTrue(result.IsComplement);
+
+        AssertUtils.TestParse(result, input);
+        AssertUtils.TestSpanParse(result, input);
+
+        Assert.IsTrue(Location.TryParse("J00194.1:100..202", out result));
+        AssertRanges(result, [new(100, 202)]);
+        Assert.AreEqual("J00194.1", result.SequenceName);
+
+        Assert.ThrowsException<FormatException>(() => Location.Parse(default));
     }
 
     private static void AssertRanges(Location loc, IReadOnlyCollection<SequenceRange> ranges)
