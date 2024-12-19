@@ -19,7 +19,7 @@ public class DoubleMersenneTwisterTest
         for (int i = 0; i < 1000; i++)
         {
             string expected = data[i];
-            double value = dfmt.Next() + 1;
+            double value = dfmt.NextDouble() + 1;
 
             var targets = Round(value);
             Assert.IsTrue(expected == targets.Item1 || expected == targets.Item2 || expected == targets.Item3);
@@ -51,19 +51,19 @@ public class DoubleMersenneTwisterTest
                 switch (seed % 4)
                 {
                     case 0:
-                        value = dfmt.Next();
+                        value = dfmt.NextDouble();
                         break;
 
                     case 1:
-                        value = 1 - dfmt.Next();
+                        value = 1 - dfmt.NextDouble();
                         break;
 
                     case 2:
-                        value = dfmt.NextOpen();
+                        value = dfmt.NextDoubleOpen();
                         break;
 
                     case 3:
-                        value = dfmt.Next() + 1;
+                        value = dfmt.NextDouble() + 1;
                         break;
                 }
                 var targets = Round(value);
@@ -87,7 +87,7 @@ public class DoubleMersenneTwisterTest
         for (int i = 0; i < 1000; i++)
         {
             string expected = data[i];
-            double value = dfmt.Next() + 1;
+            double value = dfmt.NextDouble() + 1;
 
             var targets = Round(value);
             Assert.IsTrue(expected == targets.Item1 || expected == targets.Item2 || expected == targets.Item3);
@@ -98,7 +98,7 @@ public class DoubleMersenneTwisterTest
     public void Constructor_Test()
     {
         var dfmt = new DoubleMersenneTwister();
-        double value = dfmt.Next();
+        double value = dfmt.NextDouble();
         Assert.IsTrue(value >= 0 && value < 1);
     }
 

@@ -5,7 +5,7 @@ using System.Runtime.Intrinsics;
 namespace Biocs.Numerics;
 
 /// <summary>
-/// Represents double-precision Mersenne Twister pseudorandom number generator based on IEEE 754 format.
+/// Represents double-precision SIMD-oriented Fast Mersenne Twister pseudorandom number generator.
 /// </summary>
 /// <remarks>
 /// <para>For details about Mersenne Twister, see http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/.</para>
@@ -138,16 +138,31 @@ public class DoubleMersenneTwister
     }
 
     /// <summary>
+    /// Returns a non-negative random integer.
+    /// </summary>
+    /// <returns>A 32-bit signed integer.</returns>
+    public int Next()
+    {
+        if (index >= N64)
+        {
+            GenerateRand();
+            index = 0;
+        }
+        ulong ul = MemoryMarshal.Cast<Union128, ulong>(status.AsSpan())[index++] & 0xffffffff;
+        return unchecked((int)ul);
+    }
+
+    /// <summary>
     /// Returns a double-precision pseudorandom number that distributes uniformly in the range [0, 1).
     /// </summary>
     /// <returns>A random floating-point number that is greater than or equal to 0.0, and less than 1.0.</returns>
-    public double Next() => Sample() - 1;
+    public double NextDouble() => Sample() - 1;
 
     /// <summary>
     /// Returns a double-precision pseudorandom number that distributes uniformly in the range (0, 1).
     /// </summary>
     /// <returns>A random floating-point number that is greater than 0.0, and less than 1.0.</returns>
-    public double NextOpen()
+    public double NextDoubleOpen()
     {
         var r = new Union128() { d0 = Sample() };
         r.ul0 |= 1;
@@ -250,7 +265,7 @@ public class DoubleMersenneTwister
             GenerateRand();
             index = 0;
         }
-        return index % 2 == 0 ? status[index++ / 2].d0 : status[index++ / 2].d1;
+        return MemoryMarshal.Cast<Union128, double>(status.AsSpan())[index++];
     }
 
     private static uint InitValue1(uint x) => unchecked((x ^ (x >> 27)) * 1664525u);
