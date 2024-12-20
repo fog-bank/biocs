@@ -18,6 +18,7 @@ public class DoubleMersenneTwisterTest
 
         for (int i = 0; i < 1000; i++)
         {
+            // [1, 2)
             string expected = data[i];
             double value = dfmt.NextDouble() + 1;
 
@@ -50,18 +51,22 @@ public class DoubleMersenneTwisterTest
 
                 switch (seed % 4)
                 {
+                    // [0, 1)
                     case 0:
                         value = dfmt.NextDouble();
                         break;
 
+                    // (0, 1]
                     case 1:
                         value = 1 - dfmt.NextDouble();
                         break;
 
+                    // (0, 1)
                     case 2:
                         value = dfmt.NextDoubleOpen();
                         break;
 
+                    // [1, 2)
                     case 3:
                         value = dfmt.NextDouble() + 1;
                         break;
@@ -86,6 +91,7 @@ public class DoubleMersenneTwisterTest
 
         for (int i = 0; i < 1000; i++)
         {
+            // [1, 2)
             string expected = data[i];
             double value = dfmt.NextDouble() + 1;
 
@@ -98,8 +104,10 @@ public class DoubleMersenneTwisterTest
     public void Constructor_Test()
     {
         var dfmt = new DoubleMersenneTwister();
-        double value = dfmt.NextDouble();
-        Assert.IsTrue(value >= 0 && value < 1);
+        int value1 = dfmt.Next();
+        Assert.IsTrue(value1 >= 0);
+        double value2 = dfmt.NextDouble();
+        Assert.IsTrue(value2 >= 0 && value2 < 1);
     }
 
     // Resolves the difference C# Format("f15") and C++ prinf(".15f")

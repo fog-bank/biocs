@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics;
 
 namespace Biocs.Numerics;
@@ -25,8 +24,7 @@ public class DoubleMersenneTwister
     /// Initializes a new instance of the <see cref="DoubleMersenneTwister"/> class, 
     /// using a time-dependent default seed value.
     /// </summary>
-    public DoubleMersenneTwister()
-        : this(Environment.TickCount)
+    public DoubleMersenneTwister() : this(Environment.TickCount)
     { }
 
     /// <summary>
@@ -42,19 +40,6 @@ public class DoubleMersenneTwister
 
             for (int i = 1; i < span.Length; i++)
                 span[i] = 1812433253u * (span[i - 1] ^ (span[i - 1] >> 30)) + (uint)i;
-
-            //status[0].u0 = (uint)seed;
-            //uint pos = 1;
-
-            //for (int i = 0; i < status.Length; i++)
-            //{
-            //    if (i != 0)
-            //        status[i].u0 = 1812433253u * (status[i - 1].u3 ^ (status[i - 1].u3 >> 30)) + pos++;
-
-            //    status[i].u1 = 1812433253u * (status[i].u0 ^ (status[i].u0 >> 30)) + pos++;
-            //    status[i].u2 = 1812433253u * (status[i].u1 ^ (status[i].u1 >> 30)) + pos++;
-            //    status[i].u3 = 1812433253u * (status[i].u2 ^ (status[i].u2 >> 30)) + pos++;
-            //}
         }
         InitialMask();
         CertificatePeriod();
@@ -70,6 +55,9 @@ public class DoubleMersenneTwister
         ArgumentNullException.ThrowIfNull(seeds);
 
         const int Size = (N + 1) * 4;
+        const int Lag = 11;
+        const int Mid = (Size - Lag) / 2;
+
         //int lag = 0;
 
         //if (size >= 623)
@@ -83,53 +71,48 @@ public class DoubleMersenneTwister
 
         //int mid = (size - lag) / 2;
 
-        const int Lag = 11;
-        const int Mid = ((N + 1) * 4 - Lag) / 2;
+        var span = MemoryMarshal.Cast<Union128, uint>(status.AsSpan());
+        span.Fill(0x8b8b8b8bu);
 
-        for (int i = 0; i < status.Length; i++)
-        {
-            status[i].ul0 = 0x8b8b8b8b8b8b8b8bu;
-            status[i].ul1 = 0x8b8b8b8b8b8b8b8bu;
-        }
         int count = Math.Max(seeds.Length + 1, Size);
-        uint r = InitValue1(RefToUInt32(0) ^ RefToUInt32(Mid % Size) ^ RefToUInt32((Size - 1) % Size));
+        uint r = InitValue1(span[0] ^ span[Mid % Size] ^ span[(Size - 1) % Size]);
 
         unchecked
         {
-            RefToUInt32(Mid % Size) += r;
+            span[Mid % Size] += r;
             r += (uint)seeds.Length;
-            RefToUInt32((Mid + Lag) % Size) += r;
-            RefToUInt32(0) = r;
+            span[(Mid + Lag) % Size] += r;
+            span[0] = r;
             count--;
 
             int i = 1, j = 0;
             for (; j < count && j < seeds.Length; j++)
             {
-                r = InitValue1(RefToUInt32(i) ^ RefToUInt32((i + Mid) % Size) ^ RefToUInt32((i + Size - 1) % Size));
-                RefToUInt32((i + Mid) % Size) += r;
+                r = InitValue1(span[i] ^ span[(i + Mid) % Size] ^ span[(i + Size - 1) % Size]);
+                span[(i + Mid) % Size] += r;
                 r += (uint)seeds[j] + (uint)i;
-                RefToUInt32((i + Mid + Lag) % Size) += r;
-                RefToUInt32(i) = r;
+                span[(i + Mid + Lag) % Size] += r;
+                span[i] = r;
                 i = (i + 1) % Size;
             }
 
             for (; j < count; j++)
             {
-                r = InitValue1(RefToUInt32(i) ^ RefToUInt32((i + Mid) % Size) ^ RefToUInt32((i + Size - 1) % Size));
-                RefToUInt32((i + Mid) % Size) += r;
+                r = InitValue1(span[i] ^ span[(i + Mid) % Size] ^ span[(i + Size - 1) % Size]);
+                span[(i + Mid) % Size] += r;
                 r += (uint)i;
-                RefToUInt32((i + Mid + Lag) % Size) += r;
-                RefToUInt32(i) = r;
+                span[(i + Mid + Lag) % Size] += r;
+                span[i] = r;
                 i = (i + 1) % Size;
             }
 
             for (j = 0; j < Size; j++)
             {
-                r = InitValue2(RefToUInt32(i) + RefToUInt32((i + Mid) % Size) + RefToUInt32((i + Size - 1) % Size));
-                RefToUInt32((i + Mid) % Size) ^= r;
+                r = InitValue2(span[i] + span[(i + Mid) % Size] + span[(i + Size - 1) % Size]);
+                span[(i + Mid) % Size] ^= r;
                 r -= (uint)i;
-                RefToUInt32((i + Mid + Lag) % Size) ^= r;
-                RefToUInt32(i) = r;
+                span[(i + Mid + Lag) % Size] ^= r;
+                span[i] = r;
                 i = (i + 1) % Size;
             }
         }
@@ -164,10 +147,10 @@ public class DoubleMersenneTwister
     /// <returns>A random floating-point number that is greater than 0.0, and less than 1.0.</returns>
     public double NextDoubleOpen()
     {
-        var r = new Union128() { d0 = Sample() };
-        r.ul0 |= 1;
+        var r = new Union64() { d = Sample() };
+        r.ul |= 1;
 
-        return r.d0 - 1;
+        return r.d - 1;
     }
 
     // Initializes the internal state array to fit the IEEE 754 format.
@@ -180,12 +163,6 @@ public class DoubleMersenneTwister
 
         for (int i = 0; i < span.Length; i++)
             span[i] = (span[i] & LowMask) | HighConst;
-
-        //for (int i = 0; i < status.Length - 1; i++)
-        //{
-        //    status[i].ul0 = (status[i].ul0 & LowMask) | HighConst;
-        //    status[i].ul1 = (status[i].ul1 & LowMask) | HighConst;
-        //}
     }
 
     // Certifacates the period of 2 ^ Exp - 1.
@@ -272,27 +249,6 @@ public class DoubleMersenneTwister
 
     private static uint InitValue2(uint x) => unchecked((x ^ (x >> 27)) * 1566083941u);
 
-    private ref uint RefToUInt32(int indexOfUInt32)
-    {
-        return ref MemoryMarshal.Cast<Union128, uint>(status.AsSpan())[indexOfUInt32];
-
-        //switch (indexOfUInt32 % 4)
-        //{
-        //    case 0:
-        //        return ref status[indexOfUInt32 / 4].u0;
-
-        //    case 1:
-        //        return ref status[indexOfUInt32 / 4].u1;
-
-        //    case 2:
-        //        return ref status[indexOfUInt32 / 4].u2;
-
-        //    //case 3:
-        //    default:
-        //        return ref status[indexOfUInt32 / 4].u3;
-        //}
-    }
-
     // Represents the recursion formula.
     private static void Recurse(ref Union128 r, in Union128 a, in Union128 b, ref Union128 lung)
     {
@@ -331,39 +287,4 @@ public class DoubleMersenneTwister
             r.ul1 = (lung.ul1 >> SR) ^ (lung.ul1 & Msk2) ^ t1;
         }
     }
-}
-
-[StructLayout(LayoutKind.Explicit)]
-[SuppressMessage("Style", "IDE1006:Naming Styles")]
-internal struct Union128
-{
-    [FieldOffset(0)]
-    public double d0;
-
-    [FieldOffset(8)]
-    public double d1;
-
-    [FieldOffset(0)]
-    public uint u0;
-
-    [FieldOffset(4)]
-    public uint u1;
-
-    [FieldOffset(8)]
-    public uint u2;
-
-    [FieldOffset(12)]
-    public uint u3;
-
-    [FieldOffset(0)]
-    public ulong ul0;
-
-    [FieldOffset(8)]
-    public ulong ul1;
-
-    [FieldOffset(0)]
-    public Vector128<ulong> si;
-
-    [ExcludeFromCodeCoverage]
-    public override readonly string ToString() => $"0x{ul1:x}{ul0:x}";
 }
