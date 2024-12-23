@@ -104,7 +104,7 @@ public class DoubleMersenneTwisterTest
     public void Constructor_Test()
     {
         var dfmt = new DoubleMersenneTwister();
-        int value1 = dfmt.Next();
+        uint value1 = dfmt.NextUInt32();
         Assert.IsTrue(value1 >= 0);
         double value2 = dfmt.NextDouble();
         Assert.IsTrue(value2 >= 0 && value2 < 1);

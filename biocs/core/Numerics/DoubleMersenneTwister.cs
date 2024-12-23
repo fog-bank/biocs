@@ -121,21 +121,6 @@ public class DoubleMersenneTwister
     }
 
     /// <summary>
-    /// Returns a non-negative random integer.
-    /// </summary>
-    /// <returns>A 32-bit signed integer.</returns>
-    public int Next()
-    {
-        if (index >= N64)
-        {
-            GenerateRand();
-            index = 0;
-        }
-        ulong ul = MemoryMarshal.Cast<Union128, ulong>(status.AsSpan())[index++] & 0xffffffff;
-        return unchecked((int)ul);
-    }
-
-    /// <summary>
     /// Returns a double-precision pseudorandom number that distributes uniformly in the range [0, 1).
     /// </summary>
     /// <returns>A random floating-point number that is greater than or equal to 0.0, and less than 1.0.</returns>
@@ -151,6 +136,21 @@ public class DoubleMersenneTwister
         r.ul |= 1;
 
         return r.d - 1;
+    }
+
+    /// <summary>
+    /// Returns a non-negative random integer.
+    /// </summary>
+    /// <returns>A 32-bit unsigned integer.</returns>
+    public uint NextUInt32()
+    {
+        if (index >= N64)
+        {
+            GenerateRand();
+            index = 0;
+        }
+        ulong ul = MemoryMarshal.Cast<Union128, ulong>(status.AsSpan())[index++] & 0xffffffff;
+        return (uint)ul;
     }
 
     // Initializes the internal state array to fit the IEEE 754 format.
