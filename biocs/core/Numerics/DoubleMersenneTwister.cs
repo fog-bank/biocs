@@ -14,17 +14,15 @@ public class DoubleMersenneTwister
 {
     private const int Exp = 19937;
     private const int N = (Exp - 128) / 104 + 1;
-    //private const int N32 = N * 4;
     private const int N64 = N * 2;
 
     private readonly Union128[] status = new Union128[N + 1];
     private int index = N64;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="DoubleMersenneTwister"/> class, 
-    /// using a time-dependent default seed value.
+    /// Initializes a new instance of the <see cref="DoubleMersenneTwister"/> class.
     /// </summary>
-    public DoubleMersenneTwister() : this(Environment.TickCount)
+    public DoubleMersenneTwister() : this(unchecked((int)Random.Shared.NextInt64()))
     { }
 
     /// <summary>
@@ -33,14 +31,12 @@ public class DoubleMersenneTwister
     /// <param name="seed">A 32-bit integer used as the seed.</param>
     public DoubleMersenneTwister(int seed)
     {
-        unchecked
-        {
-            var span = MemoryMarshal.Cast<Union128, uint>(status.AsSpan());
-            span[0] = (uint)seed;
+        var span = MemoryMarshal.Cast<Union128, uint>(status.AsSpan());
+        span[0] = unchecked((uint)seed);
 
-            for (int i = 1; i < span.Length; i++)
-                span[i] = 1812433253u * (span[i - 1] ^ (span[i - 1] >> 30)) + (uint)i;
-        }
+        for (int i = 1; i < span.Length; i++)
+            span[i] = unchecked(1812433253u * (span[i - 1] ^ (span[i - 1] >> 30)) + (uint)i);
+
         InitialMask();
         CertificatePeriod();
     }
@@ -149,8 +145,8 @@ public class DoubleMersenneTwister
             GenerateRand();
             index = 0;
         }
-        ulong ul = MemoryMarshal.Cast<Union128, ulong>(status.AsSpan())[index++] & 0xffffffff;
-        return (uint)ul;
+        ulong ul = MemoryMarshal.Cast<Union128, ulong>(status.AsSpan())[index++];
+        return unchecked((uint)ul);
     }
 
     // Initializes the internal state array to fit the IEEE 754 format.

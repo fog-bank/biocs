@@ -11,7 +11,7 @@ internal static class Crc32
         crc ^= 0xffffffff;
 
         for (int i = 0; i < buffer.Length; i++)
-            crc = CrcTable[(crc ^ buffer[i]) & 0xff] ^ (crc >> 8);
+            crc = CrcTable[unchecked((byte)(crc ^ buffer[i]))] ^ (crc >> 8);
 
         return crc ^ 0xffffffff;
     }
