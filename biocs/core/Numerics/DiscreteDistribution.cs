@@ -62,7 +62,7 @@ public class DiscreteDistribution
     public int NextIndex(Random random) => NextIndex(random.NextDouble());
 
     /// <summary>
-    /// 
+    /// Resets the weight or probability of each element to new value.
     /// </summary>
     /// <param name="weights">A array that contains the weight or probability of each element.</param>
     public void Reset(ReadOnlySpan<double> weights)
@@ -83,9 +83,6 @@ public class DiscreteDistribution
 
         double sum = cutoff.Sum();
 
-        if (double.IsNaN(sum) || cutoff.Min() < 0)
-            ThrowHelper.ThrowArgument(null, nameof(weights));
-
         for (int i = 0; i < cutoff.Length; i++)
         {
             double scaledProb = cutoff[i] * cutoff.Length / sum;
@@ -95,6 +92,9 @@ public class DiscreteDistribution
                 under.Push(i);
             else if (scaledProb > 1)
                 over.Push(i);
+
+            if (double.IsNaN(scaledProb) || scaledProb < 0)
+                ThrowHelper.ThrowArgument(null, nameof(weights[i]));
         }
 
         while (under.Count > 0)

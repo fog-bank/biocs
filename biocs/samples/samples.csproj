@@ -23,11 +23,11 @@
 
   <!-- Dependencies -->
   <ItemGroup>
-    <PackageReference Include="ConsoleAppFramework" Version="5.3.3">
+    <PackageReference Include="ConsoleAppFramework" Version="5.3.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.1" />
     <ProjectReference Include="..\core\core.csproj" />
   </ItemGroup>
 

@@ -55,7 +55,6 @@ public class DoubleMersenneTwister
         const int Mid = (Size - Lag) / 2;
 
         //int lag = 0;
-
         //if (size >= 623)
         //    lag = 11;
         //else if (size >= 68)
@@ -64,8 +63,6 @@ public class DoubleMersenneTwister
         //    lag = 5;
         //else
         //    lag = 3;
-
-        //int mid = (size - lag) / 2;
 
         var span = MemoryMarshal.Cast<Union128, uint>(status.AsSpan());
         span.Fill(0x8b8b8b8bu);
