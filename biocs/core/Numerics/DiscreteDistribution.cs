@@ -81,7 +81,7 @@ public class DiscreteDistribution
         under.Clear();
         over.Clear();
 
-        double sum = cutoff.Sum();
+        double sum = DoubleTools.SumKahan(weights);
 
         for (int i = 0; i < cutoff.Length; i++)
         {
@@ -94,7 +94,7 @@ public class DiscreteDistribution
                 over.Push(i);
 
             if (double.IsNaN(scaledProb) || scaledProb < 0)
-                ThrowHelper.ThrowArgument(null, nameof(weights[i]));
+                ThrowHelper.ThrowArgument(null, nameof(weights));
         }
 
         while (under.Count > 0)

@@ -53,7 +53,7 @@ public class SequenceRangeTest
             Assert.IsTrue(range1 >= range2);
 
             Assert.IsTrue(range1.Equals((object)range2));
-            Assert.IsTrue(((IComparable)range1).CompareTo(range2) == 0);
+            Assert.AreEqual(0, ((IComparable)range1).CompareTo(range2));
         }
         {
             var range3 = new SequenceRange(1, 15);

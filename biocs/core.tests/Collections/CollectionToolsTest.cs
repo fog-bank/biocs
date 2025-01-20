@@ -37,7 +37,7 @@ public class CollectionToolsTest
         var src2 = new[] { new object(), null };
         Assert.IsFalse(src2.AllItemsAreEqual());
         Assert.IsFalse(src2.AllItemsAreEqual(null, out object? value2));
-        Assert.AreEqual(null, value2);
+        Assert.IsNull(value2);
 
         src2[1] = src2[0];
         Assert.IsTrue(src2.AllItemsAreEqual());

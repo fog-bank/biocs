@@ -402,7 +402,7 @@ public class DequeTest
         }
 
         (target as ICollection<string?>).Add(null);
-        Assert.AreEqual(null, target.Last);
+        Assert.IsNull(target.Last);
         Assert.AreEqual(12, target.Count);
     }
 
@@ -765,7 +765,7 @@ public class DequeTest
         Assert.IsTrue(target.SequenceEqual(["A", null]));
 
         int i = 0;
-        foreach (object obj in list)
+        foreach (object? obj in list)
         {
             switch (i++)
             {
@@ -774,7 +774,7 @@ public class DequeTest
                     break;
 
                 case 1:
-                    Assert.AreEqual(null, obj);
+                    Assert.IsNull(obj);
                     break;
             }
         }
@@ -792,7 +792,7 @@ public class DequeTest
         Assert.AreEqual(2, target.Count);
         Assert.IsTrue(target.SequenceEqual(["A", "B"]));
         list[1] = null;
-        Assert.AreEqual(null, target[1]);
+        Assert.IsNull(target[1]);
         Assert.ThrowsException<ArgumentException>(() => list[0] = new object());
 
         list.Insert(1, "C");
