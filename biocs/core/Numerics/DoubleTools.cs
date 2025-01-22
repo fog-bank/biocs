@@ -6,9 +6,10 @@
 public static class DoubleTools
 {
     /// <summary>
-    /// Gets the minimum positive number x, such that 1.0 + x != 1.0.
+    /// Gets the difference between 1 and the next larger floating point number.
     /// </summary>
-    public const double Epsilon = 2.2204460492503131e-16;
+    /// <remarks>This value equals to 2^(-52).</remarks>
+    public const double Epsilon = 2.220446049250313e-16;
 
     /// <summary>
     /// Determines if two <see cref="double"/> values are close to each other.
@@ -16,13 +17,26 @@ public static class DoubleTools
     /// <param name="one">The first value to compare.</param>
     /// <param name="other">The second value to compare.</param>
     /// <returns><see langword="true"/> if the values are close, <see langword="false"/> if they are not.</returns>
-    public static bool AreClose(double one, double other)
+    public static bool AreClose(double one, double other) => AreClose(one, other, Epsilon * 10);
+
+    /// <summary>
+    /// Determines if two <see cref="double"/> values are close to each other under the specified tolerance.
+    /// </summary>
+    /// <param name="one">The first value to compare.</param>
+    /// <param name="other">The second value to compare.</param>
+    /// <param name="epsilon">The required accuracy.</param>
+    /// <returns><see langword="true"/> if the values are close, <see langword="false"/> if they are not.</returns>
+    public static bool AreClose(double one, double other, double epsilon)
     {
         if (one == other)
             return true;
 
-        return Math.Abs(one - other) < (Math.Abs(one) + Math.Abs(other) + 10) * Epsilon;
+        if (epsilon < 0)
+            epsilon = -epsilon;
+
+        return Math.Abs(one - other) <= Math.Max(epsilon, Math.Max(Math.Abs(one), Math.Abs(other)) * epsilon);
     }
+
 
     /// <summary>
     /// Computes the sum of a sequence of <see cref="double"/> values using the second-order iterative Kahan–Babuška algorithm.
