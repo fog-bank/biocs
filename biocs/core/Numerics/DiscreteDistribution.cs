@@ -62,7 +62,7 @@ public class DiscreteDistribution
     public int NextIndex(Random random) => NextIndex(random.NextDouble());
 
     /// <summary>
-    /// Resets the weight or probability of each element to new value.
+    /// Resets the weight or probability of each element to new values.
     /// </summary>
     /// <param name="weights">A array that contains the weight or probability of each element.</param>
     public void Reset(ReadOnlySpan<double> weights)

@@ -9,11 +9,13 @@ public class DiscreteDistributionTest
     public void InitTest()
     {
         double[] prob = [0.17, 0.02, 0.15, 0.01, 0.04, 0.25, 0.05, 0.03, 0.20, 0.08];
-        int n = prob.Length;
         var dist = new DiscreteDistribution(prob);
         var proxy = new Proxy(dist);
 
-        var sum = new double[n];
+        Assert.AreEqual(prob.Length, proxy.Cutoff.Length);
+        Assert.AreEqual(prob.Length, proxy.Alias.Length);
+
+        var sum = new double[prob.Length];
 
         for (int i = 0; i < sum.Length; i++)
         {
@@ -28,10 +30,10 @@ public class DiscreteDistributionTest
                 sum[i] += 1;
         }
 
-        Assert.AreEqual(n, sum.Sum());
+        Assert.AreEqual(prob.Length, sum.Sum());
 
         for (int i = 0; i < prob.Length; i++)
-            Assert.AreEqual(prob[i] * prob.Length, sum[i], 1e-15);
+            Assert.AreEqual(prob[i], sum[i] / prob.Length, 1e-15);
     }
 
     private class Proxy(DiscreteDistribution target)
