@@ -35,11 +35,11 @@ public class ReadOnlyCollectionTest
         wrapperNonGeneric.CopyTo(copy, 0);
         CollectionAssert.AreEqual(array, copy);
 
-        Assert.ThrowsException<ArgumentNullException>(() => CollectionTools.AsReadOnly<object>(null!));
-        Assert.ThrowsException<NotSupportedException>(() => wrapperGeneric.Add(0));
-        Assert.ThrowsException<NotSupportedException>(() => wrapperGeneric.Remove(0));
-        Assert.ThrowsException<NotSupportedException>(wrapperGeneric.Clear);
-        Assert.ThrowsException<ArgumentNullException>(() => wrapperNonGeneric.CopyTo(null!, 0));
-        Assert.ThrowsException<ArgumentException>(() => wrapperNonGeneric.CopyTo(new string[1], 0));
+        Assert.Throws<ArgumentNullException>(() => CollectionTools.AsReadOnly<object>(null!));
+        Assert.Throws<NotSupportedException>(() => wrapperGeneric.Add(0));
+        Assert.Throws<NotSupportedException>(() => wrapperGeneric.Remove(0));
+        Assert.Throws<NotSupportedException>(wrapperGeneric.Clear);
+        Assert.Throws<ArgumentNullException>(() => wrapperNonGeneric.CopyTo(null!, 0));
+        Assert.Throws<ArgumentException>(() => wrapperNonGeneric.CopyTo(new string[1], 0));
     }
 }

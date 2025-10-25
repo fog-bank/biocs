@@ -28,8 +28,8 @@ public class SequenceRangeTest
         range = new();
         Assert.IsTrue(range.IsDefault);
 
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => new SequenceRange(10, 1));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => new SequenceRange(0));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new SequenceRange(10, 1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new SequenceRange(0));
     }
 
     [TestMethod]
@@ -38,7 +38,7 @@ public class SequenceRangeTest
         var range1 = new SequenceRange(10, 20);
         Assert.IsFalse(range1.Equals(null));
         Assert.IsTrue(((IComparable)range1).CompareTo(null) > 0);
-        Assert.ThrowsException<ArgumentException>(() => ((IComparable)range1).CompareTo(new object()));
+        Assert.Throws<ArgumentException>(() => ((IComparable)range1).CompareTo(new object()));
         {
             var range2 = new SequenceRange(10, 20);
             Assert.IsTrue(range1.Equals(range2));
@@ -129,12 +129,12 @@ public class SequenceRangeTest
         ParseTestCore("123^124", new(123, 124));
 
         // Wrong format
-        Assert.ThrowsException<FormatException>(() => SequenceRange.Parse(string.Empty));
-        Assert.ThrowsException<FormatException>(() => SequenceRange.Parse("-3"));
-        Assert.ThrowsException<FormatException>(() => SequenceRange.Parse("x..5"));
-        Assert.ThrowsException<FormatException>(() => SequenceRange.Parse("10..y"));
-        Assert.ThrowsException<FormatException>(() => SequenceRange.Parse("20..2"));
-        Assert.ThrowsException<FormatException>(() => SequenceRange.Parse("1..3..5"));
+        Assert.Throws<FormatException>(() => SequenceRange.Parse(string.Empty));
+        Assert.Throws<FormatException>(() => SequenceRange.Parse("-3"));
+        Assert.Throws<FormatException>(() => SequenceRange.Parse("x..5"));
+        Assert.Throws<FormatException>(() => SequenceRange.Parse("10..y"));
+        Assert.Throws<FormatException>(() => SequenceRange.Parse("20..2"));
+        Assert.Throws<FormatException>(() => SequenceRange.Parse("1..3..5"));
     }
 
     private static void ParseTestCore(ReadOnlySpan<char> span, SequenceRange expected)

@@ -62,7 +62,7 @@ public class LocationTest
         loc1.UnionWith(range10);
         AssertRanges(loc1, [merge3]);
 
-        Assert.ThrowsException<ArgumentNullException>(() => loc1.UnionWith(null!));
+        Assert.Throws<ArgumentNullException>(() => loc1.UnionWith(null!));
     }
 
     [TestMethod]
@@ -115,7 +115,7 @@ public class LocationTest
         loc3.IntersectWith(default(SequenceRange));
         AssertRanges(loc3, []);
 
-        Assert.ThrowsException<ArgumentNullException>(() => loc1.IntersectWith(null!));
+        Assert.Throws<ArgumentNullException>(() => loc1.IntersectWith(null!));
     }
 
     [TestMethod]
@@ -182,7 +182,7 @@ public class LocationTest
         loc.ExceptWith(loc4);
         AssertRanges(loc, []);
 
-        Assert.ThrowsException<ArgumentNullException>(() => loc.ExceptWith(null!));
+        Assert.Throws<ArgumentNullException>(() => loc.ExceptWith(null!));
     }
 
     [TestMethod]
@@ -310,7 +310,7 @@ public class LocationTest
         AssertRanges(result, [new(100, 202)]);
         Assert.AreEqual("J00194.1", result.SequenceName);
 
-        Assert.ThrowsException<FormatException>(() => Location.Parse(default));
+        Assert.Throws<FormatException>(() => Location.Parse(default));
     }
 
     private static void AssertRanges(Location loc, IReadOnlyCollection<SequenceRange> ranges)

@@ -51,6 +51,6 @@ public class CollectionToolsTest
         Assert.IsTrue(src3.AllItemsAreEqual(StringComparer.OrdinalIgnoreCase, out string? value3));
         Assert.AreEqual("ABC", value3);
 
-        Assert.ThrowsException<ArgumentNullException>(() => ((IEnumerable<object>)null!).AllItemsAreEqual());
+        Assert.Throws<ArgumentNullException>(() => ((IEnumerable<object>)null!).AllItemsAreEqual());
     }
 }

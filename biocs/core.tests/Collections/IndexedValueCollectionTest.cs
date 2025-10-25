@@ -51,9 +51,12 @@ public class IndexedValueCollectionTest
             foreach (object value in list)
                 Assert.AreEqual(expected[i++], value);
         }
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+#pragma warning disable MSTEST0037 // Use proper 'Assert' methods
         Assert.IsTrue(list.Contains("a"));
         Assert.IsTrue(list.Contains(null));
         Assert.IsFalse(list.Contains(0));
+#pragma warning restore IDE0079,MSTEST0037
 
         Assert.AreEqual(1, list.IndexOf("a"));
         Assert.AreEqual(2, list.IndexOf(null));
@@ -72,34 +75,34 @@ public class IndexedValueCollectionTest
         var genericList = empty as IList<int>;
         var list = empty as IList;
 
-        Assert.ThrowsException<ArgumentNullException>(() => new IndexedValueCollection<int, int>(null!, []));
-        Assert.ThrowsException<ArgumentNullException>(() => new IndexedValueCollection<int, int>(map, null!));
+        Assert.Throws<ArgumentNullException>(() => new IndexedValueCollection<int, int>(null!, []));
+        Assert.Throws<ArgumentNullException>(() => new IndexedValueCollection<int, int>(map, null!));
 
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => empty[-1]);
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => empty[1]);
+        Assert.Throws<ArgumentOutOfRangeException>(() => empty[-1]);
+        Assert.Throws<ArgumentOutOfRangeException>(() => empty[1]);
 
-        Assert.ThrowsException<ArgumentNullException>(() => empty.CopyTo(null!, 0));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => empty.CopyTo([], -1));
-        Assert.ThrowsException<ArgumentException>(() => empty.CopyTo([], 0));
+        Assert.Throws<ArgumentNullException>(() => empty.CopyTo(null!, 0));
+        Assert.Throws<ArgumentOutOfRangeException>(() => empty.CopyTo([], -1));
+        Assert.Throws<ArgumentException>(() => empty.CopyTo([], 0));
 
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => empty.TryGetValue(-1, out _));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => empty.TryGetValue(1, out _));
+        Assert.Throws<ArgumentOutOfRangeException>(() => empty.TryGetValue(-1, out _));
+        Assert.Throws<ArgumentOutOfRangeException>(() => empty.TryGetValue(1, out _));
 
-        Assert.ThrowsException<NotSupportedException>(() => genericList[0] = 0);
-        Assert.ThrowsException<NotSupportedException>(() => list[0] = 0);
-        Assert.ThrowsException<NotSupportedException>(() => genericList.Add(0));
-        Assert.ThrowsException<NotSupportedException>(() => list.Add(0));
-        Assert.ThrowsException<NotSupportedException>(() => genericList.Insert(0, 0));
-        Assert.ThrowsException<NotSupportedException>(() => list.Insert(0, 0));
-        Assert.ThrowsException<NotSupportedException>(() => genericList.Remove(0));
-        Assert.ThrowsException<NotSupportedException>(() => list.Remove(0));
-        Assert.ThrowsException<NotSupportedException>(() => genericList.RemoveAt(0));
-        Assert.ThrowsException<NotSupportedException>(() => list.RemoveAt(0));
-        Assert.ThrowsException<NotSupportedException>(genericList.Clear);
-        Assert.ThrowsException<NotSupportedException>(list.Clear);
+        Assert.Throws<NotSupportedException>(() => genericList[0] = 0);
+        Assert.Throws<NotSupportedException>(() => list[0] = 0);
+        Assert.Throws<NotSupportedException>(() => genericList.Add(0));
+        Assert.Throws<NotSupportedException>(() => list.Add(0));
+        Assert.Throws<NotSupportedException>(() => genericList.Insert(0, 0));
+        Assert.Throws<NotSupportedException>(() => list.Insert(0, 0));
+        Assert.Throws<NotSupportedException>(() => genericList.Remove(0));
+        Assert.Throws<NotSupportedException>(() => list.Remove(0));
+        Assert.Throws<NotSupportedException>(() => genericList.RemoveAt(0));
+        Assert.Throws<NotSupportedException>(() => list.RemoveAt(0));
+        Assert.Throws<NotSupportedException>(genericList.Clear);
+        Assert.Throws<NotSupportedException>(list.Clear);
 
-        Assert.ThrowsException<ArgumentNullException>(() => list.CopyTo(null!, 0));
-        Assert.ThrowsException<ArgumentException>(() => list.CopyTo(new string[1], 0));
+        Assert.Throws<ArgumentNullException>(() => list.CopyTo(null!, 0));
+        Assert.Throws<ArgumentException>(() => list.CopyTo(new string[1], 0));
     }
 
     private static (IndexedValueCollection<T, T>, T?[]) Test<T>(Dictionary<T, T> map, T[] keys, T notContainedValue)

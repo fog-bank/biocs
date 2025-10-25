@@ -20,8 +20,8 @@ public class CounterTest
         var c4 = new Counter<string>(10, comparer4);
         TestProperties(c4, 0, 0, new HashSet<string>(comparer4), [], comparer4);
 
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Counter<object>(-1));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Counter<object>(-1, null));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new Counter<object>(-1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new Counter<object>(-1, null));
     }
 
     [TestMethod]
@@ -43,7 +43,7 @@ public class CounterTest
         TestItem(clone, 1, 2);
         TestItem(clone, 0, 1);
 
-        Assert.ThrowsException<ArgumentNullException>(() => new Counter<object>((Counter<object>)null!));
+        Assert.Throws<ArgumentNullException>(() => new Counter<object>((Counter<object>)null!));
     }
 
     [TestMethod]
@@ -105,9 +105,9 @@ public class CounterTest
 
         TestProperties(counter, Count, Count, new HashSet<int>(query), query.ToArray(), EqualityComparer<int>.Default);
 
-        Assert.ThrowsException<ArgumentNullException>(() => counter.CopyTo(null!, 0));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => counter.CopyTo(new int[Count], -1));
-        Assert.ThrowsException<ArgumentException>(() => counter.CopyTo(new int[Count], 3));
+        Assert.Throws<ArgumentNullException>(() => counter.CopyTo(null!, 0));
+        Assert.Throws<ArgumentOutOfRangeException>(() => counter.CopyTo(new int[Count], -1));
+        Assert.Throws<ArgumentException>(() => counter.CopyTo(new int[Count], 3));
     }
 
     [TestMethod]
@@ -156,7 +156,7 @@ public class CounterTest
         TestItem(counter, 2, 2);
         TestItem(counter, 3, 0);
 
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Counter<int>().Add(0, -1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new Counter<int>().Add(0, -1));
     }
 
     [TestMethod]
@@ -205,7 +205,7 @@ public class CounterTest
         TestItem(counter, "B", 2);
         TestItem(counter, "C", 0);
 
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Counter<string>().Add(string.Empty, -1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new Counter<string>().Add(string.Empty, -1));
     }
 
     [TestMethod]
@@ -230,7 +230,7 @@ public class CounterTest
         for (int i = 0; i < items.Length; i++)
             TestItem(counter, items[i], i + 1);
 
-        Assert.ThrowsException<ArgumentNullException>(() => new Counter<object>().AddRange(null!));
+        Assert.Throws<ArgumentNullException>(() => new Counter<object>().AddRange(null!));
     }
 
     [TestMethod]
@@ -278,7 +278,7 @@ public class CounterTest
         TestProperties(counter, 4, 3, set, [.. items], comparer);
         TestItem(counter, 4, null);
 
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => counter.Remove(0, -1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => counter.Remove(0, -1));
     }
 
     [TestMethod]

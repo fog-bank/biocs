@@ -5,6 +5,8 @@ namespace Biocs.IO;
 [TestClass]
 public class BgzfStreamTest
 {
+    public TestContext TestContext { get; set; }
+
     private string PathRawFile { get; } = Path.Combine("Deployments", "ce.sam");
 
     private string PathGzFile { get; } = Path.Combine("Deployments", "ce.sam.gz");
@@ -21,19 +23,19 @@ public class BgzfStreamTest
     [TestMethod]
     public void Constructor_Test()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => new BgzfStream(null!, CompressionMode.Decompress));
-        Assert.ThrowsException<ArgumentNullException>(() => new BgzfStream(null!, CompressionLevel.Optimal));
-        Assert.ThrowsException<ArgumentException>(() => new BgzfStream(Stream.Null, (CompressionMode)1000));
-        Assert.ThrowsException<ArgumentException>(() => new BgzfStream(Stream.Null, (CompressionLevel)1000));
+        Assert.Throws<ArgumentNullException>(() => new BgzfStream(null!, CompressionMode.Decompress));
+        Assert.Throws<ArgumentNullException>(() => new BgzfStream(null!, CompressionLevel.Optimal));
+        Assert.Throws<ArgumentException>(() => new BgzfStream(Stream.Null, (CompressionMode)1000));
+        Assert.Throws<ArgumentException>(() => new BgzfStream(Stream.Null, (CompressionLevel)1000));
 
         using var gz = new BgzfStream(Stream.Null, CompressionMode.Compress);
         Assert.IsFalse(gz.CanRead);
         Assert.IsFalse(gz.CanSeek);
-        Assert.ThrowsException<NotSupportedException>(() => gz.Length);
-        Assert.ThrowsException<NotSupportedException>(() => gz.Position);
-        Assert.ThrowsException<NotSupportedException>(() => gz.Position = 0);
-        Assert.ThrowsException<NotSupportedException>(() => gz.Seek(0, SeekOrigin.Begin));
-        Assert.ThrowsException<NotSupportedException>(() => gz.SetLength(0));
+        Assert.Throws<NotSupportedException>(() => gz.Length);
+        Assert.Throws<NotSupportedException>(() => gz.Position);
+        Assert.Throws<NotSupportedException>(() => gz.Position = 0);
+        Assert.Throws<NotSupportedException>(() => gz.Seek(0, SeekOrigin.Begin));
+        Assert.Throws<NotSupportedException>(() => gz.SetLength(0));
     }
 
     [TestMethod]
@@ -84,12 +86,12 @@ public class BgzfStreamTest
 
             for (; offset + Count <= actual.Length; offset += Count)
             {
-                bytes = await gz.ReadAsync(actual.AsMemory(offset, Count));
+                bytes = await gz.ReadAsync(actual.AsMemory(offset, Count), TestContext.CancellationToken);
                 Assert.AreEqual(Count, bytes);
             }
 
             var buffer = new byte[Count];
-            bytes = await gz.ReadAsync(buffer.AsMemory(0, buffer.Length));
+            bytes = await gz.ReadAsync(buffer.AsMemory(0, buffer.Length), TestContext.CancellationToken);
 
             Assert.AreEqual(actual.Length - offset, bytes);
             Assert.AreEqual(-1, gz.ReadByte());
@@ -130,7 +132,7 @@ public class BgzfStreamTest
     [TestMethod]
     public void Write_TestWithSingleBlock()
     {
-        byte[] data = "122333444455555".Select(x => (byte)x).ToArray();
+        byte[] data = [.. "122333444455555".Select(x => (byte)x)];
 
         using var ms = new MemoryStream();
 

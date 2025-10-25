@@ -20,7 +20,7 @@ public class DequeTest
         Assert.AreEqual(Capacity, target.Capacity);
         Assert.IsFalse((target as ICollection<string>).IsReadOnly);
 
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Deque<object>(-4));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new Deque<object>(-4));
 
         // ICollection<T>
         object[] emptyArray = [];
@@ -36,7 +36,7 @@ public class DequeTest
         Assert.AreEqual(0, new Deque<int>(Range(0)).Count);
         Assert.AreEqual(Count, new Deque<int>(Range(Count)).Count);
 
-        Assert.ThrowsException<ArgumentNullException>(() => new Deque<object>(null!));
+        Assert.Throws<ArgumentNullException>(() => new Deque<object>(null!));
 
         static IEnumerable<int> Range(int count)
         {
@@ -61,10 +61,10 @@ public class DequeTest
             Assert.AreEqual(i + 100, target[i]);
         }
 
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target[-1]);
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target[Count]);
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target[-1] = 0);
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target[Count] = 0);
+        Assert.Throws<ArgumentOutOfRangeException>(() => target[-1]);
+        Assert.Throws<ArgumentOutOfRangeException>(() => target[Count]);
+        Assert.Throws<ArgumentOutOfRangeException>(() => target[-1] = 0);
+        Assert.Throws<ArgumentOutOfRangeException>(() => target[Count] = 0);
     }
 
     [TestMethod]
@@ -110,7 +110,7 @@ public class DequeTest
         Assert.AreEqual(compare.First(), target.First);
         Assert.AreEqual(compare.Last(), target.Last);
 
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.Capacity = 5);
+        Assert.Throws<ArgumentOutOfRangeException>(() => target.Capacity = 5);
     }
 
     [TestMethod]
@@ -124,8 +124,8 @@ public class DequeTest
         target.First = 8;
         Assert.AreEqual(8, target.First);
 
-        Assert.ThrowsException<InvalidOperationException>(() => new Deque<object>().First);
-        Assert.ThrowsException<InvalidOperationException>(() => new Deque<object>().First = null!);
+        Assert.Throws<InvalidOperationException>(() => new Deque<object>().First);
+        Assert.Throws<InvalidOperationException>(() => new Deque<object>().First = null!);
     }
 
     [TestMethod]
@@ -139,118 +139,58 @@ public class DequeTest
         target.Last = 8;
         Assert.AreEqual(8, target.Last);
 
-        Assert.ThrowsException<InvalidOperationException>(() => new Deque<object>().Last);
-        Assert.ThrowsException<InvalidOperationException>(() => new Deque<object>().Last = null!);
+        Assert.Throws<InvalidOperationException>(() => new Deque<object>().Last);
+        Assert.Throws<InvalidOperationException>(() => new Deque<object>().Last = null!);
     }
 
     [TestMethod]
     public void GetEnumerator_Test()
     {
         var query = Enumerable.Range(0, 4);
+        var target = new Deque<int>(query);
+        Assert.IsTrue(query.SequenceEqual(target));
+
+        var enumerator = (target as IEnumerable).GetEnumerator();
+
+        for (int i = 0; i < 4; i++)
         {
-            var target = new Deque<int>(query);
-            Assert.IsTrue(query.SequenceEqual(target));
-
-            var enumerator = (target as IEnumerable).GetEnumerator();
-
-            for (int i = 0; i < 4; i++)
-            {
-                Assert.IsTrue(enumerator.MoveNext());
-                Assert.AreEqual(i, enumerator.Current);
-            }
-            Assert.IsFalse(enumerator.MoveNext());
+            Assert.IsTrue(enumerator.MoveNext());
+            Assert.AreEqual(i, enumerator.Current);
         }
+        Assert.IsFalse(enumerator.MoveNext());
 
-        Assert.ThrowsException<InvalidOperationException>(() =>
-        {
-            var target = new Deque<int>(query);
+        target = new Deque<int>(query);
+        Assert.Throws<InvalidOperationException>(() => ForEach(target, () => target.Capacity *= 2));
 
-            foreach (int item in target)
-                target.Capacity *= 2;
-        });
+        target = new Deque<int>(query);
+        Assert.Throws<InvalidOperationException>(() => ForEach(target, () => target.AddFirst(0)));
 
-        Assert.ThrowsException<InvalidOperationException>(() =>
-        {
-            var target = new Deque<int>(query);
+        target = new Deque<int>(query);
+        Assert.Throws<InvalidOperationException>(() => ForEach(target, () => target.AddLast(0)));
 
-            foreach (int item in target)
-                target.AddFirst(item);
-        });
+        target = new Deque<int>(query);
+        Assert.Throws<InvalidOperationException>(() => ForEach(target, () => target.Insert(0, 0)));
 
-        Assert.ThrowsException<InvalidOperationException>(() =>
-        {
-            var target = new Deque<int>(query);
+        target = new Deque<int>(query);
+        Assert.Throws<InvalidOperationException>(() => ForEach(target, () => target.InsertRange(0, [0])));
 
-            foreach (int item in target)
-                target.AddLast(item);
-        });
+        target = new Deque<int>(query);
+        Assert.Throws<InvalidOperationException>(() => ForEach(target, target.RemoveFirst));
 
-        Assert.ThrowsException<InvalidOperationException>(() =>
-        {
-            var target = new Deque<int>(query);
+        target = new Deque<int>(query);
+        Assert.Throws<InvalidOperationException>(() => ForEach(target, target.RemoveLast));
 
-            foreach (int item in target)
-                target.Insert(0, item);
-        });
+        target = new Deque<int>(query);
+        Assert.Throws<InvalidOperationException>(() => ForEach(target, () => target.Remove(0)));
 
-        Assert.ThrowsException<InvalidOperationException>(() =>
-        {
-            var target = new Deque<int>(query);
+        target = new Deque<int>(query);
+        Assert.Throws<InvalidOperationException>(() => ForEach(target, () => target.RemoveAt(0)));
 
-            foreach (int item in target)
-                target.InsertRange(0, [item]);
-        });
+        target = new Deque<int>(query);
+        Assert.Throws<InvalidOperationException>(() => ForEach(target, () => target.RemoveRange(0, 1)));
 
-        Assert.ThrowsException<InvalidOperationException>(() =>
-        {
-            var target = new Deque<int>(query);
-
-            foreach (int item in target)
-                target.RemoveFirst();
-        });
-
-        Assert.ThrowsException<InvalidOperationException>(() =>
-        {
-            var target = new Deque<int>(query);
-
-            foreach (int item in target)
-                target.RemoveLast();
-        });
-
-        Assert.ThrowsException<InvalidOperationException>(() =>
-        {
-            var target = new Deque<int>(query);
-
-            foreach (int item in target)
-                target.Remove(item);
-        });
-
-        Assert.ThrowsException<InvalidOperationException>(() =>
-        {
-            var target = new Deque<int>(query);
-
-            foreach (int item in target)
-                target.RemoveAt(0);
-        });
-
-        Assert.ThrowsException<InvalidOperationException>(() =>
-        {
-            var target = new Deque<int>(query);
-
-            foreach (int item in target)
-                target.RemoveRange(1, 2);
-        });
-
-        Assert.ThrowsException<InvalidOperationException>(() =>
-        {
-            var target = new Deque<int>(query);
-
-            foreach (int item in target)
-            {
-                if (item == target.Last)
-                    target.Clear();
-            }
-        });
+        target = new Deque<int>(query);
+        Assert.Throws<InvalidOperationException>(() => ForEach(target, target.Clear));
     }
 
     [TestMethod]
@@ -271,9 +211,9 @@ public class DequeTest
             Assert.IsTrue(query.SequenceEqual(array.Skip(1).Take(Count)));
             Assert.AreEqual(0, array.Last());
 
-            Assert.ThrowsException<ArgumentNullException>(() => target.CopyTo(null!, 0));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.CopyTo(array, -1));
-            Assert.ThrowsException<ArgumentException>(() => target.CopyTo(array, array.Length - Count + 1));
+            Assert.Throws<ArgumentNullException>(() => target.CopyTo(null!, 0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => target.CopyTo(array, -1));
+            Assert.Throws<ArgumentException>(() => target.CopyTo(array, array.Length - Count + 1));
         }
         {
             var array2 = new int[Count2 + 2];
@@ -283,10 +223,10 @@ public class DequeTest
             Assert.IsTrue(Enumerable.Range(Start + Index, Count2).SequenceEqual(array2.Skip(1).Take(Count2)));
             Assert.AreEqual(0, array2.Last());
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.CopyTo(-1, array2.AsSpan(), 0));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.CopyTo(0, array2.AsSpan(), -1));
-            Assert.ThrowsException<ArgumentException>(() => target.CopyTo(Count - 1, array2.AsSpan(), 2));
-            Assert.ThrowsException<ArgumentException>(() => target.CopyTo(0, default, 2));
+            Assert.Throws<ArgumentOutOfRangeException>(() => target.CopyTo(-1, array2.AsSpan(), 0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => target.CopyTo(0, array2.AsSpan(), -1));
+            Assert.Throws<ArgumentException>(() => target.CopyTo(Count - 1, array2.AsSpan(), 2));
+            Assert.Throws<ArgumentException>(() => target.CopyTo(0, default, 2));
         }
     }
 
@@ -452,7 +392,7 @@ public class DequeTest
         // Call EnsureSpaceAndInsert
         Insert(target, compare, 4, ++count);
 
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.Insert(-1, 0));
+        Assert.Throws<ArgumentOutOfRangeException>(() => target.Insert(-1, 0));
     }
 
     [TestMethod]
@@ -493,7 +433,7 @@ public class DequeTest
         // [8, +, 7, 6, 0, 1, 2, 3, 4, 5, 9, 10]
         Insert(target, compare, 8, ++count);
 
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.Insert(count + 1, 0));
+        Assert.Throws<ArgumentOutOfRangeException>(() => target.Insert(count + 1, 0));
     }
 
     [TestMethod]
@@ -554,9 +494,9 @@ public class DequeTest
 
         InsertRange(target, compare, 0, []);
 
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.InsertRange(-1, []));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.InsertRange(target.Count + 1, []));
-        Assert.ThrowsException<ArgumentNullException>(() => target.InsertRange(0, null!));
+        Assert.Throws<ArgumentOutOfRangeException>(() => target.InsertRange(-1, []));
+        Assert.Throws<ArgumentOutOfRangeException>(() => target.InsertRange(target.Count + 1, []));
+        Assert.Throws<ArgumentNullException>(() => target.InsertRange(0, null!));
     }
 
     [TestMethod]
@@ -582,7 +522,7 @@ public class DequeTest
         Assert.AreEqual(0, target.Count);
 
         target.Clear();
-        Assert.ThrowsException<InvalidOperationException>(target.RemoveFirst);
+        Assert.Throws<InvalidOperationException>(target.RemoveFirst);
     }
 
     [TestMethod]
@@ -608,7 +548,7 @@ public class DequeTest
         Assert.AreEqual(0, target.Count);
 
         target.Clear();
-        Assert.ThrowsException<InvalidOperationException>(target.RemoveLast);
+        Assert.Throws<InvalidOperationException>(target.RemoveLast);
 
         var target2 = new Deque<string>();
         target2.AddLast("1");
@@ -640,8 +580,8 @@ public class DequeTest
         // Call RemoveLast
         RemoveAt(target, compare, target.Count - 1);
 
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.RemoveAt(-1));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.RemoveAt(target.Count));
+        Assert.Throws<ArgumentOutOfRangeException>(() => target.RemoveAt(-1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => target.RemoveAt(target.Count));
     }
 
     [TestMethod]
@@ -695,9 +635,9 @@ public class DequeTest
 
         RemoveRange(target, compare, 2, 7);
 
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.RemoveRange(-1, 0));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => target.RemoveRange(0, -1));
-        Assert.ThrowsException<ArgumentException>(() => new Deque<int>(Enumerable.Range(0, 10)).RemoveRange(8, 10));
+        Assert.Throws<ArgumentOutOfRangeException>(() => target.RemoveRange(-1, 0));
+        Assert.Throws<ArgumentOutOfRangeException>(() => target.RemoveRange(0, -1));
+        Assert.Throws<ArgumentException>(static () => new Deque<int>(Enumerable.Range(0, 10)).RemoveRange(8, 10));
 
         var target2 = new Deque<string>(6);
         target2.AddLast("3");
@@ -737,7 +677,7 @@ public class DequeTest
 
         target.Clear();
         Assert.AreEqual(0, target.Count);
-        Assert.ThrowsException<InvalidOperationException>(() => target.First);
+        Assert.Throws<InvalidOperationException>(() => target.First);
 
         var target2 = new Deque<string>(4);
         target2.AddLast("2");
@@ -780,10 +720,10 @@ public class DequeTest
         }
 
         var array = new[] { null, null, new object(), null };
-        Assert.ThrowsException<ArgumentNullException>(() => list.CopyTo(null!, 0));
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => list.CopyTo(array, -1));
-        Assert.ThrowsException<ArgumentException>(() => list.CopyTo(array, 3));
-        Assert.ThrowsException<ArgumentException>(() => list.CopyTo(new int[2], 0));
+        Assert.Throws<ArgumentNullException>(() => list.CopyTo(null!, 0));
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.CopyTo(array, -1));
+        Assert.Throws<ArgumentException>(() => list.CopyTo(array, 3));
+        Assert.Throws<ArgumentException>(() => list.CopyTo(new int[2], 0));
         list.CopyTo(array, 1);
         Assert.IsTrue(array.SequenceEqual([null, "A", null, null]));
 
@@ -793,14 +733,14 @@ public class DequeTest
         Assert.IsTrue(target.SequenceEqual(["A", "B"]));
         list[1] = null;
         Assert.IsNull(target[1]);
-        Assert.ThrowsException<ArgumentException>(() => list[0] = new object());
+        Assert.Throws<ArgumentException>(() => list[0] = new object());
 
         list.Insert(1, "C");
         list.Insert(1, null);
         list.Insert(2, "D");
         Assert.AreEqual(5, target.Count);
         Assert.IsTrue(target.SequenceEqual(["A", null, "D", "C", null]));
-        Assert.ThrowsException<ArgumentException>(() => list.Insert(0, new object()));
+        Assert.Throws<ArgumentException>(() => list.Insert(0, new object()));
 
         list.Remove("D");
         list.Remove(null);
@@ -812,9 +752,12 @@ public class DequeTest
         Assert.AreEqual(2, list.IndexOf(null));
         Assert.AreEqual(-1, list.IndexOf(new object()));
 
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+#pragma warning disable MSTEST0037 // Use proper 'Assert' methods
         Assert.IsTrue(list.Contains("A"));
         Assert.IsTrue(list.Contains(null));
         Assert.IsFalse(list.Contains(new object()));
+#pragma warning restore IDE0079,MSTEST0037
 
         list.CopyTo(array, 0);
         Assert.IsTrue(array.SequenceEqual(["A", "C", null, null]));
@@ -874,5 +817,11 @@ public class DequeTest
             Assert.AreEqual(compare.First(), target.First);
             Assert.AreEqual(compare.Last(), target.Last);
         }
+    }
+
+    private static void ForEach<T>(Deque<T> target, Action action)
+    {
+        foreach (var _ in target)
+            action();
     }
 }
