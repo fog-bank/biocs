@@ -37,7 +37,7 @@ public class SequenceRangeTest
     {
         var range1 = new SequenceRange(10, 20);
         Assert.IsFalse(range1.Equals(null));
-        Assert.IsTrue(((IComparable)range1).CompareTo(null) > 0);
+        Assert.IsGreaterThan(0, ((IComparable)range1).CompareTo(null));
         Assert.Throws<ArgumentException>(() => ((IComparable)range1).CompareTo(new object()));
         {
             var range2 = new SequenceRange(10, 20);
@@ -58,21 +58,21 @@ public class SequenceRangeTest
         {
             var range3 = new SequenceRange(1, 15);
             Assert.IsFalse(range1.Equals(range3));
-            Assert.IsTrue(range1.CompareTo(range3) > 0);
+            Assert.IsGreaterThan(0, range1.CompareTo(range3));
             Assert.IsTrue(range1 > range3);
             Assert.IsFalse(range1 <= range3);
         }
         {
             var range4 = new SequenceRange(10, 30);
             Assert.IsFalse(range1.Equals(range4));
-            Assert.IsTrue(range1.CompareTo(range4) < 0);
+            Assert.IsLessThan(0, range1.CompareTo(range4));
             Assert.IsTrue(range1 < range4);
             Assert.IsFalse(range1 >= range4);
         }
         {
             var range5 = new SequenceRange(20, 40);
             Assert.IsFalse(range1.Equals(range5));
-            Assert.IsTrue(range1.CompareTo(range5) < 0);
+            Assert.IsLessThan(0, range1.CompareTo(range5));
             Assert.IsTrue(range1 < range5);
             Assert.IsFalse(range1 >= range5);
         }

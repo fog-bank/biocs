@@ -12,8 +12,8 @@ public class DiscreteDistributionTest
         var dist = new DiscreteDistribution(prob);
         var proxy = new Proxy(dist);
 
-        Assert.AreEqual(prob.Length, proxy.Cutoff.Length);
-        Assert.AreEqual(prob.Length, proxy.Alias.Length);
+        Assert.HasCount(prob.Length, proxy.Cutoff);
+        Assert.HasCount(prob.Length, proxy.Alias);
 
         var sum = new double[prob.Length];
 

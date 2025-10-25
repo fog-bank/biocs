@@ -86,7 +86,7 @@ public class CounterTest
         foreach (int num in query)
             counter.Add(num);
 
-        TestProperties(counter, Count, Count, new HashSet<int>(query), query.ToArray(), EqualityComparer<int>.Default);
+        TestProperties(counter, Count, Count, [.. query], [.. query], EqualityComparer<int>.Default);
 
         var array = new int[10];
 
@@ -103,7 +103,7 @@ public class CounterTest
         for (int i = StartIndex + Count; i < array.Length; i++)
             Assert.AreEqual(DefaultValue, array[i]);
 
-        TestProperties(counter, Count, Count, new HashSet<int>(query), query.ToArray(), EqualityComparer<int>.Default);
+        TestProperties(counter, Count, Count, [.. query], [.. query], EqualityComparer<int>.Default);
 
         Assert.Throws<ArgumentNullException>(() => counter.CopyTo(null!, 0));
         Assert.Throws<ArgumentOutOfRangeException>(() => counter.CopyTo(new int[Count], -1));
@@ -225,7 +225,7 @@ public class CounterTest
 
         counter.AddRange(input);
         TestProperties(counter, items.Length, input.Count,
-            new HashSet<string?>(items, comparer), input.Select(x => x?.ToLowerInvariant()).ToArray(), comparer);
+            new HashSet<string?>(items, comparer), [.. input.Select(x => x?.ToLowerInvariant())], comparer);
 
         for (int i = 0; i < items.Length; i++)
             TestItem(counter, items[i], i + 1);

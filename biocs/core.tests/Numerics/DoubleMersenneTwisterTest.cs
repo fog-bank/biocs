@@ -105,7 +105,7 @@ public class DoubleMersenneTwisterTest
     {
         var dfmt = new DoubleMersenneTwister();
         uint value1 = dfmt.NextUInt32();
-        Assert.IsTrue(value1 >= 0);
+        Assert.IsGreaterThanOrEqualTo(0u, value1);
         double value2 = dfmt.NextDouble();
         Assert.IsTrue(value2 >= 0 && value2 < 1);
     }
@@ -113,7 +113,7 @@ public class DoubleMersenneTwisterTest
     // Resolves the difference C# Format("f15") and C++ prinf(".15f")
     private static (string, string, string) Round(double value)
     {
-        Assert.IsTrue(value >= 0 && value <= 2);
+        Assert.IsInRange(0, 2, value);
 
         string roundTrip = value.ToString("r");
 

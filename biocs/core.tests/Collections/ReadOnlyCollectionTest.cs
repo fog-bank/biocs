@@ -14,13 +14,13 @@ public class ReadOnlyCollectionTest
         var wrapperNonGeneric = wrapper as ICollection;
         var copy = new int[array.Length];
 
-        Assert.AreEqual(array.Length, wrapper.Count);
+        Assert.HasCount(array.Length, wrapper);
         Assert.IsTrue(wrapper.SequenceEqual(array));
 
         Assert.IsNotNull(wrapperGeneric);
         wrapperGeneric.CopyTo(copy, 0);
         CollectionAssert.AreEqual(array, copy);
-        Assert.IsFalse(wrapperGeneric.Contains(0));
+        Assert.DoesNotContain(0, wrapperGeneric);
         Assert.IsTrue(wrapperGeneric.IsReadOnly);
 
         Assert.IsNotNull(wrapperNonGeneric);
