@@ -6,6 +6,33 @@ namespace Biocs;
 public class LocationTest
 {
     [TestMethod]
+    public void EqualsTest()
+    {
+        var loc1 = new Location();
+        Assert.IsTrue(loc1.Equals(loc1));
+        Assert.IsFalse(loc1.Equals(null));
+
+        var loc2 = new Location();
+        Assert.IsTrue(loc1.Equals(loc2));
+        Assert.AreEqual(loc1.GetHashCode(), loc2.GetHashCode());
+
+        loc1.UnionWith(new SequenceRange(1, 100));
+        Assert.IsFalse(loc1.Equals(loc2));
+
+        loc2.UnionWith(new SequenceRange(101, 200));
+        Assert.IsFalse(loc1.Equals(loc2));
+        Assert.IsFalse((loc1 as object).Equals(loc2));
+
+        loc1.ExceptWith(new SequenceRange(31, 59));
+        loc2.Clear();
+        loc2.UnionWith(new SequenceRange(60, 100));
+        loc2.UnionWith(new SequenceRange(1, 30));
+        Assert.IsTrue(loc1.Equals(loc2));
+        Assert.IsTrue((loc1 as object).Equals(loc2));
+        Assert.AreEqual(loc1.GetHashCode(), loc2.GetHashCode());
+    }
+
+    [TestMethod]
     public void UnionWithTest()
     {
         var loc1 = new Location();
