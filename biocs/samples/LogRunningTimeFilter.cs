@@ -2,7 +2,7 @@
 
 namespace Biocs;
 
-internal class LogRunningTimeFilter(ConsoleAppFilter next) : ConsoleAppFilter(next)
+internal class LogRunningTimeFilter(ConsoleAppFilter next, ILogger<Program> logger) : ConsoleAppFilter(next)
 {
     public override async Task InvokeAsync(ConsoleAppContext context, CancellationToken cancellationToken)
     {
@@ -11,9 +11,14 @@ internal class LogRunningTimeFilter(ConsoleAppFilter next) : ConsoleAppFilter(ne
         {
             await Next.InvokeAsync(context, cancellationToken);
         }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "The following error occurred.");
+        }
         finally
         {
-            ConsoleApp.Log($"Elapsed time: {Stopwatch.GetElapsedTime(timestamp)}, Command: {string.Join(" ", context.Arguments)}");
+            logger.LogInformation("Elapsed time: {ElapsedTime}, Command: {Command}",
+                Stopwatch.GetElapsedTime(timestamp), string.Join(' ', context.Arguments));
         }
     }
 }

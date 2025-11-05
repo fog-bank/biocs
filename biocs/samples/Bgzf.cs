@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.IO.Compression;
+﻿using System.IO.Compression;
 using Biocs.IO;
 
 namespace Biocs;
