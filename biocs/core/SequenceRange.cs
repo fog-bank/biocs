@@ -28,7 +28,6 @@ public readonly struct SequenceRange :
     public SequenceRange(int start, int end)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(start);
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(end);
         ArgumentOutOfRangeException.ThrowIfGreaterThan(start, end);
 
         Start = start;

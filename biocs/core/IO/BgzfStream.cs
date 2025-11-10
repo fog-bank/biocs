@@ -334,7 +334,7 @@ public class BgzfStream : Stream
     [StringResourceUsage("NotSup.Stream")]
     private int ReadCore(Span<byte> buffer)
     {
-        ObjectDisposedException.ThrowIf(stream == null, GetType().Name);
+        ObjectDisposedException.ThrowIf(stream == null, this);
 
         if (!CanRead)
             throw new NotSupportedException(Res.GetString("NotSup.Stream"));
@@ -486,7 +486,7 @@ public class BgzfStream : Stream
     [StringResourceUsage("NotSup.BlockSizeExceeded")]
     private void WriteCore(ReadOnlySpan<byte> buffer)
     {
-        ObjectDisposedException.ThrowIf(stream == null, GetType().Name);
+        ObjectDisposedException.ThrowIf(stream == null, this);
 
         if (!CanWrite)
             throw new NotSupportedException(Res.GetString("NotSup.Stream"));

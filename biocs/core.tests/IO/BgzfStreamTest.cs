@@ -21,21 +21,42 @@ public class BgzfStreamTest
     }
 
     [TestMethod]
-    public void Constructor_Test()
+    public void ConstructorAndThrow_Test()
     {
         Assert.Throws<ArgumentNullException>(() => new BgzfStream(null!, CompressionMode.Decompress));
         Assert.Throws<ArgumentNullException>(() => new BgzfStream(null!, CompressionLevel.Optimal));
         Assert.Throws<ArgumentException>(() => new BgzfStream(Stream.Null, (CompressionMode)1000));
         Assert.Throws<ArgumentException>(() => new BgzfStream(Stream.Null, (CompressionLevel)1000));
 
-        using var gz = new BgzfStream(Stream.Null, CompressionMode.Compress);
-        Assert.IsFalse(gz.CanRead);
-        Assert.IsFalse(gz.CanSeek);
-        Assert.Throws<NotSupportedException>(() => gz.Length);
-        Assert.Throws<NotSupportedException>(() => gz.Position);
-        Assert.Throws<NotSupportedException>(() => gz.Position = 0);
-        Assert.Throws<NotSupportedException>(() => gz.Seek(0, SeekOrigin.Begin));
-        Assert.Throws<NotSupportedException>(() => gz.SetLength(0));
+        var gz = new BgzfStream(Stream.Null, CompressionMode.Compress);
+        using (gz)
+        {
+            Assert.IsFalse(gz.CanRead);
+            Assert.IsFalse(gz.CanSeek);
+            Assert.Throws<NotSupportedException>(() => gz.Length);
+            Assert.Throws<NotSupportedException>(() => gz.Position);
+            Assert.Throws<NotSupportedException>(() => gz.Position = 0);
+            Assert.Throws<NotSupportedException>(() => gz.Seek(0, SeekOrigin.Begin));
+            Assert.Throws<NotSupportedException>(() => gz.SetLength(100));
+            Assert.Throws<NotSupportedException>(() => gz.Read([]));
+        }
+        Assert.Throws<ObjectDisposedException>(() => gz.Write([]));
+
+        var memory = new MemoryStream([0]);
+        gz = new BgzfStream(memory, CompressionMode.Decompress, true);
+        using (memory)
+        {
+            using (gz)
+            {
+                Assert.IsFalse(gz.CanWrite);
+                Assert.Throws<NotSupportedException>(() => gz.Write([]));
+                Assert.Throws<InvalidDataException>(() => gz.Read(new byte[1]));
+            }
+            Assert.IsTrue(memory.CanRead);
+        }
+        Assert.IsFalse(memory.CanRead);
+        Assert.Throws<ObjectDisposedException>(() => gz.Read([]));
+        gz.Dispose();
     }
 
     [TestMethod]

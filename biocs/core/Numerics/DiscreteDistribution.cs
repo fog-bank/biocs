@@ -66,12 +66,10 @@ public class DiscreteDistribution
     }
 
     /// <summary>
-    /// Returns a non-negative random interger that is less than <see cref="Length"/> using the specified pseudo-random number
-    /// generator.
+    /// Returns a non-negative random interger that is less than <see cref="Length"/> using <see cref="Random.Shared"/> instance.
     /// </summary>
-    /// <param name="random">A <see cref="Random"/> instance that generates double-precision floating point number.</param>
     /// <returns>An integer chosen based on the current distribution.</returns>
-    public int Next(Random random) => Next(random.NextDouble());
+    public int Next() => Next(Random.Shared.NextDouble());
 
     /// <summary>
     /// Resets the weight or probability of each element to new values.

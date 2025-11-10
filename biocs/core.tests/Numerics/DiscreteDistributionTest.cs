@@ -47,7 +47,7 @@ public class DiscreteDistributionTest
         dist.Reset([0, 1, 0]);
         Assert.AreEqual(3, dist.Length);
         Assert.AreEqual(1, dist.Next(0));
-        Assert.AreEqual(1, dist.Next(Random.Shared));
+        Assert.AreEqual(1, dist.Next());
         Assert.AreEqual(1, dist.Next(0.99));
 
         dist.Reset(default);
