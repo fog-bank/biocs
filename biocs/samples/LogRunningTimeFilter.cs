@@ -17,8 +17,11 @@ internal class LogRunningTimeFilter(ConsoleAppFilter next, ILogger<Program> logg
         }
         finally
         {
-            logger.LogInformation("Elapsed time: {ElapsedTime}, Command: {Command}",
-                Stopwatch.GetElapsedTime(timestamp), string.Join(' ', context.Arguments));
+            if (logger.IsEnabled(LogLevel.Information))
+            {
+                logger.LogInformation("Elapsed time: {ElapsedTime}, Command: {Command}",
+                    Stopwatch.GetElapsedTime(timestamp), string.Join(' ', context.Arguments));
+            }
         }
     }
 }

@@ -63,10 +63,7 @@ partial class Bgzf(ILogger<Bgzf> logger)
         if (stdout || output == "-")
         {
             if (stdout && output != null)
-            {
-                logger.LogWarning(
-                    "Because -c options is specified, the output file name ({output}) is ignored.", output);
-            }
+                logger.LogWarning("Because -c options is specified, the output file name ({output}) is ignored.", output);
 
             if (!decompress && !Console.IsOutputRedirected)
             {
