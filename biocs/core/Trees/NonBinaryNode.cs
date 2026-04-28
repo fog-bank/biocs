@@ -51,7 +51,7 @@ public class NonBinaryNode
     /// <summary>
     /// Gets the collection view for the collection of child nodes.
     /// </summary>
-    public IReadOnlyList<NonBinaryNode> ChildNodes => IsLeaf ? Array.Empty<NonBinaryNode>() : Nodes;
+    public IReadOnlyList<NonBinaryNode> ChildNodes => IsLeaf ? Array.Empty<NonBinaryNode>() : Nodes.AsReadOnly();
 
     /// <summary>
     /// Gets the total length of this node and all its descendant nodes in the subtree.
@@ -66,22 +66,21 @@ public class NonBinaryNode
 
     private NonBinaryNode? NextSibling
     {
+        [StringResourceUsage("InvalOp.NotChildOfParent")]
         get
         {
             if (Parent == null)
                 return null;
 
             var siblings = Parent.Nodes;
-
             if (siblings == null)
-                ThrowHelper.ThrowInvalidOperation(null);
+                ThrowHelper.ThrowInvalidOperation(Res.GetString("InvalOp.NotChildOfParent"));
 
             int index = siblings.IndexOf(this);
-
             if (index == -1)
-                ThrowHelper.ThrowInvalidOperation(null);
+                ThrowHelper.ThrowInvalidOperation(Res.GetString("InvalOp.NotChildOfParent"));
 
-            return index == siblings.Count - 1 ? null : siblings[index + 1];
+            return index < siblings.Count - 1 ? siblings[index + 1] : null;
         }
     }
 

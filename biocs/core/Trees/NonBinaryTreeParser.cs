@@ -15,7 +15,7 @@ internal ref struct NonBinaryTreeParser
     {
         source = span.TrimStart(IgnoreChars);
         this.provider = provider;
-        int endIndex = IndexOf(source, ';', 0);
+        int endIndex = IndexOf(source, ';');
 
         if (endIndex == -1)
         {
@@ -42,30 +42,31 @@ internal ref struct NonBinaryTreeParser
     private NonBinaryNode ParseSubtree(ReadOnlySpan<char> span)
     {
         var node = new NonBinaryNode();
-
         span = span.Trim(IgnoreChars);
-        int subtreeEndIndex = LastIndexOf(span, ')', span.Length - 1);
 
+        // descendant_list
+        int subtreeEndIndex = LastIndexOf(span, ')');
         if (subtreeEndIndex >= 0)
         {
-            int subtreeStartIndex = IndexOf(span, '(', 0);
-
-            if (subtreeStartIndex == -1)
-            {
-                HasError = true;
-                return node;
-            }
+            int subtreeStartIndex = IndexOf(span, '(');
             ParseDescendantList(span[(subtreeStartIndex + 1)..subtreeEndIndex], node);
             span = span[(subtreeEndIndex + 1)..];
         }
 
-        int lengthStartIndex = IndexOf(span, ':', 0);
-
+        // branch length
+        int lengthStartIndex = IndexOf(span, ':');
         if (lengthStartIndex >= 0)
         {
-            node.Length = double.Parse(span[(lengthStartIndex + 1)..], provider);
+            if (!double.TryParse(span[(lengthStartIndex + 1)..], provider, out double length))
+            {
+                HasError = true;
+                return node;
+            }
+            node.Length = length;
             span = span[..lengthStartIndex];
         }
+
+        // label
         node.Name = ParseLabel(span);
         return node;
     }
@@ -73,11 +74,9 @@ internal ref struct NonBinaryTreeParser
     // ( subtree {, subtree} )
     private void ParseDescendantList(ReadOnlySpan<char> span, NonBinaryNode parent)
     {
-        int commaIndex = IndexOf(span, ',', 0);
-        if (HasError)
-            return;
-
+        int commaIndex = IndexOf(span, ',');
         var child = ParseSubtree(commaIndex == -1 ? span : span[..commaIndex]);
+
         if (HasError)
             return;
 
@@ -87,38 +86,38 @@ internal ref struct NonBinaryTreeParser
             ParseDescendantList(span[(commaIndex + 1)..], parent);
     }
 
-    private int IndexOf(ReadOnlySpan<char> span, char c, int startIndex)
+    private int IndexOf(ReadOnlySpan<char> span, char c)
     {
         bool quoted = false;
         int depth = 0;
-        int comment = 0;
+        int commentLevel = 0;
 
-        for (int i = startIndex; i < span.Length; i++)
+        for (int i = 0; i < span.Length; i++)
         {
             char value = span[i];
             switch (value)
             {
                 // quoted
-                case '\'' when comment == 0:
+                case '\'' when commentLevel == 0:
                     quoted = !quoted;
                     break;
 
                 // comment
                 case '[' when !quoted:
-                    comment++;
+                    commentLevel++;
                     break;
 
                 case ']' when !quoted:
-                    if (comment <= 0)
+                    if (commentLevel <= 0)
                     {
                         HasError = true;
                         return -1;
                     }
-                    comment--;
+                    commentLevel--;
                     break;
 
                 default:
-                    if (!quoted && comment == 0)
+                    if (!quoted && commentLevel == 0)
                     {
                         if (value == ')')
                             depth--;
@@ -132,40 +131,39 @@ internal ref struct NonBinaryTreeParser
                     break;
             }
         }
+
+        if (commentLevel > 0 || quoted)
+            HasError = true;
+
         return -1;
     }
 
-    private int LastIndexOf(ReadOnlySpan<char> span, char c, int startIndex)
+    private static int LastIndexOf(ReadOnlySpan<char> span, char c)
     {
         bool quoted = false;
-        int comment = 0;
+        int commentLevel = 0;
 
-        for (int i = startIndex; i >= 0; i--)
+        for (int i = span.Length - 1; i >= 0; i--)
         {
             char value = span[i];
             switch (value)
             {
                 // quoted
-                case '\'' when comment == 0:
+                case '\'' when commentLevel == 0:
                     quoted = !quoted;
                     break;
 
                 // comment
                 case '[' when !quoted:
-                    if (comment <= 0)
-                    {
-                        HasError = true;
-                        return -1;
-                    }
-                    comment--;
+                    commentLevel--;
                     break;
 
                 case ']' when !quoted:
-                    comment++;
+                    commentLevel++;
                     break;
 
                 default:
-                    if (!quoted && comment == 0 && value == c)
+                    if (!quoted && commentLevel == 0 && value == c)
                         return i;
                     break;
             }
@@ -179,7 +177,7 @@ internal ref struct NonBinaryTreeParser
 
         var sb = new StringBuilder(span.Length);
         bool quoted = false;
-        int comment = 0;
+        int commentLevel = 0;
 
         for (int i = 0; i < span.Length; i++)
         {
@@ -187,28 +185,28 @@ internal ref struct NonBinaryTreeParser
             switch (value)
             {
                 case '[' when !quoted:
-                    comment++;
+                    commentLevel++;
                     break;
 
                 case ']' when !quoted:
-                    comment--;
+                    commentLevel--;
                     break;
 
-                case '\'' when comment == 0:
+                case '\'' when commentLevel == 0:
                     // Single quote characters in a quoted label are represented by two single quotes.
-                    if (quoted && span[i - 1] == '\'')
+                    if (i > 1 && span[i - 1] == '\'')
                         sb.Append('\'');
 
                     quoted = !quoted;
                     break;
 
-                case '_' when comment == 0:
+                case '_' when commentLevel == 0:
                     // Underscore characters in unquoted labels are converted to blanks.
                     sb.Append(quoted ? '_' : ' ');
                     break;
 
                 default:
-                    if (comment == 0)
+                    if (commentLevel == 0)
                         sb.Append(value);
                     break;
             }

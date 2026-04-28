@@ -99,7 +99,10 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
     /// <inheritdoc/>
     public static NonBinaryTree Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null)
     {
-        if (!TryParse(s, provider, out var result))
+        var parser = new NonBinaryTreeParser(s, provider);
+        var result = parser.Parse();
+
+        if (parser.HasError)
             ThrowHelper.ThrowFormat(null);
 
         return result;
