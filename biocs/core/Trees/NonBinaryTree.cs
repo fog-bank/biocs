@@ -55,7 +55,7 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
     /// </summary>
     public double SumLength => Root == null ? 0 : Root.SubtreeLength;
 
-    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    [DebuggerBrowsable(DebuggerBrowsableState.Never), ExcludeFromCodeCoverage]
     private string DebuggerDisplay => $"Leaves = {LeafCount}, SBL = {SumLength:f4}";
 
     /// <summary>

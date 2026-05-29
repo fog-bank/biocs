@@ -104,6 +104,25 @@ public ref struct SeparatedValueEnumerator
         third = Current;
     }
 
+    /// <summary>
+    /// Deconstructs <see cref="SeparatedValueEnumerator"/> into separate variables while advancing the enumerator.
+    /// </summary>
+    /// <param name="first">When this method returns, contains the value after the enumerator was advanced once.</param>
+    /// <param name="second">When this method returns, contains the value after the enumerator was advanced twice.</param>
+    /// <param name="third">When this method returns, contains the value after the enumerator was advanced three times.</param>
+    /// <param name="fourth">When this method returns, contains the value after the enumerator was advanced four times.</param>
+    public void Deconstruct(out ReadOnlySpan<char> first, out ReadOnlySpan<char> second, out ReadOnlySpan<char> third, out ReadOnlySpan<char> fourth)
+    {
+        MoveNext();
+        first = Current;
+        MoveNext();
+        second = Current;
+        MoveNext();
+        third = Current;
+        MoveNext();
+        fourth = Current;
+    }
+
     private enum SeparatorType
     {
         Char,
