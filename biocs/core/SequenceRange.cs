@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
 namespace Biocs;
 
@@ -158,8 +159,9 @@ public readonly struct SequenceRange :
 
     private static bool TryParseSiteIndex(ReadOnlySpan<char> span, out int siteIndex)
     {
-        span = span.TrimStart("<>");
-        return int.TryParse(span, out siteIndex) && siteIndex > 0;
+        span = span.Trim().TrimStart("<>");
+        return int.TryParse(span, NumberStyles.AllowThousands |
+            NumberStyles.AllowExponent, null, out siteIndex) && siteIndex > 0;
     }
 
     #region Comparison Operators

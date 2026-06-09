@@ -128,6 +128,10 @@ public class SequenceRangeTest
         // Site between two indicated adjoining bases
         ParseTestCore("123^124", new(123, 124));
 
+        // Allow group separator and exponent
+        ParseTestCore("1,000..1,500", new(1000, 1500));
+        ParseTestCore("1e3..2e3", new(1000, 2000));
+
         // Wrong format
         Assert.Throws<FormatException>(() => SequenceRange.Parse(string.Empty));
         Assert.Throws<FormatException>(() => SequenceRange.Parse("-3"));
