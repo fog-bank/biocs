@@ -108,12 +108,17 @@ public readonly struct SequenceRange :
     /// <param name="span">The read-only span of characters to parse.</param>
     /// <returns>The result of parsing <paramref name="span"/>.</returns>
     /// <exception cref="FormatException"><paramref name="span"/> is not in the correct format.</exception>
+    [StringResourceUsage("Format.StartGtEnd", 1)]
     [StringResourceUsage("Format.UnparsableValue", 2)]
     public static SequenceRange Parse(ReadOnlySpan<char> span)
     {
-        if (!TryParse(span, out var result))
-            ThrowHelper.ThrowFormat(Res.GetString("Format.UnparsableValue", nameof(span), span.ToString()));
-
+        if (!TryParse(span, out var result, out bool orderError))
+        {
+            if (orderError)
+                ThrowHelper.ThrowFormat(Res.GetString("Format.StartGtEnd", span.ToString()));
+            else
+                ThrowHelper.ThrowFormat(Res.GetString("Format.UnparsableValue", nameof(span), span.ToString()));
+        }
         return result;
     }
 
@@ -128,11 +133,14 @@ public readonly struct SequenceRange :
     /// <returns>
     /// <see langword="true"/> if <paramref name="span"/> was successfully parsed; otherwise, <see langword="false"/>.
     /// </returns>
-    public static bool TryParse(ReadOnlySpan<char> span, out SequenceRange result)
+    public static bool TryParse(ReadOnlySpan<char> span, out SequenceRange result) => TryParse(span, out result, out _);
+
+    private static bool TryParse(ReadOnlySpan<char> span, out SequenceRange result, out bool orderError)
     {
         var ranges = (stackalloc Range[3]);
         int nrange = span.SplitAny(ranges, ".^", StringSplitOptions.RemoveEmptyEntries);
         ranges = ranges[..nrange];
+        orderError = false;
 
         switch (ranges.Length)
         {
@@ -146,10 +154,15 @@ public readonly struct SequenceRange :
 
             case 2:
                 if (TryParseSiteIndex(span[ranges[0]], out int start) &&
-                    TryParseSiteIndex(span[ranges[1]], out int end) && start <= end)
+                    TryParseSiteIndex(span[ranges[1]], out int end))
                 {
-                    result = new(start, end);
-                    return true;
+                    if (start <= end)
+                    {
+                        result = new(start, end);
+                        return true;
+                    }
+                    else
+                        orderError = true;
                 }
                 break;
         }
