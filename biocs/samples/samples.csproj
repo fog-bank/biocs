@@ -34,8 +34,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.7" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.8" />
     <ProjectReference Include="..\core\core.csproj" />
   </ItemGroup>
 
