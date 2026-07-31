@@ -16,12 +16,16 @@ public class NonBinaryTreeTest
     [TestMethod]
     public void ParseTest()
     {
-        var tree = NonBinaryTree.Parse("('[A''_]':0.2,B_test:0.4,C[_]:0.3):0;");
+        var tree = NonBinaryTree.Parse("('[A''_]':0.2,B_test:0.4,C[_]:0.3):0.1;");
         Assert.IsNotNull(tree.Root);
         Assert.HasCount(3, tree.Root.ChildNodes);
+        Assert.AreEqual(0.1, tree.Root.Length);
         Assert.AreEqual("[A'_]", tree.Root.ChildNodes[0].Name);
+        Assert.AreEqual(0.2, tree.Root.ChildNodes[0].Length);
         Assert.AreEqual("B test", tree.Root.ChildNodes[1].Name);
+        Assert.AreEqual(0.4, tree.Root.ChildNodes[1].Length);
         Assert.AreEqual("C", tree.Root.ChildNodes[2].Name);
+        Assert.AreEqual(0.3, tree.Root.ChildNodes[2].Length);
     }
 
     [TestMethod]
@@ -44,7 +48,7 @@ public class NonBinaryTreeTest
     }
 
     [TestMethod]
-    public void ParstFailTest()
+    public void ParseFailTest()
     {
         // No semicolon
         const string Newick = "(A,B)";
@@ -57,5 +61,30 @@ public class NonBinaryTreeTest
 
         // Can not parse branch lengths
         Assert.IsFalse(NonBinaryTree.TryParse("(A:0,B:x):0.2;", null, out _));
+    }
+
+    [TestMethod]
+    public void CollapseTest()
+    {
+        var tree = NonBinaryTree.Parse("((A,B),(C,D,(E,F)),G);");
+        Assert.IsNotNull(tree.Root);
+
+        tree.Root.CollapseChild(0);
+
+        Assert.HasCount(7, tree.Root.ChildNodes);
+        foreach (var child in tree.Root.ChildNodes)
+        {
+            Assert.AreEqual(tree.Root, child.Parent);
+            Assert.IsTrue(child.IsLeaf);
+        }
+
+        tree = NonBinaryTree.Parse("(((A:0.01,B:-0.01):0.01,C:0.03):0.02,(D:0,E:0):-0.02,(F:0.2,G:0.1):-0.01):0.009;");
+        Assert.IsNotNull(tree.Root);
+        Assert.AreEqual(0.339, tree.SumLength);
+
+        tree.Root.CollapseChild(0.01);
+
+        Assert.AreEqual(0.339, tree.SumLength);
+        Assert.AreEqual("((A:0.01,B:-0.01,C:0.03):0.02,(D:0,E:0):-0.02,F:0.2,G:0.1):0.009;", tree.ToString());
     }
 }

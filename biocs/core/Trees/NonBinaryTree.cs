@@ -65,10 +65,7 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
     /// <param name="format">A numeric format string that defines how the value should be formatted.</param>
     /// <param name="formatProvider">An object that supplies culture-specific formatting information.</param>
     /// <returns>A string of Newick format.</returns>
-    /// <remarks>
-    /// If <paramref name="format"/> is <see langword="null"/>, the default format is used.
-    /// If <paramref name="formatProvider"/> is <see langword="null"/>, the current culture is used.
-    /// </remarks>
+    /// <remarks>If <paramref name="formatProvider"/> is <see langword="null"/>, the current culture is used.</remarks>
     public string ToString([StringSyntax(StringSyntaxAttribute.NumericFormat)] string? format, IFormatProvider? formatProvider)
     {
         if (Root == null)
@@ -87,6 +84,10 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
     /// </summary>
     /// <param name="format">A numeric format string that defines how the value should be formatted.</param>
     /// <returns>A string of Newick format.</returns>
+    /// <remarks>
+    /// If <paramref name="format"/> is <see langword="null"/>, the default format is used.
+    /// If <paramref name="format"/> is an empty string, only topology is written.
+    /// </remarks>
     public string ToString([StringSyntax(StringSyntaxAttribute.NumericFormat)] string? format)
         => ToString(format, CultureInfo.InvariantCulture);
 
@@ -149,7 +150,7 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
             sb.Append(')');
         }
 
-        if (node.Parent != null)
+        if (double.IsFinite(node.Length) && (node.Parent != null || node.Length != 0))
         {
             if (format == null)
                 sb.Append(info, $":{node.Length}");

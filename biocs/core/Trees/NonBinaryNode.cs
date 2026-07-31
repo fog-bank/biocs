@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Biocs.Numerics;
 
 namespace Biocs.Trees;
@@ -147,6 +148,50 @@ public class NonBinaryNode
             return node;
         }
         return null;
+    }
+
+    /// <summary>
+    /// Collapses nodes with near-zero length.
+    /// </summary>
+    /// <param name="threshold">The maximum length of nodes to be collapsed.</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="threshold"/> is negative.</exception>
+    /// <remarks>
+    /// Descendant nodes whose the absolute value of <see cref="Length"/> is less than or equal to <paramref name="threshold"/>
+    /// are spliced out. That is, their children are re-parented to their grandparent and the short node is removed from
+    /// the tree.
+    /// </remarks>
+    public void CollapseChild(double threshold)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(threshold);
+
+        if (IsLeaf)
+            return;
+
+        for (int i = 0; i < Nodes.Count; i++)
+        {
+            var child = Nodes[i];
+            if (child.IsLeaf)
+                continue;
+
+            child.CollapseChild(threshold);
+
+            if (Math.Abs(child.Length) <= threshold)
+            {
+                var grandchildren = child.Nodes;
+
+                foreach (var grandchild in grandchildren)
+                {
+                    Debug.Assert(grandchild.Parent == child);
+                    grandchild.Parent = this;
+                }
+                Nodes.RemoveAt(i);
+                Nodes.InsertRange(i, grandchildren);
+                i += grandchildren.Count - 1;
+
+                child.Parent = null;
+                child.Nodes = null;
+            }
+        }
     }
 
     /// <inheritdoc/>
