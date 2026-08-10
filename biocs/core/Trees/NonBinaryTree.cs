@@ -12,6 +12,8 @@ namespace Biocs.Trees;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
 {
+    private static readonly SearchValues<char> forbiddenNameChar = SearchValues.Create("()[]':;,");
+
     /// <summary>
     /// Initializes a new instance of the <see cref="NonBinaryTree"/> class.
     /// </summary>
@@ -72,10 +74,9 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
             return string.Empty;
 
         var sb = new StringBuilder();
-        var escape = SearchValues.Create(" ()[]':;,");
         int leafIndex = 0;
         FormatSubtree(sb, Root, ref leafIndex,
-            format != null ? CompositeFormat.Parse(format) : null, NumberFormatInfo.GetInstance(formatProvider), escape);
+            format != null ? CompositeFormat.Parse(format) : null, NumberFormatInfo.GetInstance(formatProvider));
         return sb.Append(';').ToString();
     }
 
@@ -85,8 +86,12 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
     /// <param name="format">A numeric format string that defines how the value should be formatted.</param>
     /// <returns>A string of Newick format.</returns>
     /// <remarks>
+    /// <para>
     /// If <paramref name="format"/> is <see langword="null"/>, the default format is used.
     /// If <paramref name="format"/> is an empty string, only topology is written.
+    /// </para><para>
+    /// If <see cref="NonBinaryNode.Name"/> is null or empty, a temporary name (e.g. OTU1) is written as the OTU label.
+    /// </para>
     /// </remarks>
     public string ToString([StringSyntax(StringSyntaxAttribute.NumericFormat)] string? format)
         => ToString(format, CultureInfo.InvariantCulture);
@@ -125,15 +130,15 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
         [NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out NonBinaryTree result)
         => TryParse(s.AsSpan(), provider, out result);
 
-    private static void FormatSubtree(StringBuilder sb, NonBinaryNode node, ref int leafIndex,
-        CompositeFormat? format, NumberFormatInfo info, SearchValues<char> nameEscape)
+    private static void FormatSubtree(StringBuilder sb, NonBinaryNode node,
+        ref int leafIndex, CompositeFormat? format, NumberFormatInfo info)
     {
         if (node.IsLeaf)
         {
             leafIndex++;
 
-            if (node.Name != null)
-                FormatName(sb, node.Name, nameEscape);
+            if (!string.IsNullOrEmpty(node.Name))
+                FormatName(sb, node.Name);
             else
                 sb.Append("OTU").Append(leafIndex);
         }
@@ -143,7 +148,7 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
 
             foreach (var child in node.ChildNodes)
             {
-                FormatSubtree(sb, child, ref leafIndex, format, info, nameEscape);
+                FormatSubtree(sb, child, ref leafIndex, format, info);
                 sb.Append(',');
             }
             sb.Length--;
@@ -160,25 +165,29 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
     }
 
     // https://phylipweb.github.io/phylip/newick_doc.html
-    private static void FormatName(StringBuilder sb, string name, SearchValues<char> escape)
+    private static void FormatName(StringBuilder sb, ReadOnlySpan<char> name)
     {
-        var span = name.AsSpan();
-
-        if (!span.ContainsAny(escape))
-            sb.Append(span);
-        else
+        if (name.ContainsAny(forbiddenNameChar))
         {
             sb.Append('\'');
 
-            for (int i = 0; i < name.Length; i++)
+            foreach (char ch in name)
             {
-                sb.Append(name[i]);
+                sb.Append(ch);
 
-                if (name[i] == '\'')
+                // Single quote in quoted label -> two single quotes
+                if (ch == '\'')
                     sb.Append('\'');
             }
-
             sb.Append('\'');
         }
+        else if (name.Contains(' '))
+        {
+            // Underscore character in unquoted label -> blank
+            foreach (char ch in name)
+                sb.Append(ch == ' ' ? '_' : ch);
+        }
+        else
+            sb.Append(name);
     }
 }

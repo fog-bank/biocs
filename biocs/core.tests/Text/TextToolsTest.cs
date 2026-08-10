@@ -130,6 +130,12 @@ public class TextToolsTest
         }
         Assert.AreEqual(3, count);
 
+        var (value0, value1, value2, value3) = value.AsSpan().AsSeparatedValues(" | ");
+        Assert.IsTrue(value0.SequenceEqual(values[0]));
+        Assert.IsTrue(value1.SequenceEqual(values[1]));
+        Assert.IsTrue(value2.SequenceEqual(values[2]));
+        Assert.IsTrue(value3.IsEmpty);
+
         // case 6
 
         value = " |  |  |A | ";

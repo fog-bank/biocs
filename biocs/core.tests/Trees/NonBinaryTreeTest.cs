@@ -18,6 +18,8 @@ public class NonBinaryTreeTest
     {
         var tree = NonBinaryTree.Parse("('[A''_]':0.2,B_test:0.4,C[_]:0.3):0.1;");
         Assert.IsNotNull(tree.Root);
+        Assert.AreEqual(4, tree.NodeCount);
+        Assert.AreEqual(3, tree.LeafCount);
         Assert.HasCount(3, tree.Root.ChildNodes);
         Assert.AreEqual(0.1, tree.Root.Length);
         Assert.AreEqual("[A'_]", tree.Root.ChildNodes[0].Name);
@@ -35,6 +37,7 @@ public class NonBinaryTreeTest
         var tree = NonBinaryTree.Parse(Newick);
         string result = tree.ToString("");
         Assert.AreEqual(Newick, result);
+        Assert.AreEqual(6, tree.LeafCount);
 
         const string Newick2 = "(((One:0.2,Two:0.3):0.3,(Three:0.5,Four:0.3):0.2):0.3,Five:0.7);";
         tree = NonBinaryTree.Parse(Newick2);
