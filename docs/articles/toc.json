@@ -1,0 +1,2 @@
+
+{"items":[{"name":"Getting Started","href":"getting-started.html","topicHref":"getting-started.html"},{"name":"How-to Topics","href":"how-to-topics/","topicHref":"how-to-topics/","includedFrom":"~/articles/how-to-topics/toc.yml","items":[{"name":"Compress and extract a BGZF file","href":"how-to-topics/bgzfstream.html","topicHref":"how-to-topics/bgzfstream.html"}]}],"pdf":false}

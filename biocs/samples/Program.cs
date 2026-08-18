@@ -1,20 +1,28 @@
-﻿using System.Threading.Tasks;
-using ConsoleAppFramework;
+﻿using Biocs;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
-namespace Biocs
+var services = new ServiceCollection();
+services.AddLogging(static builder =>
 {
-    partial class Program : ConsoleAppBase
+    builder.ClearProviders();
+    builder.AddConsole(static options =>
     {
-        static async Task Main(string[] args) => await Host.CreateDefaultBuilder()
-            .ConfigureLogging(logging =>
-            {
-                logging.ClearProviders();
-                logging.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, ConsoleErrorLoggerProvider>());
-            })
-            .RunConsoleAppFrameworkAsync<Program>(args, new LogCommandInterceptor());
-    }
-}
+        options.FormatterName = AltConsoleFormatter.FormatterName;
+        options.LogToStandardErrorThreshold = LogLevel.Trace;
+    });
+    builder.AddConsoleFormatter<AltConsoleFormatter, AltConsoleFormatterOptions>(static options =>
+    {
+        options.TimestampFormat = "G";
+    });
+    builder.SetMinimumLevel(LogLevel.Trace);
+});
+ConsoleApp.ServiceProvider = services.BuildServiceProvider();
+
+var cts = new CancellationTokenSource();
+
+var app = ConsoleApp.Create();
+//app.UseFilter<LogInjectionFilter>();
+ConsoleApp.Log = Console.Error.WriteLine;
+app.UseFilter<LogRunningTimeFilter>();
+app.Add<Bgzf>();
+await app.RunAsync(args, cts.Token);

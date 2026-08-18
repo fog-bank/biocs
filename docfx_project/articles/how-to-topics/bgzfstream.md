@@ -7,17 +7,13 @@ using System.IO;
 using System.IO.Compression;
 using Biocs.IO;
 
-string input = @".\data.txt";
-string output = @".\data.txt.gz";
+string input = "data.txt";
+string output = "data.txt.gz";
 
-using (var ifs = File.OpenRead(input))
-using (var ofs = File.Create(output))
-{
-  using (var gz = new BgzfStream(ofs, CompressionMode.Compress))
-  {
-    ifs.CopyTo(gz);
-  }
-}
+using var ifs = File.OpenRead(input);
+using var ofs = File.Create(output);
+using var gz = new BgzfStream(ofs, CompressionMode.Compress);
+ifs.CopyTo(gz);
 ```
 
 ## Example 2: Extract a .gz file
@@ -31,19 +27,13 @@ using System.IO;
 using System.IO.Compression;
 using Biocs.IO;
 
-string input = @".\data.txt.gz";
-string output = @".\data.txt";
+string input = "data.txt.gz";
+string output = "data.txt";
 
 bool isBgzf = BgzfStream.IsBgzfFile(input);
 
-using (var ifs = File.OpenRead(input))
-using (var ofs = File.Create(output))
-{
-  using (var gz = isBgzf ?
-    new BgzfStream(ifs, CompressionMode.Decompress) as Stream :
-    new GZipStream(ifs, CompressionMode.Decompress))
-  {
-    gz.CopyTo(ofs);
-  }
-}
+using var ifs = File.OpenRead(input);
+using var ofs = File.Create(output);
+using Stream gz = isBgzf ? new BgzfStream(ifs, CompressionMode.Decompress) : new GZipStream(ifs, CompressionMode.Decompress);
+gz.CopyTo(ofs);
 ```

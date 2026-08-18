@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="../.editorconfig" />
+    <File Path="../appveyor.yml" />
+    <File Path="../README.md" />
+    <File Path="../test_ubuntu.sh" />
+    <File Path="CustomDictionary.xml" />
+  </Folder>
+  <Project Path="benchmark/benchmark.csproj" />
+  <Project Path="core.tests/core.tests.csproj" />
+  <Project Path="core/core.csproj" />
+  <Project Path="samples/samples.csproj" />
+</Solution>

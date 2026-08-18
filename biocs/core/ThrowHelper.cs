@@ -1,20 +1,17 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Biocs
+namespace Biocs;
+
+// Helper methods for property body (or inlining method) to throw a exception.
+internal static class ThrowHelper
 {
-    internal static class ThrowHelper
-    {
-        [DoesNotReturn]
-        public static void ThrowArgumentOutOfRange(string? paramName)
-        {
-            throw new ArgumentOutOfRangeException(paramName);
-        }
+    [DoesNotReturn]
+    public static void ThrowArgument(string? message, string? paramName = null)
+        => throw new ArgumentException(message, paramName);
 
-        [DoesNotReturn]
-        public static void ThrowInvalidOperation(string? message)
-        {
-            throw new InvalidOperationException(message);
-        }
-    }
+    [DoesNotReturn]
+    public static void ThrowFormat(string? message) => throw new FormatException(message);
+
+    [DoesNotReturn]
+    public static void ThrowInvalidOperation(string? message) => throw new InvalidOperationException(message);
 }

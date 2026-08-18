@@ -4,29 +4,18 @@
       "src": [
         {
           "src": "../biocs",
-          "files": [ "core/**.cs" ]
+          "files": [ "core/core.csproj" ]
         }
       ],
       "dest": "api",
-      "force": true,
-      "filter": "filterConfig.yml",
-      "properties": {
-          "TargetFramework": "netcoreapp3.1"
-      }
+      "filter": "filterConfig.yml"
     }
   ],
   "build": {
     "content": [
       {
         "files": [
-          "api/**.md",
-          "api/**.yml"
-        ]
-      },
-      {
-        "files": [
-          "articles/**.md",
-          "articles/**/toc.yml",
+          "{api,articles}/**/*.{md,yml}",
           "index.md",
           "toc.yml"
         ]
@@ -37,12 +26,11 @@
         "files": [ "images/**" ]
       }
     ],
-    "overwrite": "apidoc/**.md",
+    "overwrite": "apidoc/**/*.md",
     "dest": "../docs",
     "globalMetadataFiles": [ "global.json" ],
-    "template": [ "default" ],
-    "markdownEngineName": "markdig",
+    "template": [ "default", "modern" ],
     "maxParallelism": 4,
-    "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ]
+    "xref": [ "https://learn.microsoft.com/en-us/dotnet/.xrefmap.json" ]
   }
 }

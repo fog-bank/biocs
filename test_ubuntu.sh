@@ -21,9 +21,13 @@ git checkout -f ${BRANCH} | tee -a info.log
 git merge origin/${BRANCH} | tee -a info.log
 chmod 777 test_ubuntu.sh
 
-dotnet --info | tee -a info.log
-dotnet build -c Release --no-incremental biocs
-dotnet test -c Release -v n biocs/core.tests | tee test.log
-# dotnet test -c Release -f netcoreapp1.0 -v n biocs/core.tests | tee test1.0.log
+## code coverage
+# dotnet tool update -g dotnet-reportgenerator-globaltool
+# cd biocs
+# dotnet run --project core.tests
+# reportgenerator -reports:core.tests/TestResults/mstest.xml -targetdir:core.tests/TestResults/report/
 
-# dotnet run -c Release -p biocs/samples -- bgzf -i biocs/core.tests/Deployments/ce.sam -o biocs/samples/bin/Release/netcoreapp2.1/ce.sam.gz
+## docfx project
+# cd docfx_project
+# docfx --serve
+## docfx build --serve
