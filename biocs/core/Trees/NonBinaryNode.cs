@@ -18,17 +18,17 @@ public class NonBinaryNode
     /// <summary>
     /// Initializes a new instance of the <see cref="NonBinaryNode"/> class with the specified index and name.
     /// </summary>
-    /// <param name="index">The zero-based index to identify nodes.</param>
+    /// <param name="index">The one-based index to identify nodes.</param>
     /// <param name="name">The name assigned to the node.</param>
     public NonBinaryNode(int index, string name) => (Index, Name) = (index, name);
 
     /// <summary>
-    /// Gets or sets the zero-based index associated with this node.
+    /// Gets or sets the one-based index associated with this node.
     /// </summary>
     public int Index { get; set; }
 
     /// <summary>
-    /// Gets or sets the name associated with this node.
+    /// Gets or sets the label associated with this node.
     /// </summary>
     public string? Name { get; set; }
 
@@ -52,7 +52,19 @@ public class NonBinaryNode
     /// <summary>
     /// Gets the collection view for the collection of child nodes.
     /// </summary>
-    public IReadOnlyList<NonBinaryNode> ChildNodes => IsLeaf ? Array.Empty<NonBinaryNode>() : Nodes.AsReadOnly();
+    [AllowNull]
+    public IReadOnlyList<NonBinaryNode> ChildNodes
+    {
+        get
+        {
+            if (IsLeaf)
+                return [];
+
+            field ??= Nodes.AsReadOnly();
+            return field;
+        }
+        private set;
+    }
 
     /// <summary>
     /// Gets the total length of this node and all its descendant nodes in the subtree.
@@ -60,28 +72,30 @@ public class NonBinaryNode
     /// <remarks>Whenever this property is called, it aggregates the lengths of the node and all its descendants.</remarks>
     public double SubtreeLength => DoubleTools.SumKahan(DescendantsAndSelf().Select(node => node.Length));
 
-    private List<NonBinaryNode>? Nodes { get; set; }
+    private List<NonBinaryNode>? Nodes
+    {
+        get;
+        set
+        {
+            field = value;
+            ChildNodes = null;
+        }
+    }
 
-    [DisallowNull]
     private NonBinaryNode? FirstChild => IsLeaf ? null : Nodes[0];
 
     private NonBinaryNode? NextSibling
     {
-        [StringResourceUsage("InvalOp.NotChildOfParent")]
         get
         {
-            if (Parent == null)
-                return null;
-
-            var siblings = Parent.Nodes;
-            if (siblings == null)
-                ThrowHelper.ThrowInvalidOperation(Res.GetString("InvalOp.NotChildOfParent"));
-
-            int index = siblings.IndexOf(this);
-            if (index == -1)
-                ThrowHelper.ThrowInvalidOperation(Res.GetString("InvalOp.NotChildOfParent"));
-
-            return index < siblings.Count - 1 ? siblings[index + 1] : null;
+            var siblings = Parent?.Nodes;
+            if (siblings != null)
+            {
+                int index = siblings.IndexOf(this);
+                if (index >= 0 && index < siblings.Count - 1)
+                    return siblings[index + 1];
+            }
+            return null;
         }
     }
 

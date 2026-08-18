@@ -86,7 +86,7 @@ public class BgzfStreamTest
             Assert.AreEqual(-1, gz.ReadByte());
 
             Array.Copy(buffer, 0, actual, offset, bytes);
-            CollectionAssert.AreEqual(raw, actual);
+            Assert.AreSequenceEqual(raw, actual);
         }
         Assert.AreEqual(fs.Length, fs.Position);
     }
@@ -118,7 +118,7 @@ public class BgzfStreamTest
             Assert.AreEqual(-1, gz.ReadByte());
 
             Array.Copy(buffer, 0, actual, offset, bytes);
-            CollectionAssert.AreEqual(raw, actual);
+            Assert.AreSequenceEqual(raw, actual);
         }
         Assert.AreEqual(fs.Length, fs.Position);
     }
@@ -146,7 +146,7 @@ public class BgzfStreamTest
 
             Assert.AreEqual(raw.Length, bytes);
             Assert.AreEqual(-1, gz.ReadByte());
-            CollectionAssert.AreEqual(raw, actual);
+            Assert.AreSequenceEqual(raw, actual);
         }
     }
 
@@ -171,7 +171,7 @@ public class BgzfStreamTest
 
             Assert.AreEqual(data.Length, bytes);
             Assert.AreEqual(-1, gz.ReadByte());
-            CollectionAssert.AreEqual(data, actual);
+            Assert.AreSequenceEqual(data, actual);
         }
     }
 
@@ -198,7 +198,7 @@ public class BgzfStreamTest
 
             Assert.AreEqual(raw.Length, bytes);
             Assert.AreEqual(-1, gz.ReadByte());
-            CollectionAssert.AreEqual(raw, actual);
+            Assert.AreSequenceEqual(raw, actual);
         }
     }
 }

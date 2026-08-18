@@ -15,11 +15,11 @@ public class ReadOnlyCollectionTest
         var copy = new int[array.Length];
 
         Assert.HasCount(array.Length, wrapper);
-        Assert.IsTrue(wrapper.SequenceEqual(array));
+        Assert.AreSequenceEqual(array, wrapper);
 
         Assert.IsNotNull(wrapperGeneric);
         wrapperGeneric.CopyTo(copy, 0);
-        CollectionAssert.AreEqual(array, copy);
+        Assert.AreSequenceEqual(array, copy);
         Assert.DoesNotContain(0, wrapperGeneric);
         Assert.IsTrue(wrapperGeneric.IsReadOnly);
 
@@ -33,7 +33,7 @@ public class ReadOnlyCollectionTest
         }
         Array.Clear(copy);
         wrapperNonGeneric.CopyTo(copy, 0);
-        CollectionAssert.AreEqual(array, copy);
+        Assert.AreSequenceEqual(array, copy);
 
         Assert.Throws<ArgumentNullException>(() => CollectionTools.AsReadOnly<object>(null!));
         Assert.Throws<NotSupportedException>(() => wrapperGeneric.Add(0));

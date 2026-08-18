@@ -8,59 +8,31 @@ public class TextToolsTest
     {
         // case 1
         var enumerator = string.Empty.AsSpan().AsTsv();
-        int count = 0;
-
-        foreach (var span in enumerator)
-        {
-            Assert.IsTrue(span.IsEmpty);
-            count++;
-        }
-        Assert.AreEqual(1, count);
+        ForeachEmptyTest(enumerator, 1);
 
         // case 2
         string value = "empty";
         enumerator = value.AsSpan().AsTsv();
-        count = 0;
-
-        foreach (var span in enumerator)
-        {
-            Assert.IsTrue(span.SequenceEqual("empty"));
-            count++;
-        }
-        Assert.AreEqual(1, count);
+        ForeachTest(enumerator, [value]);
 
         (var x, var y) = value.AsSpan().AsTsv();
-        Assert.IsTrue(x.SequenceEqual("empty"));
+        Assert.AreEqual(value, x.ToString());
         Assert.IsTrue(y.IsEmpty);
 
         // case 3
         value = "\tx\t\tyz\t";
         enumerator = value.AsSpan().AsTsv();
-        count = 0;
         string[] values = [string.Empty, "x", string.Empty, "yz", string.Empty];
-
-        foreach (var span in enumerator)
-        {
-            Assert.IsTrue(span.SequenceEqual(values[count]));
-            count++;
-        }
-        Assert.AreEqual(5, count);
+        ForeachTest(enumerator, values);
 
         // case 4
         enumerator = value.AsSpan(1..^1).AsTsv();
-        count = 0;
-
-        foreach (var span in enumerator)
-        {
-            Assert.IsTrue(span.SequenceEqual(values[count + 1]));
-            count++;
-        }
-        Assert.AreEqual(3, count);
+        ForeachTest(enumerator, values.AsSpan(1..^1));
 
         (x, y, var z) = value.AsSpan(1..^1).AsTsv();
-        Assert.IsTrue(x.SequenceEqual(values[1]));
-        Assert.IsTrue(y.SequenceEqual(values[2]));
-        Assert.IsTrue(z.SequenceEqual(values[3]));
+        Assert.AreEqual(values[1], x.ToString());
+        Assert.AreEqual(values[2], y.ToString());
+        Assert.AreEqual(values[3], z.ToString());
     }
 
     [TestMethod]
@@ -68,87 +40,43 @@ public class TextToolsTest
     {
         // case 1
         var enumerator = string.Empty.AsSpan().AsSeparatedValues("\t");
-        int count = 0;
-
-        foreach (var span in enumerator)
-        {
-            Assert.IsTrue(span.IsEmpty);
-            count++;
-        }
-        Assert.AreEqual(1, count);
+        ForeachEmptyTest(enumerator, 1);
 
         // case 2
         string value = "empty";
         enumerator = value.AsSpan().AsSeparatedValues("\t");
-        count = 0;
-
-        foreach (var span in enumerator)
-        {
-            Assert.IsTrue(span.SequenceEqual("empty"));
-            count++;
-        }
-        Assert.AreEqual(1, count);
+        ForeachTest(enumerator, [value]);
 
         (var x, var y) = value.AsSpan().AsSeparatedValues("\t");
-        Assert.IsTrue(x.SequenceEqual("empty"));
+        Assert.AreEqual(value, x.ToString());
         Assert.IsTrue(y.IsEmpty);
 
         // case 3
         value = "\tx\t\tyz\t";
         enumerator = value.AsSpan().AsSeparatedValues("\t");
-        count = 0;
         string[] values = [string.Empty, "x", string.Empty, "yz", string.Empty];
-
-        foreach (var span in enumerator)
-        {
-            Assert.IsTrue(span.SequenceEqual(values[count]));
-            count++;
-        }
-        Assert.AreEqual(5, count);
+        ForeachTest(enumerator, values);
 
         // case 4
         enumerator = value.AsSpan()[1..^1].AsSeparatedValues("\t");
-        count = 0;
-
-        foreach (var span in enumerator)
-        {
-            Assert.IsTrue(span.SequenceEqual(values[count + 1]));
-            count++;
-        }
-        Assert.AreEqual(3, count);
+        ForeachTest(enumerator, values.AsSpan(1..^1));
 
         // case 5
         value = "chemical synaptic transmission | chloride transmembrane transport | ion transmembrane transport";
         enumerator = value.AsSpan().AsSeparatedValues(" | ");
-        count = 0;
         values = ["chemical synaptic transmission", "chloride transmembrane transport", "ion transmembrane transport"];
-
-        foreach (var span in enumerator)
-        {
-            Assert.IsTrue(span.SequenceEqual(values[count]));
-            count++;
-        }
-        Assert.AreEqual(3, count);
+        ForeachTest(enumerator, values);
 
         var (value0, value1, value2, value3) = value.AsSpan().AsSeparatedValues(" | ");
-        Assert.IsTrue(value0.SequenceEqual(values[0]));
-        Assert.IsTrue(value1.SequenceEqual(values[1]));
-        Assert.IsTrue(value2.SequenceEqual(values[2]));
+        Assert.AreEqual(values[0], value0.ToString());
+        Assert.AreEqual(values[1], value1.ToString());
+        Assert.AreEqual(values[2], value2.ToString());
         Assert.IsTrue(value3.IsEmpty);
 
         // case 6
-
         value = " |  |  |A | ";
         enumerator = value.AsSpan().AsSeparatedValues(" | ");
-        count = 0;
-        values = [string.Empty, string.Empty, " |A", string.Empty];
-
-        foreach (var span in enumerator)
-        {
-            Assert.IsTrue(span.SequenceEqual(values[count]));
-            count++;
-        }
-        Assert.AreEqual(4, count);
+        ForeachTest(enumerator, [string.Empty, string.Empty, " |A", string.Empty]);
     }
 
     [TestMethod]
@@ -156,6 +84,28 @@ public class TextToolsTest
     {
         string value = " \t";
         var enumerator = value.AsSpan().AsSeparatedValuesAny(" \t");
+        ForeachEmptyTest(enumerator, 3);
+
+        value = "ID=FBsf0000411533;Name=BKN40131;Dbxref=FlyBase:FBsf0000411533;";
+        enumerator = value.AsSpan().AsSeparatedValuesAny(" =:;");
+        ForeachTest(enumerator,
+            ["ID", "FBsf0000411533", "Name", "BKN40131", "Dbxref", "FlyBase", "FBsf0000411533", string.Empty]);
+    }
+
+    private static void ForeachTest(SeparatedValueEnumerator enumerator, ReadOnlySpan<string> expected)
+    {
+        int count = 0;
+
+        foreach (var span in enumerator)
+        {
+            Assert.AreEqual(expected[count], span.ToString());
+            count++;
+        }
+        Assert.AreEqual(expected.Length, count);
+    }
+
+    private static void ForeachEmptyTest(SeparatedValueEnumerator enumerator, int expectedCount)
+    {
         int count = 0;
 
         foreach (var span in enumerator)
@@ -163,19 +113,6 @@ public class TextToolsTest
             Assert.IsTrue(span.IsEmpty);
             count++;
         }
-        Assert.AreEqual(3, count);
-
-        value = "ID=FBsf0000411533;Name=BKN40131;Dbxref=FlyBase:FBsf0000411533;";
-        enumerator = value.AsSpan().AsSeparatedValuesAny(" =:;");
-        count = 0;
-        string[] values =
-            ["ID", "FBsf0000411533", "Name", "BKN40131", "Dbxref", "FlyBase", "FBsf0000411533", string.Empty];
-
-        foreach (var span in enumerator)
-        {
-            Assert.IsTrue(span.SequenceEqual(values[count]));
-            count++;
-        }
-        Assert.AreEqual(values.Length, count);
+        Assert.AreEqual(expectedCount, count);
     }
 }

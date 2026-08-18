@@ -87,7 +87,7 @@ public class DequeTest
         target.Capacity = 4;
         Assert.AreEqual(4, target.Capacity);
         Assert.AreEqual(compare.Count, target.Count);
-        Assert.IsTrue(target.SequenceEqual(compare));
+        Assert.AreSequenceEqual(compare, target);
         Assert.AreEqual(compare.First(), target.First);
         Assert.AreEqual(compare.Last(), target.Last);
 
@@ -95,7 +95,7 @@ public class DequeTest
         target.Capacity *= 2;
         Assert.AreEqual(8, target.Capacity);
         Assert.AreEqual(compare.Count, target.Count);
-        Assert.IsTrue(target.SequenceEqual(compare));
+        Assert.AreSequenceEqual(compare, target);
         Assert.AreEqual(compare.First(), target.First);
         Assert.AreEqual(compare.Last(), target.Last);
 
@@ -106,7 +106,7 @@ public class DequeTest
         target.Capacity = 6;
         Assert.AreEqual(6, target.Capacity);
         Assert.AreEqual(compare.Count, target.Count);
-        Assert.IsTrue(target.SequenceEqual(compare));
+        Assert.AreSequenceEqual(compare, target);
         Assert.AreEqual(compare.First(), target.First);
         Assert.AreEqual(compare.Last(), target.Last);
 
@@ -148,7 +148,7 @@ public class DequeTest
     {
         var query = Enumerable.Range(0, 4);
         var target = new Deque<int>(query);
-        Assert.IsTrue(query.SequenceEqual(target));
+        Assert.AreSequenceEqual(query, target);
 
         var enumerator = (target as IEnumerable).GetEnumerator();
 
@@ -208,7 +208,7 @@ public class DequeTest
             target.CopyTo(array, 1);
 
             Assert.AreEqual(0, array.First());
-            Assert.IsTrue(query.SequenceEqual(array.Skip(1).Take(Count)));
+            Assert.AreSequenceEqual(query, array.Skip(1).Take(Count));
             Assert.AreEqual(0, array.Last());
 
             Assert.Throws<ArgumentNullException>(() => target.CopyTo(null!, 0));
@@ -220,7 +220,7 @@ public class DequeTest
             target.CopyTo(Index, array2.AsSpan(1), Count2);
 
             Assert.AreEqual(0, array2.First());
-            Assert.IsTrue(Enumerable.Range(Start + Index, Count2).SequenceEqual(array2.Skip(1).Take(Count2)));
+            Assert.AreSequenceEqual(Enumerable.Range(Start + Index, Count2), array2.Skip(1).Take(Count2));
             Assert.AreEqual(0, array2.Last());
 
             Assert.Throws<ArgumentOutOfRangeException>(() => target.CopyTo(-1, array2.AsSpan(), 0));
@@ -255,7 +255,7 @@ public class DequeTest
             target.CopyTo(array, 1);
 
             Assert.AreEqual(0, array.First());
-            Assert.IsTrue(Enumerable.Range(Start, Count).SequenceEqual(array.Skip(1).Take(Count)));
+            Assert.AreSequenceEqual(Enumerable.Range(Start, Count), array.Skip(1).Take(Count));
             Assert.AreEqual(0, array.Last());
         }
         {
@@ -263,7 +263,7 @@ public class DequeTest
             target.CopyTo(Index, array2.AsSpan(1), Count2);    // [0, 9, 10, 0]
 
             Assert.AreEqual(0, array2.First());
-            Assert.IsTrue(Enumerable.Range(Start + Index, Count2).SequenceEqual(array2.Skip(1).Take(Count2)));
+            Assert.AreSequenceEqual(Enumerable.Range(Start + Index, Count2), array2.Skip(1).Take(Count2));
             Assert.AreEqual(0, array2.Last());
         }
     }
@@ -475,7 +475,7 @@ public class DequeTest
         target.InsertRange(3, target);
         compare.InsertRange(3, compare);
         Assert.AreEqual(compare.Count, target.Count);
-        Assert.IsTrue(target.SequenceEqual(compare));
+        Assert.AreSequenceEqual(compare, target);
         Assert.AreEqual(target.Count, target.Capacity);
         Assert.AreEqual(compare.First(), target.First);
         Assert.AreEqual(compare.Last(), target.Last);
@@ -488,7 +488,7 @@ public class DequeTest
         target.InsertRange(12, target);
         compare.InsertRange(12, compare);
         Assert.AreEqual(compare.Count, target.Count);
-        Assert.IsTrue(target.SequenceEqual(compare));
+        Assert.AreSequenceEqual(compare, target);
         Assert.AreEqual(compare.First(), target.First);
         Assert.AreEqual(compare.Last(), target.Last);
 
@@ -644,10 +644,10 @@ public class DequeTest
         target2.AddLast("4");
         target2.AddFirst("2");
         target2.AddFirst("1");
-        CollectionAssert.AreEqual(new[] { "1", "2", "3", "4" }, target2);
+        Assert.AreSequenceEqual(["1", "2", "3", "4"], target2);
 
         target2.RemoveRange(0, 3);
-        CollectionAssert.AreEqual(new[] { "4" }, target2);
+        Assert.AreSequenceEqual(["4"], target2);
 
         target2.RemoveRange(0, 1);
         Assert.AreEqual(0, target2.Count);
@@ -682,12 +682,12 @@ public class DequeTest
         var target2 = new Deque<string>(4);
         target2.AddLast("2");
         target2.AddFirst("1");
-        CollectionAssert.AreEqual(new[] { "1", "2" }, target2);
+        Assert.AreSequenceEqual(["1", "2"], target2);
         target2.Clear();
         Assert.AreEqual(0, target2.Count);
 
         target2.AddLast("3");
-        CollectionAssert.AreEqual(new[] { "3" }, target2);
+        Assert.AreSequenceEqual(["3"], target2);
         target2.Clear();
         Assert.AreEqual(0, target2.Count);
     }
@@ -702,7 +702,7 @@ public class DequeTest
         Assert.AreEqual(1, list.Add(null));
         Assert.AreEqual(-1, list.Add(1));
         Assert.AreEqual(2, target.Count);
-        Assert.IsTrue(target.SequenceEqual(["A", null]));
+        Assert.AreSequenceEqual(["A", null], target);
 
         int i = 0;
         foreach (object? obj in list)
@@ -725,12 +725,12 @@ public class DequeTest
         Assert.Throws<ArgumentException>(() => list.CopyTo(array, 3));
         Assert.Throws<ArgumentException>(() => list.CopyTo(new int[2], 0));
         list.CopyTo(array, 1);
-        Assert.IsTrue(array.SequenceEqual([null, "A", null, null]));
+        Assert.AreSequenceEqual([null, "A", null, null], array);
 
         Assert.AreEqual("A", list[0]);
         list[1] = "B";
         Assert.AreEqual(2, target.Count);
-        Assert.IsTrue(target.SequenceEqual(["A", "B"]));
+        Assert.AreSequenceEqual(["A", "B"], target);
         list[1] = null;
         Assert.IsNull(target[1]);
         Assert.Throws<ArgumentException>(() => list[0] = new object());
@@ -739,14 +739,14 @@ public class DequeTest
         list.Insert(1, null);
         list.Insert(2, "D");
         Assert.AreEqual(5, target.Count);
-        Assert.IsTrue(target.SequenceEqual(["A", null, "D", "C", null]));
+        Assert.AreSequenceEqual(["A", null, "D", "C", null], target);
         Assert.Throws<ArgumentException>(() => list.Insert(0, new object()));
 
         list.Remove("D");
         list.Remove(null);
         list.Remove(new object());
         Assert.AreEqual(3, target.Count);
-        Assert.IsTrue(target.SequenceEqual(["A", "C", null]));
+        Assert.AreSequenceEqual(["A", "C", null], target);
 
         Assert.AreEqual(1, list.IndexOf("C"));
         Assert.AreEqual(2, list.IndexOf(null));
@@ -760,7 +760,7 @@ public class DequeTest
 #pragma warning restore IDE0079,MSTEST0037
 
         list.CopyTo(array, 0);
-        Assert.IsTrue(array.SequenceEqual(["A", "C", null, null]));
+        Assert.AreSequenceEqual(["A", "C", null, null], array);
 
         Assert.IsFalse(list.IsFixedSize);
         Assert.IsFalse(list.IsReadOnly);
@@ -773,7 +773,7 @@ public class DequeTest
         target.Insert(index, value);
         compare.Insert(index, value);
         Assert.AreEqual(compare.Count, target.Count);
-        Assert.IsTrue(target.SequenceEqual(compare));
+        Assert.AreSequenceEqual(compare, target);
 
         Assert.AreEqual(value, target[index]);
         Assert.AreEqual(compare.First(), target.First);
@@ -785,7 +785,7 @@ public class DequeTest
         target.InsertRange(index, coll);
         compare.InsertRange(index, coll);
         Assert.AreEqual(compare.Count, target.Count);
-        Assert.IsTrue(target.SequenceEqual(compare));
+        Assert.AreSequenceEqual(compare, target);
 
         Assert.AreEqual(compare.First(), target.First);
         Assert.AreEqual(compare.Last(), target.Last);
@@ -796,7 +796,7 @@ public class DequeTest
         target.RemoveAt(index);
         compare.RemoveAt(index);
         Assert.AreEqual(compare.Count, target.Count);
-        Assert.IsTrue(target.SequenceEqual(compare));
+        Assert.AreSequenceEqual(compare, target);
 
         if (target.Count > 0)
         {
@@ -810,7 +810,7 @@ public class DequeTest
         target.RemoveRange(index, count);
         compare.RemoveRange(index, count);
         Assert.AreEqual(compare.Count, target.Count);
-        Assert.IsTrue(target.SequenceEqual(compare));
+        Assert.AreSequenceEqual(compare, target);
 
         if (target.Count > 0)
         {
@@ -819,9 +819,9 @@ public class DequeTest
         }
     }
 
-    private static void ForEach<T>(Deque<T> target, Action action)
+    private static void ForEach<T>(Deque<T> target, Action modifyingAction)
     {
         foreach (var _ in target)
-            action();
+            modifyingAction();
     }
 }

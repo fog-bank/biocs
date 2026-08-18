@@ -98,7 +98,7 @@ public class CounterTest
         for (int i = 0; i < StartIndex; i++)
             Assert.AreEqual(DefaultValue, array[i]);
 
-        Assert.IsTrue(counter.UniqueItems.SequenceEqual(array.Skip(StartIndex).Take(Count)));
+        Assert.AreSequenceEqual(array.Skip(StartIndex).Take(Count), counter.UniqueItems, SequenceOrder.InAnyOrder);
 
         for (int i = StartIndex + Count; i < array.Length; i++)
             Assert.AreEqual(DefaultValue, array[i]);
@@ -401,8 +401,8 @@ public class CounterTest
     {
         Assert.AreEqual(totalCountExpected, target.TotalCount);
         Assert.AreEqual(numberOfItemsExpected, target.NumberOfItems);
-        Assert.IsTrue(uniqueItemsExpected.SetEquals(target.UniqueItems));
-        CollectionAssert.AreEquivalent(repeatedItemsExpected, target.RepeatedItems.ToArray());
+        Assert.AreSequenceEqual(uniqueItemsExpected, target.UniqueItems, SequenceOrder.InAnyOrder);
+        Assert.AreSequenceEqual(repeatedItemsExpected, target.RepeatedItems, SequenceOrder.InAnyOrder);
         Assert.AreEqual(comparerExpected, target.Comparer);
 
         var array = new T[target.NumberOfItems];

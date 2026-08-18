@@ -75,7 +75,7 @@ public class Counter<T>
     /// Gets an enumerable collection of unique items that the <see cref="Counter{T}"/> has counted before now.
     /// </summary>
     /// <remarks>
-    /// <para>This enumerable collection also contains items whose the count is 0.</para>
+    /// <para>This enumerable collection contains items that were previously counted but whose current count is 0.</para>
     /// <para>The enumerator retured by this enumerable collection cannot be used to modify the <see cref="Counter{T}"/>.
     /// For example, the following enumeration raises an <see cref="InvalidOperationException"/>.</para>
     /// <code>

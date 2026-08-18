@@ -67,27 +67,17 @@ public class NonBinaryTreeTest
     }
 
     [TestMethod]
-    public void CollapseTest()
+    public void ToStringTest()
     {
-        var tree = NonBinaryTree.Parse("((A,B),(C,D,(E,F)),G);");
-        Assert.IsNotNull(tree.Root);
-
-        tree.Root.CollapseChild(0);
-
-        Assert.HasCount(7, tree.Root.ChildNodes);
-        foreach (var child in tree.Root.ChildNodes)
+        var tree = new NonBinaryTree
         {
-            Assert.AreEqual(tree.Root, child.Parent);
-            Assert.IsTrue(child.IsLeaf);
-        }
+            Root = new NonBinaryNode(0, "Root") { Length = 0.1 }
+        };
+        tree.Root.AppendChild(new() { Length = double.PositiveInfinity });
+        var node = tree.Root.AppendChild(new() { Length = 0.5 });
+        node.AppendChild(new() { Name = "C D" });
+        node.AppendChild(new() { Name = "E'", Length = -0.1 });
 
-        tree = NonBinaryTree.Parse("(((A:0.01,B:-0.01):0.01,C:0.03):0.02,(D:0,E:0):-0.02,(F:0.2,G:0.1):-0.01):0.009;");
-        Assert.IsNotNull(tree.Root);
-        Assert.AreEqual(0.339, tree.SumLength);
-
-        tree.Root.CollapseChild(0.01);
-
-        Assert.AreEqual(0.339, tree.SumLength);
-        Assert.AreEqual("((A:0.01,B:-0.01,C:0.03):0.02,(D:0,E:0):-0.02,F:0.2,G:0.1):0.009;", tree.ToString());
+        Assert.AreEqual("(OTU1,(C_D:0.00,'E''':-0.10):0.50):0.10;", tree.ToString("f2"));
     }
 }

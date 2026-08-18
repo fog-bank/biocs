@@ -75,8 +75,7 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
 
         var sb = new StringBuilder();
         int leafIndex = 0;
-        FormatSubtree(sb, Root, ref leafIndex,
-            format != null ? CompositeFormat.Parse(format) : null, NumberFormatInfo.GetInstance(formatProvider));
+        FormatSubtree(sb, Root, ref leafIndex, format, NumberFormatInfo.GetInstance(formatProvider));
         return sb.Append(';').ToString();
     }
 
@@ -90,7 +89,7 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
     /// If <paramref name="format"/> is <see langword="null"/>, the default format is used.
     /// If <paramref name="format"/> is an empty string, only topology is written.
     /// </para><para>
-    /// If <see cref="NonBinaryNode.Name"/> is null or empty, a temporary name (e.g. OTU1) is written as the OTU label.
+    /// If <see cref="NonBinaryNode.Name"/> of leaf nodes is null or empty, a temporary name (e.g. OTU1) is written as the label.
     /// </para>
     /// </remarks>
     public string ToString([StringSyntax(StringSyntaxAttribute.NumericFormat)] string? format)
@@ -100,6 +99,10 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
     /// Returns a string representation of this tree in Newick format.
     /// </summary>
     /// <returns>A string of Newick format.</returns>
+    /// <remarks>
+    /// The labels of interior nodes are omitted. The length of infinite value is also omitted.
+    /// <see cref="CultureInfo.InvariantCulture"/> is used for formatting lengths.
+    /// </remarks>
     public override string ToString() => ToString(null, CultureInfo.InvariantCulture);
 
     /// <inheritdoc/>
@@ -131,7 +134,7 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
         => TryParse(s.AsSpan(), provider, out result);
 
     private static void FormatSubtree(StringBuilder sb, NonBinaryNode node,
-        ref int leafIndex, CompositeFormat? format, NumberFormatInfo info)
+        ref int leafIndex, string? format, NumberFormatInfo info)
     {
         if (node.IsLeaf)
         {
@@ -159,8 +162,8 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
         {
             if (format == null)
                 sb.Append(info, $":{node.Length}");
-            else if (format.Format.Length > 0)
-                sb.Append(':').AppendFormat(info, format, node.Length);
+            else if (format.Length > 0)
+                sb.Append(':').Append(node.Length.ToString(format, info));
         }
     }
 
