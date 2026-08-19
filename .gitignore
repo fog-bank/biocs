@@ -3,6 +3,7 @@
 
 launchSettings.json
 BenchmarkDotNet.Artifacts
+docs/
 
 # User-specific files
 *.suo
