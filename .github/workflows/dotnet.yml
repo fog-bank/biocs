@@ -38,7 +38,7 @@ jobs:
       uses: danielpalme/ReportGenerator-GitHub-Action@5.5.11
       with:
         reports: ${{ env.Test_Project_Directory }}/${{ env.Coverage_Output }}
-        targetdir: ${{ env.Test_Project_Directory }}${{ env.Coverage_Report_Directory }}
+        targetdir: ${{ env.Test_Project_Directory }}/${{ env.Coverage_Report_Directory }}
         reporttypes: "Html;MarkdownSummaryGithub"
     - name: Publish coverage in build summary
       run: cat SummaryGithub.md >> $GITHUB_STEP_SUMMARY

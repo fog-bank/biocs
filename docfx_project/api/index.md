@@ -7,3 +7,5 @@ The following is a list of namespaces.
 | <xref:Biocs.Collections> |  |
 | <xref:Biocs.IO> |  |
 | <xref:Biocs.Numerics> |  |
+| <xref:Biocs.Text> |  |
+| <xref:Biocs.Trees> |  |
