@@ -12,18 +12,17 @@ public class NonBinaryNode
     /// <summary>
     /// Initializes a new instance of the <see cref="NonBinaryNode"/> class.
     /// </summary>
-    public NonBinaryNode()
-    { }
+    public NonBinaryNode() => Index = -1;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="NonBinaryNode"/> class with the specified index and name.
     /// </summary>
-    /// <param name="index">The one-based index to identify nodes.</param>
+    /// <param name="index">The zero-based index to identify nodes.</param>
     /// <param name="name">The name assigned to the node.</param>
     public NonBinaryNode(int index, string name) => (Index, Name) = (index, name);
 
     /// <summary>
-    /// Gets or sets the one-based index associated with this node.
+    /// Gets or sets the zero-based index associated with this node.
     /// </summary>
     public int Index { get; set; }
 

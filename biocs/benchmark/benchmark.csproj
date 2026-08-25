@@ -9,10 +9,21 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.15.8" />
+    <PackageReference Include="Microsoft.VisualStudio.DiagnosticsHub.BenchmarkDotNetDiagnosers" Version="18.7.37220.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="BenchmarkDotNet.Attributes" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\core\core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Deployments\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

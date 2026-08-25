@@ -1,4 +1,4 @@
 ﻿using Benchmark;
 using BenchmarkDotNet.Running;
 
-var _ = BenchmarkRunner.Run<LocationTest>();
+var _ = BenchmarkRunner.Run<BitArrayTest>();

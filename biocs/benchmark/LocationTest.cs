@@ -1,5 +1,4 @@
-﻿using BenchmarkDotNet.Attributes;
-using Biocs;
+﻿using Biocs;
 
 namespace Benchmark;
 
