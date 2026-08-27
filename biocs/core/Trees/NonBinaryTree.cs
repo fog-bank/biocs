@@ -60,6 +60,67 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
     [DebuggerBrowsable(DebuggerBrowsableState.Never), ExcludeFromCodeCoverage]
     private string DebuggerDisplay => $"Leaves = {LeafCount}, SBL = {SumLength:f4}";
 
+    public void ToUnroot()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Dictionary<Split, NonBinaryNode> AsSplits(bool includeLeaves)
+    {
+        if (Root == null)
+            throw new InvalidOperationException();
+
+        if (Root.ChildNodes.Count < 3)
+            throw new NotSupportedException();
+
+        int length = CheckLeaf(Root);
+
+        var splits = new Dictionary<Split, NonBinaryNode>();
+        foreach (var node in Root.ChildNodes)
+            ComputeSplit(node, splits, length, includeLeaves);
+
+        return splits;
+
+        static int CheckLeaf(NonBinaryNode node)
+        {
+            if (node.IsLeaf)
+            {
+                if (node.Index < 0)
+                    ThrowHelper.ThrowInvalidOperation(null);
+
+                return 1;
+            }
+            else
+            {
+                int leaves = 0;
+
+                foreach (var child in node.ChildNodes)
+                    leaves += CheckLeaf(child);
+
+                return leaves;
+            }
+        }
+
+        static Split ComputeSplit(NonBinaryNode node,
+            Dictionary<Split, NonBinaryNode> splits, int length, bool includeLeaves)
+        {
+            if (node.IsLeaf)
+            {
+                var split = new Split(length, node.Index);
+                if (includeLeaves)
+                    splits.Add(split, node);
+                return split;
+            }
+            else
+            {
+                var split = Split.FromChildren(node.ChildNodes.Select(
+                    child => ComputeSplit(child, splits, length, includeLeaves)));
+                splits.Add(split, node);
+                return split;
+            }
+        }
+    }
+
     /// <summary>
     /// Returns a string representation of this tree in Newick format using the specified numeric format and culture-specific
     /// formatting information.
@@ -112,7 +173,7 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
         var result = parser.Parse();
 
         if (parser.HasError)
-            ThrowHelper.ThrowFormat(null);
+            throw new FormatException();
 
         return result;
     }
