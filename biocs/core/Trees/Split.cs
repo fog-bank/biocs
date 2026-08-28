@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Numerics;
 
 namespace Biocs.Trees;
 
@@ -41,13 +42,9 @@ public sealed class Split : IEquatable<Split>
     /// <para><paramref name="count"/> is less than 2.</para> -or- <para>Any of <paramref name="indices"/> is negative.</para>
     /// -or- <para>Any of <paramref name="indices"/> is greater than or equal to <paramref name="count"/>.</para>
     /// </exception>
-    /// <exception cref="ArgumentException"><paramref name="indices"/> is empty.</exception>
-    [StringResourceUsage("Arg.EmptySpan")]
     public Split(int count, ReadOnlySpan<int> indices)
     {
         ArgumentOutOfRangeException.ThrowIfLessThan(count, 2);
-        if (indices.IsEmpty)
-            ThrowHelper.ThrowArgument(Res.GetString("Arg.EmptySpan"), nameof(indices));
 
         LeafCount = count;
         bits = new BitArray(count - 1);
@@ -75,7 +72,9 @@ public sealed class Split : IEquatable<Split>
     /// <summary>
     /// Gets the number of leave nodes in the tree associated with this instance.
     /// </summary>
-    public int LeafCount { get; set; }
+    public int LeafCount { get; }
+
+    public bool IsEmpty => !bits.HasAnySet();
 
     /// <summary>
     /// Returns a new <see cref="Split"/> that represents the parent of two splits.
@@ -128,6 +127,28 @@ public sealed class Split : IEquatable<Split>
         return Get(one) == Get(other);
     }
 
+    public int IsTrivial()
+    {
+        if (bits.HasAllSet())
+            return 0;
+
+        var array = new int[(bits.Length + 31) / 32];
+        bits.CopyTo(array, 0);
+
+        var span = array.AsSpan();
+        int index32 = span.IndexOfAnyExcept(0);
+
+        if (index32 == -1)
+            return -1;
+
+        int bit = span[index32];
+        if (int.PopCount(bit) > 1 || span[(index32 + 1)..].ContainsAnyExcept(0))
+            return -1;
+
+        int offset = int.TrailingZeroCount(bit);
+        return index32 * 32 + offset + 1;
+    }
+
     /// <summary>
     /// Determines whether the current split is equal to another <see cref="Split"/>.
     /// </summary>
@@ -151,7 +172,7 @@ public sealed class Split : IEquatable<Split>
     /// </summary>
     public sealed override int GetHashCode()
     {
-        int byteLength = (LeafCount + 6) / 8;
+        int byteLength = (bits.Length + 7) / 8;
         var bytes = new byte[byteLength];
         bits.CopyTo(bytes, 0);
 

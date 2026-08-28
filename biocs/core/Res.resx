@@ -123,9 +123,6 @@
   <data name="Arg.EmptyCollection" xml:space="preserve">
     <value>The specified collection is empty.</value>
   </data>
-  <data name="Arg.EmptySpan" xml:space="preserve">
-    <value>The specified span is empty.</value>
-  </data>
   <data name="Arg.IncompatibleObjectForCollection" xml:space="preserve">
     <value>value is of a type that is not assignable to the collection.</value>
   </data>

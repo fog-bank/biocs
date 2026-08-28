@@ -30,6 +30,7 @@
     "dest": "../docs",
     "globalMetadataFiles": [ "global.json" ],
     "template": [ "default", "modern" ],
+    "postProcessors": [ "ExtractSearchIndex" ],
     "maxParallelism": 4,
     "xref": [ "https://learn.microsoft.com/en-us/dotnet/.xrefmap.json" ]
   }
