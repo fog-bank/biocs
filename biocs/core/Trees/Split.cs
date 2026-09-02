@@ -1,5 +1,7 @@
-﻿using System.Collections;
-using System.Numerics;
+﻿using System.Buffers.Binary;
+using System.Collections;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Biocs.Trees;
 
@@ -132,21 +134,20 @@ public sealed class Split : IEquatable<Split>
         if (bits.HasAllSet())
             return 0;
 
-        var array = new int[(bits.Length + 31) / 32];
-        bits.CopyTo(array, 0);
+        var bytes = AsBytes();
+        int index8 = bytes.IndexOfAnyExcept((byte)0);
 
-        var span = array.AsSpan();
-        int index32 = span.IndexOfAnyExcept(0);
-
-        if (index32 == -1)
+        if (index8 == -1)
             return -1;
 
-        int bit = span[index32];
-        if (int.PopCount(bit) > 1 || span[(index32 + 1)..].ContainsAnyExcept(0))
+        byte bit = bytes[index8];
+        if (byte.PopCount(bit) > 1 || bytes[(index8 + 1)..].ContainsAnyExcept((byte)0))
             return -1;
 
-        int offset = int.TrailingZeroCount(bit);
-        return index32 * 32 + offset + 1;
+        int offset = byte.TrailingZeroCount(bit);
+        int index = index8 * 8 + offset;
+        Debug.Assert(bits.Get(index));
+        return index + 1;
     }
 
     /// <summary>
@@ -159,9 +160,9 @@ public sealed class Split : IEquatable<Split>
         if (other == null || LeafCount != other.LeafCount)
             return false;
 
-        var comp = new BitArray(bits);
-        comp.Xor(other.bits);
-        return !comp.HasAnySet();
+        var bytes = AsBytes();
+        var otherBytes = other.AsBytes();
+        return bytes.SequenceEqual(otherBytes);
     }
 
     /// <inheritdoc/>
@@ -172,14 +173,31 @@ public sealed class Split : IEquatable<Split>
     /// </summary>
     public sealed override int GetHashCode()
     {
-        int byteLength = (bits.Length + 7) / 8;
-        var bytes = new byte[byteLength];
-        bits.CopyTo(bytes, 0);
-
         var hash = new HashCode();
+        var bytes = AsBytes();
         hash.AddBytes(bytes);
         return hash.ToHashCode();
     }
 
     private bool Get(int index) => index > 0 && bits[index - 1];
+
+    private ReadOnlySpan<byte> AsBytes()
+    {
+        var bytes = CollectionsMarshal.AsBytes(bits);
+        // Should not use MemoryMarshal.Cast<byte, int>() for this bytes.
+#if DEBUG
+        // Validate CollectionsMarshal.AsBytes().
+        var array = new byte[(bits.Length + 7) / 8];
+        bits.CopyTo(array, 0);
+        Debug.Assert(bytes.SequenceEqual(array));
+        Debug.Assert(bits.Length > 0);
+#endif
+
+        // Clear extraneous bits that do not represent elements in the BitArray.
+        int offset = bits.Length % 8;
+        if (offset != 0)
+            bytes[^1] &= (byte)((1 << offset) - 1);
+
+        return bytes;
+    }
 }
