@@ -3,17 +3,16 @@
 namespace Benchmark;
 
 [MemoryDiagnoser]
-//[ShortRunJob]
 public class LocationTest
 {
-    [Params(10)] // 10, 20
+    [Params(10, 100)]
     public int N;
 
-    [Params(1000)] // 100, 1000, 10000
-    public int Length;
+    //[Params(1000, 10000)]
+    public int Length = 1000;
 
-    [Params(1)]
-    public int Seed;
+    //[Params(1)]
+    public int Seed = 1;
 
     private SequenceRange[]? ranges;
     private SequenceRange[]? ranges2;
@@ -83,7 +82,7 @@ public class LocationTest
     }
 
     [Benchmark]
-    public LinkedListLocation LinkedList_FromBack()
+    public LinkedListLocation LinkedList_AddFirst()
     {
         var loc = new LinkedListLocation();
 
@@ -95,7 +94,7 @@ public class LocationTest
     }
 
     [Benchmark]
-    public DequeLocation Deque_FromBack()
+    public DequeLocation Deque_AddFirst()
     {
         var loc = new DequeLocation();
 
@@ -107,7 +106,7 @@ public class LocationTest
     }
 
     [Benchmark]
-    public ListLocation List_FromBack()
+    public ListLocation List_AddFirst()
     {
         var loc = new ListLocation();
 
@@ -119,7 +118,7 @@ public class LocationTest
     }
 
     [Benchmark]
-    public LinkedListLocation LinkedList_FromFront()
+    public LinkedListLocation LinkedList_AddLast()
     {
         var loc = new LinkedListLocation();
 
@@ -131,11 +130,11 @@ public class LocationTest
     }
 
     [Benchmark]
-    public DequeLocation Deque_FromFront()
+    public DequeLocation Deque_AddLast()
     {
         var loc = new DequeLocation();
 
-        for (int i = 0; i < ranges2!.Length; i++)
+        for (int i = ranges2!.Length - 1; i >= 0; i--)
             loc.UnionWith(ranges2[i]);
 
         loc.SymmetricExceptWith(exclude);
@@ -143,11 +142,11 @@ public class LocationTest
     }
 
     [Benchmark]
-    public ListLocation List_FromFront()
+    public ListLocation List_AddLast()
     {
         var loc = new ListLocation();
 
-        for (int i = 0; i < ranges2!.Length; i++)
+        for (int i = ranges2!.Length - 1; i >= 0; i--)
             loc.UnionWith(ranges2[i]);
 
         loc.SymmetricExceptWith(exclude);

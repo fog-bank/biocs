@@ -8,9 +8,6 @@ public class LinkedListLocation
 {
     private readonly LinkedList<SequenceRange> ranges = new();
 
-    public LinkedListLocation()
-    { }
-
     /// <summary>
     /// Gets the total length of regions that this location represents.
     /// </summary>
@@ -146,8 +143,12 @@ public class LinkedListLocation
                 return;
 
             // |← current →| |← range →|
+            var nextNode = currentNode.Next;
             if (current.End < range.Start)
+            {
+                currentNode = nextNode;
                 continue;
+            }
 
             // Here, current.Overlaps(range) == true
             if (range.End < current.End)
@@ -169,8 +170,6 @@ public class LinkedListLocation
                 }
                 return;
             }
-
-            var nextNode = currentNode.Next;
 
             if (current.Start < range.Start)
             {
@@ -382,9 +381,6 @@ public class DequeLocation
 {
     private readonly Deque<SequenceRange> ranges = new();
 
-    public DequeLocation()
-    { }
-
     public int Length { get; private set; }
 
     public int Start => IsEmpty ? 0 : ranges.First.Start;
@@ -417,7 +413,7 @@ public class DequeLocation
             return;
         }
 
-        int currentIndex = ranges.Count > 1 && AheadOfDistantly(ranges[^2], range) ? 0 : ranges.Count - 1;
+        int currentIndex = ranges.Count > 1 && AheadOfDistantly(ranges[^2], range) ? ranges.Count - 1 : 0;
         while (true)
         {
             var current = ranges[currentIndex];
@@ -502,7 +498,10 @@ public class DequeLocation
 
             // |← current →| |← range →|
             if (current.End < range.Start)
+            {
+                currentIndex++;
                 continue;
+            }
 
             // Here, current.Overlaps(range) == true
             if (range.End < current.End)
@@ -735,9 +734,6 @@ public class ListLocation
 {
     private readonly List<SequenceRange> ranges = [];
 
-    public ListLocation()
-    { }
-
     public int Length { get; private set; }
 
     public int Start => IsEmpty ? 0 : ranges[0].Start;
@@ -755,14 +751,7 @@ public class ListLocation
         if (range.IsDefault)
             return;
 
-        if (IsEmpty)
-        {
-            ranges.Insert(0, range);
-            Length += range.Length;
-            return;
-        }
-
-        if (AheadOfDistantly(ranges[^1], range))
+        if (IsEmpty || AheadOfDistantly(ranges[^1], range))
         {
             // |← location →|  |← range →|
             ranges.Add(range);
@@ -770,7 +759,7 @@ public class ListLocation
             return;
         }
 
-        int currentIndex = ranges.Count > 1 && AheadOfDistantly(ranges[^2], range) ? 0 : ranges.Count - 1;
+        int currentIndex = ranges.Count > 1 && AheadOfDistantly(ranges[^2], range) ? ranges.Count - 1 : 0;
         while (true)
         {
             var current = ranges[currentIndex];
@@ -786,7 +775,6 @@ public class ListLocation
             if (AheadOfDistantly(current, range))
             {
                 // |← current →|  |← range →|
-                // When currentNode.Next is null (i.e. currentNode is LastNode), the condition is already covered.
                 currentIndex++;
                 continue;
             }
@@ -855,7 +843,10 @@ public class ListLocation
 
             // |← current →| |← range →|
             if (current.End < range.Start)
+            {
+                currentIndex++;
                 continue;
+            }
 
             // Here, current.Overlaps(range) == true
             if (range.End < current.End)

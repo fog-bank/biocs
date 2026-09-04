@@ -1,5 +1,4 @@
-﻿using System.Buffers.Binary;
-using System.Collections;
+﻿using System.Collections;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
@@ -24,6 +23,9 @@ public sealed class Split : IEquatable<Split>
     public Split(int count, int index)
     {
         ArgumentOutOfRangeException.ThrowIfLessThan(count, 2);
+        ArgumentOutOfRangeException.ThrowIfNegative(index);
+        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, count);
+
         LeafCount = count;
 
         if (index > 0)
@@ -67,8 +69,8 @@ public sealed class Split : IEquatable<Split>
     // Deep copy constructor
     private Split(Split other)
     {
-        bits = new(other.bits);
         LeafCount = other.LeafCount;
+        bits = new(other.bits);
     }
 
     /// <summary>
@@ -76,6 +78,9 @@ public sealed class Split : IEquatable<Split>
     /// </summary>
     public int LeafCount { get; }
 
+    /// <summary>
+    /// Gets a value indicating whether this split represents a bipartition where one is an empty subset.
+    /// </summary>
     public bool IsEmpty => !bits.HasAnySet();
 
     /// <summary>
@@ -105,7 +110,7 @@ public sealed class Split : IEquatable<Split>
         foreach (var split in splits)
         {
             if (union == null)
-                union = new Split(split);
+                union = new(split);
             else
             {
                 if (union.LeafCount != split.LeafCount)
@@ -129,6 +134,11 @@ public sealed class Split : IEquatable<Split>
         return Get(one) == Get(other);
     }
 
+    /// <summary>
+    /// Tests whether this split represents a exterior branch and gets the leaf index.
+    /// </summary>
+    /// <returns>The zero-based index of the leaf if this split represents a exterior branch; otherwise -1.</returns>
+    /// <remarks>A trivial bipartion means that one of two subsets is one leaf and the other is the rest.</remarks>
     public int IsTrivial()
     {
         if (bits.HasAllSet())
@@ -153,7 +163,7 @@ public sealed class Split : IEquatable<Split>
     /// <summary>
     /// Determines whether the current split is equal to another <see cref="Split"/>.
     /// </summary>
-    /// <param name="other"></param>
+    /// <param name="other">The <see cref="Split"/> instance to compare.</param>
     /// <returns><see langword="true"/> if the two splits represent the same bipartition.</returns>
     public bool Equals(Split? other)
     {
@@ -184,20 +194,23 @@ public sealed class Split : IEquatable<Split>
     private ReadOnlySpan<byte> AsBytes()
     {
         var bytes = CollectionsMarshal.AsBytes(bits);
-        // Should not use MemoryMarshal.Cast<byte, int>() for this bytes.
+        // Should not use MemoryMarshal.Cast<byte, int>() for this span.
+        // (There is no guarantee that the length of the internal array is a multiple of 4.)
 #if DEBUG
-        // Validate CollectionsMarshal.AsBytes().
+        // Validate CollectionsMarshal.AsBytes() and clearing extra bits.
         var array = new byte[(bits.Length + 7) / 8];
         bits.CopyTo(array, 0);
-        Debug.Assert(bytes.SequenceEqual(array));
         Debug.Assert(bits.Length > 0);
-#endif
+        Debug.Assert(bytes.SequenceEqual(array));
 
-        // Clear extraneous bits that do not represent elements in the BitArray.
         int offset = bits.Length % 8;
         if (offset != 0)
-            bytes[^1] &= (byte)((1 << offset) - 1);
-
+        {
+            uint lastBit = bytes[^1];
+            uint mask = (1u << offset) - 1;
+            Debug.Assert((lastBit & mask) == lastBit);
+        }
+#endif
         return bytes;
     }
 }

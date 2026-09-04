@@ -1,11 +1,9 @@
 ﻿using Biocs;
 using Biocs.Text;
-using Microsoft.VSDiagnostics;
 
 namespace Benchmark;
 
 [MemoryDiagnoser]
-[CPUUsageDiagnoser]
 public class LocationTest2
 {
     private List<SequenceRange> ranges = default!;

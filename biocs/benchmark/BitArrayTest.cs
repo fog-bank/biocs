@@ -1,5 +1,6 @@
 ﻿using System.Buffers;
 using System.Collections;
+using System.Runtime.InteropServices;
 using BenchmarkDotNet.Order;
 
 namespace Benchmark;
@@ -14,7 +15,7 @@ public class BitArrayTest
     [ParamsSource(nameof(Comparers))]
     public IEqualityComparer<BitArray> Comparer = default!;
     public static IEnumerable<IEqualityComparer<BitArray>> Comparers
-        => [new GetComparer(), new GetComparer2(), new XorComparer(), new XorComparer2()];
+        => [new GetComparer(), new GetComparer2(), new XorComparer(), new XorComparer2(), new BitArrayComparer3()];
 
     private HashSet<BitArray> hashSet = default!;
     private BitArray[] self = default!;
@@ -49,15 +50,18 @@ public class BitArrayTest
         }
     }
 
-    private static void SetBits(BitArray array, Random rnd)
+    private static void SetBits(BitArray bits, Random rnd)
     {
-        int on = rnd.Next(2, array.Length - 2);
+        int on = rnd.Next(2, bits.Length - 2);
 
         for (int i = 0; i < on; i++)
         {
-            int pos = rnd.Next(0, array.Length);
-            array.Set(pos, true);
+            int pos = rnd.Next(0, bits.Length);
+            bits.Set(pos, true);
         }
+
+        if (bits[0])
+            bits.Not();
     }
 
     internal static bool ByGet(BitArray? x, BitArray? y)
@@ -68,13 +72,9 @@ public class BitArrayTest
         if (x.Length != y.Length)
             return false;
 
-        bool xor = false;
         for (int i = 0; i < x.Length; i++)
         {
-            bool match = x.Get(i) != y.Get(i);
-            if (i == 0)
-                xor = match;
-            else if (match != xor)
+            if (x.Get(i) != y.Get(i))
                 return false;
         }
         return true;
@@ -144,6 +144,29 @@ file abstract class BitArrayComparer2 : EqualityComparer<BitArray>
         ArrayPool<byte>.Shared.Return(bytes);
         return hash.ToHashCode();
     }
+}
+
+file sealed class BitArrayComparer3 : EqualityComparer<BitArray>
+{
+    public sealed override int GetHashCode(BitArray obj)
+    {
+        var bytes = CollectionsMarshal.AsBytes(obj);
+        var hash = new HashCode();
+        hash.AddBytes(bytes);
+        return hash.ToHashCode();
+    }
+
+    public sealed override bool Equals(BitArray? x, BitArray? y)
+    {
+        if (x == null || y == null)
+            return x == y;
+
+        var bytes1 = CollectionsMarshal.AsBytes(x);
+        var bytes2 = CollectionsMarshal.AsBytes(y);
+        return bytes1.SequenceEqual(bytes2);
+    }
+
+    public sealed override string ToString() => "AsBytes";
 }
 
 file sealed class GetComparer : BitArrayComparer
