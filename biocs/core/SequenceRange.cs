@@ -56,6 +56,7 @@ public readonly struct SequenceRange :
     /// <summary>
     /// Gets the length of this range.
     /// </summary>
+    /// <remarks>If <see cref="IsDefault"/> is <see langword="true"/>, this property returns invalid value.</remarks>
     public int Length => End - Start + 1;
 
     /// <summary>

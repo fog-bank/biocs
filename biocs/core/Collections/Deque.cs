@@ -657,21 +657,24 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, IList
 
     private int GetArrayIndex(int dequeIndex)
     {
-        Debug.Assert(dequeIndex >= 0 && dequeIndex < Count);
+        Debug.Assert(dequeIndex >= 0);
+        Debug.Assert(dequeIndex < Count);
 
         return (dequeIndex + head) % items.Length;
     }
 
     private void Increment(ref int arrayIndex, int value = 1)
     {
-        Debug.Assert(arrayIndex >= 0 && arrayIndex < items.Length);
+        Debug.Assert(arrayIndex >= 0);
+        Debug.Assert(arrayIndex < items.Length);
 
         arrayIndex = (arrayIndex + value) % items.Length;
     }
 
     private void Decrement(ref int arrayIndex, int value = 1)
     {
-        Debug.Assert(arrayIndex >= 0 && arrayIndex < items.Length);
+        Debug.Assert(arrayIndex >= 0);
+        Debug.Assert(arrayIndex < items.Length);
 
         if (arrayIndex >= value)
             arrayIndex -= value;
@@ -698,7 +701,8 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, IList
 
     private void EnsureCapacityAndInsert(int index, T item)
     {
-        Debug.Assert(index > 0 && index < Count);
+        Debug.Assert(index > 0);
+        Debug.Assert(index < Count);
 
         var dest = new T[items.Length * 2];
 
@@ -715,7 +719,8 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, IList
 
     private void EnsureCapacityAndInsertRange(int index, ICollection<T> collection)
     {
-        Debug.Assert(index >= 0 && index <= Count);
+        Debug.Assert(index >= 0);
+        Debug.Assert(index <= Count);
         Debug.Assert(collection != null);
 
         var dest = new T[Count + collection.Count];
@@ -734,9 +739,12 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, IList
     // Copy [from, to] to [from - distance, to - distance] (arguments are actual indices in array)
     private void CopyBlockStartward(int start, int end, int distance)
     {
-        Debug.Assert(start >= 0 && start < items.Length);
-        Debug.Assert(end >= 0 && end < items.Length);
-        Debug.Assert(distance > 0 && distance < items.Length);
+        Debug.Assert(start >= 0);
+        Debug.Assert(start < items.Length);
+        Debug.Assert(end >= 0);
+        Debug.Assert(end < items.Length);
+        Debug.Assert(distance > 0);
+        Debug.Assert(distance < items.Length);
 
         if (start <= end)
         {
@@ -772,9 +780,12 @@ public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, IList
     // Copy [from, to] to [from + distance, to + distance] (arguments are actual indices in array)
     private void CopyBlockEndward(int start, int end, int distance)
     {
-        Debug.Assert(start >= 0 && start < items.Length);
-        Debug.Assert(end >= 0 && end < items.Length);
-        Debug.Assert(distance > 0 && distance < items.Length);
+        Debug.Assert(start >= 0);
+        Debug.Assert(start < items.Length);
+        Debug.Assert(end >= 0);
+        Debug.Assert(end < items.Length);
+        Debug.Assert(distance > 0);
+        Debug.Assert(distance < items.Length);
 
         if (start <= end)
         {

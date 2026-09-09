@@ -61,9 +61,9 @@ public class LocationTest
     }
 
     [Benchmark]
-    public ListLocation List_Random()
+    public Location List_Random()
     {
-        var loc = new ListLocation();
+        var loc = new Location();
 
         for (int i = 0; i < ranges!.Length; i++)
         {
@@ -106,9 +106,9 @@ public class LocationTest
     }
 
     [Benchmark]
-    public ListLocation List_AddFirst()
+    public Location List_AddFirst()
     {
-        var loc = new ListLocation();
+        var loc = new Location();
 
         for (int i = 0; i < ranges2!.Length; i++)
             loc.UnionWith(ranges2[i]);
@@ -142,9 +142,9 @@ public class LocationTest
     }
 
     [Benchmark]
-    public ListLocation List_AddLast()
+    public Location List_AddLast()
     {
-        var loc = new ListLocation();
+        var loc = new Location();
 
         for (int i = ranges2!.Length - 1; i >= 0; i--)
             loc.UnionWith(ranges2[i]);

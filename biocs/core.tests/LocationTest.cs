@@ -6,22 +6,41 @@ namespace Biocs;
 public class LocationTest
 {
     [TestMethod]
-    public void EqualsTest()
+    public void EqualsAndOtherBasicsTest()
     {
         var loc1 = new Location();
+        Assert.AreEqual(0, loc1.Length);
+        Assert.AreEqual(0, loc1.Start);
+        Assert.AreEqual(0, loc1.End);
         Assert.IsTrue(loc1.Equals(loc1));
         Assert.IsFalse(loc1.Equals(null));
+        Assert.IsTrue(loc1.IsSubsetOf(default));
+        Assert.IsTrue(loc1.IsSubsetOf(new(1, 100)));
+        Assert.IsFalse(loc1.Overlaps(default));
+        Assert.IsFalse(loc1.Overlaps(new(1, 100)));
+        Assert.AreEqual(string.Empty, loc1.ToString());
 
         var loc2 = new Location();
         Assert.IsTrue(loc1.Equals(loc2));
         Assert.AreEqual(loc1.GetHashCode(), loc2.GetHashCode());
 
+        loc2.Clear();
+        AssertRanges(loc2, []);
+
         loc1.UnionWith(new SequenceRange(1, 100));
         Assert.IsFalse(loc1.Equals(loc2));
+        Assert.IsTrue(loc1.IsSpan);
+        Assert.IsTrue(loc1.IsSubsetOf(new(1, 100)));
 
         loc2.UnionWith(new SequenceRange(101, 200));
         Assert.IsFalse(loc1.Equals(loc2));
         Assert.IsFalse((loc1 as object).Equals(loc2));
+        Assert.IsFalse(loc2.Overlaps(default));
+        Assert.IsFalse(loc2.Overlaps(new(90, 100)));
+        Assert.IsFalse(loc2.Overlaps(new(201, 210)));
+        Assert.IsTrue(loc2.Overlaps(new(101, 200)));
+        Assert.IsTrue(loc2.Overlaps(new(101)));
+        Assert.IsTrue(loc2.Overlaps(new(200)));
 
         loc1.ExceptWith(new SequenceRange(31, 59));
         loc2.Clear();
@@ -30,6 +49,83 @@ public class LocationTest
         Assert.IsTrue(loc1.Equals(loc2));
         Assert.IsTrue((loc1 as object).Equals(loc2));
         Assert.AreEqual(loc1.GetHashCode(), loc2.GetHashCode());
+        Assert.IsFalse(loc1.IsSpan);
+        Assert.IsTrue(loc1.IsSubsetOf(new(1, 100)));
+        Assert.IsFalse(loc1.IsSubsetOf(new(1, 30)));
+        Assert.IsFalse(loc1.IsSubsetOf(new(60, 100)));
+    }
+
+    [TestMethod]
+    public void OperatorsOnEmptyTest()
+    {
+        var empty1 = new Location();
+        var empty2 = new Location();
+        var loc3 = new Location();
+        var range1 = new SequenceRange(1, 100);
+        var range2 = new SequenceRange(201, 300);
+        var rangeEmpty = new SequenceRange();
+        loc3.UnionWith(range1);
+        loc3.UnionWith(range2);
+
+        // empty | empty
+        empty1.UnionWith(empty2);
+        AssertRanges(empty1, []);
+        empty1.UnionWith(rangeEmpty);
+        AssertRanges(empty1, []);
+        // empty & empty
+        empty1.IntersectWith(empty2);
+        AssertRanges(empty1, []);
+        empty1.IntersectWith(rangeEmpty);
+        AssertRanges(empty1, []);
+        // empty - empty
+        empty1.ExceptWith(empty2);
+        AssertRanges(empty1, []);
+        empty1.ExceptWith(rangeEmpty);
+        AssertRanges(empty1, []);
+        // empty ^ empty
+        empty1.SymmetricExceptWith(empty2);
+        AssertRanges(empty1, []);
+        empty1.SymmetricExceptWith(rangeEmpty);
+        AssertRanges(empty1, []);
+
+        // non-empty | empty
+        loc3.UnionWith(empty2);
+        AssertRanges(loc3, [range1, range2]);
+        loc3.UnionWith(rangeEmpty);
+        AssertRanges(loc3, [range1, range2]);
+        // non-empty - empty
+        loc3.ExceptWith(empty2);
+        AssertRanges(loc3, [range1, range2]);
+        loc3.ExceptWith(rangeEmpty);
+        AssertRanges(loc3, [range1, range2]);
+        // non-empty ^ empty
+        loc3.SymmetricExceptWith(empty2);
+        AssertRanges(loc3, [range1, range2]);
+        loc3.SymmetricExceptWith(rangeEmpty);
+        AssertRanges(loc3, [range1, range2]);
+        // non-empty & empty
+        loc3.IntersectWith(empty2);
+        AssertRanges(loc3, []);
+        loc3.UnionWith(range1);
+        loc3.UnionWith(range2);
+        loc3.IntersectWith(rangeEmpty);
+        AssertRanges(loc3, []);
+        loc3.UnionWith(range1);
+        loc3.UnionWith(range2);
+
+        // empty & non-empty
+        empty1.IntersectWith(loc3);
+        AssertRanges(empty1, []);
+        // empty - non-empty
+        empty1.ExceptWith(loc3);
+        AssertRanges(empty1, []);
+        // empty ^ non-empty
+        empty1.SymmetricExceptWith(loc3);
+        AssertRanges(empty1, [range1, range2]);
+        empty1.Clear();
+        // empty | non-empty
+        empty1.UnionWith(loc3);
+        AssertRanges(empty1, [range1, range2]);
     }
 
     [TestMethod]
@@ -49,20 +145,24 @@ public class LocationTest
         AssertRanges(loc1, [range1, range2]);
         AssertRanges(loc2, []);
 
+        // self
         loc1.UnionWith(loc1);
         AssertRanges(loc1, [range1, range2]);
 
         var range3 = new SequenceRange(90, 100);
         loc2.UnionWith(range3);
         loc1.UnionWith(loc2);
-        AssertRanges(loc2, [range3]); // 90..100
+        AssertRanges(loc2, [range3]);                 // 90..100
         AssertRanges(loc1, [range1, range2, range3]); // 10..20, 40..50, 90..100
 
         var range4 = new SequenceRange(60, 70);
         loc2.UnionWith(range4);
         loc1.UnionWith(loc2);
-        AssertRanges(loc2, [range4, range3]); // 60..70, 90..100
+        AssertRanges(loc2, [range4, range3]);                 // 60..70, 90..100
         AssertRanges(loc1, [range1, range2, range4, range3]); // 10..20, 40..50, 60..70, 90..100
+
+        loc1.UnionWith(range4);
+        AssertRanges(loc1, [range1, range2, range4, range3]);
 
         var range5 = new SequenceRange(101, 110);
         var range6 = new SequenceRange(21, 39);
@@ -81,7 +181,10 @@ public class LocationTest
         AssertRanges(loc2, [range8, range6, range5, range7, range9]); // 1..9, 21..39, 101..110, 130..150, 200..300
         AssertRanges(loc1, [merge1, range4, merge2, range7, range9]); // 1..50, 60..70, 90..110, 130..150, 200..300
 
-        loc1.UnionWith(loc1);
+        loc2.UnionWith(loc1);
+        AssertRanges(loc2, [merge1, range4, merge2, range7, range9]);
+
+        loc1.UnionWith(loc2);
         AssertRanges(loc1, [merge1, range4, merge2, range7, range9]);
 
         var range10 = new SequenceRange(30, 240);
@@ -170,20 +273,20 @@ public class LocationTest
         AssertRanges(loc, [except1]);
 
         var loc2 = new Location();
-        loc.ExceptWith(loc2);
-        AssertRanges(loc, [except1]);
-
         loc2.UnionWith(range2);
         loc.ExceptWith(loc2);
         AssertRanges(loc, [except1]);
 
-        loc2.UnionWith(new SequenceRange(10, 20));
-        loc2.UnionWith(new SequenceRange(30, 40));
+        var range3 = new SequenceRange(10, 20);
+        var range4 = new SequenceRange(30, 40);
+        loc2.UnionWith(range3);
+        loc2.UnionWith(range4);
         var except3 = new SequenceRange(1, 9);
         var except4 = new SequenceRange(21, 29);
         var except5 = new SequenceRange(41, 48);
         loc.ExceptWith(loc2);
         AssertRanges(loc, [except3, except4, except5]);
+        AssertRanges(loc2, [range3, range4, range2]);
 
         loc2.ExceptWith(loc2);
         AssertRanges(loc2, []);
@@ -203,6 +306,13 @@ public class LocationTest
         loc3.UnionWith(new SequenceRange(49));
         loc.ExceptWith(loc3);
         AssertRanges(loc, [except6, except7, except5]);
+
+        loc.ExceptWith(new SequenceRange(28));
+        var except8 = new SequenceRange(22, 27);
+        AssertRanges(loc, [except6, except8, except5]);
+
+        loc.ExceptWith(except8);
+        AssertRanges(loc, [except6, except5]);
 
         var loc4 = new Location();
         loc4.UnionWith(loc);
@@ -302,6 +412,9 @@ public class LocationTest
         var split15 = new SequenceRange(351, 400);
         loc.SymmetricExceptWith(range16);
         AssertRanges(loc, [split9, split13, split15]);
+
+        loc.SymmetricExceptWith(split13);
+        AssertRanges(loc, [split9, split15]);
     }
 
     [TestMethod]
@@ -344,5 +457,9 @@ public class LocationTest
     {
         Assert.AreEqual(ranges.Sum(range => range.IsDefault ? 0 : range.Length), loc.Length);
         Assert.IsTrue(ranges.SequenceEqual(loc.Ranges));
+
+        // sorted and not connected
+        for (int i = 1; i < ranges.Count; i++)
+            Assert.IsGreaterThan(loc.Ranges[i - 1].End + 1, loc.Ranges[i].Start);
     }
 }

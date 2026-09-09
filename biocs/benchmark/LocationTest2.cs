@@ -1,4 +1,5 @@
-﻿using Biocs;
+﻿using System.Diagnostics;
+using Biocs;
 using Biocs.Text;
 
 namespace Benchmark;
@@ -9,13 +10,14 @@ public class LocationTest2
     private List<SequenceRange> ranges = default!;
 
     [Benchmark]
-    public ListLocation List()
+    public Location List()
     {
-        var loc = new ListLocation();
+        var loc = new Location();
 
         foreach (var range in ranges)
             loc.UnionWith(range);
 
+        Trace.Assert(loc.Length == 96214536);
         return loc;
     }
 
@@ -27,6 +29,7 @@ public class LocationTest2
         foreach (var range in ranges)
             loc.UnionWith(range);
 
+        Trace.Assert(loc.Length == 96214536);
         return loc;
     }
 
@@ -38,6 +41,7 @@ public class LocationTest2
         foreach (var range in ranges)
             loc.UnionWith(range);
 
+        Trace.Assert(loc.Length == 96214536);
         return loc;
     }
 
