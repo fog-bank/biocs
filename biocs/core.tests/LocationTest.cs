@@ -343,13 +343,13 @@ public class LocationTest
         AssertRanges(loc, [range3, range1, range2]);
 
         var range4 = new SequenceRange(90, 99);
-        var merge1 = new SequenceRange(90, 200);
         loc.SymmetricExceptWith(range4);
+        var merge1 = new SequenceRange(90, 200);
         AssertRanges(loc, [range3, merge1, range2]);
 
         var range5 = new SequenceRange(81, 89);
-        var merge2 = new SequenceRange(70, 200);
         loc.SymmetricExceptWith(range5);
+        var merge2 = new SequenceRange(70, 200);
         AssertRanges(loc, [merge2, range2]);
 
         var range6 = new SequenceRange(401, 410);
@@ -418,6 +418,44 @@ public class LocationTest
     }
 
     [TestMethod]
+    public void MaxValueTest()
+    {
+        var loc = new Location();
+        var full = new SequenceRange(1, int.MaxValue);
+        loc.UnionWith(full);
+        AssertRanges(loc, [full]);
+
+        var end0 = new SequenceRange(int.MaxValue);
+        loc.UnionWith(end0);
+        AssertRanges(loc, [full]);
+
+        loc.ExceptWith(end0);
+        AssertRanges(loc, [new(1, int.MaxValue - 1)]);
+
+        loc.UnionWith(full);
+        var end1 = new SequenceRange(int.MaxValue - 1);
+        loc.ExceptWith(end1);
+        var left2 = new SequenceRange(1, int.MaxValue - 2);
+        AssertRanges(loc, [left2, end0]);
+
+        loc.IntersectWith(new SequenceRange(int.MaxValue - 1, int.MaxValue));
+        AssertRanges(loc, [end0]);
+
+        loc.UnionWith(full);
+        loc.SymmetricExceptWith(end1);
+        AssertRanges(loc, [left2, end0]);
+
+        loc.SymmetricExceptWith(new SequenceRange(int.MaxValue - 10, int.MaxValue - 1));
+        var range1 = new SequenceRange(1, int.MaxValue - 11);
+        var right2 = new SequenceRange(int.MaxValue - 1, int.MaxValue);
+        AssertRanges(loc, [range1, right2]);
+
+        var end10 = new SequenceRange(int.MaxValue - 10, int.MaxValue);
+        loc.SymmetricExceptWith(end10);
+        AssertRanges(loc, [left2]);
+    }
+
+    [TestMethod]
     public void ParseTest()
     {
         var result = Location.Parse("340..565");
@@ -455,8 +493,8 @@ public class LocationTest
 
     private static void AssertRanges(Location loc, IReadOnlyCollection<SequenceRange> ranges)
     {
+        Assert.AreSequenceEqual(ranges, loc.Ranges);
         Assert.AreEqual(ranges.Sum(range => range.IsDefault ? 0 : range.Length), loc.Length);
-        Assert.IsTrue(ranges.SequenceEqual(loc.Ranges));
 
         // sorted and not connected
         for (int i = 1; i < ranges.Count; i++)

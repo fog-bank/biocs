@@ -64,7 +64,7 @@ public class IndexedValueCollectionTest
 
         var array = new string?[5];
         list.CopyTo(array, 1);
-        Assert.IsTrue(array.SequenceEqual([null, .. expected, null]));
+        Assert.AreSequenceEqual([null, .. expected, null], array);
     }
 
     [TestMethod]
@@ -135,7 +135,7 @@ public class IndexedValueCollectionTest
 
         var array = new T?[5];
         target.CopyTo(array, 1);
-        Assert.IsTrue(array.SequenceEqual([default, .. expected, default]));
+        Assert.AreSequenceEqual([default, .. expected, default], array);
 
         return (target, expected);
     }

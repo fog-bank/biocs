@@ -261,8 +261,8 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
     }
 
     /// <summary>
-    /// Modifies the current location so that it contains only regions that are present either in the current location or in the
-    /// specified range, but not both.
+    /// Modifies the current location so that it contains only regions that are present
+    /// either in the current location or in the specified range, but not both.
     /// </summary>
     /// <param name="range">The continuous range to compare to the current location.</param>
     public void SymmetricExceptWith(SequenceRange range)
@@ -270,171 +270,88 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
         if (range.IsDefault)
             return;
 
-        for (int index = IndexForMergeOrInsert(0, range); index < ranges.Count; index++)
+        if (IsEmpty)
+        {
+            UnionWith(range);
+            return;
+        }
+
+        // ranges[fromIndex - 1].End << range.Start <= ranges[fromIndex].End + 1
+        int fromIndex = IndexOfPoint(0, range.Start - 1);
+        // ranges[exclToIndex - 1].Start - 1 <= range.End << ranges[exclToIndex].Start
+        int exclToIndex = range.End == int.MaxValue ? ranges.Count : LastIndexOfPoint(fromIndex, range.End + 1);
+
+        if (fromIndex == exclToIndex)
+        {
+            // No overlap with any ranges.
+            ranges.Insert(fromIndex, range);
+            Length += range.Length;
+            return;
+        }
+
+        var (otherStart, otherEnd) = (range.Start, range.End);
+        int writeIndex = fromIndex;
+
+        for (int index = fromIndex; index < exclToIndex; index++)
         {
             var current = ranges[index];
-            Debug.Assert(!AheadOfDistantly(current, range));
+            Length -= current.Length;
 
-            if (AheadOfDistantly(range, current))
+            if (otherStart - current.End == 1)
             {
-                // |← (prev) →|  |← range →|  |← current →|
-                ranges.Insert(index, range);
-                Length += range.Length;
-                return;
+                // current →|← other (possible only when it's first loop)
+                otherStart = current.Start;
+                continue;
             }
 
-            if (range.End + 1 == current.Start)
+            SequenceRange replace = default;
+            if (current.Start - otherEnd == 1)
             {
-                // |← range →|← current →|
-                ranges[index] = new(range.Start, current.End);
-                Length += range.Length;
-                return;
-            }
-
-            if (current.End + 1 == range.Start)
-            {
-                // |← current →|← range →|
-                int nextIndex = index + 1;
-                var next = nextIndex == ranges.Count ? default : ranges[nextIndex];
-
-                if (nextIndex == ranges.Count || AheadOfDistantly(range, next))
-                {
-                    // |← current →|← range →|  |← next →|
-                    ranges[index] = new(current.Start, range.End);
-                    Length += range.Length;
-                    return;
-                }
-                else if (range.End + 1 == next.Start)
-                {
-                    // |← current →|← range →|← next →|
-                    ranges[index] = new(current.Start, next.End);
-                    Length += range.Length;
-                    ranges.RemoveAt(nextIndex);
-                    return;
-                }
-                else
-                {
-                    // |← current →|← range  →|
-                    //                |← next ~
-                    ranges[index] = new(current.Start, next.Start - 1);
-                    Length += next.Start - range.Start;
-                    range = new(next.Start, range.End);
-                    continue;
-                }
-            }
-
-            if (range.Start < current.Start)
-            {
-                var before = new SequenceRange(range.Start, current.Start - 1);
-
-                if (range.End < current.End)
-                {
-                    // |←  range →|
-                    //    |← current →|
-                    ranges[index] = new(range.End + 1, current.End);
-                    ranges.Insert(index, before);
-                    // before.Length - (range.End - current.Start + 1)
-                    Length += 2 * current.Start - range.Start - range.End - 1;
-                    return;
-                }
-                else
-                {
-                    // (1) |←    range      →|
-                    // (2) |←    range   →|
-                    //        |← current →|
-                    ranges[index] = before;
-                    // before.Length - current.Length
-                    Length += 2 * current.Start - range.Start - current.End - 1;
-
-                    if (current.End < range.End)
-                    {
-                        range = new(current.End + 1, range.End);
-                        continue;
-                    }
-                    return;
-                }
-            }
-            else if (range.Start == current.Start)
-            {
-                if (range.End < current.End)
-                {
-                    // |← range →|
-                    // |← current  →|
-                    ranges[index] = new(range.End + 1, current.End);
-                    Length -= range.Length;
-                    return;
-                }
-                else if (range.End == current.End)
-                {
-                    // |←  range  →|
-                    // |← current →|
-                    ranges.RemoveAt(index);
-                    Length -= range.Length;
-                    return;
-                }
-                else
-                {
-                    int nextIndex = index + 1;
-                    var next = nextIndex == ranges.Count ? default : ranges[nextIndex];
-
-                    if (nextIndex == ranges.Count || AheadOfDistantly(range, next))
-                    {
-                        // |←    range   →|
-                        // |← current →|     |← next →|
-                        ranges[index] = new(current.End + 1, range.End);
-                        // range.End - current.End - current.Length
-                        Length += range.End + current.Start - 2 * current.End - 1;
-                        return;
-                    }
-                    else if (range.End + 1 == next.Start)
-                    {
-                        // |←    range   →|
-                        // |← current →|  |← next →|
-                        ranges[index] = new(current.End + 1, next.End);
-                        ranges.RemoveAt(index + 1);
-                        // range.Length - 2 * current.Length
-                        Length += range.End + current.Start - 2 * current.End - 1;
-                        return;
-                    }
-                    else
-                    {
-                        // |←    range      →|
-                        // |← current →|  |← next ~
-                        ranges[index] = new(current.End + 1, next.Start - 1);
-                        // next.Start - 1 - current.End - current.Length
-                        Length += next.Start + current.Start - 2 * current.End - 2;
-                        range = new(next.Start, range.End);
-                        continue;
-                    }
-                }
-            }
-            else if (range.End <= current.End)
-            {
-                // (1)    |←  range →|
-                // (2)    |←  range    →|
-                //     |←    current   →|
-                ranges[index] = new(current.Start, range.Start - 1);
-
-                if (range.End < current.End)
-                    ranges.Insert(index + 1, new(range.End + 1, current.End));
-
-                Length -= range.Length;
-                return;
+                // other →|← current (possible only when it's last loop)
+                replace = new SequenceRange(otherStart, current.End);
+                // dummy to indicate no more range operation
+                otherEnd = otherStart - 1;
             }
             else
             {
-                //      |← range →|
-                // |← current →|
-                ranges[index] = new(current.Start, range.Start - 1);
-                Length -= current.End - range.Start + 1;
-                range = new(current.End + 1, range.End);
-                continue;
+                if (otherStart != current.Start)
+                {
+                    // (1) |← other        (2)    |← other
+                    //        |← current       |← current
+                    replace = new SequenceRange(Math.Min(otherStart, current.Start), Math.Max(otherStart, current.Start) - 1);
+                }
+                otherStart = Math.Min(otherEnd, current.End) + 1;
+                otherEnd = Math.Max(otherEnd, current.End);
+            }
+
+            if (!replace.IsDefault)
+            {
+                ranges[writeIndex] = replace;
+                Length += replace.Length;
+                writeIndex++;
             }
         }
 
-        // |← location →|  |← range →|
-        ranges.Add(range);
-        Length += range.Length;
+        // Last segment processing
+        // (When Location.End = range.End = int.MaxValue, otherStart will be int.MinValue.)
+        if (otherStart > 0 && otherStart <= otherEnd)
+        {
+            var remaining = new SequenceRange(otherStart, otherEnd);
+
+            if (writeIndex < exclToIndex)
+                ranges[writeIndex] = remaining;
+            else
+                ranges.Insert(writeIndex, remaining);
+
+            Length += remaining.Length;
+            writeIndex++;
+        }
+
+        if (writeIndex < exclToIndex)
+        {
+            Debug.Assert(exclToIndex - writeIndex == 1);
+            ranges.RemoveAt(writeIndex);
+        }
     }
 
     /// <summary>
@@ -455,6 +372,12 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
 
         if (other.IsEmpty)
             return;
+
+        if (IsEmpty)
+        {
+            UnionWith(other);
+            return;
+        }
 
         foreach (var range in other.ranges)
         {
@@ -588,7 +511,7 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
             return ranges.Count;
         }
 
-        int removeFrom = -1;
+        int writeIndex = -1;
         do
         {
             var current = ranges[index];
@@ -600,14 +523,14 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
             // `range` can be merged with `current`
             range = new(Math.Min(current.Start, range.Start), Math.Max(current.End, range.End));
 
-            if (removeFrom == -1)
-                removeFrom = index;
+            if (writeIndex == -1)
+                writeIndex = index;
 
             Length -= current.Length;
         }
         while (++index < ranges.Count);
 
-        if (removeFrom == -1)
+        if (writeIndex == -1)
         {
             // No merge, simply insert
             ranges.Insert(index, range);
@@ -616,12 +539,12 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
         }
 
         // Finalize merge
-        if (removeFrom + 1 < index)
-            ranges.RemoveRange(removeFrom + 1, index - removeFrom - 1);
+        if (writeIndex + 1 < index)
+            ranges.RemoveRange(writeIndex + 1, index - writeIndex - 1);
 
-        ranges[removeFrom] = range;
+        ranges[writeIndex] = range;
         Length += range.Length;
-        return removeFrom;
+        return writeIndex;
     }
 
     // @param index The index of unprocessed range
@@ -898,7 +821,6 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
             return ranges.Count;
 
         int index = ranges.BinarySearch(startIndex, ranges.Count - startIndex, new(point), null);
-
         if (index >= 0)
             return index;
 
@@ -918,14 +840,13 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
     {
         Debug.Assert(!IsEmpty);
 
-        if (point < ranges[startIndex].Start)
+        if (startIndex == ranges.Count || point < ranges[startIndex].Start)
             return startIndex;
 
         if (Last.Start <= point)
             return ranges.Count;
 
         int index = ranges.BinarySearch(startIndex, ranges.Count - startIndex, new(point), null);
-
         if (index >= 0)
             return index + 1;
 
@@ -945,7 +866,7 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
 
     // Check if `predecessor` is ahead of `successor` and there is at least the space of 1 base between them.
     private static bool AheadOfDistantly(SequenceRange predecessor, SequenceRange successor)
-        => predecessor.End + 1 < successor.Start;
+        => successor.Start - predecessor.End > 1;
 
     #region Explicit Interface Implementations
 
