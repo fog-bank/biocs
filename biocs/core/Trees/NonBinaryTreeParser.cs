@@ -194,7 +194,7 @@ internal ref struct NonBinaryTreeParser
 
                 case '\'' when commentLevel == 0:
                     // Single quote characters in a quoted label are represented by two single quotes.
-                    if (i > 1 && span[i - 1] == '\'')
+                    if (!quoted && i > 0 && span[i - 1] == '\'')
                         sb.Append('\'');
 
                     quoted = !quoted;

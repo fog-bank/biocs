@@ -12,7 +12,7 @@ namespace Biocs.Trees;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
 {
-    private static readonly SearchValues<char> forbiddenNameChar = SearchValues.Create("()[]':;,");
+    private static readonly SearchValues<char> forbiddenNameChar = SearchValues.Create("_()[]':;,");
 
     /// <summary>
     /// Initializes a new instance of the <see cref="NonBinaryTree"/> class.
@@ -24,7 +24,15 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
     /// Gets or sets the root node of this tree.
     /// </summary>
     [DisallowNull]
-    public NonBinaryNode? Root { get; set; }
+    public NonBinaryNode? Root
+    {
+        get;
+        set
+        {
+            field = value;
+            field?.Parent = null;
+        }
+    }
 
     /// <summary>
     /// Counts the number of leaf nodes.
@@ -60,11 +68,69 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
     [DebuggerBrowsable(DebuggerBrowsableState.Never), ExcludeFromCodeCoverage]
     private string DebuggerDisplay => $"Leaves = {LeafCount}, SBL = {SumLength:f4}";
 
+    /// <summary>
+    /// Changes the tree structure so that the root of this tree has three or more child nodes if it has only two.
+    /// </summary>
+    /// <remarks>Before executing <see cref="AsSplits"/> method, this method ensures that the child nodes of <see cref="Root"/> have distinct splits. This method does not verify whether other grandchild nodes have a one-to-one correspondence with the splits.</remarks>
+    /// <exception cref="InvalidOperationException">The number of leaf nodes in this tree is less than 3.</exception>
     public void ToUnroot()
     {
-        throw new NotImplementedException();
+        if (Root == null || Root.IsLeaf)
+            throw new InvalidOperationException();
+
+        if (Root.ChildNodes.Count >= 3)
+            return;
+
+        if (Root.ChildNodes.Count == 1)
+        {
+            var child = Root.ChildNodes[0];
+            Root = child;
+            Root.Length = 0;
+            ToUnroot();
+            return;
+        }
+
+        var right = Root.ChildNodes[0];
+        var left = Root.ChildNodes[1];
+
+        if (right.ChildNodes.Count >= 2)
+        {
+            Root.RemoveChild(left);
+            Root.RemoveChild(right);
+
+            foreach (var grandchild in right.ChildNodes)
+                Root.AppendChild(grandchild);
+
+            left.Length += right.Length;
+            Root.AppendChild(left);
+            right.ReleaseFromTree();
+        }
+        else
+        {
+            if (left.ChildNodes.Count < 2)
+                throw new InvalidOperationException();
+
+            foreach (var grandchild in left.ChildNodes)
+                Root.AppendChild(grandchild);
+
+            right.Length += left.Length;
+            Root.RemoveChild(left);
+            left.ReleaseFromTree();
+        }
     }
 
+    /// <summary>
+    /// Computes a mapping of splits to the corresponding <see cref="NonBinaryNode"/>.
+    /// </summary>
+    /// <param name="includeLeaves">
+    /// If <see langword="true"/>, splits corresponding to leaf nodes will be included in the returned dictionary;
+    /// otherwise only internal splits are included.
+    /// </param>
+    /// <returns>
+    /// A dictionary that maps each computed <see cref="Split"/> to the <see cref="NonBinaryNode"/> that induces it.
+    /// </returns>
+    /// <exception cref="InvalidOperationException"><see cref="Root"/> is <see langword="null"/>.</exception>
+    /// <exception cref="NotSupportedException"><see cref="Root"/> is not a multifurcating root.</exception>
     public Dictionary<Split, NonBinaryNode> AsSplits(bool includeLeaves)
     {
         if (Root == null)
@@ -73,40 +139,42 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
         if (Root.ChildNodes.Count < 3)
             throw new NotSupportedException();
 
-        int length = CheckLeaf(Root);
+        int leafCount = CheckAndCountLeaves(Root);
 
         var splits = new Dictionary<Split, NonBinaryNode>();
         foreach (var node in Root.ChildNodes)
-            ComputeSplit(node, splits, length, includeLeaves);
+            ComputeSplit(node, splits, leafCount, includeLeaves);
 
         return splits;
 
-        static int CheckLeaf(NonBinaryNode node)
+        static int CheckAndCountLeaves(NonBinaryNode node)
         {
             if (node.IsLeaf)
             {
                 if (node.Index < 0)
-                    ThrowHelper.ThrowInvalidOperation(null);
+                    throw new InvalidOperationException();
 
                 return 1;
             }
             else
             {
-                int leaves = 0;
+                if (node.ChildNodes.Count == 1)
+                    throw new InvalidOperationException();
 
+                int leaves = 0;
                 foreach (var child in node.ChildNodes)
-                    leaves += CheckLeaf(child);
+                    leaves += CheckAndCountLeaves(child);
 
                 return leaves;
             }
         }
 
         static Split ComputeSplit(NonBinaryNode node,
-            Dictionary<Split, NonBinaryNode> splits, int length, bool includeLeaves)
+            Dictionary<Split, NonBinaryNode> splits, int leafCount, bool includeLeaves)
         {
             if (node.IsLeaf)
             {
-                var split = new Split(length, node.Index);
+                var split = new Split(leafCount, node.Index);
                 if (includeLeaves)
                     splits.Add(split, node);
                 return split;
@@ -114,7 +182,7 @@ public class NonBinaryTree : IFormattable, ISpanParsable<NonBinaryTree>
             else
             {
                 var split = Split.FromChildren(node.ChildNodes.Select(
-                    child => ComputeSplit(child, splits, length, includeLeaves)));
+                    child => ComputeSplit(child, splits, leafCount, includeLeaves)));
                 splits.Add(split, node);
                 return split;
             }

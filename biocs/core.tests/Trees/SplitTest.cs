@@ -190,7 +190,7 @@ public class SplitTest
     {
         var split1 = new Split(5, [1, 2]);
         var split2 = new Split(5, [0, 4]);
-        var split = Split.FromChildren(split1, split2);
+        var split = Split.FromChildren([split1, split2]);
 
         Assert.AreEqual(5, split.LeafCount);
         Assert.IsTrue(split.IsSameSide(1, 2));
@@ -199,7 +199,7 @@ public class SplitTest
         Assert.IsFalse(split.IsSameSide(0, 3));
         Assert.AreEqual(new Split(5, 3), split);
 
-        Assert.Throws<InvalidOperationException>(() => Split.FromChildren(split1, new Split(4, 0)));
+        Assert.Throws<InvalidOperationException>(() => Split.FromChildren([split1, new Split(4, 0)]));
         Assert.Throws<ArgumentException>(() => Split.FromChildren([]));
     }
 

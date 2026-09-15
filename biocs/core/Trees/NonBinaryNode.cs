@@ -201,8 +201,7 @@ public class NonBinaryNode
                 Nodes.InsertRange(i, grandchildren);
                 i += grandchildren.Count - 1;
 
-                child.Parent = null;
-                child.Nodes = null;
+                child.ReleaseFromTree();
             }
         }
     }
@@ -210,6 +209,12 @@ public class NonBinaryNode
     /// <inheritdoc/>
     public override string ToString() =>
         IsLeaf ? $"Name = {Name}, Length = {Length:f4}" : $"ChildNodes = {Nodes.Count}, Length = {Length:f4}";
+
+    internal void ReleaseFromTree()
+    {
+        Parent = null;
+        Nodes = null;
+    }
 
     private IEnumerable<NonBinaryNode> DescendantsAndSelf(bool containsSelf)
     {

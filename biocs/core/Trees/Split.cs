@@ -7,6 +7,10 @@ namespace Biocs.Trees;
 /// <summary>
 /// Represents a bipartition of a phylogenetic tree.
 /// </summary>
+/// <remarks>
+/// This class stores the status of splits except the first to a <see cref="BitArray"/> object.
+/// For nomalization, the first split is implicitly set to <see langword="false"/>.
+/// </remarks>
 public sealed class Split : IEquatable<Split>
 {
     private readonly BitArray bits;
@@ -156,7 +160,6 @@ public sealed class Split : IEquatable<Split>
 
         int offset = byte.TrailingZeroCount(bit);
         int index = index8 * 8 + offset;
-        Debug.Assert(bits.Get(index));
         return index + 1;
     }
 
