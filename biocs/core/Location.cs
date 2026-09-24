@@ -188,8 +188,8 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
     {
         if (!IsSubsetOf(range))
         {
-            int index = IntersectWithCore(0, range);
-            RemoveRangesFromLast(index);
+            var (_, writeIndex) = IntersectWithCore(0, 0, range);
+            RemoveRangesFromLast(writeIndex);
         }
     }
 
@@ -209,15 +209,15 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
             ClearRanges();
         else
         {
-            int index = 0;
+            int index = 0, writeIndex = 0;
 
             foreach (var range in other.ranges)
             {
-                index = IntersectWithCore(index, range);
+                (index, writeIndex) = IntersectWithCore(index, writeIndex, range);
                 if (index == ranges.Count)
                     break;
             }
-            RemoveRangesFromLast(index);
+            RemoveRangesFromLast(writeIndex);
         }
     }
 
@@ -276,10 +276,10 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
             return;
         }
 
-        // ranges[fromIndex - 1].End << range.Start <= ranges[fromIndex].End + 1
         int fromIndex = IndexOfPoint(0, range.Start - 1);
-        // ranges[exclToIndex - 1].Start - 1 <= range.End << ranges[exclToIndex].Start
         int exclToIndex = range.End == int.MaxValue ? ranges.Count : LastIndexOfPoint(fromIndex, range.End + 1);
+        // ranges[fromIndex - 1].End << range.Start <= ranges[fromIndex].End + 1
+        // ranges[exclToIndex - 1].Start - 1 <= range.End << ranges[exclToIndex].Start
 
         if (fromIndex == exclToIndex)
         {
@@ -547,42 +547,36 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
         return writeIndex;
     }
 
-    // @param index The index of unprocessed range
-    // @return The index of unprocessed range for next step
-    private int IntersectWithCore(int index, SequenceRange range)
+    private (int index, int writeIndex) IntersectWithCore(int index, int writeIndex, SequenceRange range)
     {
-        do
+        int fromIndex = IndexOfPoint(index, range.Start);
+        // ranges[fromIndex - 1].End < range.Start <= ranges[fromIndex].End
+        // [index..fromIndex] are out of `range`.
+
+        for (index = fromIndex; index < ranges.Count; index++)
         {
             var current = ranges[index];
-
-            if (AheadOf(current, range))
+            if (current.Start <= range.End)
             {
-                ranges.RemoveAt(index);
-                Length -= current.Length;
-                continue;
+                // current.Overlaps(range) == true
+                var intersect = new SequenceRange(Math.Max(current.Start, range.Start), Math.Min(current.End, range.End));
+                Length += intersect.Length - ranges[writeIndex].Length;
+                ranges[writeIndex] = intersect;
+                writeIndex++;
+
+                // May need to intersect with next `range`.
+                if (range.End < current.End && index + 1 == writeIndex)
+                {
+                    var except = new SequenceRange(range.End + 1, current.End);
+                    ranges.Insert(writeIndex, except);
+                    Length += except.Length;
+                }
             }
-
-            if (AheadOf(range, current))
-                return index;
-
-            // Here, current.Overlaps(range) == true
-            var intersect = new SequenceRange(Math.Max(current.Start, range.Start), Math.Min(current.End, range.End));
-            ranges[index] = intersect;
-            Length += intersect.Length - current.Length;
 
             if (range.End < current.End)
-            {
-                // this        current ->|
-                // other     range ->| |<- (next)
-                var rest = new SequenceRange(range.End + 1, current.End);
-                ranges.Insert(index + 1, rest);
-                Length += rest.Length;
-            }
-            index++;
+                break;
         }
-        while (index < ranges.Count);
-
-        return index;
+        return (index, writeIndex);
     }
 
     // @param currentNode this.CurrentNode
