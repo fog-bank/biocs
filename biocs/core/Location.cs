@@ -15,7 +15,6 @@ namespace Biocs;
 public class Location : IEquatable<Location>, ISpanParsable<Location>
 {
     private readonly List<SequenceRange> ranges = [];
-    private IReadOnlyList<SequenceRange>? view;
     private LocationOperator locOperator = LocationOperator.SpanOrJoin;
 
     /// <summary>
@@ -70,8 +69,8 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
     {
         get
         {
-            view ??= ranges.AsReadOnly();
-            return view;
+            field ??= ranges.AsReadOnly();
+            return field;
         }
     }
 
@@ -188,7 +187,24 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
     {
         if (!IsSubsetOf(range))
         {
-            var (_, writeIndex) = IntersectWithCore(0, 0, range);
+            int fromIndex = IndexOfPoint(0, range.Start);
+            int writeIndex = 0;
+
+            for (int i = fromIndex; i < ranges.Count; i++)
+            {
+                var current = ranges[i];
+                if (current.Start <= range.End)
+                {
+                    // current.Overlaps(range) == true
+                    var intersect = new SequenceRange(Math.Max(current.Start, range.Start), Math.Min(current.End, range.End));
+                    Length += intersect.Length - ranges[writeIndex].Length;
+                    ranges[writeIndex] = intersect;
+                    writeIndex++;
+                }
+
+                if (range.End < current.End)
+                    break;
+            }
             RemoveRangesFromLast(writeIndex);
         }
     }
@@ -206,19 +222,38 @@ public class Location : IEquatable<Location>, ISpanParsable<Location>
             return;
 
         if (other.IsEmpty)
-            ClearRanges();
-        else
         {
-            int index = 0, writeIndex = 0;
-
-            foreach (var range in other.ranges)
-            {
-                (index, writeIndex) = IntersectWithCore(index, writeIndex, range);
-                if (index == ranges.Count)
-                    break;
-            }
-            RemoveRangesFromLast(writeIndex);
+            ClearRanges();
+            return;
         }
+
+        var buffer = new List<SequenceRange>();
+        int i = 0, j = 0;
+        int length = 0;
+
+        while (i < ranges.Count && j < other.ranges.Count)
+        {
+            var x = ranges[i];
+            var y = other.ranges[j];
+
+            int start = Math.Max(x.Start, y.Start);
+            int end = Math.Min(x.End, y.End);
+
+            if (start <= end)
+            {
+                var intersect = new SequenceRange(start, end);
+                buffer.Add(intersect);
+                length += intersect.Length;
+            }
+
+            if (x.End < y.End)
+                i++;
+            else
+                j++;
+        }
+        ranges.Clear();
+        ranges.AddRange(buffer);
+        Length = length;
     }
 
     /// <summary>
